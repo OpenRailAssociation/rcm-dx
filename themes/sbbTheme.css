@@ -1,0 +1,81 @@
+body,
+p {
+  background-color: #fff;
+  color: #000;
+  font-size: 12pt;
+  font-family: Arial, sans-serif;
+}
+h1 {
+  color: #e2001a;
+  font-size: 24pt;
+  font-weight: lighter;
+  line-height: 1.25em;
+}
+h2 {
+  color: #e2001a;
+  font-size: 20pt;
+  font-weight: lighter;
+  line-height: 1.25em;
+}
+h3 {
+  color: #e2001a;
+  font-size: 18pt;
+  font-weight: bold;
+  line-height: 1.2em;
+}
+h3 {
+  color: #e2001a;
+  font-size: 16pt;
+  font-weight: bold;
+  line-height: 1.2em;
+}
+h4 {
+  color: #e2001a;
+  font-size: 14pt;
+  font-weight: bold;
+  line-height: 1.1em;
+}
+h5 {
+  color: #e2001a;
+  font-size: 12pt;
+  font-weight: bold;
+  line-height: 1em;
+}
+h6 {
+  color: #e2001a;
+  font-size: 12pt;
+  font-weight: bolder;
+  font-style: italic;
+  line-height: 0.5em;
+}
+table {
+  font-size: 12pt;
+  background-color: #000;
+  color: #fff;
+}
+table tr th {
+  background-color: #4c4b4b;
+  color: #fff;
+  font-weight: bold;
+}
+table tr td {
+  font-weight: normal;
+  background-color: #fff;
+  color: #000;
+}
+ul {
+  font-size: 12pt;
+  color: #000;
+}
+ul li {
+  font-variant: normal;
+  font-style: normal;
+}
+ul li a {
+  color: #4c4b4b;
+  text-decoration: none;
+}
+span {
+  font-size: 8pt;
+  font-family: Arial, sans-serif;
+}

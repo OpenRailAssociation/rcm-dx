@@ -1,0 +1,113 @@
+// Color definitions
+@theme-primary: #e2001a;
+@theme-on-primary: #fff;
+@theme-secondary: #4c4b4b;
+@theme-on-secondary: #fff;
+@theme-error: #b00020;
+@theme-on-error: #fff;
+@theme-surface: #fff;
+@theme-on-surface: #000;
+@theme-background: #fff;
+
+// Font definitions
+@typography-normal-font-size: 12pt;
+@typography-min-font-size: @typography-normal-font-size - 4pt;
+@typography-max-font-size: @typography-normal-font-size * 2;
+@typography-font-family: Arial, sans-serif;
+// Body definitions
+body, p {
+    background-color: @theme-surface;
+    color: @theme-on-surface;
+    font-size: @typography-normal-font-size;
+    font-family: @typography-font-family;
+}
+
+h1 {
+    color: @theme-primary;
+    font-size: @typography-max-font-size;
+    font-weight: lighter;
+    line-height: 1.25em;
+}
+
+h2 {
+    color: @theme-primary;
+    font-size: @typography-max-font-size - 4;
+    font-weight: lighter;
+    line-height: 1.25em;
+}
+
+h3 {
+    color: @theme-primary;
+    font-size: @typography-max-font-size - 6;
+    font-weight: bold;
+    line-height: 1.2em;
+}
+
+h3 {
+    color: @theme-primary;
+    font-size: @typography-max-font-size - 8;
+    font-weight: bold;
+    line-height: 1.2em;
+}
+
+h4 {
+    color: @theme-primary;
+    font-size: @typography-max-font-size - 10;
+    font-weight: bold;
+    line-height: 1.1em;
+}
+
+h5 {
+    color: @theme-primary;
+    font-size: @typography-max-font-size - @typography-normal-font-size;
+    font-weight: bold;
+    line-height: 1em;
+}
+
+h6 {
+    color: @theme-primary;
+    font-size: @typography-max-font-size - @typography-normal-font-size;
+    font-weight: bolder;
+    font-style: italic;
+    line-height: 0.5em;
+}
+
+table {
+    font-size: @typography-normal-font-size;
+    background-color: @theme-on-surface;
+    color: @theme-on-primary;
+
+    tr {
+        th {
+            background-color: @theme-secondary;
+            color: @theme-on-secondary;
+            font-weight: bold;
+        }
+    }
+
+    tr {
+        td {
+            font-weight: normal;
+            background-color: @theme-surface;
+            color: @theme-on-surface;
+        }
+    }
+}
+
+ul {
+    font-size: @typography-normal-font-size;
+    color: @theme-on-surface;
+    
+    li {
+        font-variant: normal;
+        font-style: normal;
+        a {
+            color: @theme-secondary;
+            text-decoration: none;
+        }
+    }
+}
+span {
+    font-size: @typography-min-font-size;
+    font-family: @typography-font-family;
+}

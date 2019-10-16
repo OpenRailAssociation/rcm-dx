@@ -1,0 +1,132 @@
+' Visit http://plantuml.com/de/ for more information!
+
+@startuml RCM_DX_Structure
+
+  object RCM_DX
+
+  object SESSION
+
+  object CLEARANCEINFORMATION
+  object DATAPROCESSING
+
+  object PLATTFORM
+  object CONFIGURATION
+
+  object POSITION
+  object SECTION
+  
+  object ENVIRONMENT
+  object DATASOURCE
+
+  object EVENTS
+  object RECORDS
+
+  object MEASURINGSYSTEM
+
+  object TOPOLOGY
+  object TRACKS
+  object LINES
+  object SWITCHTRACKS
+  object TRACKOBJECTS
+  object TRACKPOINTS
+  object PROPERTIES
+
+  object CHANNEL
+  object LOGGING
+  object MESSAGES
+  object OUTAGES
+
+  RCM_DX "1" o-- "0..1" CLEARANCEINFORMATION
+  RCM_DX "1" o-- "0..1" DATAPROCESSING
+  RCM_DX "1" o-- "1..n" SESSION
+  
+  SESSION "1" o-- "1" PLATTFORM 
+  SESSION "1" o-- "1" POSITION
+  SESSION "1" o-- "0..1" ENVIRONMENT
+  SESSION "1" o-- "1..n" MEASURINGSYSTEM
+  SESSION "1" o-- "0..1" EVENTS
+  SESSION "1" o-- "0..1" RECORDS
+  SESSION "1" o-- "1" TOPOLOGY
+  SESSION "1" o-- "1" SECTION
+  
+  PLATTFORM o-- CONFIGURATION
+  MEASURINGSYSTEM "1" o-- "1..n" DATASOURCE
+  MEASURINGSYSTEM "1" o-- "0..1" LOGGING
+  DATASOURCE "1" o-- "1..n" CHANNEL
+  LOGGING o-- MESSAGES
+  LOGGING o-- OUTAGES
+
+  TOPOLOGY "1" o-- "1" TRACKS
+  TOPOLOGY "1" o-- "1" LINES
+  TOPOLOGY "1" o-- "1" SWITCHTRACKS
+  TOPOLOGY "1" o-- "1" TRACKOBJECTS
+  TOPOLOGY "1" o-- "1" TRACKPOINTS
+  TOPOLOGY "1" o-- "1" PROPERTIES
+@enduml
+
+@startuml RCM_DX_MS_overview
+
+object SESSION_GROUP {
+  a:EndTime
+  a:StartTime
+}
+
+object MEASUREMENT_SYSTEM_GROUP
+object DATASOURCE_GROUP
+object timestamp
+object timeindex
+object duration
+
+object CHANNEL_GROUP {
+  a:ChannelBasis
+  a:CommonTriggerDistance
+  a:CommonTriggerFrequency
+  a:MeasurementType
+  a:Neighbor
+  a:PositionOffset
+  a:TriggerMode
+}
+
+object data {
+  a:Unit
+}
+
+object video {
+  a:Codec
+  a:Resolution?
+}
+
+object images {
+  a:ResolutionX
+  a:ResolutionY
+  a:ResolutionType
+  a:ContentType
+  a:Resolution?
+}
+
+object jpegs
+
+object limits {
+  a:Unit
+}
+
+object firstSamplePerTimeStampIndex {
+  a:Sorted
+}
+
+SESSION_GROUP "1" o-- "1..n" MEASUREMENT_SYSTEM_GROUP
+MEASUREMENT_SYSTEM_GROUP "1" o-- "1..n" DATASOURCE_GROUP
+DATASOURCE_GROUP "1" o-- "1" timestamp
+DATASOURCE_GROUP "1" o-- "0..1" timeindex
+DATASOURCE_GROUP "1" o-- "0..1" duration
+
+DATASOURCE_GROUP "1" o-- "1..n" CHANNEL_GROUP
+
+CHANNEL_GROUP "1" o-- "0..n" data
+CHANNEL_GROUP "1" o-- "0..n" video
+CHANNEL_GROUP "1" o-- "0..n" images
+CHANNEL_GROUP "1" o-- "0..1" jpegs
+CHANNEL_GROUP "1" o-- "0..n" limits
+CHANNEL_GROUP "1" o-- "0..1" firstSamplePerTimeStampIndex
+
+@enduml
