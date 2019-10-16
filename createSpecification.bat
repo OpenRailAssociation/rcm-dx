@@ -12,8 +12,8 @@ mkdir %PDF_DIR%
 mkdir %HTML_DIR%
 mkdir %CSS_DIR%
 
-pandoc --from markdown --template sbb --listings --toc RCM-DX-Specification.md -o %PDF_DIR%\RCM-DX-Specification.pdf
+pandoc --from markdown --data-dir=%cd% --template sbb --listings --toc RCM-DX-Specification.md -o %PDF_DIR%\RCM-DX-Specification.pdf
 
 pandoc -s -c css/sbbTheme.css -A footer.html --toc RCM-DX-Specification.md -o %HTML_DIR%\RCM-DX-Specification.html
 
-lessc -s themes/sbbTheme.less %CSS_DIR%\sbbTheme.css
+lessc -s templates/sbbTheme.less %CSS_DIR%\sbbTheme.css
