@@ -5,6 +5,7 @@
 /tmp
 /out-tsc
 /images/generated
+/generated-specs
 # Only exists if Bazel was run
 /bazel-out
 # dependencies
