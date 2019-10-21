@@ -441,7 +441,7 @@ $else$
   \apptocmd{\@title}{\par {\large #1 \par}}{}{}
 }
 \makeatother
-\thispagestyle{fancy}
+\thispagestyle{empty}
 $endif$
 \subtitle{$subtitle$}
 $endif$
@@ -830,6 +830,7 @@ $if(toc-title)$
   \frametitle{$toc-title$}
 $endif$
   \tableofcontents[hideallsubsections]
+  \listoffigures
 \end{frame}
 $if(toc-own-page)$
 \newpage
@@ -841,6 +842,7 @@ $if(colorlinks)$
 $endif$
 \setcounter{tocdepth}{$if(toc-depth)$$toc-depth$$else$3$endif$}
 \tableofcontents
+\listoffigures
 $if(toc-own-page)$
 \newpage
 $endif$
