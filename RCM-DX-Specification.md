@@ -1,5 +1,6 @@
 ---
 title: "RCM-DX Specification Document"
+subtitle: "Version 1.0"
 keywords: [RCM-DX, Specification]
 logo: "images/SBB-Logo.png"
 logo-width: 150
