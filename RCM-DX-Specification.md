@@ -1,26 +1,27 @@
 ---
 title: "RCM-DX Specification Document"
-subtitle: "Version 1.0"
+subtitle: "Version 0.30"
 keywords: [RCM-DX, Specification]
 logo: "images/SBB-Logo.png"
 logo-width: 150
 lang: "de-CH"
 titlepage: true
 titlepage-rule-color: "EB0000"
+author: "Schweizerische Bundesbahnen, SBB CFF FFS"
 ...
 
 # RCM-DX Specification
 
-TODOS:
+> TODOS:
 - Alle Tabellen und deren Verwendung kontrollieren, sowie eventuell anpassen! Datenset Tabellen oder Tabellen für Attribute haben unterschiedlichen Inhalt und somit anderen Titel usw.
 
 ## History
 
-DEMO: 
+> TODO: Nachfolgende Tabelle als DEMO!  
 
 | Version | Datum | Beschreibung | Autor |
 |---|---|---|---|
-| V1.0 | 14.10.2019 | Hauptversion geschrieben | Michael Ammann (SBB) |
+| V0.30 | 17.10.2019 | Komplette Änderung des Designs, Anpassung der Struktur RCM-DX | Michael Ammann (SBB) |
 
 ## Approval
 
@@ -97,7 +98,7 @@ Nachfolgend eine Auflistung der möglichen Formate wie die aufgenomenen Daetne a
 | Name | Format |
 |---|---|
 | Einzelwerte | Einfaches Array, Dimension 1D |
-| Dünnbesetzte Datenmatrix | TODO |
+| Indexierte Einzelwerte | Einfaches Array der Dimension 1D. Neben einem Datenset `timestamp` wird ein Datenset `timeindex` erstellt, dass eine Indexierung der Daten enthält und das lesen der Daten vereinfacht. Das Datenset `timeindex` wird im Kapitel [Time Indices](#time-indices) genauer beschrieben |
 | Bilder | Bilder die zu einem definierten Zeitpunkt aufgenommen wurden |
 | Videos | Videos die als Stream gespeichert werden und nicht als Einzelbilder |
 
@@ -210,6 +211,19 @@ Videos werden als binäre Datenblöcke abgelegt.
 HDF5 Chunking ist **nicht** erlaubt und **nicht** empfohlen.  
 Die HDF5 Compression ist **nicht** empfohlen.  
 
+
+
+
+
+
+> TODO: PreambleDuration und TrailerDuration definieren!
+> Spezifikation beiziehen! 
+
+
+
+
+
+
 ## Datasource Arrays
 
 ### Timestamp Array
@@ -222,44 +236,129 @@ Die Zeitstempel sind immer in steigender Reienfolge abgelegt und dürfen keine S
 |---|---|---|---|:---:|---|----|---|---|
 | timestamp | HDF5 Dataset | 64 bit integer | datasource_group | yes | Array[n] | recommended | allowed | Nanosekunden seit dem 01.01.1970 um 00:00 Uhr UTC |
 
-> TODO: Link weiter unten ergänzen auf Titel mit Beschreibung!!!!
-
-Diese Zeitstempel werden entweder anhand einer Definierten gefahrenen Strecke oder anhand einer Frequenz aufgezeichnet, dies wird im Kapitel >>>>>>>>>>>> []() genauer Beschrieben. Neben den Zeitstempel folgen die Messmittel dieser Vorgaben und nehmen zum gleichen Zeitpunkt auch Messdaten auf. Ein Zentrales System dient als Taktgeber für die Datenaufnahme aller Systeme (Messdaten und Zeitstempel).
+Diese Zeitstempel werden entweder anhand einer definierten gefahrenen Strecke oder anhand einer Frequenz aufgezeichnet, dies wird im Kapitel [Common Trigger Distance or Frequence](#common-trigger-distance-or-frequence) genauer Beschrieben. Neben den Zeitstempel folgen die Messmittel dieser Vorgaben und nehmen zum gleichen Zeitpunkt auch Messdaten auf. Ein Zentrales System dient als Taktgeber für die Datenaufnahme aller Systeme (Messdaten und Zeitstempel).
 
 ### Time Indices
 
-Für ein schnelles finden von Zeitstempeln wird dieses Datenset zusätzlich zum erstellt. Das Zeitindex Datenset speichert einen binären Baum von als Index von Zeitstempeln.  
+Für ein schnelles finden von Zeitstempeln wird dieses Datenset zusätzlich zum Datenset `timestamp` erstellt. Das Zeitindex Datenset speichert einen Offsetwert einer Position von Zeitstempel-Gruppen ab und ist in der `Datasource Group`, auf gleicher Ebene wie das Datenset `timestamp`. Eine genaue Beschreibung zum Inhalt, ist im nachfolgenden Kapitel [Inhalt](#inhalt) zu finden.
 
-| Name | HDF5 Type | Date Type | Parent | Mandatory | Dimensions | HDF5 Chunking | HDF5 Compression | Unit |
-|---|---|---|---|:---:|---|----|---|---|
-| timeindex | HDF5 Dataset | 64 bit integer | datasource_group | yes | 1x | recommended | allowed | Nanosekunden, vielfaches der Blockgrösse |
+| Name | Date Type | Parent | Mandatory | Dimensions | HDF5 Chunking | HDF5 Compression | Unit |
+|---|---|---|:---:|---|----|---|---|
+| timeindex | 64 bit integer | datasource_group | yes | 1x | recommended | allowed | Nanosekunden, vielfaches der Blockgrösse |
 
-Folgende Attribute sind dem Zeitindex Datenset zugewiesen:
+Folgende Attribute sind dem `timeindex` Datenset zugewiesen:
 
-| Name | HDF5 Type | Data Type | Parent | Mandatory | Description |
-|---|---|---|---|:---:|---|
-| BlockSize | HDF5 Attribute | long | timeindex | yes | Zeitdauer in Nanosekunden eines Zeitblocks. Zeitstempel innerhalb desselben Zeitblocks werden mit dem gleichen Wert indiziert |
-| LogTimeBlocks | HDF5 Attribute | integer | timeindex | yes | $2^{LogTimeBlocks}$ ist gleich der Anzahl an Blöcke die für die Generierung des binären Baumes. Es können grössere Zeitversetzungen als $2^{LogTimeBlocks}*BlockSize$ im Zeitstempel Datenset enthalten sein, diese werden dann aber nicht indexiert. |
-| Depth | HDF5 Attribute | integer | timeindex | yes | Tiefe des binären Baumes (Level) |
+| Name | Data Type | Mandatory | Description |
+|--|-|--|----|
+| BlockSize | long | yes | Zeitdauer in Nanosekunden eines Zeitblocks. Zeitstempel innerhalb desselben Zeitblocks werden mit dem gleichen Wert indiziert |
+| LogTimeBlocks | integer | yes | $2^{LogTimeBlocks}$ ist gleich der Anzahl an Blöcke, die für die Generierung des binären Baumes. Es können grössere Zeitversetzungen als $2^{LogTimeBlocks}*BlockSize$ im Zeitstempel Datenset enthalten sein, diese werden dann aber nicht indexiert. |
+| Depth | integer | yes | Höhe des binären Baumes |
 
+#### Inhalt Datenset Time Indices
 
-> TODO: Genauer spezifizieren und die Beschreibung in der Word Spezifikation aufnehmen!
-> Hier mit Hilfe von Bildern Arbeiten, wie es in der Word Spezifikation gemacht wurde!
+Um den Inhalt im Datenset `timeindex` zu verstehen, muss zuerst erklärt werden, wie dieser entstanden ist. Im folgenden Beispiel beschreibt den Vorgang der zum Ergebniss führt und wieder zurück.
 
+Im Beispiel wollen wir Zeitstempel zwischen $10s$ und $155s$ abspeichern sowie indexieren. Diese Zeitstempel sind im Datenset `timestamp` enthalten. Die Abstände zwischen den einzelnen Zeitstempel folgen keinem einheitlichen Muster.  
 
+Als erstes definieren wir einen $Offset$, dieser ergibt sich durch den ersten Eintrag im Datenset `timestamp`. In unserem Beispiel ist der erste Eintrag $10s$, somit ist $Offset=10s$. Dieser $Offset$ wird nicht im `timeindex` Datenset 
+Mit dem $Offset$ von $10*10^9ns$ haben wir somit einen Wertbereich von $0ns$ bis $145*10^9ns$ den wir Indexieren.  
 
+Verwenden wir nun eine Blockgrösse von $BlockSize=2x10^9ns$, erhalten wir $72$ Blöcke, die wir Indexieren, da $10s+72*2x10^9ns$ die Werte bis $156s$ abdekt und somit genügend für unseren Wertbereich.  
+Um alle $72$ Blöcke zu indexieren, benötigen wir nun einen genügend grossen Wert für LogTimeBlocks, wir nehmen einen Wert von $LogTimeBlocks=7$, da $2^7=128$ grösser als $72$ ist.
 
+> Hinweis: Möglich wäre ein LogTimeBlocks Wert von $LogTimeBlocks=6 => 2^6=64$. Alle Werte zwischen $64$ und $72$ würde dann aber nicht abgedekt werden in der Indexierung!
 
+Definieren wir nun eine Tiefe $Depth=4$, so erhalten wir folgenden Knotennummern:
 
+| Knotennummer | Höhe |
+|:---:|---|
+| 64 | 1 |
+| 32 | 2 |
+| 96 | 2 |
+| 16 | 3 |
+| 48 | 3 |
+| 80 | 3 |
+| 112 | 3 |
+| 8 | 4 |
+| 24 | 4 |
+| 40 | 4 |
+| 56 | 4 |
+| 72 | 4 |
+| 88 | 4 |
+| 104 | 4 |
+| 120 | 4 |
 
+Diese Zahlen und Höhen, ergeben sich aus dem binären Baum, den wir anhand der definerten Tiefe erzeugen. Um die Tabelle zu erzeugen, wird der Baum in "level-order" durchlaufen. Folgendes Bild zeigt diesen Baum:
+
+![Binärer Baum, Aufbau der Knotennummer](images/generated/binaryTree.png){ width=400px }
+
+Der erste Eintrag in der Tabelle hat den Wert $2^{LogTimeBlocks-1}$, in unserem Fall $2^{7-1}=64$, dieser Eintrag hat eine Höhe von eins.  
+Als nächstes errechnen wir für jeden Zeitstempel die passenden Nummer des entsprechenden Blocks:  
+
+$BlockNumber=\frac{timestamp - Offset}{BlockSize}$
+
+Jede $BlockNumber$ erhält eine Indexnummer aufsteigend, beginnend mit Null bis 40. Diese dient uns später für die Bestimmung der Offset Position die in das Datenset `timeindex` geschrieben wird.  
+Nachfolgend die berechneten $BlockNumber$ und der dazugehörige Zeitstempel, als Übersicht in einer Tabelle:
+
+![Tabellenübersicht 1: $BlockNumber$ zu jedem Zeitstempel](images/TimeIndicesExampleTable1.png)
+
+![Tabellenübersicht 2: $BlockNumber$ zu jedem Zeitstempel](images/TimeIndicesExampleTable2.png)
+
+Im nächsten Schritt verwenden wir die zuvor erstellte Tabelle des binären Baums und schreiben für jeden Eintrag, den entsprechende $BlockNummer$ in das Datenset `timeindex`.  
+Die erste Nummer des binären Baum ist $64$. Somit suchen wir in der erstellten Tabelle die gröstmögliche $BlockNumber$, die kleiner oder gleich dem Wert $64$ ist. Somit finden wir die Nummer $63$ in der Tabelle mit dem Index $35$. Somit schreiben wir die Zahl $35$ in das Datenset `timeindex`. Der zweite der Tabelle mit dem binären baum, hat den Wert $32$. In der Tabelle mit den $BlockNumber$ finden wir die Nummer $32$, somit wird die Zahl $32$ in das Datenset `timeindex` geschrieben. Nun folgt die Zahl $96$, für diese gibt es keinen Eintrag in der tabelle mit den $BlockNumber$, somit schreiben wir die eine $-1$ in das Datenset `timeindex`. Führen wir dies so weiter, erhalten wir folgende Tabelle, die das Datenset `timeindex` abbildet:  
+
+| $NodeNumber$ | Datenset `timeindex` |
+|:---:|-----|
+| 64 | 35 |
+| 32 | 18 |
+| 96 | -1 |
+| 16 | 8 |
+| 48 | 27 |
+| 80 | -1 |
+| 112 | -1 |
+| 8 | 4 |
+| 24 | 13 |
+| 40 | 23 |
+| 56 | 32 |
+| 72 | 40 |
+| 88 | -1 |
+| 104 | -1 |
+| 120 | -1 |
+
+#### Lokalisierung des Zeitstempel aus Datenset Time Indices
+
+In diesem Kapitel wird beschrieben, wie die Position eines Zeitstempels, anhand des Datenset `timeindex` berechnet werden kann. Relevant sind die definierten Werte aus den Attributen $BlockSize$, $LogTimeBlocks$ und $Depth$. Anhand dieser Werte können wir den binären Baum wieder aufbauen.  
+
+Angenommen, wir suchen für den Zeitstempel $86s$ die Position im `timestamp` Datenset, so berechnen wir zuerst die Knotennummer mit folgender Formel:  
+
+$NodeNumber=(\frac{timestamp - Offset}{BlockSize})-(\frac{timestamp - Offset}{BlockSize} \bmod 8)$  
+
+Die Berechnung für einen Zeitstempel mit dem Wert $86s$, würde dies wie folgt aussehen:  
+
+$NodeNumber=(\frac{86s - 10s}{2s})-(\frac{86s - 10s}{2s} \bmod 8) = 38 - 6 = 32$
+
+Mit der errechneten $NodeNumber$ können wir nun die Position mit Hilfe des `timeindex` Datenset herausfinden. Zusätzlich benötigen wir nun die Tabelle des binären Baums. Darin suchen wir den Index der errechneten $NodeNumber$, dies wäre der Index $1$. Nun finden wir im Datenset `timeindex` beim selben Index, die Position des Blocks, indem wir unseren Zeitstempel suchen, somit suchen wir ab Position $18$.  
+
+| $NodeNumber$ | Datenset `timeindex` |
+|:---:|-----|
+| 64 | 35 |
+| **32** | **18** |
+| 96 | -1 |
+|...|...|
+
+Nun wird bei der Position $18$ mit der Suche des Zeitstempels begonnen und über die Werte $74, 75, 80, 81$ gesucht bis $86$ an Position $22$.
+
+![Tabellenübersicht 2: $BlockNumber$ zu jedem Zeitstempel](images/TimeIndicesTableSearchExample.png){width=300px}
+
+Bei der Berechnung weiter oben, wird immer abgerundet und nicht der nächstgrössere Wert (hier $40$) verwendet. Dies aus dem Grund, dass die Position beim Wert $40$ höher sein könnte (Ende des Blocks) als die Position im gesuchten Block selber. Somit würde der gesuchte Zeitstempel nicht gefunden werden!
 
 ### Durations
 
-Werden Daten aufgenommen die für eine bestimmte Zeitdauer gültig sind, so wird das Datenset mit dem Namen "duration" zum Datenset "timestamp" hinzugefügt. Der aufgenommene Zeitstempel gibt den Zeitpunkt an, an dem der Wert aufgenommen wurde und in der Duration steht, wie lange dieser Wert gültig ist.
+Werden Daten aufgenommen die für eine bestimmte Zeitdauer gültig sind, so wird das Datenset mit dem Namen "duration" zum Datenset "timestamp" hinzugefügt. Der aufgenommene Zeitstempel gibt den Zeitpunkt an, an dem der Wert aufgenommen wurde und in der Duration steht, wie lange dieser Wert gültig ist. Das Datenset `duration` ist innerhalb einer Datenquellengruppe neben dem Datenset `timestamp`.  
 
-| Name | HDF5 Type | Date Type | Parent | Mandatory | Dimensions | HDF5 Chunking | HDF5 Compression | Unit |
-|---|---|---|---|:---:|---|----|---|---|
-| duration | HDF5 Dataset | 32 bit integer | datasource_group | yes | 1x | recommended | allowed | Nanosekunden als Zeitdauer der Gültigkeit des Eintrags |
+| Name | Date Type | Mandatory | Dimensions | HDF5 Chunking | HDF5 Compression | Unit |
+|---|---|:---:|---|----|---|---|
+| duration | 32 bit integer | yes | 1x | recommended | allowed | Nanosekunden als Zeitdauer der Gültigkeit des Eintrags |
 
 ## RCM-DX file format  
 
@@ -447,7 +546,22 @@ Die Platform Gruppe enthält folgende Attribute:
 | Name | string | yes | Eindeutiger Name des Fahrzeugs |
 | VehicleNumber | string | yes | Eindeutige Nummer des Fahrzeugs |
 
-#### Configuration
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#### Configuration (Welche?)
 
 In den Datensets dieser Gruppe können Konfigurationen von diversen Systemen abgelegt werden. Die Datensets sind so angelegt, dass globale und Netzwerk spezifische Konfigurationen abgelegt werden können.
 
@@ -461,6 +575,24 @@ Datensets:
 |---|---|---|---|:---:|---|----|---|
 | global | HDF5 Dataset | string | CONFIGURATION | yes | 1x | recommended | allowed |
 | network | HDF5 Dataset | string | CONFIGURATION | yes | 1x | recommended | allowed |
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ### Logging Group
 
@@ -1001,8 +1133,11 @@ Nicht alle dieser Elemente müssen vorhanden sein, detaisl dazu kann aus dem XML
 
 ##### Consistency Failure
 
+Sollte als Event gelöst werden, keine Gruppe!! Event Name "Consistency Failure" => Beschreiben unter Events!
+
+
 > TODO: Abklären ob diese Information hier rein soll oder nicht!
-> **Antwort Jakob**: Muss noch abgeklärt werden!
+> **Antwort Jakob**: Muss noch abgeklärt werden! Designentscheidung: Wird als Event gelöst
 
 ##### Limit Violation
 
@@ -1167,6 +1302,25 @@ Beinhaltet eine Liste von Zeitstempeln seit dem 1.1.1970 um 00:00 Uhr UTC als 64
 
 HDF5 Chunking ist erlaubt und empfohlen.  
 Die HDF5 Compression ist erlaubt.  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ### Configuration Group
 
