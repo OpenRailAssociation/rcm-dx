@@ -596,28 +596,157 @@ Datensets:
 
 ### Logging Group
 
-> TODO!
-> Wo finde ich Informationen dazu?
+Die Logging Gruppe enthält Informationen über Zustände der Messsysteme. Die Daten werden in zwei Untergruppen aufgeteilt, einmal *Outages* und *Messages*. Diese werden in eigenen Kapitel beschrieben.
 
-### Messages Group
+#### Outages Group
 
-> TODO!
-> Wo finde ich Informationen dazu?
+In dieser Gruppe werden Ausfälle und Unterbrüche von Messsystemen in definierter Struktur festgehalten, jeweils als eigenes Datenset. Das Elternobjekt ist `MESSAGES`.
 
-### Outages Group
+| Name | Date Type | Mandatory | Dimensions | HDF5 Chunking | HDF5 Compression |
+|---|---|:---:|---|----|---|
+| reference | string | yes | Array[n] | recommended | allowed |
+| level | string | yes | Array[n] | recommended | allowed |
+| message | string | yes | Array[n] | recommended | allowed |
 
-> TODO!
-> Wo finde ich Informationen dazu?
+Diese Gruppe erhält neben einem `timestamp` Datenset auch eines für die Zeitdauer `duration`, um die Zeit des Messmittelausfalls anzugeben.
+
+##### Reference Datenset
+
+Eine Referenz auf das vom Ausfall betroffene Messsystem, wird in diesem Datenset hinterlegt.
+
+##### Level Reference
+
+Definiert den Schweregrad des Ausfalls oder des Unterbruchs eines Messystems.
+
+> TODO: Was für Level gibt es?
+
+##### Message
+
+Dieses Datenset enthält pro Eintrag eine Meldung zu einem Ausfall eines Messmittels.
+
+#### Messages Group
+
+Statusmeldungen zu einem System oder einer Datenquelle, werden in dieser Gruppe gespeichert. Falls keine Meldungen vorhanden sind, bleibt diese Gruppe leer.
+
+| Name | Date Type | Mandatory | Dimensions | HDF5 Chunking | HDF5 Compression |
+|---|---|:---:|---|----|---|
+| reference | string | yes | Array[n] | recommended | allowed |
+| level | string | yes | Array[n] | recommended | allowed |
+| message | string | yes | Array[n] | recommended | allowed |
+
+##### Reference Datenset
+
+Eine Referenz auf das betroffene Messsystem, wird in diesem Datenset hinterlegt.
+
+##### Level Reference
+
+> TODO: Level? Was für welche gibt es?
+
+##### Message
+
+Die eigentliche Nachricht die aufgenommen werden soll für ein Messsystem.
 
 ### Clearance information Group
 
-> TODO!
-> Wo finde ich Informationen dazu?
+Diese gruppe dient der SBB für das Festhalten von Informationen über die Datenfreigabe aller Parteien die diese Daten verarbeitet haben. Die Informationen werden in Form von Key-Value Paaren, in einem Datenset abgespeichert.
+
+> TODO: Definieren wie ein solches Key-Value Paar aussehen soll! {key="value"} oder {key:value} oder {key:"value"} usw....
+
+Folgende Attribute sind in dieser Gruppe enthalten:
+
+
+| Name | Type | Mandatory | Description |
+|---|---|:---:|---|
+| clearance | 8 bit integer (boolean) | yes | Null für "false", eins für "true". Bei "true" wurden die Daten in der gesammten Datei freigegeben, ansonsten sind die Daten als Testdaten zu betrachten oder sind von geringerer Qualität. |
+| clearance_date | 64 bit integer | yes | Zeitstempel an dem die Daten freigegeben wurden (`clearance` auf "true"). |
+
+
+
+
+
+
+
+
 
 ### Environment Group
 
-> TODO!
-> Wo finde ich Informationen dazu?
+| Name | HDF5 Type | Parent | Mandatory |
+|---|---|---|:---:|
+| ENVIRONMENT | HDF5 Group | "session" | yes |
+
+Informationen über die Umgebung, können in den Untergruppen und deren Datensets abgespeichert werden. Da solche Informationen für alle Messysteme gelten, ist dies der richtige Platz dafür.  
+
+Wie immer bei einer Datenquelle, darf das Datenset `timestamp` nicht vergessen gehen.
+
+#### Vehicle Speed
+
+| Name | HDF5 Type | Parent | Mandatory |
+|---|---|---|:---:|
+| VEHICLESPEED | HDF5 Group | ENVIRONMENT | yes |
+
+Das Datenset enthält zu jedem Zeitstempel eine gemessene Fahrzeuggeschwindigkeit.
+
+| Name | Date Type | Mandatory | Dimensions | HDF5 Chunking | HDF5 Compression |
+|---|---|:---:|---|----|---|
+| data | 64 bit integer | yes | 1x | recommended | allowed |
+
+Auch diese Datenquelle hat ein gemeinsames Datenset `timestamp`.
+
+#### Ambient Temperature Group
+
+Diese Gruppe beinhaltet ein Datenset in dem die Umgebungstemperaturen enthalten sind. Pro Zeitstempel wird eine Temperatur Messung durchgeführt.
+
+| Name | HDF5 Type | Parent | Mandatory |
+|---|---|---|:---:|
+| AMBIENTTEMPERATURE | HDF5 Group | ENVIRONMENT | yes |
+
+Pro Zeitstempel, wird im Datenset die Umgebungstemperatur eingetragen.
+
+| Name | Date Type | Mandatory | Dimensions | HDF5 Chunking | HDF5 Compression |
+|---|---|:---:|---|----|---|
+| data | 64 bit integer | yes | 1x | recommended | allowed |
+
+#### Wind Speed Group
+
+Die Windgeschwindigkeit kann im Datenset der Gruppe `WINDSPEED` abgelegt werden.
+
+| Name | HDF5 Type | Parent | Mandatory |
+|---|---|---|:---:|
+| WINDSPEED | HDF5 Group | ENVIRONMENT | yes |
+
+Pro Zeitstempel, wird im Datenset die Windgeschwindigkeit eingetragen.
+
+| Name | Date Type | Mandatory | Dimensions | HDF5 Chunking | HDF5 Compression |
+|---|---|:---:|---|----|---|
+| data | 64 bit integer | yes | 1x | recommended | allowed |
+
+#### Wind Direction Group
+
+Neben der Windgeschwindigkeit wird auch die Windrichtung abgespeichert, dies wird in dieser Gruppe erledigt.
+
+| Name | HDF5 Type | Parent | Mandatory |
+|---|---|---|:---:|
+| WINDDIRECTION | HDF5 Group | ENVIRONMENT | yes |
+
+Pro Zeitstempel, wird im Datenset die Windrichtung eingetragen.
+
+| Name | Date Type | Mandatory | Dimensions | HDF5 Chunking | HDF5 Compression |
+|---|---|:---:|---|----|---|
+| data | 64 bit integer | yes | 1x | recommended | allowed |
+
+#### Weather Conditions Group
+
+Das Wetter hat Einflüsse auf die Messungen. Wie das Wetter zum Zeitpunkt der Messungen war, wird in dieser Gruppe festgehalten.
+
+| Name | HDF5 Type | Parent | Mandatory |
+|---|---|---|:---:|
+| WEATHERCONDITIONS | HDF5 Group | ENVIRONMENT | yes |
+
+Pro Zeitstempel, wird im Datenset die Wetterbedingungen eingetragen. Dies könnte zum Beispiel sein "Regen, Nebel, Schneefall".
+
+| Name | Date Type | Mandatory | Dimensions | HDF5 Chunking | HDF5 Compression |
+|---|---|:---:|---|----|---|
+| data | 64 bit integer | yes | 1x | recommended | allowed |
 
 ### Measuring System Group
 
@@ -681,15 +810,15 @@ Beschreibung des Kanals, was und in welcher Richtung gemessen wurde. Da sich ein
 
 Mögliche Werte sind:
 
-| Value | Beschreibung |
-|---|---|
-| SENSOR_VERTICAL_LEFT | ? |
-| SENSOR_VERTICAL_RIGHT | ? |
-| MOVE_DIRECTION_VERTICAL_LEFT | ? |
-| MOVE_DIRECTION_VERTICAL_RIGHT | ? |
-| SENSOR_VERTICAL_TOTAL | ? |
-| MOVE_DIRECTION_VERTICAL_TOTAL | ? |
-| TOTAL | ? |
+| Value |
+|---|
+| SENSOR_VERTICAL_LEFT |
+| SENSOR_VERTICAL_RIGHT |
+| MOVE_DIRECTION_VERTICAL_LEFT |
+| MOVE_DIRECTION_VERTICAL_RIGHT |
+| SENSOR_VERTICAL_TOTAL |
+| MOVE_DIRECTION_VERTICAL_TOTAL |
+| TOTAL |
 
 #### Common Trigger Distance or Frequence
 
@@ -788,18 +917,6 @@ Zu unseren definierten Kanälen kommen nun die Einheiten hinzu. Jedes Datenset e
 | WIND_SPEED | "Unit" | MeterPerSecond |
 | HUM | "Unit" | RelativeHumidity |
 
-#### Logging Group
-
-> TODO!
-
-##### Messages
-
-> TODO!
-
-##### Outages
-
-> TODO!
-
 ### Topology Group
 
 In einer Topologie Gruppe befinden sich alle Informationen zum Streckennetz der jeweiligen Bahngesellschaft.
@@ -808,19 +925,15 @@ In einer Topologie Gruppe befinden sich alle Informationen zum Streckennetz der 
 |---|---|---|:---:|
 | TOPOLOGY | HDF5 Group | SESSION | yes |
 
-> TODO: Hier wäre ein Bild als Erklärung von Linie und Punkten sowie GTG usw. von Vorteil für die nachfolgenden Erklärungen!?
-
 #### Attribute
 
 Die *Topology Gruppe* enthält folgende Attribute:
 
 | Name | Data Type | Mandatory | Description |
 |---|---|:---:|---|
-| DfAExportTimestamp me | string | yes | Zeitpunkt, an dem die DfA exportiert wurde und somit ein Verweis auf die Version |
+| DfAExportTimestamp | string | yes | Zeitpunkt, an dem die DfA exportiert wurde und somit ein Verweis auf die Version |
 
 Die DfA (Datenbank feste Anlagen) ist ein SBB Konstrukt und wieder Spiegelt das Streckennetz der SBB. Die Daten stammen aus einer Datenbank und werden als Datei an die Messfahrzeuge der SBB verteilt. Diese können die darin enthaltenen Informationen lesen und fügen diese auch dem RCM-DX hinzu. Für die Positionierung wird diese DfA verwendet und es ist somit möglich, die gemessenen Daten einem Objekt aus dem Streckennetz zuzuordnen.
-
-> TODO: Definieren, ob dies so sein soll mit "DfAExportTimestamp" oder ob diese einen anderen Namen erhält... Siehe [Link hier.](https://confluence.sbb.ch/display/MUDTOOLCHA/8.1+Fachliche+Strukturen)
 
 ### Tracks Group
 
@@ -849,8 +962,6 @@ Folgende Datensets sind in dieser Gruppe enthalten, davon werden einige in den U
 
 In diesem Datenset wird die Richtung einer Weiche angegeben.  
 Ist der Gleisstrang vom Typ "Weiche", so ist hier ein Wert grösser als Null zu wählen. Welche Nummer was bedeutet, ist in folgender Tabelle ersichtlich:  
-
-> TODO: Stimmt dies so oder habe ich das falsch verstanden!? Arten der Weiche in der Beschreibung kontrollieren!
 
 | Wert | Beschreibung |
 |:---:|---|
@@ -905,8 +1016,6 @@ Folgende Datensets sind in dieser Gruppe enthalten:
 
 Diese Gruppe enthält Informationen über Weichen im Streckennetz. Die Informationen sind jeweils in eigenen Datensets abgelegt.
 
-> TODO: Diese Daten sind nicht genügend beschrieben. Müssen diese vorhanden sein oder können die gestricken werden?
-
 | Name | HDF5 Type | Parent | Mandatory |
 |---|---|---|:---:|
 | SWITCHTRACKS | HDF5 Group | TOPOLOGY | yes |
@@ -917,26 +1026,24 @@ Folgende Datensets sind in dieser Gruppe enthalten:
 |---|---|:---:|---|
 | gleisstrangId | 32 bit signed integer | yes | Eine referenz auf die GTG-ID |
 | gleisstrangBez | string | yes | Enthält eine Beschreibung zum Gleisabschnitt |
-| weicheId | 32 bit signed integer | yes | Enthäöt die ID's der Weichen als Referenz |
-| ablenkRichtung | string | yes | TODO: Keine Beschreibung gefunden! |
-| ablenkung | string | yes | TODO: Keine Beschreibung gefunden! |
-| betriebspunkt | string | yes | TODO: Keine Beschreibung gefunden! |
-| herzStueck | string | yes | TODO: Keine Beschreibung gefunden! |
-| minRadius | 32 bit signed integer | yes | TODO: Keine Beschreibung gefunden! |
-| nr | 32 bit signed integer | yes | TODO: Keine Beschreibung gefunden! |
-| zusNr | string | yes | TODO: Keine Beschreibung gefunden! |
-| schienenProfil | string | yes | TODO: Keine Beschreibung gefunden! |
-| status | string | yes | TODO: Keine Beschreibung gefunden! |
-| schienenProfil | string | yes | TODO: Keine Beschreibung gefunden! |
-| schwellenArt | string | yes | TODO: Keine Beschreibung gefunden! |
-| typenPlanNr | 32 bit signed integer | yes | TODO: Keine Beschreibung gefunden! |
-| typNrZusatz | string | yes | TODO: Keine Beschreibung gefunden! |
-| weichenArt | string | yes | TODO: Keine Beschreibung gefunden! |
-| weichenTyp | string | yes | TODO: Keine Beschreibung gefunden! |
-| weichenForm | string | yes | TODO: Keine Beschreibung gefunden! |
-| weichenZunge | string | yes | TODO: Keine Beschreibung gefunden! |
-
-> TODO: Beschreibung der einzelnen Datensets als Subkategorie oder in der Tabelle selber!
+| weicheId | 32 bit signed integer | yes | Enthält die ID's der Weichen als Referenz |
+| ablenkRichtung | string | yes |  |
+| ablenkung | string | yes | - |
+| betriebspunkt | string | yes | - |
+| herzStueck | string | yes | - |
+| minRadius | 32 bit signed integer | yes | - |
+| nr | 32 bit signed integer | yes | - |
+| zusNr | string | yes | - |
+| schienenProfil | string | yes | - |
+| status | string | yes | - |
+| schienenProfil | string | yes | - |
+| schwellenArt | string | yes | - |
+| typenPlanNr | 32 bit signed integer | yes | - |
+| typNrZusatz | string | yes | - |
+| weichenArt | string | yes | - |
+| weichenTyp | string | yes | - |
+| weichenForm | string | yes | - |
+| weichenZunge | string | yes | - |
 
 ### Track Objects Group
 
@@ -955,10 +1062,6 @@ Folgende Datensets sind in dieser Gruppe enthalten:
 | positionStart | 32 bit signed integer | yes | Startposition des Objekts in Meter |
 | positionEnd | 32 bit signed integer | yes | Endposition des Objekts in Meter |
 | extraInfo | string | yes | Zusätzliche Information zum Objekt, zum Beispiel die ID einer Balise |
-
-> TODO: Beschreibung der einzelnen Datensets als Subkategorie oder in der Tabelle selber!
-> Wo sind die Typen der Objekte hinterlegt?
-> Müssen die Typen auch noch in diese Beschreibung oder ist dies wieder zu SBB spezifisch?
 
 ### Track Points Group
 
@@ -985,9 +1088,7 @@ Folgende Datensets sind in dieser Gruppe enthalten:
 
 ### Properties Group
 
-> TODO: Informationen zu?
-
-Diese Gruppe enthält Informationen über Merkmale zu ............ . Die Informationen sind jeweils in eigenen Datensets abgelegt.
+Diese Gruppe enthält Informationen über Eigenschaften der Topologie selber. Die Informationen sind jeweils in eigenen Datensets abgelegt.
 
 | Name | HDF5 Type | Parent | Mandatory |
 |---|---|---|:---:|
@@ -1130,14 +1231,6 @@ Nicht alle dieser Elemente müssen vorhanden sein, detaisl dazu kann aus dem XML
 | ObjectConsistency | Hinweis auf die Korrektheit der angegebenen Daten | object |
 | ReferenceSystem | Verweis auf den Namen der Referenz | Reference |
 | Key | Informationen zu den Daten die im Element "ObjectAttribute" enthalten sind | ObjectAttribute |
-
-##### Consistency Failure
-
-Sollte als Event gelöst werden, keine Gruppe!! Event Name "Consistency Failure" => Beschreiben unter Events!
-
-
-> TODO: Abklären ob diese Information hier rein soll oder nicht!
-> **Antwort Jakob**: Muss noch abgeklärt werden! Designentscheidung: Wird als Event gelöst
 
 ##### Limit Violation
 
