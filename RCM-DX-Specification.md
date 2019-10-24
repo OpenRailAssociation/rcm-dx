@@ -1,5 +1,5 @@
 ---
-title: "RCM-DX Specification Document"
+title: "RCM-DX Specification"
 subtitle: "Version 0.30"
 keywords: [RCM-DX, Specification]
 logo: "images/SBB-Logo.png"
@@ -10,35 +10,25 @@ titlepage-rule-color: "EB0000"
 author: "Schweizerische Bundesbahnen, SBB CFF FFS"
 ...
 
-# RCM-DX Specification
-
-> TODOS:
-- Alle Tabellen und deren Verwendung kontrollieren, sowie eventuell anpassen! Datenset Tabellen oder Tabellen für Attribute haben unterschiedlichen Inhalt und somit anderen Titel usw.
+# RCM-DX Structure
 
 ## History
 
-> TODO: Nachfolgende Tabelle als DEMO!  
-
-| Version | Datum | Beschreibung | Autor |
-|---|---|---|---|
-| V0.30 | 17.10.2019 | Komplette Änderung des Designs, Anpassung der Struktur RCM-DX | Michael Ammann (SBB) |
+| Version | Datum | Autor | Beschreibung |
+|-|-|--|----|
+| V0.30 | 24.10.2019 | Michael Ammann (SBB) | Komplette Änderung des Designs, Anpassung der Struktur RCM-DX sowie inhaltliche Änderungen |
 
 ## Approval
 
 | Datum | Name | Funktion |
-|---|---|---|
+|---|---|------|
 | Noch | keines | vorhanden! |
 
 ## Referenzierte Dokumente
 
 | ID | Dakumentenname | Version | Datum |
-|:---:|---|---|---|
-| ? | RCM-DX-TGMS | V0.1? | 15.10.2019 ?? |
-
-## Glossar
-
-> TODO!
-> In wie weit muss dies gehen?
+|:-:|------|-|-|
+| - | - | - | - |
 
 ## Introduction  
 
@@ -102,7 +92,8 @@ Nachfolgend eine Auflistung der möglichen Formate wie die aufgenomenen Daetne a
 | Bilder | Bilder die zu einem definierten Zeitpunkt aufgenommen wurden |
 | Videos | Videos die als Stream gespeichert werden und nicht als Einzelbilder |
 
-Datensets werden immer in der "camel Case" Notation beschrieben.
+Datensets werden immer in der lower Camel Case-Notation^[lower Camel Case-Notation: Die Camel Case-Notation definiert die Art und weise, wie eine zusammengesetzte Bezeichnung geschrieben wird. Besteht die bezeichnung aus zwei Wörtern, so wird das zweite Wort mit einem Grossbuchstaben geschrieben, zum Beispiel: "camelCase". Weitere Informationen dazu unter folgendem Link: [lower Camel Case](https://en.wikipedia.org/wiki/Camel_case)] beschrieben.
+
 
 #### Einzelwerte
 
@@ -995,7 +986,7 @@ Diese Gruppe enthält Informationen über Weichen im Streckennetz. Die Informati
 Folgende Datensets sind in dieser Gruppe enthalten:
 
 | Name | Data Type | Mandatory | Description |
-|---|---|:---:|---|
+|--|--|:-:|----|
 | gleisstrangId | 32 bit signed integer | yes | Eine referenz auf die GTG-ID |
 | gleisstrangBez | string | yes | Enthält eine Beschreibung zum Gleisabschnitt |
 | weicheId | 32 bit signed integer | yes | Enthält die ID's der Weichen als Referenz |
@@ -1028,7 +1019,7 @@ Diese Gruppe enthält Informationen über Objekte im Streckennetz, dies kann zum
 Folgende Datensets sind in dieser Gruppe enthalten:
 
 | Name | Data Type | Mandatory | Description |
-|---|---|:---:|---|
+|--|---|:-:|----|
 | trackId | 32 bit signed integer | yes | Enthält die ID des Objektes |
 | type | 32 bit signed integer | yes | Typ des Objekts |
 | positionStart | 32 bit signed integer | yes | Startposition des Objekts in Meter |
@@ -1046,7 +1037,7 @@ Diese Gruppe enthält Informationen über definierte Punkte auf dem Streckennetz
 Folgende Datensets sind in dieser Gruppe enthalten:
 
 | Name | Data Type | Mandatory | Description |
-|---|---|:---:|---|
+|--|---|:-:|----|
 | trackId | 32 bit signed integer | yes | Referenz auf die ID des Gleisstrangs |
 | lineId | 32 bit signed integer | yes | Referenz auf die ID der Linie |
 | x | 32 bit float | yes | X-Koordiante des Punktes |
