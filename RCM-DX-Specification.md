@@ -94,6 +94,13 @@ Nachfolgend eine Auflistung der möglichen Formate wie die aufgenomenen Daetne a
 
 Datensets werden immer in der lower Camel Case-Notation^[lower Camel Case-Notation: Die Camel Case-Notation definiert die Art und weise, wie eine zusammengesetzte Bezeichnung geschrieben wird. Besteht die bezeichnung aus zwei Wörtern, so wird das zweite Wort mit einem Grossbuchstaben geschrieben, zum Beispiel: "camelCase". Weitere Informationen dazu unter folgendem Link: [lower Camel Case](https://en.wikipedia.org/wiki/Camel_case)] beschrieben.
 
+#### HDF5 Compression
+
+Datensets und deren Daten können Komprimiert werden. Nachfolgend ist bei allen Datensets ersichtlich, ob dies empfohlen wird oder nicht. Die Komprimierung wird von der HDF5 Gruppe genauer Beschrieben under dem Link: [HDF5 Compression Webseite](https://support.hdfgroup.org/HDF5/faq/compression.html). Bei einem Datenset steht dann zum Beispiel, dass das "HDF5 Compression" erlaubt ist oder nicht.
+
+#### HDF5 Chunking
+
+Neben dem "HDF5 Compression" gibt es das "HDF5 Chunking" für Daten innerhalb eines Datensets. Dies bedeutet, die Daten werden in Blöcke aufgeteilt, diese wiederum können eigenständig bearbeitet werden. Dies erlaubt auch einen schnelleren Zugriff auf Teile der Daten. Ob eine Aufteilung erlaubt und empfohlen wird, steht jeweils bei einem Datenset, als Beispiel: "HDF5 Chunking" ist erlaubt und empfohlen. Das HDF5 Chunking wird auf der Webseite der HDF5 Gruppe genauer beschrieben: [HDF5 Chunking Webseite](https://support.hdfgroup.org/HDF5/doc/H5.user/Chunking.html)
 
 #### Einzelwerte
 
@@ -101,7 +108,7 @@ Kanäle, die einzelne Messwerte erfassen, enthalten ein Datenset mit dem Namen "
 
 Die möglichen Datentypen sind durch die HDF5 Group definiert, und können auf der Webseite der HDF5 Group nachgelesen werden.
 
-Boolsche Werte (true/false) werden als ```8 bit integer, litle endian``` abgebildet, Null bedeutet "false", alle Werte grösser Null bedeuten "true".
+Boolsche Werte (`true`/`false`) werden als ```8 bit integer, litle endian``` abgebildet, Null bedeutet `false`, alle Werte grösser Null bedeuten `true`.
 
 Werden Messdaten aufgenommen im 3D Raum, so müssen drei verschiedene Kanäle erstellt werden.
 
@@ -1433,8 +1440,8 @@ Folgende Attribute sind in dieser Gruppe enthalten:
 
 | Name | Type | Mandatory | Description |
 |---|---|:---:|---|
-| clearance | 8 bit integer (boolean) | yes | Null für "false", eins für "true". Bei "true" wurden die Daten in der gesammten Datei freigegeben, ansonsten sind die Daten als Testdaten zu betrachten oder sind von geringerer Qualität. |
-| clearance_date | 64 bit integer | yes | Zeitstempel an dem die Daten freigegeben wurden (`clearance` auf "true"). |
+| clearance | 8 bit integer (boolean) | yes | Null für `false`, eins für `true` Bei `true` wurden die Daten in der gesammten Datei freigegeben, ansonsten sind die Daten als Testdaten zu betrachten oder sind von geringerer Qualität. |
+| clearance_date | 64 bit integer | yes | Zeitstempel an dem die Daten freigegeben wurden (`clearance` auf `true`). |
 
 Im Datenset `timestamp` wird der Zeitpunkt der Erfassung eines Key-Value Paares festgehalten.
 
