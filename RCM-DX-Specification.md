@@ -76,7 +76,7 @@ Mögliche Datentypen für Kanäle sollen aus der HDF5 Spezifikation entnommen we
 Nachfolgend sind Datentypen beschrieben die in dieser Spezifikation verwendet wurden und eine genauere Beschreibung benötigen.  
 
 | Name | Beschreibung | Beispiel |
-|---|---|---|
+|-|-----|--|
 | UUID | Universally Unique Identifier als Eindeutige ID | 550e8400-e29b-11d4-a716-446655440000 |
 | Timestamp | Eindeutiger und Weltweit definiertes Format eines Zeitpunktes, seit dem 1. Januar 1970 00:00 Uhr UTC ohne Schaltsekunden | 1553237099000000000 |
 
@@ -86,7 +86,7 @@ Ein Kanal und dessen Datenset kann verschiedene Arten von Daten aufnehmen. Die H
 Nachfolgend eine Auflistung der möglichen Formate wie die aufgenomenen Daetne abgelegt werden können:  
 
 | Name | Format |
-|---|---|
+|--|----|
 | Einzelwerte | Einfaches Array, Dimension 1D |
 | Indexierte Einzelwerte | Einfaches Array der Dimension 1D. Neben einem Datenset `timestamp` wird ein Datenset `timeindex` erstellt, dass eine Indexierung der Daten enthält und das lesen der Daten vereinfacht. Das Datenset `timeindex` wird im Kapitel [Time Indices](#time-indices) genauer beschrieben |
 | Bilder | Bilder die zu einem definierten Zeitpunkt aufgenommen wurden |
@@ -120,7 +120,7 @@ Messdaten die einem Koordinatensystem zugewiesen werden können, erhalten einen 
 Diese Art der Datenspeicherung erlaubt es, mehrere Einträge pro Messzeitpunkt aufzunehmen.
 
 | Element | Beschreibung |
-|---|---|
+|-|----|
 | cord | Einfache Zeichenfolge zur Kennzeichnung von Daten des Typs Koordinaten|
 | . |Trennzeichen|
 | C |Zusatzzeichen zur Kennzeichnung von Daten des Typs Koordinaten|
@@ -129,7 +129,7 @@ Diese Art der Datenspeicherung erlaubt es, mehrere Einträge pro Messzeitpunkt a
 Das Datenset ist wie folgt definiert:
 
 | Name | HDF5 Type | Type | Mandatory | Dimensions |
-|---|---|---|:---:|---|
+|---|--|---|:-:|--|
 | "cord" mit Erweiterung wie oben genannt | HDF5 Dataset | 8 bit signed integer, oder 32 bit signed integer, oder 64 bit signed integer, oder 32 bit floating point, oder 64 bit floating point; (jeweils litle endian) | yes | Array[n] |
 
 HDF5 Chunking ist erlaubt und empfohlen.  
@@ -161,7 +161,7 @@ Bilder werden als binäre Datenblöcke abgelegt, ein Bild ergibt ein Datensatz.
 ##### HDF5 Images
 
 | Name | HDF5 Type | Type | Mandatory | Dimensions | HDF5 Chunking | HDF5 Compression |
-|---|---|---|:---:|---|----|---|
+|---|---|---|:-:|----|--|--|
 | IMG.NNNNNNNNN | HDF5 Dataset | 8 bit integer | yes | Ein Bild pro Zeitstempel | recommended | allowed |
 
 ###### Benennung
@@ -169,7 +169,7 @@ Bilder werden als binäre Datenblöcke abgelegt, ein Bild ergibt ein Datensatz.
 Für jedes Bild wird ein Datenset erstellt, dies in der Gruppe mit dem Namen "IMG". Die Bilder werden nach folgendem Muster benannt: IMG.NNNNNNNNN
 
 |Element|Beschreibung|
-|---|---|
+|--|----|
 | IMG | Zeichenkette für die bezeichnung eines Bildes |
 | . | Trennzeichen |
 | NNNNNNNNN | Bildnummer, beginnend mit 000000000 (neun Zeichen)|
@@ -177,7 +177,7 @@ Für jedes Bild wird ein Datenset erstellt, dies in der Gruppe mit dem Namen "IM
 ##### JPEG
 
 | Name | HDF5 Type | Type | Mandatory | Dimensions |
-|---|---|---|:---:|---|
+|--|--|-----|:-:|---|
 | JPEG.NNNNNNNNN | HDF5 Dataset | JPEG Bild, Datentyp gesetzt auf Inahltstyp: "<image/jpeg>" | yes | Ein Bild pro Zeitstempel |
 
 HDF5 Chunking ist **nicht** erlaubt und **nicht** empfohlen.  
@@ -188,7 +188,7 @@ Die HDF5 Compression ist **nicht** empfohlen.
 Für jedes Bild wird ein Datenset erstellt, dies in der Gruppe mit dem Namen "JPEG". Die Bilder werden nach folgendem Muster benannt: JPEG.NNNNNNNNN
 
 |Element|Beschreibung|
-|---|---|
+|-|-----|
 | JPEG | Zeichenkette für die Bezeichnung eines JPEG-Bildes |
 | . | Trennzeichen |
 | NNNNNNNNN | Bildnummer, beginnend mit 000000000 (neun Zeichen), aufsteigend|
@@ -203,7 +203,7 @@ Für jedes Bild wird ein Datenset erstellt, dies in der Gruppe mit dem Namen "JP
 Videos werden als binäre Datenblöcke abgelegt.
 
 | Name | HDF5 Type | Type | Mandatory | Dimensions |
-|---|---|---|:---:|---|
+|---|--|----|:-:|--|
 | VID.NNNNNNNNN | HDF5 Dataset | TODO: BESCHREIBUNG | yes | ????? | not recommended | not recommended |
 
 HDF5 Chunking ist **nicht** erlaubt und **nicht** empfohlen.  
@@ -231,7 +231,7 @@ Jeder Eintrag in einem Kanal, hat eine Referenz auf ein Datenset mit dem Namen *
 Die Zeitstempel sind immer in steigender Reienfolge abgelegt und dürfen keine Sprünge enthalten.  
 
 | Name | HDF5 Type | Date Type | Parent | Mandatory | Dimensions | HDF5 Chunking | HDF5 Compression | Unit |
-|---|---|---|---|:---:|---|----|---|---|
+|--|--|---|---|:-:|--|--|---|----|
 | timestamp | HDF5 Dataset | 64 bit integer | datasource_group | yes | Array[n] | recommended | allowed | Nanosekunden seit dem 01.01.1970 um 00:00 Uhr UTC |
 
 Diese Zeitstempel werden entweder anhand einer definierten gefahrenen Strecke oder anhand einer Frequenz aufgezeichnet, dies wird im Kapitel [Common Trigger Distance or Frequence](#common-trigger-distance-or-frequence) genauer Beschrieben. Neben den Zeitstempel folgen die Messmittel dieser Vorgaben und nehmen zum gleichen Zeitpunkt auch Messdaten auf. Ein Zentrales System dient als Taktgeber für die Datenaufnahme aller Systeme (Messdaten und Zeitstempel).
@@ -241,8 +241,8 @@ Diese Zeitstempel werden entweder anhand einer definierten gefahrenen Strecke od
 Für ein schnelles finden von Zeitstempeln wird dieses Datenset zusätzlich zum Datenset `timestamp` erstellt. Das Zeitindex Datenset speichert einen Offsetwert einer Position von Zeitstempel-Gruppen ab und ist in der `Datasource Group`, auf gleicher Ebene wie das Datenset `timestamp`. Eine genaue Beschreibung zum Inhalt, ist im nachfolgenden Kapitel [Inhalt](#inhalt) zu finden.
 
 | Name | Date Type | Parent | Mandatory | Dimensions | HDF5 Chunking | HDF5 Compression | Unit |
-|---|---|---|:---:|---|----|---|---|
-| timeindex | 64 bit integer | datasource_group | yes | 1x | recommended | allowed | Nanosekunden, vielfaches der Blockgrösse |
+|--|---|---|:-:|---|----|---|----|
+| timeindex | 64 bit integer | datasource_group | yes | Array[n] | recommended | allowed | Nanosekunden, vielfaches der Blockgrösse |
 
 Folgende Attribute sind dem `timeindex` Datenset zugewiesen:
 
@@ -725,7 +725,7 @@ Als Beispiel soll hier ein Messsystem beschrieben werden, dass Umgebungsdaten au
 Folgende Attribute sind in der Gruppe des Messystems enthalten:
 
 | Name | Data Type | Mandatory | Description |
-|---|---|:---:|---|
+|-|-|:-:|-----|
 | Family | string |  yes | Allgemeiner Name des Messystems |
 | Version | string | yes | Versionstand der Software auf dem Messystem, vergeben durch den Messmittelhersteller |
 | Family | string | yes | Version des Datenformat das vom Messmittel erstellt wird. Diese Version kann unterschiedlich sein innerhalb verschiedener Messmittel der gleichen Familie |
@@ -743,7 +743,7 @@ Die Art wie die Messdaten erfasst wurden, steht in zwei Attributen bei jeder Kan
 Folgendes Attribut erhält die Gruppe:
 
 | Name | Data Type | Mandatory | Description |
-|---|---|:---:|---|
+|-|-|:-:|-----|
 | Element | string | yes | Enthält den Typ der Gruppe, dieser ist fix "DATASOURCE" |
 
 #### Example
@@ -761,10 +761,10 @@ Eine genauere Beschreibung dazu ist im Kapitel [Timestamp Array](#timestamp-arra
 
 Eine Kanalgruppe enthält Metadaten zu den eigentlichen Messdaten und somit zu den verschiedenen Kanälen. Die Benennung kann frei gewählt werden, muss aber innerhalb der Datenquellen Gruppe eindeutig sein.
 
-Folgende Attribute sind in dieser Gruppe enthalten:
+Folgende Attribute sind in dieser Gruppe enthalten:  
 
 | Name | Data Type | Unit | Mandatory | Description |
-|---|---|---|---|---|
+|--|---|--|-|-----|
 | PositionOffset | 32 bit float | Meter | yes | [Position Offset](#position-offset) |
 | TriggerMode | string | none | yes | [Trigger Mode](#trigger-mode) |
 | ChannelBasis | string | none | yes | [Channel Basis](#channel-basis) |
@@ -808,7 +808,7 @@ Definiert wie ein Wert entstanden ist. Dieser kann gemessen, errechnet oder aus 
 Folgende Werte sind möglich:
 
 | Value | Beschreibung |
-|---|---|
+|---|----|
 | MEASURED | Gemessene Werte |
 | REFERENCE | Ein Sollwert einer dritten Quelle |
 
@@ -830,7 +830,7 @@ Dieses Attribut definiert, in welcher Art die Daten aufgenommen wurden.
 Mögliche Werte sind:
 
 | Value | Beschreibung |
-|---|---|
+|---|----|
 | TIME | Zeitbasierte Messdatenaufnahme |
 | DISTANCE | Distanzbasierte Messdatenaufnahme |
 | EVENT | Event basierte Aufnahme |
@@ -840,7 +840,7 @@ Mögliche Werte sind:
 Als Kanal folgen hier alle Arten von Daten, die zum gleichen Zeitpunkt aufgenommen werden. Die Namen der Kanäle sind frei wählbar:
 
 | Name | HDF5 Type | Mandatory | Description |
-|---|---|:---:|---|
+|--|---|:-:|----|
 | TEMP | HDF5 Group | no | Temperatur |
 | WIND_DIR | HDF5 Group | no | Windrichtung |
 | WIND_SPEED | HDF5 Group | no | Windgeschwindigkeit |
@@ -849,7 +849,7 @@ Als Kanal folgen hier alle Arten von Daten, die zum gleichen Zeitpunkt aufgenomm
 Weiter erhalten alle Kanäle die folgenden Attribute und Werte:
 
 | Attribut Name | Wert (als Beispiel) |
-|---|---|
+|--|----|
 | ChannelBasis | TOTAL |
 | CommonTriggerDistance | 0.0 |
 | CommonTriggerFreq | 1.0 |
@@ -863,7 +863,7 @@ Weiter erhalten alle Kanäle die folgenden Attribute und Werte:
 Jede Kanalgruppe erhält ein Datenset mit den eigentlichen Messdaten:
 
 | Name | HDF5 Type | Mandatory |
-|---|---|:---:|
+|--|---|:-:|
 | data | HDF5 Dataset | yes |
 
 > Es gibt genau so viele Messdateneinträge wie es Zeitstempel im Dataset "timestamp" gibt, das der Datenquellen Gruppe beiliegt.
@@ -871,7 +871,7 @@ Jede Kanalgruppe erhält ein Datenset mit den eigentlichen Messdaten:
 Das Datenset benötigt weitere Informationen, diese werden als Attribute dazu angegeben:
 
 | Name | Type | Mandatory | Description |
-|---|---|:---:|---|
+|--|--|:-:|-----|
 | Unit | string | yes | Beschreibung der Einheit der Messdaten, wie zum Beispiel "Millimeter" |
 
 Das Datenset und die möglichen Daten, die abgespeichert werden können, wird in einem eigenen Kapitel genauer beschrieben: [Daten](#data)
@@ -881,7 +881,7 @@ Das Datenset und die möglichen Daten, die abgespeichert werden können, wird in
 Zu unseren definierten Kanälen kommen nun die Einheiten hinzu. Jedes Datenset erhält nun noch ein Attribut für diese Einheit:
 
 | Kanalname | Attribut Name | Einheit |
-|---|---|---|
+|--|--|----|
 | TEMP | "Unit" | DegreeCelsius |
 | WIND_DIR | "Unit" | Degree |
 | WIND_SPEED | "Unit" | MeterPerSecond |
@@ -892,7 +892,7 @@ Zu unseren definierten Kanälen kommen nun die Einheiten hinzu. Jedes Datenset e
 In einer Topologie Gruppe befinden sich alle Informationen zum Streckennetz der jeweiligen Bahngesellschaft.
 
 | Name | HDF5 Type | Parent | Mandatory |
-|---|---|---|:---:|
+|--|--|---|:-:|
 | TOPOLOGY | HDF5 Group | SESSION | yes |
 
 #### Attribute
@@ -900,7 +900,7 @@ In einer Topologie Gruppe befinden sich alle Informationen zum Streckennetz der 
 Die *Topology Gruppe* enthält folgende Attribute:
 
 | Name | Data Type | Mandatory | Description |
-|---|---|:---:|---|
+|---|--|:-:|-----|
 | DfAExportTimestamp | string | yes | Zeitpunkt, an dem die DfA exportiert wurde und somit ein Verweis auf die Version |
 
 Die DfA (Datenbank feste Anlagen) ist ein SBB Konstrukt und wieder Spiegelt das Streckennetz der SBB. Die Daten stammen aus einer Datenbank und werden als Datei an die Messfahrzeuge der SBB verteilt. Diese können die darin enthaltenen Informationen lesen und fügen diese auch dem RCM-DX hinzu. Für die Positionierung wird diese DfA verwendet und es ist somit möglich, die gemessenen Daten einem Objekt aus dem Streckennetz zuzuordnen.
@@ -910,13 +910,13 @@ Die DfA (Datenbank feste Anlagen) ist ein SBB Konstrukt und wieder Spiegelt das 
 Diese Gruppe enthält Informationen zu den Gleissträngen des Streckennetze. Die Informationen sind jeweils in eigenen Datensets abgelegt.
 
 | Name | HDF5 Type | Parent | Mandatory |
-|---|---|---|:---:|
+|--|--|--|:-:|
 | TRACKS | HDF5 Group | TOPOLOGY | yes |
 
 Folgende Datensets sind in dieser Gruppe enthalten, davon werden einige in den Unterkapiteln genauer beschrieben:
 
 | Name | Data Type | Mandatory | Description |
-|---|---|:---:|---|
+|--|---|:-:|-----|
 | direction | 8 bit signed integer, little endian | yes | Richtung des Gleisstrangs (wichtig bei einer Weiche) |
 | id | 32 bit integer, little endian | yes | Eindeutige ID des Gleisstrangs. Diese ist in Metern angegeben |
 | gtgId | string | yes | Eindeutige GTG-ID eines GTG-Strang. Diese ID ist als UUID abgelegt. |
@@ -934,7 +934,7 @@ In diesem Datenset wird die Richtung einer Weiche angegeben.
 Ist der Gleisstrang vom Typ "Weiche", so ist hier ein Wert grösser als Null zu wählen. Welche Nummer was bedeutet, ist in folgender Tabelle ersichtlich:  
 
 | Wert | Beschreibung |
-|:---:|---|
+|:-:|---|
 | 0 | keine Weiche |
 | 1 | Geradliniges Weichengleis |
 | 2 | Nach links laufende Weiche |
@@ -945,7 +945,7 @@ Ist der Gleisstrang vom Typ "Weiche", so ist hier ein Wert grösser als Null zu 
 Die Zahl im Datenset *trackType*, definiert die Art des dazugehörenden Gleisstrangs. Welche Nummer was bedeutet, ist in folgender Tabelle ersichtlich:
 
 | Wert | Beschreibung |
-|:---:|---|
+|:-:|---|
 | 0 | Bahnhofsgleis |
 | 1 | Strecke |
 | 2 | Weiche |
@@ -955,7 +955,7 @@ Die Zahl im Datenset *trackType*, definiert die Art des dazugehörenden Gleisstr
 Ist der Gleisstrang vom Typ "Weiche", so ist hier ein Wert grösser als Null zu wählen. Welche Nummer was bedeutet, ist in folgender Tabelle ersichtlich:
 
 | Wert | Beschreibung |
-|:---:|---|
+|:-:|---|
 | 0 | Alles andere als eine Weiche |
 | 1 | einfache Weiche |
 | 2 | Doppelweiche |
@@ -968,13 +968,13 @@ Ist der Gleisstrang vom Typ "Weiche", so ist hier ein Wert grösser als Null zu 
 Diese Gruppe enthält Informationen zu einer Linie im Streckennetz. Die Informationen sind jeweils in eigenen Datensets abgelegt.
 
 | Name | HDF5 Type | Parent | Mandatory |
-|---|---|---|:---:|
+|--|---|---|:-:|
 | LINES | HDF5 Group | TOPOLOGY | yes |
 
 Folgende Datensets sind in dieser Gruppe enthalten:
 
 | Name | Data Type | Mandatory | Description |
-|---|---|:---:|---|
+|--|---|:-:|-----|
 | id | 32 bit signed integer, little endian | yes | Definiert die ID der Linie. Diese ist Eindeutig pro ID |
 | name | string | yes | Der Name der Linie |
 | firstStation | string | yes | Der Name der ersten Station dieser Linie |
@@ -987,7 +987,7 @@ Folgende Datensets sind in dieser Gruppe enthalten:
 Diese Gruppe enthält Informationen über Weichen im Streckennetz. Die Informationen sind jeweils in eigenen Datensets abgelegt.
 
 | Name | HDF5 Type | Parent | Mandatory |
-|---|---|---|:---:|
+|--|--|---|:-:|
 | SWITCHTRACKS | HDF5 Group | TOPOLOGY | yes |
 
 Folgende Datensets sind in dieser Gruppe enthalten:
@@ -1020,7 +1020,7 @@ Folgende Datensets sind in dieser Gruppe enthalten:
 Diese Gruppe enthält Informationen über Objekte im Streckennetz, dies kann zum Beispiel eine Balise sein. Die Informationen sind jeweils in eigenen Datensets abgelegt.
 
 | Name | HDF5 Type | Parent | Mandatory |
-|---|---|---|:---:|
+|---|---|---|:-:|
 | TRACKOBJECTS | HDF5 Group | TOPOLOGY | yes |
 
 Folgende Datensets sind in dieser Gruppe enthalten:
@@ -1038,7 +1038,7 @@ Folgende Datensets sind in dieser Gruppe enthalten:
 Diese Gruppe enthält Informationen über definierte Punkte auf dem Streckennetz. Die Informationen sind jeweils in eigenen Datensets abgelegt.
 
 | Name | HDF5 Type | Parent | Mandatory |
-|---|---|---|:---:|
+|---|---|---|:-:|
 | TRACKPOINTS | HDF5 Group | TOPOLOGY | yes |
 
 Folgende Datensets sind in dieser Gruppe enthalten:
@@ -1061,13 +1061,13 @@ Folgende Datensets sind in dieser Gruppe enthalten:
 Diese Gruppe enthält Informationen über Eigenschaften der Topologie selber. Die Informationen sind jeweils in eigenen Datensets abgelegt.
 
 | Name | HDF5 Type | Parent | Mandatory |
-|---|---|---|:---:|
+|--|--|--|:-:|
 | PROPERTIES | HDF5 Group | TOPOLOGY | yes |
 
 Folgende Datensets sind in dieser Gruppe enthalten:
 
 | Name | Data Type | Mandatory | Description |
-|---|---|:---:|---|
+|---|--|:-:|-----|
 | propertyId | 32 bit signed integer | yes | Eindeutige ID des Merkmals |
 | name | string | yes | Name des Merkmals |
 | description.ge | string | yes | Beschreibugn des Merkmals in der Sprache Deutsch |
@@ -1081,13 +1081,13 @@ Die Event-Gruppe dient der Ablage von Ereignissen, die während der Aufnahme von
 Systeme können zum Beispiel ein Ereignis bei einer Grenzwertüberschreitung auslösen. Ereignisse sind immer zeitgebunden was bedeutet, ein Ereignis beinhaltet den genauen Zeitpunkt des Auftretens sowie die Zeitdauer des Ereignisses. Die Dauer kann auch Null sein, somit ist das Ereignis genau zum angegebenen Zeitpunkt aufgetreten. 
 
 | Name | HDF5 Type | Parent | Mandatory |
-|---|---|---|:---:|
+|--|--|---|:-:|
 | EVENTS | HDF5 Group | Session Group | yes |
 
 Innerhalb der Gruppe gibt es nachfolgende Datenfelder:
 
 | Name | HDF5 Type | Data Type | Mandatory | HDF5 Chunking | HDF5 Compression |
-|---|---|---|:---:|---|----|
+|--|--|----|:-:|--|--|
 | channelref | HDF5 Dataset | string | yes | recommended | allowed |
 | data | HDF5 Dataset | string (XML) | yes | recommended | allowed |
 | duration | HDF5 Dataset | 64 bit signed integer litle endian | yes | recommended | allowed |
@@ -1103,13 +1103,13 @@ Jedes Datenset wird nachfolgend in den jeweiligen Unterkapiteln, genauer beschri
 In dieser Liste sind pro Ereignis Eintrag, eine Referenz (Namen) auf den Erzeuger dieses Eintrags.
 
 | No. of Dimensions | Max Dimension Size(s) | Dimension Size(s) |
-|---|---|---|
+|:-:|---|---|
 |1|unlimited|unlimited|
 
 #### Event Data
 
 | Name | HDF5 Type | Data Type | Mandatory | Dimensions |
-|---|---|---|:---:|---|
+|---|---|---|:-:|---|
 | "data" | HDF5 Dataset | string | yes | Array[n] |
 
 HDF5 Chunking ist erlaubt und empfohlen.  
@@ -1123,7 +1123,7 @@ Die Ereignisse werden in diesem Datenset als Liste abgespeichert. Für jedes Ere
 Definiert pro Ereignis die Zeitdauer des Ereignisses selber. Dieser Wert kann auch Null sein.
 
 | Name | HDF5 Type | Data Type | Mandatory | Dimensions |
-|---|---|---|:---:|---|
+|--|--|---|:-:|--|
 | "duration" | HDF5 Dataset | 64 bit integer | yes | Array[n] |
 
 HDF5 Chunking ist erlaubt und empfohlen.  
@@ -1134,7 +1134,7 @@ Die HDF5 Compression ist erlaubt.
 Beinhaltet den Typ eines Ereignisses.
 
 | Name | HDF5 Type | Data Type | Mandatory | Dimensions |
-|---|---|---|:---:|---|
+|---|---|---|:-:|---|
 | "eventtype" | HDF5 Dataset | string | yes | Array[n] |
 
 HDF5 Chunking ist bei allen erlaubt und empfohlen.  
@@ -1153,7 +1153,7 @@ Nachfolgend werden die Elemente und Attribute, die in einem *Defect* als XML vor
 Nicht alle dieser Elemente müssen vorhanden sein, detaisl dazu kann aus dem XML-Schema entnommen werden.  
 
 | Name | Beschreibung | Elternobjekt |
-|---|---|---|
+|----|----|--|
 | Defect| Root Element | none |
 | PossibleDefectNames | Name eines möglichen Fehlers | Defect |
 | PossibleClassifications | Klassifizierung eines möglichen Fehlers | Defect |
@@ -1164,7 +1164,7 @@ Nicht alle dieser Elemente müssen vorhanden sein, detaisl dazu kann aus dem XML
 Nachfolgend die Attribute des Root-Elements "Defect":
 
 | Name | Beschreibung | Elternobjekt |
-|---|---|---|
+|---|-----|-|
 | Classification | Klassifizierung des Fehlers | Defect |
 | DefectName | Name des Fehlers | Defect |
 | Details | Weitere Informationen oder genauere Beschreibungen zum Fehler | Defect |
@@ -1185,7 +1185,7 @@ Diese Ereignisse weisen auf ein gefundenes Objekt während einer Messfahrt hin. 
 Nicht alle dieser Elemente müssen vorhanden sein, detaisl dazu kann aus dem XML-Schema entnommen werden.
 
 | Name | Beschreibung | Elternobjekt |
-|---|---|---|
+|--|-----|--|
 | DetectedObject | Root Element | none |
 | object | Element mit Informationen zum gefundenen Objekt im Element selber oder in den Attributen | DetectedObject |
 | Reference | Referenz auf eine Liste von bekannten und eindeutig zuweisbaren Objekten der Bahngesellschaft | DetectedObject |
@@ -1194,7 +1194,7 @@ Nicht alle dieser Elemente müssen vorhanden sein, detaisl dazu kann aus dem XML
 ###### Attribute
 
 | Name | Beschreibung | Elternobjekt |
-|---|---|---|
+|--|-----|--|
 | ID | Eindeutige ID des Ereignisses | DetectedObject |
 | Type | Typ des gefundenne Objekts | object |
 | Description | weitere Beschreibung oder Informationen zum/vom Objekt | object |
@@ -1209,13 +1209,13 @@ Grenzüberschreitungen von Messwerten eines Kanals, können auch als Ereignis au
 ###### XML-Elements
 
 | Name | Beschreibung | Elternobjekt |
-|---|---|---|
+|--|--|--|
 | LimitViolation | Root-Element | none |
 
 ###### XML-Attribute
 
 | Name | Beschreibung | Elternobjekt |
-|---|---|---|
+|---|---|--|
 | TimestampMaxViolation | Zeitpunkt der Grenzwertüberschreitung | LimitViolation |
 | ViolatedLimit | Name der definierten Grenze | LimitViolation |
 | ID | Eindeutige ID des Ereignisses | LimitViolation |
@@ -1233,7 +1233,7 @@ Die Nachricht über die Konsistenz der Daten, wird von einem System ausgelöst, 
 ###### XML-Attribute
 
 | Name | Beschreibung | Elternobjekt |
-|---|---|---|
+|--|-----|--|
 | Type | Art oder Typ der Konsistenzprüfung als Antwort auf die Frage "Was wurde geprüft?" | Consistency |
 | ProcessName | Name des Prozesses der die Konsistenz geprüft hat | Consistency |
 | ID | Eindeutige ID des Ereignisses | Consistency |
@@ -1243,7 +1243,7 @@ Die Nachricht über die Konsistenz der Daten, wird von einem System ausgelöst, 
 Beinhaltet eine Liste mit Einträgen, die den Namen des Systems beinhalten, welches das Ereignis ausgelöst hat.
 
 | Name | HDF5 Type | Data Type |  Mandatory | Dimensions |
-|---|---|---|:---:|---|
+|---|---|---|:-:|---|
 | "systemref" | HDF5 Dataset | string | yes | Array[n] |
 
 HDF5 Chunking ist erlaubt und empfohlen.  
@@ -1254,7 +1254,7 @@ Die HDF5 Compression ist erlaubt.
 Beinhaltet eine Liste von Zeitstempeln seit dem 1.1.1970 um 00:00 Uhr UTC als 64-bit integer.
 
 | Name | HDF5 Type | Data Type | Mandatory | Dimensions |
-|---|---|---|:---:|---|
+|---|---|---|:-:|---|
 | "timestamp" | HDF5 Dataset | string | yes | Array[n] |
 
 HDF5 Chunking ist erlaubt und empfohlen.  
@@ -1267,13 +1267,13 @@ Für alle Protokoll Typen, liegen entsprechende XML-Schemas vor, die die technis
 Protokolleinträge können Referenzen zu Systeme, Sessions und Kanäle haben.  
 
 | Name | HDF5 Type | Mandatory |
-|---|---|:---:|
+|---|---|:-:|
 | RECORDS | HDF5 Group | yes |
 
 Innerhalb der Gruppe gibt es nachfolgende Datenfelder:
 
 | Name | HDF5 Type | Data Type | Mandatory | HDF5 Chunking | HDF5 Compression |
-|---|---|---|:---:|---|----|
+|--|--|---|:-:|---|--|
 | channelref | HDF5 Dataset | string | yes | recommended | allowed |
 | data | HDF5 Dataset | string (XML) | yes | recommended | allowed |
 | duration | HDF5 Dataset | 64 bit signed integer litle endian | yes | recommended | allowed |
@@ -1289,13 +1289,13 @@ Jedes Datenset wird nachfolgend in den jeweiligen Unterkapiteln, genauer beschri
 In dieser Liste sind pro Protokoll Eintrag, eine Referenz (Namen) auf den Erzeuger dieses Eintrags.
 
 | No. of Dimensions | Max Dimension Size(s) | Dimension Size(s) |
-|---|---|---|
+|:-:|---|---|
 |1|unlimited|unlimited|
 
 #### Record Data
 
 | Name | HDF5 Type | Data Type | Mandatory | Dimensions |
-|---|---|---|:---:|---|
+|---|---|---|:-:|---|
 | "data" | HDF5 Dataset | string | yes | Array[n] |
 
 HDF5 Chunking ist erlaubt und empfohlen.  
@@ -1309,7 +1309,7 @@ Die Protokolleinträge werden in diesem Datenset als Liste abgespeichert. Für j
 Definiert pro Eintrag die Zeitdauer des Protokolleintrags selber. Dieser Wert kann auch Null sein.
 
 | Name | HDF5 Type | Data Type | Mandatory | Dimensions |
-|---|---|---|:---:|---|
+|---|---|---|:-:|---|
 | "duration" | HDF5 Dataset | 64 bit integer | yes | Array[n] |
 
 HDF5 Chunking ist erlaubt und empfohlen.  
@@ -1320,7 +1320,7 @@ Die HDF5 Compression ist erlaubt.
 Beinhaltet eine Liste mit Einträgen, die den Namen des Systems beinhalten, welches das diesen ausgelöst hat.
 
 | Name | HDF5 Type | Data Type | Mandatory | Dimensions |
-|---|---|---|:---:|---|
+|---|---|---|:-:|---|
 | "systemref" | HDF5 Dataset | string | yes | Array[n] |
 
 HDF5 Chunking ist erlaubt und empfohlen.  
@@ -1331,7 +1331,7 @@ Die HDF5 Compression ist erlaubt.
 Beinhaltet den Typ eines Protokolleintrag.
 
 | Name | HDF5 Type | Data Type | Mandatory | Dimensions |
-|---|---|---|:---:|---|
+|---|---|---|:-:|---|
 | "recordtype" | HDF5 Dataset | string | yes | Array[n] |
 
 HDF5 Chunking ist erlaubt und empfohlen.  
@@ -1346,13 +1346,13 @@ Kommentare die während einer Messfahrt durch den Benutzer aufgenommen wurden. D
 ###### XML-Elements
 
 | Name | Beschreibung | Elternobjekt |
-|---|---|---|
+|--|-----|--|
 | Comment | Root Element und Meldung, aufgenommen durch den Benutzer | none |
 
 ###### XML-Attributes
 
 | Name | Beschreibung | Elternobjekt |
-|---|---|---|
+|--|-----|--|
 | Username | Name des Benutzers der die Meldung aufgenommen hat | Comment |
 | ID | Eindeutige ID dieser Meldung | Comment |
 
@@ -1363,13 +1363,13 @@ Meldungen vom Typ "beschädigt" oder "unbrauchbar" erhalten keine inhaltliche Sp
 ###### XML-Elements
 
 | Name | Beschreibung | Elternobjekt |
-|---|---|---|
+|--|-----|--|
 | Corrupt | Root Element und Meldung, aufgenommen durch den Benutzer | none |
 
 ###### XML-Attributes
 
 | Name | Beschreibung | Elternobjekt |
-|---|---|---|
+|--|-----|--|
 | Username | Name des Benutzers der die Meldung aufgenommen hat | Corrupt |
 | ID | Eindeutige ID dieser Meldung | Corrupt |
 
@@ -1404,7 +1404,7 @@ In dieser Gruppe sind weitere Gruppen enthalten, deren Name frei gewählt werden
 Die Untergruppen müssen ein Attribut mit dem Namen *Datatype* enthalten. Darin ist angegeben, welchen Datentyp der Inhalt des Datensets dieser Untergruppe hat. Das Attribut hat folgende Eigenschaften:
 
 | Name | Typ | Array Size | Wert |
-|---|---|---|---|
+|--|--|--|----|
 | Datatype | string | Scalar | Frei definierbar, Beispiel: "Content-Type: <text/plain>" |
 
 Die Untergruppen enthalten jeweils ein Datensets mit dem Namen *setting*. Darin können die Konfigurationsdaten abgelegt werden (Format definiert im Attribut der Gruppe). Weiter ist ein *timestamp* Datenset notwendig. Darin der Zeitpunkt der Aufnahme der kKnfiguration.
@@ -1414,7 +1414,7 @@ Die Untergruppen enthalten jeweils ein Datensets mit dem Namen *setting*. Darin 
 Die Datenquellengruppe `DATAPROCESSING` enthält Informationen zur Datenverarbeitung. Diese Informationen werden von Systemen geschrieben, die Änderungen an den Daten vornehmen. Diese Änderungen, können zum Beispiel Umrechnungen von Milimetern in Meter sein.
 
 | Name | HDF5 Type | Mandatory | Parent |
-|---|---|:---:|---|
+|---|---|:-:|--|
 | DATAPROCESSING | HDF5 Group | yes | RCMDX |
 
 #### Datenset
@@ -1422,7 +1422,7 @@ Die Datenquellengruppe `DATAPROCESSING` enthält Informationen zur Datenverarbei
 Die Gruppe `DATAPROCESSING` enthält zwei Datenset:
 
 | Name | Date Type | Mandatory | Dimensions | HDF5 Chunking | HDF5 Compression |
-|---|---|:---:|---|----|---|
+|--|--|:-:|---|----|---|
 | key | string | yes | Array[n] | recommended | allowed |
 | value | string | yes | Array[n] | recommended | allowed |
 
@@ -1433,13 +1433,13 @@ Im Datenset `key` wird der Name des Systems eingetragen, der diesen Eintrag erst
 Diese gruppe dient der SBB für das Festhalten von Informationen über die Datenfreigabe aller Parteien die diese Daten verarbeitet haben. Die Informationen werden in Form von Key-Value Paaren, in einem Datenset abgespeichert.
 
 | Name | HDF5 Type | Mandatory | Parent |
-|---|---|:---:|---|
+|---|---|:-:|--|
 | CLEARANCEINFORMATION | HDF5 Group | yes | RCMDX |
 
 Folgende Attribute sind in dieser Gruppe enthalten:
 
 | Name | Type | Mandatory | Description |
-|---|---|:---:|---|
+|---|---|:-:|-----|
 | clearance | 8 bit integer (boolean) | yes | Null für `false`, eins für `true` Bei `true` wurden die Daten in der gesammten Datei freigegeben, ansonsten sind die Daten als Testdaten zu betrachten oder sind von geringerer Qualität. |
 | clearance_date | 64 bit integer | yes | Zeitstempel an dem die Daten freigegeben wurden (`clearance` auf `true`). |
 
@@ -1450,7 +1450,7 @@ Im Datenset `timestamp` wird der Zeitpunkt der Erfassung eines Key-Value Paares 
 Die Gruppe `CLEARANCEINFORMATION` enthält zwei Datenset:
 
 | Name | Date Type | Mandatory | Dimensions | HDF5 Chunking | HDF5 Compression |
-|---|---|:---:|---|----|---|
+|--|--|:-:|--|---|---|
 | key | string | yes | Array[n] | recommended | allowed |
 | value | string | yes | Array[n] | recommended | allowed |
 
