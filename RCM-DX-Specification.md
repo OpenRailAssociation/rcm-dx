@@ -26,7 +26,7 @@ author: "Schweizerische Bundesbahnen, SBB CFF FFS"
 
 ## Referenzierte Dokumente
 
-| ID | Dakumentenname | Version | Datum |
+| ID | Dokumentenname | Version | Datum |
 |:-:|------|-|-|
 | - | - | - | - |
 
@@ -241,7 +241,7 @@ Diese Zeitstempel werden entweder anhand einer definierten gefahrenen Strecke od
 Für ein schnelles finden von Zeitstempeln wird dieses Datenset zusätzlich zum Datenset `timestamp` erstellt. Das Zeitindex Datenset speichert einen Offsetwert einer Position von Zeitstempel-Gruppen ab und ist in der `Datasource Group`, auf gleicher Ebene wie das Datenset `timestamp`. Eine genaue Beschreibung zum Inhalt, ist im nachfolgenden Kapitel [Inhalt](#inhalt) zu finden.
 
 | Name | Date Type | Parent | Mandatory | Dimensions | HDF5 Chunking | HDF5 Compression | Unit |
-|--|---|---|:-:|---|----|---|----|
+|--|---|---|:-:|---|----|---|---|
 | timeindex | 64 bit integer | datasource_group | yes | Array[n] | recommended | allowed | Nanosekunden, vielfaches der Blockgrösse |
 
 Folgende Attribute sind dem `timeindex` Datenset zugewiesen:
