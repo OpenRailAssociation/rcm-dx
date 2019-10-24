@@ -434,6 +434,7 @@ In einer Session Gruppe sind die Daten der Messmittel enthalten. Für eine gegeb
 | StartTime | long | yes | Zeitstempel in Nanosekunden seit dem 1.1.1970 UTC als Startzeit der Session |
 | EndTime | long | no | Zeitstempel in Nanosekunden seit dem 1.1.1970 UTC als Endzeit der Session. Falls die Session noch nicht geschlossen wurde, fehlt dieses Attribut |
 | MeasuringMode | string | yes | Gibt Aufschluss auf den Messmodus. Details unter [Messmodus](#messmodus).|
+| Element | string | yes | Enthält den Typ der Gruppe, dieser ist fix "SESSION" |
 
 ##### Messmodus
 
@@ -555,12 +556,6 @@ Die Platform Gruppe enthält folgende Attribute:
 
 
 
-
-
-
-
-
-
 #### Configuration (Welche?)
 
 In den Datensets dieser Gruppe können Konfigurationen von diversen Systemen abgelegt werden. Die Datensets sind so angelegt, dass globale und Netzwerk spezifische Konfigurationen abgelegt werden können.
@@ -575,15 +570,6 @@ Datensets:
 |---|---|---|---|:---:|---|----|---|
 | global | HDF5 Dataset | string | CONFIGURATION | yes | 1x | recommended | allowed |
 | network | HDF5 Dataset | string | CONFIGURATION | yes | 1x | recommended | allowed |
-
-
-
-
-
-
-
-
-
 
 
 
@@ -618,8 +604,6 @@ Eine Referenz auf das vom Ausfall betroffene Messsystem, wird in diesem Datenset
 
 Definiert den Schweregrad des Ausfalls oder des Unterbruchs eines Messystems.
 
-> TODO: Was für Level gibt es?
-
 ##### Message
 
 Dieses Datenset enthält pro Eintrag eine Meldung zu einem Ausfall eines Messmittels.
@@ -645,28 +629,6 @@ Eine Referenz auf das betroffene Messsystem, wird in diesem Datenset hinterlegt.
 ##### Message
 
 Die eigentliche Nachricht die aufgenommen werden soll für ein Messsystem.
-
-### Clearance information Group
-
-Diese gruppe dient der SBB für das Festhalten von Informationen über die Datenfreigabe aller Parteien die diese Daten verarbeitet haben. Die Informationen werden in Form von Key-Value Paaren, in einem Datenset abgespeichert.
-
-> TODO: Definieren wie ein solches Key-Value Paar aussehen soll! {key="value"} oder {key:value} oder {key:"value"} usw....
-
-Folgende Attribute sind in dieser Gruppe enthalten:
-
-
-| Name | Type | Mandatory | Description |
-|---|---|:---:|---|
-| clearance | 8 bit integer (boolean) | yes | Null für "false", eins für "true". Bei "true" wurden die Daten in der gesammten Datei freigegeben, ansonsten sind die Daten als Testdaten zu betrachten oder sind von geringerer Qualität. |
-| clearance_date | 64 bit integer | yes | Zeitstempel an dem die Daten freigegeben wurden (`clearance` auf "true"). |
-
-
-
-
-
-
-
-
 
 ### Environment Group
 
@@ -769,6 +731,7 @@ Folgende Attribute sind in der Gruppe des Messystems enthalten:
 | Family | string |  yes | Allgemeiner Name des Messystems |
 | Version | string | yes | Versionstand der Software auf dem Messystem, vergeben durch den Messmittelhersteller |
 | Family | string | yes | Version des Datenformat das vom Messmittel erstellt wird. Diese Version kann unterschiedlich sein innerhalb verschiedener Messmittel der gleichen Familie |
+| Element | string | yes | Enthält den Typ der Gruppe, dieser ist fix "MEASURINGSYSTEM" |
 
 ### Datasource Group
 
@@ -776,6 +739,14 @@ Eine Datenquellengruppe kann mehrere Kanäle und somit mehrere Datenquellen enth
 
 Für jeden einzelnen Messpunkt, innerhalb eines Datenquellen Gruppe, ist ein Zeitstempel vorhanden. Für eine Datenquellengruppe gibt es zwei Arten der Datenerfassung. Die eine ist immer nach einer definierten Distanz (zum Beispiel alle 25 Zentimeter) und die andere ist die Messdatenaufnahme in einer bestimmten Frequenz (zum Beispiel 4000 Hz).
 Die Art wie die Messdaten erfasst wurden, steht in zwei Attributen bei jeder Kanal Gruppe. Eine Beschreibung ist unter [Common Trigger Distance or Frequence](#common-trigger-distance-or-frequence).
+
+#### Attributes
+
+Folgendes Attribut erhält die Gruppe:
+
+| Name | Data Type | Mandatory | Description |
+|---|---|:---:|---|
+| Element | string | yes | Enthält den Typ der Gruppe, dieser ist fix "DATASOURCE" |
 
 #### Example
 
@@ -803,6 +774,7 @@ Folgende Attribute sind in dieser Gruppe enthalten:
 | CommonTriggerFrequence | 32 bit float | Herz | yes | [Common Trigger Distance or Frequence](#common-trigger-distance-or-frequence) |
 | ChannelTyp | string | none | yes | [Channel Type](#channel-type) |
 | Neighbor | string | none | yes | [Neighbor](#neighbor) |
+| Element | string | yes | Enthält den Typ der Gruppe, dieser ist fix "CHANNEL" |
 
 #### Channel Basis
 
@@ -1229,26 +1201,44 @@ Nicht alle dieser Elemente müssen vorhanden sein, detaisl dazu kann aus dem XML
 | Type | Typ des gefundenne Objekts | object |
 | Description | weitere Beschreibung oder Informationen zum/vom Objekt | object |
 | ObjectConsistency | Hinweis auf die Korrektheit der angegebenen Daten | object |
-| ReferenceSystem | Verweis auf den Namen der Referenz | Reference |
+| ReferenceSystem | Verweis auf den Namen des Systems von dem die Daten stammen | Reference |
 | Key | Informationen zu den Daten die im Element "ObjectAttribute" enthalten sind | ObjectAttribute |
 
 ##### Limit Violation
 
 Grenzüberschreitungen von Messwerten eines Kanals, können auch als Ereignis aufgenommen werden.
 
-###### Elements
+###### XML-Elements
 
 | Name | Beschreibung | Elternobjekt |
 |---|---|---|
-| LimitViolation | Root Element | none |
+| LimitViolation | Root-Element | none |
 
-###### Attribute
+###### XML-Attribute
 
 | Name | Beschreibung | Elternobjekt |
 |---|---|---|
 | TimestampMaxViolation | Zeitpunkt der Grenzwertüberschreitung | LimitViolation |
 | ViolatedLimit | Name der definierten Grenze | LimitViolation |
 | ID | Eindeutige ID des Ereignisses | LimitViolation |
+
+##### Consistency
+
+Die Nachricht über die Konsistenz der Daten, wird von einem System ausgelöst, das alle Daten nach bestimmten Kriterien überprüft. Dies kann zum Beispiel eine Prüfung auf schwarze Bilder in einem Video sein. Sind alle Einzelbilder im Video schwarz, stimmt etwas nicht und das Video ist unbrauchbar. Es werden nur Meldungen erstellt, wenn ein Befund vorliegt.
+
+###### XML-Elements
+
+| Name | Beschreibung | Elternobjekt |
+|---|---|---|
+| Consistency | Root-Element | none |
+
+###### XML-Attribute
+
+| Name | Beschreibung | Elternobjekt |
+|---|---|---|
+| Type | Art oder Typ der Konsistenzprüfung als Antwort auf die Frage "Was wurde geprüft?" | Consistency |
+| ProcessName | Name des Prozesses der die Konsistenz geprüft hat | Consistency |
+| ID | Eindeutige ID des Ereignisses | Consistency |
 
 #### System Reference "systemref"
 
@@ -1355,13 +1345,13 @@ In der Liste "recordtype" wird der Typ, des zu diesem Zeitpunkt aufgenommenen Pr
 
 Kommentare die während einer Messfahrt durch den Benutzer aufgenommen wurden. Der Inhalt ist nicht spezifiziert, nur die XML-Struktur.
 
-###### Elements
+###### XML-Elements
 
 | Name | Beschreibung | Elternobjekt |
 |---|---|---|
 | Comment | Root Element und Meldung, aufgenommen durch den Benutzer | none |
 
-###### Attributes
+###### XML-Attributes
 
 | Name | Beschreibung | Elternobjekt |
 |---|---|---|
@@ -1372,13 +1362,13 @@ Kommentare die während einer Messfahrt durch den Benutzer aufgenommen wurden. D
 
 Meldungen vom Typ "beschädigt" oder "unbrauchbar" erhalten keine inhaltliche Spezifikation, nur die XML-Struktur ist vorgegeben und hier beschrieben.
 
-###### Elements
+###### XML-Elements
 
 | Name | Beschreibung | Elternobjekt |
 |---|---|---|
 | Corrupt | Root Element und Meldung, aufgenommen durch den Benutzer | none |
 
-###### Attributes
+###### XML-Attributes
 
 | Name | Beschreibung | Elternobjekt |
 |---|---|---|
@@ -1395,25 +1385,6 @@ Beinhaltet eine Liste von Zeitstempeln seit dem 1.1.1970 um 00:00 Uhr UTC als 64
 
 HDF5 Chunking ist erlaubt und empfohlen.  
 Die HDF5 Compression ist erlaubt.  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 ### Configuration Group
 
@@ -1442,5 +1413,47 @@ Die Untergruppen enthalten jeweils ein Datensets mit dem Namen *setting*. Darin 
 
 ### Data Processing Group
 
-> TODO: Beschreibung noch definieren, habe keine Infos dazu gefunden!
-> Key Value Pairs laut der Übersicht von Jakob
+Die Datenquellengruppe `DATAPROCESSING` enthält Informationen zur Datenverarbeitung. Diese Informationen werden von Systemen geschrieben, die Änderungen an den Daten vornehmen. Diese Änderungen, können zum Beispiel Umrechnungen von Milimetern in Meter sein.
+
+| Name | HDF5 Type | Mandatory | Parent |
+|---|---|:---:|---|
+| DATAPROCESSING | HDF5 Group | yes | RCMDX |
+
+#### Datenset
+
+Die Gruppe `DATAPROCESSING` enthält zwei Datenset:
+
+| Name | Date Type | Mandatory | Dimensions | HDF5 Chunking | HDF5 Compression |
+|---|---|:---:|---|----|---|
+| key | string | yes | Array[n] | recommended | allowed |
+| value | string | yes | Array[n] | recommended | allowed |
+
+Im Datenset `key` wird der Name des Systems eingetragen, der diesen Eintrag erstellt hat. Im Datenset `value` wird die eigentliche Information eingetragen (was wurde geändert?).
+
+### Clearance Information Group
+
+Diese gruppe dient der SBB für das Festhalten von Informationen über die Datenfreigabe aller Parteien die diese Daten verarbeitet haben. Die Informationen werden in Form von Key-Value Paaren, in einem Datenset abgespeichert.
+
+| Name | HDF5 Type | Mandatory | Parent |
+|---|---|:---:|---|
+| CLEARANCEINFORMATION | HDF5 Group | yes | RCMDX |
+
+Folgende Attribute sind in dieser Gruppe enthalten:
+
+| Name | Type | Mandatory | Description |
+|---|---|:---:|---|
+| clearance | 8 bit integer (boolean) | yes | Null für "false", eins für "true". Bei "true" wurden die Daten in der gesammten Datei freigegeben, ansonsten sind die Daten als Testdaten zu betrachten oder sind von geringerer Qualität. |
+| clearance_date | 64 bit integer | yes | Zeitstempel an dem die Daten freigegeben wurden (`clearance` auf "true"). |
+
+Im Datenset `timestamp` wird der Zeitpunkt der Erfassung eines Key-Value Paares festgehalten.
+
+#### Datenset
+
+Die Gruppe `CLEARANCEINFORMATION` enthält zwei Datenset:
+
+| Name | Date Type | Mandatory | Dimensions | HDF5 Chunking | HDF5 Compression |
+|---|---|:---:|---|----|---|
+| key | string | yes | Array[n] | recommended | allowed |
+| value | string | yes | Array[n] | recommended | allowed |
+
+Im Datenset `key` wird der Name des Systems eingetragen, der diesen Eintrag erstellt hat. Im Datenset `value` wird die eigentliche Information eingetragen.
