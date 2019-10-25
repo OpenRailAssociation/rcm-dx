@@ -145,13 +145,13 @@ Die im Datenset "sampleIndex" angegebene Gruppengrösse kann/darf untereinander 
 
 ##### Example
 
-Als Beispiel dient hier die Gleisgeometrie. Zu einem Zeitpunkt werden mehrere Punkte einer Schiene gemessen und abgelegt. Es wird jeweils für die X-Achse sowie für die Y-Achse ein Kanal angelegt mit den Namen "cord.C0" und "cord.C1".
+Als Beispiel dient hier das Schienenquerprofil. Zu einem Zeitpunkt werden mehrere Punkte einem Schienenprofil gemessen und abgelegt. Es wird jeweils für die X-Achse sowie für die Y-Achse ein Kanal angelegt mit den Namen "cord.C0" und "cord.C1".
 
 Im Datenset "sampleindex" wird nun die Anzahl der zusammengehörenden Einträge aufgenommen. Steht darin zum Beispiel die Zahl "10", so gehören die ersten zehn Einträge von "cord.C0" udn "cord.C1" zusammen. Der erste Eintrag aus "cord.C0" ist der Wert auf der X-Achse und bei "cord.C1" der Wert der Y-Achse und dies gilt für die nächsten 10 Einträge. Nach den ersten zehn Einträgen folgt die nächste Gruppe mit den nächsten zehn Einträgen.
 
-Nachfolgend ein Bild einer Gleisgeometrie mit ungefähr 2000 Messpunkten:
+Nachfolgend ein Bild einer Schienenwuerprofilmessung mit ungefähr 2000 Messpunkten:
 
-![Gleisgeometrie](images/GleisgeometrieSample.jpg)
+![Bild einer Schienenquerprofilmessung](images/SchienenquerprofilSample.jpg)
 
 #### Bilder
 
