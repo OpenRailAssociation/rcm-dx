@@ -42,17 +42,28 @@ Diese Spezifikation können andere Bahnbetreiber ebenfalls verwenden. Aus diesem
 
 In diesem Dokument werden neben den inhaltlichen Beschreibungen auch Technische Restriktionen spezifiziert. Dieses Kapitel gibt eine Übersicht über die verwendeten Datentypen, Arten von Benennungen und vielen weiteren wichtigen Punkten.
 
-### Benennung von Gruppen
+### Primitive Datentypen und andere
 
-Ist die Rede von einer Gruppe in diesem Dokument, sind die Gruppen im HDF5 Format gemeint (vom Typ HDF5 Group). Diese enthalten weitere Gruppen oder Datensets (vom Typ HDF5 Dataset).
+Mögliche Datentypen für Kanäle sollen aus der HDF5 Spezifikation entnommen werden.  
 
-Ist ein Name einer Gruppe in Grossbuchstaben geschrieben (zum Beispiel TOPOLOGY), so ist dieser exakt so in der RCM-DX Datei zu finden. Ist der Name der Gruppe nicht fix definiert, so wird das im entsprechenden Kapitel beschrieben.
+Nachfolgend sind Datentypen beschrieben die in dieser Spezifikation verwendet wurden und eine genauere Beschreibung benötigen.  
 
-Soll ein Name einer Gruppe in einer Form sichtbar Trennungen enthalten, so soll dies mit einem Punkt erfolgen, dazu das Beispiel: "XPOS.DATA.LONGITUDE".
+| Name | Beschreibung | Beispiel |
+|-|-----|--|
+| UUID | Universally Unique Identifier als Eindeutige ID | 550e8400-e29b-11d4-a716-446655440000 |
+| Timestamp | Eindeutiger und Weltweit definiertes Format eines Zeitpunktes, seit dem 1. Januar 1970 00:00 Uhr UTC ohne Schaltsekunden | 1553237099000000000 |
 
-### Bennenung von Attribute
+### (HDF5) Gruppen
 
-Im RCM-DX können Attribute den Gruppen sowie den Datensets zugewiesen werden. Die Namen der Attribute werden in der "upper camel case" Notation geschrieben.  
+Ist die Rede von einer Gruppe in diesem Dokument, sind die Gruppen im HDF5 Format gemeint (vom Typ HDF5 Group). Diese enthalten weitere Gruppen oder Datensets.
+
+Ist ein Name einer Gruppe in diesem Dokument, in Grossbuchstaben geschrieben (zum Beispiel "TOPOLOGY"), so ist dieser exakt so, in der RCM-DX Datei zu finden. Ist die Bennenung einer Gruppe nicht fix definiert, so wird im entsprechenden Kapitel genauer beschrieben, wie sich der Name zusammensetzt.
+
+Soll ein Name einer Gruppe in einer Form sichtbare Wort-Trennungen enthalten, so soll dies mit einem Punkt erfolgen. Dazu folgendes Beispiel: "XPOS.DATA.LONGITUDE".
+
+### (HDF5) Attribute
+
+Im RCM-DX können Attribute den Gruppen sowie den Datensets zugewiesen werden. Die Namen der Attribute werden in der UpperCamelCase-Notation[^Upper-Camel-Case-Notation] geschrieben.  
 
 Ein Attribut enthält folgende Informationen:
 
@@ -69,34 +80,28 @@ Beispiel eines Arrays:
 |---|---|---|---|
 | EndTime | 64 bit integer | Scalar | 1553237099000000000 |
 
-### Datentypen
+[^Upper-Camel-Case-Notation]: Die Upper Camel Case Notation definiert die Art und Weise wie eine zusammengesetzte Bezeichnung geschrieben wird. Besteht die Bezeichnung aus zwei Wörtern, so beginnt das erste und das zweite Wort mit einem Grossbuchstaben und die Wörter werden zusammen geschrieben ihne Leerzeichen. Zum Beispiel: "CamelCase". Weitere Informationen dazu unter folgendem Link: [Uower Camel Case](https://en.wikipedia.org/wiki/Camel_case)
 
-Mögliche Datentypen für Kanäle sollen aus der HDF5 Spezifikation entnommen werden.  
+### (HDF5) Datenset
 
-Nachfolgend sind Datentypen beschrieben die in dieser Spezifikation verwendet wurden und eine genauere Beschreibung benötigen.  
-
-| Name | Beschreibung | Beispiel |
-|-|-----|--|
-| UUID | Universally Unique Identifier als Eindeutige ID | 550e8400-e29b-11d4-a716-446655440000 |
-| Timestamp | Eindeutiger und Weltweit definiertes Format eines Zeitpunktes, seit dem 1. Januar 1970 00:00 Uhr UTC ohne Schaltsekunden | 1553237099000000000 |
-
-### Datasets
-
-Ein Kanal und dessen Datenset kann verschiedene Arten von Daten aufnehmen. Die HDF5 Gruppe definiert die Art und Weise der Ablage und auch einige Typen.
-Nachfolgend eine Auflistung der möglichen Formate wie die aufgenommenen Daten abgelegt werden können:
+Ein Kanal und dessen Datenset, kann verschiedene Arten und Typen von Daten aufnehmen. Die HDF5 Gruppe definiert die Art und Weise der Ablage, nicht aber die Bennenungen.  
+Ein Datenset ist immer vom HDF5-Typ `Dataset`.  
+Nachfolgend eine Auflistung der möglichen Arten von Daten die im RCM-DX abgelegt werden können:
 
 | Name | Format |
 |--|----|
-| Einzelwerte | Einfaches Array, Dimension 1D |
+| Einzelwerte | Einfaches Array von undefinierter Länge. Ergibt ein Datenset. |
 | Indexierte Einzelwerte | Einfaches Array der Dimension 1D. Neben einem Datenset 'timestamp' wird ein Datenset 'timeindex' erstellt, dass eine Indexierung der Daten enthält und das lesen der Daten vereinfacht. Das Datenset 'timeindex' wird im Kapitel [Time Indices](#time-indices) genauer beschrieben |
 | Bilder | Bilder die zu einem definierten Zeitpunkt aufgenommen wurden |
-| Videos | Videos die als Stream gespeichert werden und nicht als Einzelbilder |
+| Videos | Videos die als Stream gespeichert werden (Datenblöcke einer definierten Länge) |
 
-Datensets werden immer in der lower Camel Case-Notation^[lower Camel Case-Notation: Die Camel Case-Notation definiert die Art und Weise, wie eine zusammengesetzte Bezeichnung geschrieben wird. Besteht die Bezeichnung aus zwei Wörtern, so wird das zweite Wort mit einem Grossbuchstaben geschrieben, zum Beispiel: "camelCase". Weitere Informationen dazu unter folgendem Link: [lower Camel Case](https://en.wikipedia.org/wiki/Camel_case)] beschrieben.
+Die Datenset werden in der lowerCamelCase-Notation[^lower-Camel-Case-Notation] beschrieben.
+
+[^lower-Camel-Case-Notation]: Die lower Camel Case-Notation definiert die Art und Weise wie eine zusammengesetzte Bezeichnung geschrieben wird. Besteht die Bezeichnung aus zwei Wörtern, so beginnt nur das zweite Wort mit einem Grossbuchstaben und die Wörter werden zusammen geschrieben ohne Leerzeichen. Zum Beispiel: "camelCase". Weitere Informationen dazu unter folgendem Link: [lower Camel Case](https://en.wikipedia.org/wiki/Camel_case)
 
 #### HDF5 Compression
 
-Datensets und deren Daten können komprimiert werden. Nachfolgend ist bei allen Datensets ersichtlich, ob dies empfohlen wird oder nicht. Die Komprimierung wird von der HDF5 Gruppe genauer beschrieben under dem Link: [HDF5 Compression Webseite](https://support.hdfgroup.org/HDF5/faq/compression.html). Bei einem Datenset steht dann zum Beispiel, dass das "HDF5 Compression" erlaubt ist oder nicht.
+Um Platz zu sparen, können komprimierungsfilter auf Datensets angewendet werden. Nachfolgend ist bei allen Datensets ersichtlich, ob dies empfohlen wird oder nicht. Die Komprimierung und welche Funktionen die HDF5 Gruppe anbietet, wird auf deren Webseite genauer beschrieben unter dem Link: [HDF5 Compression Webseite](https://support.hdfgroup.org/HDF5/faq/compression.html). Bei einem Datenset steht dann zum Beispiel, dass das "HDF5 Compression" erlaubt ist oder nicht.
 
 #### HDF5 Chunking
 
@@ -108,7 +113,7 @@ Kanäle, die einzelne Messwerte erfassen, enthalten ein Datenset mit dem Namen "
 
 Die möglichen Datentypen sind durch die HDF5 Group definiert, und können auf der Webseite der HDF5 Group nachgelesen werden.
 
-Boolsche Werte (`true`/`false`) werden als ```8 bit integer, litle endian``` abgebildet, Null bedeutet `false`, alle Werte grösser Null bedeuten `true`.
+Boolsche Werte (`true`/`false`) werden als `8 bit integer, litle endian` abgebildet, Null bedeutet `false`, alle Werte grösser Null bedeuten `true`.
 
 Werden Messdaten aufgenommen im 3D Raum, so müssen drei verschiedene Kanäle erstellt werden.
 
@@ -128,23 +133,22 @@ Diese Art der Datenspeicherung erlaubt es, mehrere Einträge pro Messzeitpunkt a
 
 Das Datenset ist wie folgt definiert:
 
-| Name | HDF5 Type | Type | Mandatory | Dimensions |
-|---|--|---|:-:|--|
-| "cord" mit Erweiterung wie oben genannt | HDF5 Dataset | 8 bit signed integer, oder 32 bit signed integer, oder 64 bit signed integer, oder 32 bit floating point, oder 64 bit floating point; (jeweils litle endian) | yes | Array[n] |
+| Name | Type | Mandatory | Dimensions |
+|---|---|:-:|--|
+| "cord" mit Erweiterung wie oben genannt | 8, 32 oder 64 bit signed integer oder 64 oder 32 bit floating point; (jeweils litle endian) | yes | Array[n] |
 
 HDF5 Chunking ist erlaubt und empfohlen.  
 Die HDF5 Compression ist erlaubt.  
 
 Das Attribut "Unit" des Datensets, kann eine physikalische Einheit sein oder leer bleiben, falls die Daten keiner physikalischen Einheit entsprechen.  
 
-##### Sample Index
+###### Sample Index
 
 Werden Datensets für Koordinaten angelegt, so muss zwingend ein Datenset mit dem Namen "sampleindex" vorhanden sein. Dieses Datenset beinhaltet pro Messzeitpunkt (pro Eintrag im Datenset "timestamp"), die genaue Anzahl der Messeinträge in dem Datenset, mit der Bezeichnung "cord.CN". Beim lesen und interpretieren der Daten ist diese Information wichtig, da die Daten in den Datenset's "cord.CN" als Array und ohne weitere Information dazu abgelegt sind.
 
 Die im Datenset "sampleIndex" angegebene Gruppengrösse kann/darf untereinander abweichen.
 
-##### Example
-
+**Example**
 Als Beispiel dient hier das Schienenquerprofil. Zu einem Zeitpunkt werden mehrere Punkte einem Schienenprofil gemessen und abgelegt. Es wird jeweils für die X-Achse sowie für die Y-Achse ein Kanal angelegt mit den Namen "cord.C0" und "cord.C1".
 
 Im Datenset "sampleindex" wird nun die Anzahl der zusammengehörenden Einträge aufgenommen. Steht darin zum Beispiel die Zahl "10", so gehören die ersten zehn Einträge von "cord.C0" udn "cord.C1" zusammen. Der erste Eintrag aus "cord.C0" ist der Wert auf der X-Achse und bei "cord.C1" der Wert der Y-Achse und dies gilt für die nächsten 10 Einträge. Nach den ersten zehn Einträgen folgt die nächste Gruppe mit den nächsten zehn Einträgen.
@@ -153,78 +157,91 @@ Nachfolgend ein Bild einer Schienenwuerprofilmessung mit ungefähr 2000 Messpunk
 
 ![Bild einer Schienenquerprofilmessung](images/SchienenquerprofilSample.jpg)
 
-#### Bilder
+##### Bilder
 
-Bilder können als "HDF5 Image" oder als JPEG gespeichert werden. Für Bilder die nicht komprimiert werden sollen, muss der Typ "HDF5 Image" verwendet werden, ansonsten JPEG.  
-Bilder werden als binäre Datenblöcke abgelegt, ein Bild ergibt ein Datensatz.  
+Bilder können in komprimierter oder unkomprimierter Form abgespeichert werden. Das Format der Bilder wird in einem Attribut hinterlegt, damit das Bild korrekt ausgelesen werden kann.  
+Bilder werden als binäre Datenblöcke abgelegt, ein Bild ergibt somit ein Datenset.  
 
-##### HDF5 Images
+Alle Bilder werden in einer Gruppe mir dem Namen `IMG` abgelegt. Alle Bilder in dieser Gruppe haben die gleichen Eigenschaften, die in den Attributen hinterlegt sind.  
 
-| Name | HDF5 Type | Type | Mandatory | Dimensions | HDF5 Chunking | HDF5 Compression |
-|---|---|---|:-:|----|--|--|
-| IMG.NNNNNNNNN | HDF5 Dataset | 8 bit integer | yes | Ein Bild pro Zeitstempel | recommended | allowed |
+| Name | HDF5 Type | Parent | Mandatory |
+|---|---|---|:---:|
+| IMG | HDF5 Group | "DatasourceGroup" | yes |
 
-###### Benennung
+Die Gruppe `IMG` erhält folgende Attribute für die genauere Beschriebung der darin enthaltenen Bilder:
 
-Für jedes Bild wird ein Datenset erstellt, dies in der Gruppe mit dem Namen "IMG". Die Bilder werden nach folgendem Muster benannt: IMG.NNNNNNNNN
+| Name | Data Type | Mandatory | Description |
+|---|---|:---:|---|
+| ContentType | string | yes | Datentyp der Bilder als MIME-Typ[^MIME] angegeben, zum Beispiel `Content-Type: <image/jpeg>`|
+| DataTypInfo | string | no | Beschreibung zum Datentyp, wenn kein Standard Bild, siehe [ContentType ohen Image MIME-Typ](#contenttype-ohne-image-mime-typ) |
+| ResolutionInfoType | string | yes | Angaben zur Punktedichte der Bilder (Beispiel: $ppmm = Pixel pro Milimeter$) |
+| ResolutionInfoX | 32 bit integer | yes | Auflösung in X-Richtung |
+| ResolutionInfoY | 32 bit integer | yes | Auflösung in Y-Richtung |
+
+Bilder können in X- und Y-Richtung unterschiedliche Auflösungen haben, dies muss für eine korrekte Darstellung und Auswertung der Bilder berücksichtigt werden.
+
+HDF5 Chunking wird empfohlen und die HDF5 Compression ist erlaubt.  
+
+###### ContentType ohne Image MIME-Typ
+
+Falls das erzeugte und gespeicherte Bild, eine eigene Spezialsoftware benötigt um dieses Darzustellen, so soll folgender MIME-Typ in das Attribut `ContentType` hintelegt werden: `Content-Type: <application/octet-stream>`.  
+Um weitere Informationen zu hinterlegen, zum Beispiel welches System die Daten erzeugt hat, kann ein nueues Attribut der Gruppe `IMG` hinzugefügt werden. Das Attribut erhält den Namen `DataTypInfo`.
+
+###### Benennung des Datenset für ein Bild
+
+Die Bilder werden nach folgendem Muster benannt: `IMG.NNNNNNNNN`, nachfolgend eine Beschreibung der einzelnen Elemente.
 
 |Element|Beschreibung|
 |--|----|
-| IMG | Zeichenkette für die bezeichnung eines Bildes |
+| IMG | Zeichenkette für die Bezeichnung eines Bildes |
 | . | Trennzeichen |
 | NNNNNNNNN | Bildnummer, beginnend mit 000000000 (neun Zeichen)|
 
-##### JPEG
+##### Videos
 
-| Name | HDF5 Type | Type | Mandatory | Dimensions |
-|--|--|-----|:-:|---|
-| JPEG.NNNNNNNNN | HDF5 Dataset | JPEG Bild, Datentyp gesetzt auf Inahltstyp: "<image/jpeg>" | yes | Ein Bild pro Zeitstempel |
+Wie bei den Bildern können Video in komprimierter oder unkomprimierter Form abgespeichert werden. Das Format wird in einem Attribut hinterlegt, um das lesen der Bilder zu vereinfachen.  
+Videos werden als Stream in einzelne Blöcke abgespeichert. Die Blöcke sind jeweils einzelne Datenset mit einer vorgegebenen Venennung.
 
-HDF5 Chunking ist **nicht** erlaubt und **nicht** empfohlen.  
-Die HDF5 Compression ist **nicht** empfohlen.  
+| Name | HDF5 Type | Parent | Mandatory |
+|---|---|---|:---:|
+| VID | HDF5 Group | "DatasourceGroup" | yes |
 
-###### Benennung
+| Name | Data Type | Mandatory | Description |
+|---|---|:---:|---|
+| ContentType | string | yes | Datentyp des Videostrams als MIME-Typ[^MIME] angegeben, zum Beispiel `Content-Type: <video/h264>`|
+| DataTypInfo | string | no | Beschreibung zum Datentyp, wenn kein Standard Video Format, siehe [ContentType ohne Video MIME-Typ](#contenttype-ohne-video-mime-typ) |
+| ResolutionX | 32 bit integer | yes | Auflösung in X-Richtung in Pixel |
+| ResolutionY | 32 bit integer | yes | Auflösung in Y-Richtung in Pixel |
+| FramesPerSecond | 16 bit integer | yes | Anzahl Bilder Pro Sekunde (fps), inder das Video aufgenommen wurde |
+| PreambleDuration | 64 bit integer | yes | Zeitdauer des Einleitungsviedeo Bereichs in Nanosekunden  |
+| TrailerDuration | 64 bit integer | yes | Zeitdauer des Abstpannwiveo Bereichs in Nanosekunden |
 
-Für jedes Bild wird ein Datenset erstellt, dies in der Gruppe mit dem Namen "JPEG". Die Bilder werden nach folgendem Muster benannt: JPEG.NNNNNNNNN
 
-|Element|Beschreibung|
-|-|-----|
-| JPEG | Zeichenkette für die Bezeichnung eines JPEG-Bildes |
+> TODO: genau spezifizieren! Wann gibt es ein Preamble und ein Trailer? Was ist im Datenset Duration?
+
+
+[^MIME]: Eine Auflistung der möglichen MIME-Typen ist unter dem Link [https://www.iana.org/assignments/media-types/media-types.xhtml](https://www.iana.org/assignments/media-types/media-types.xhtml) zu finden. Diese wird von der [Internet Assigned Numbers Authority, IANA](https://www.iana.org/) geführt.
+
+###### ContentType ohne Video MIME-Typ
+
+Falls der erzeugte und gespeicherte Videostream, eine eigene Spezialsoftware benötigt um diesen Anzuzeigen, soll folgender MIME-Typ in das Attribut `ContentType` hintelegt werden: `Content-Type: <application/octet-stream>`.  
+Um weitere Informationen zu hinterlegen, zum Beispiel welches System die Daten erzeugt hat, kann ein nueues Attribut der Gruppe `VID` hinzugefügt werden. Das Attribut erhält den Namen `DataTypInfo`.
+
+###### Bennenung des Datenset für ein Video
+
+Ein video Datenblock wird nach folgendem Muster benannt: `VID.NNNNNNNNN`, nachfolgend eine Beschreibung der einzelnen Elemente.
+
+Element|Beschreibung|
+|--|----|
+| VID | Zeichenkette für die Bezeichnung eines des Videos |
 | . | Trennzeichen |
-| NNNNNNNNN | Bildnummer, beginnend mit 000000000 (neun Zeichen), aufsteigend|
+| NNNNNNNNN | Videonummer, beginnend mit 000000000 (neun Zeichen)|
 
-#### Videos
+HDF5 Chunking und HDF5 Compression wird nicht empfohlen.
 
-> TODO: genau spezifizieren!
-> Wann wird ein neues Dataset erstellt?
-> Wann gibt es ein Preamble und ein Trailer?
-> Wo sind die Codecs geschrieben und wann werden die geschrieben?
+## Datenquellen
 
-Videos werden als binäre Datenblöcke abgelegt.
-
-| Name | HDF5 Type | Type | Mandatory | Dimensions |
-|---|--|----|:-:|--|
-| VID.NNNNNNNNN | HDF5 Dataset | TODO: BESCHREIBUNG | yes | ????? | not recommended | not recommended |
-
-HDF5 Chunking ist **nicht** erlaubt und **nicht** empfohlen.  
-Die HDF5 Compression ist **nicht** empfohlen.  
-
-
-
-
-
-
-> TODO: PreambleDuration und TrailerDuration definieren!
-> Spezifikation beiziehen! 
-
-
-
-
-
-
-## Datasource Arrays
-
-### Timestamp Array
+### Timestamp
 
 Jeder Eintrag in einem Kanal, hat eine Referenz auf ein Datenset mit dem Namen *timestamp* innerhalb der Datenquellen Gruppe. In diesem *timestamp* Datenset, gibt es gleichviel Einträge wie es Einträge in einem Datenset eines Kanals gibt.  
 
