@@ -82,21 +82,21 @@ Nachfolgend sind Datentypen beschrieben die in dieser Spezifikation verwendet wu
 
 ### Datasets
 
-Ein Kanal und dessen Datenset kann verschiedene Arten von Daten aufnehmen. Die HDF5 Gruppe definiert die Art und Weise der Ablage und auch einige Typen.  
-Nachfolgend eine Auflistung der möglichen Formate wie die aufgenomenen Daetne abgelegt werden können:  
+Ein Kanal und dessen Datenset kann verschiedene Arten von Daten aufnehmen. Die HDF5 Gruppe definiert die Art und Weise der Ablage und auch einige Typen.
+Nachfolgend eine Auflistung der möglichen Formate wie die aufgenommenen Daten abgelegt werden können:
 
 | Name | Format |
 |--|----|
 | Einzelwerte | Einfaches Array, Dimension 1D |
-| Indexierte Einzelwerte | Einfaches Array der Dimension 1D. Neben einem Datenset `timestamp` wird ein Datenset `timeindex` erstellt, dass eine Indexierung der Daten enthält und das lesen der Daten vereinfacht. Das Datenset `timeindex` wird im Kapitel [Time Indices](#time-indices) genauer beschrieben |
+| Indexierte Einzelwerte | Einfaches Array der Dimension 1D. Neben einem Datenset 'timestamp' wird ein Datenset 'timeindex' erstellt, dass eine Indexierung der Daten enthält und das lesen der Daten vereinfacht. Das Datenset 'timeindex' wird im Kapitel [Time Indices](#time-indices) genauer beschrieben |
 | Bilder | Bilder die zu einem definierten Zeitpunkt aufgenommen wurden |
 | Videos | Videos die als Stream gespeichert werden und nicht als Einzelbilder |
 
-Datensets werden immer in der lower Camel Case-Notation^[lower Camel Case-Notation: Die Camel Case-Notation definiert die Art und weise, wie eine zusammengesetzte Bezeichnung geschrieben wird. Besteht die bezeichnung aus zwei Wörtern, so wird das zweite Wort mit einem Grossbuchstaben geschrieben, zum Beispiel: "camelCase". Weitere Informationen dazu unter folgendem Link: [lower Camel Case](https://en.wikipedia.org/wiki/Camel_case)] beschrieben.
+Datensets werden immer in der lower Camel Case-Notation^[lower Camel Case-Notation: Die Camel Case-Notation definiert die Art und Weise, wie eine zusammengesetzte Bezeichnung geschrieben wird. Besteht die Bezeichnung aus zwei Wörtern, so wird das zweite Wort mit einem Grossbuchstaben geschrieben, zum Beispiel: "camelCase". Weitere Informationen dazu unter folgendem Link: [lower Camel Case](https://en.wikipedia.org/wiki/Camel_case)] beschrieben.
 
 #### HDF5 Compression
 
-Datensets und deren Daten können Komprimiert werden. Nachfolgend ist bei allen Datensets ersichtlich, ob dies empfohlen wird oder nicht. Die Komprimierung wird von der HDF5 Gruppe genauer Beschrieben under dem Link: [HDF5 Compression Webseite](https://support.hdfgroup.org/HDF5/faq/compression.html). Bei einem Datenset steht dann zum Beispiel, dass das "HDF5 Compression" erlaubt ist oder nicht.
+Datensets und deren Daten können komprimiert werden. Nachfolgend ist bei allen Datensets ersichtlich, ob dies empfohlen wird oder nicht. Die Komprimierung wird von der HDF5 Gruppe genauer beschrieben under dem Link: [HDF5 Compression Webseite](https://support.hdfgroup.org/HDF5/faq/compression.html). Bei einem Datenset steht dann zum Beispiel, dass das "HDF5 Compression" erlaubt ist oder nicht.
 
 #### HDF5 Chunking
 
@@ -258,7 +258,7 @@ Um den Inhalt im Datenset `timeindex` zu verstehen, muss zuerst erklärt werden,
 
 Im Beispiel wollen wir Zeitstempel zwischen $10s$ und $155s$ abspeichern sowie indexieren. Diese Zeitstempel sind im Datenset `timestamp` enthalten. Die Abstände zwischen den einzelnen Zeitstempel folgen keinem einheitlichen Muster.  
 
-Als erstes definieren wir einen $Offset$, dieser ergibt sich durch den ersten Eintrag im Datenset `timestamp`. In unserem Beispiel ist der erste Eintrag $10s$, somit ist $Offset=10s$. Dieser $Offset$ wird nicht im `timeindex` Datenset 
+Als Erstes definieren wir einen $Offset$, dieser ergibt sich durch den ersten Eintrag im Datenset `timestamp`. In unserem Beispiel ist der erste Eintrag $10s$, somit ist $Offset=10s$. Dieser $Offset$ wird nicht im `timeindex` Datenset 
 Mit dem $Offset$ von $10*10^9ns$ haben wir somit einen Wertbereich von $0ns$ bis $145*10^9ns$ den wir Indexieren.  
 
 Verwenden wir nun eine Blockgrösse von $BlockSize=2x10^9ns$, erhalten wir $72$ Blöcke, die wir Indexieren, da $10s+72*2x10^9ns$ die Werte bis $156s$ abdekt und somit genügend für unseren Wertbereich.  
@@ -286,24 +286,24 @@ Definieren wir nun eine Tiefe $Depth=4$, so erhalten wir folgenden Knotennummern
 | 104 | 4 |
 | 120 | 4 |
 
-Diese Zahlen und Höhen, ergeben sich aus dem binären Baum, den wir anhand der definerten Tiefe erzeugen. Um die Tabelle zu erzeugen, wird der Baum in "level-order" durchlaufen. Folgendes Bild zeigt diesen Baum:
+Diese Zahlen und Höhen, ergeben sich aus dem binären Baum, den wir anhand der definierten Tiefe erzeugen. Um die Tabelle zu erzeugen, wird der Baum in "level-order" durchlaufen. Folgendes Bild zeigt diesen Baum:
 
 ![Binärer Baum, Aufbau der Knotennummer](images/generated/binaryTree.png){ width=400px }
 
-Der erste Eintrag in der Tabelle hat den Wert $2^{LogTimeBlocks-1}$, in unserem Fall $2^{7-1}=64$, dieser Eintrag hat eine Höhe von eins.  
-Als nächstes errechnen wir für jeden Zeitstempel die passenden Nummer des entsprechenden Blocks:  
+Der erste Eintrag in der Tabelle hat den Wert $2^{LogTimeBlocks-1}$, in unserem Fall $2^{7-1}=64$, dieser Eintrag hat eine Höhe von eins.
+Als Nächstes errechnen wir für jeden Zeitstempel, die passenden Nummer des entsprechenden Blocks:
 
 $BlockNumber=\frac{timestamp - Offset}{BlockSize}$
 
-Jede $BlockNumber$ erhält eine Indexnummer aufsteigend, beginnend mit Null bis 40. Diese dient uns später für die Bestimmung der Offset Position die in das Datenset `timeindex` geschrieben wird.  
+Jede $BlockNumber$ erhält eine Indexnummer aufsteigend, beginnend mit Null bis 40. Diese dient uns später für die Bestimmung der Offset Position die in das Datenset 'timeindex' geschrieben wird.
 Nachfolgend die berechneten $BlockNumber$ und der dazugehörige Zeitstempel, als Übersicht in einer Tabelle:
 
 ![Tabellenübersicht 1: $BlockNumber$ zu jedem Zeitstempel](images/TimeIndicesExampleTable1.png)
 
 ![Tabellenübersicht 2: $BlockNumber$ zu jedem Zeitstempel](images/TimeIndicesExampleTable2.png)
 
-Im nächsten Schritt verwenden wir die zuvor erstellte Tabelle des binären Baums und schreiben für jeden Eintrag, den entsprechende $BlockNummer$ in das Datenset `timeindex`.  
-Die erste Nummer des binären Baum ist $64$. Somit suchen wir in der erstellten Tabelle die gröstmögliche $BlockNumber$, die kleiner oder gleich dem Wert $64$ ist. Somit finden wir die Nummer $63$ in der Tabelle mit dem Index $35$. Somit schreiben wir die Zahl $35$ in das Datenset `timeindex`. Der zweite der Tabelle mit dem binären baum, hat den Wert $32$. In der Tabelle mit den $BlockNumber$ finden wir die Nummer $32$, somit wird die Zahl $32$ in das Datenset `timeindex` geschrieben. Nun folgt die Zahl $96$, für diese gibt es keinen Eintrag in der tabelle mit den $BlockNumber$, somit schreiben wir die eine $-1$ in das Datenset `timeindex`. Führen wir dies so weiter, erhalten wir folgende Tabelle, die das Datenset `timeindex` abbildet:  
+Im nächsten Schritt verwenden wir die zuvor erstellte Tabelle des binären Baums und schreiben für jeden Eintrag, den entsprechende $BlockNummer$ in das Datenset 'timeindex'.
+Die erste Nummer des binären Baumes ist $64$. Somit suchen wir in der erstellten Tabelle die gröstmögliche $BlockNumber$, die kleiner oder gleich dem Wert $64$ ist. Somit finden wir die Nummer $63$ in der Tabelle mit dem Index $35$. Somit schreiben wir die Zahl $35$ in das Datenset 'timeindex'. Der zweite der Tabelle mit dem binären baum, hat den Wert $32$. In der Tabelle mit den $BlockNumber$ finden wir die Nummer $32$, somit wird die Zahl $32$ in das Datenset 'timeindex' geschrieben. Nun folgt die Zahl $96$, für diese gibt es keinen Eintrag in der tabelle mit den $BlockNumber$, somit schreiben wir die eine $-1$ in das Datenset 'timeindex'. Führen wir dies so weiter, erhalten wir folgende Tabelle, die das Datenset 'timeindex' abbildet:
 
 | $NodeNumber$ | Datenset `timeindex` |
 |:---:|-----|
@@ -348,7 +348,7 @@ Nun wird bei der Position $18$ mit der Suche des Zeitstempels begonnen und über
 
 ![Tabellenübersicht 2: $BlockNumber$ zu jedem Zeitstempel](images/TimeIndicesTableSearchExample.png){width=300px}
 
-Bei der Berechnung weiter oben, wird immer abgerundet und nicht der nächstgrössere Wert (hier $40$) verwendet. Dies aus dem Grund, dass die Position beim Wert $40$ höher sein könnte (Ende des Blocks) als die Position im gesuchten Block selber. Somit würde der gesuchte Zeitstempel nicht gefunden werden!
+Bei der Berechnung weiter oben wird immer abgerundet und nicht der nächstgrössere Wert (hier $40$) verwendet. Dies aus dem Grund, dass die Position beim Wert $40$ höher sein könnte (Ende des Blocks) als die Position im gesuchten Block selber. Somit würde der gesuchte Zeitstempel nicht gefunden werden!
 
 ### Durations
 
