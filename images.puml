@@ -1,60 +1,255 @@
 ' Visit http://plantuml.com/de/ for more information!
 
+' RCM-DX diagramm example and explanation at the start of specification
+@startuml RCM_DX_diagram_example
+
+  object DATASOURCE {
+    a:Element = "DATASOURCE"
+  }
+  note left
+    - Group's in
+      color Yellow
+    
+    - Attibutes with "a:"
+      at the beginning
+  end note
+
+  object timestamp #LightGray
+
+  object CHANNEL {
+    a:Element = "CHANNEL"
+    a:ChannelBasis
+    a:----
+  }
+
+  object data #LightGray{
+    a:Unit
+  }
+  note left
+    Dataset's in
+    color gray
+  end note
+
+  note as HINT
+    <size:30><&warning>
+    Sometimes, datasets are
+    described inside a group
+    with "dataset:" at the beginning!
+  end note
+
+  DATASOURCE "1" o-- "1" timestamp
+  DATASOURCE "1" o-- "1..n" CHANNEL
+  CHANNEL "1" o-- "0..n" data
+
+@enduml
+
+' RCM-DX Common Structure Overview
 @startuml RCM_DX_Structure
 
   object RCM_DX
 
-  object SESSION
+  object SESSION {
+    Element = "SESSION"
+  }
+
+  object MEASURINGSYSTEM {
+    a:Element = "MEASURINGSYSTEM"
+  }
 
   object CLEARANCEINFORMATION
   object DATAPROCESSING
 
   object PLATTFORM
-  object CONFIGURATION
 
   object POSITION
   object SECTION
   
   object ENVIRONMENT
-  object DATASOURCE
 
   object EVENTS
   object RECORDS
 
-  object MEASURINGSYSTEM
-
   object TOPOLOGY
-  object TRACKS
-  object LINES
-  object SWITCHTRACKS
-  object TRACKOBJECTS
-  object TRACKPOINTS
-  object PROPERTIES
 
-  object CHANNEL
-  object LOGGING
-  object MESSAGES
-  object OUTAGES
-
+  RCM_DX "1" o-- "1..n" SESSION
   RCM_DX "1" o-- "0..1" CLEARANCEINFORMATION
   RCM_DX "1" o-- "0..1" DATAPROCESSING
-  RCM_DX "1" o-- "1..n" SESSION
   
-  SESSION "1" o-- "1" PLATTFORM 
+  SESSION "1" o-- "1" PLATTFORM
   SESSION "1" o-- "1" POSITION
   SESSION "1" o-- "0..1" ENVIRONMENT
-  SESSION "1" o-- "1..n" MEASURINGSYSTEM
+  SESSION "1" o-- "1" MEASURINGSYSTEM
   SESSION "1" o-- "0..1" EVENTS
   SESSION "1" o-- "0..1" RECORDS
   SESSION "1" o-- "1" TOPOLOGY
   SESSION "1" o-- "1" SECTION
   
-  PLATTFORM o-- CONFIGURATION
+@enduml
+
+' RCM-DX Measurement Structure Overview
+@startuml RCM_DX_MS_overview
+
+  object SESSION {
+    a:Element = "SESSION"
+    a:EndTime
+    a:StartTime
+  }
+
+  object MEASURINGSYSTEM {
+    a:Element = "MEASURINGSYSTEM"
+  }
+
+  object DATASOURCE {
+    a:Element = "DATASOURCE"
+  }
+
+  object timestamp #LightGray
+  object timeindex #LightGray
+  object duration #LightGray
+
+  object CHANNEL {
+    a:Element = "CHANNEL"
+    a:ChannelBasis
+    a:CommonTriggerDistance
+    a:CommonTriggerFrequency
+    a:MeasurementType
+    a:Neighbor
+    a:PositionOffset
+    a:TriggerMode
+  }
+
+  object data #LightGray{
+    a:Unit
+  }
+
+  object IMG.NNNNNNNNN
+
+  object VID.NNNNNNNNN
+
+  object VID {
+    a:ContentType
+    a:DataTyp
+    a:ResolutionX
+    a:ResolutionY
+    a:FramesPerSecond
+    a:PreambleDuration
+    a:TrailerDuration
+  }
+
+  object IMG {
+    a:ResolutionX
+    a:ResolutionY
+    a:ResolutionType
+    a:ContentType
+    a:DataTyp
+  }
+
+  SESSION "1" o-- "1..n" MEASURINGSYSTEM
+
   MEASURINGSYSTEM "1" o-- "1..n" DATASOURCE
-  MEASURINGSYSTEM "1" o-- "0..1" LOGGING
+  DATASOURCE "1" o-- "1" timestamp
+  DATASOURCE "1" o-- "0..1" timeindex
+  DATASOURCE "1" o-- "0..1" duration
+
   DATASOURCE "1" o-- "1..n" CHANNEL
-  LOGGING o-- MESSAGES
-  LOGGING o-- OUTAGES
+
+  CHANNEL "1" o-- "0..n" data
+  CHANNEL "1" o-- "1" VID
+  CHANNEL "1" o-- "1" IMG
+
+  IMG "1" o-- "1..n" IMG.NNNNNNNNN
+  VID "1" o-- "1..n" VID.NNNNNNNNN
+
+@enduml
+
+' RCM-DX Topology Structure Overview
+@startuml RCM_DX_Topology_overview
+
+  object SESSION {
+    a:Element = "SESSION"
+    a:EndTime
+    a:StartTime
+  }
+
+  object TOPOLOGY {
+    a:DfAExportTimestamp
+  }
+
+  object TRACKS {
+    a:id
+    a:direction
+    a:gtgId
+    a:length
+    a:name
+    a:nrLine
+    a:pointFrom
+    a:pointTo
+    a:switchType
+    a:trackType
+  }
+  object LINES {
+    a:id
+    a:name
+    a:firstStation
+    a:lastStation
+    a:fromKilometer
+    a:toKilometer
+  }
+
+  object SWITCHTRACKS {
+    a:gleisstrangId
+    a:gleisstrangBez
+    a:weicheId
+    a:ablenkRichtung
+    a:ablenkung
+    a:betriebspunkt
+    a:herzStueck
+    a:minRadius
+    a:nr
+    a:zusNr
+    a:schienenProfil
+    a:status
+    a:schienenProfil
+    a:schwellenArt
+    a:typenPlanNr
+    a:typNrZusatz
+    a:weichenArt
+    a:weichenTyp
+    a:weichenForm
+    a:weichenZunge
+  }
+
+  object TRACKOBJECTS {
+    a:trackId
+    a:type
+    a:positionStart
+    a:positionEnd
+    a:extraInfo
+  }
+
+  object TRACKPOINTS {
+    a:trackId
+    a:lineId
+    a:x
+    a:y
+    a:z
+    a:radius
+    a:kilometer
+    a:position
+    a:cant
+    a:inclination
+  }
+
+  object PROPERTIES {
+    a:propertyId
+    a:name
+    a:description.ge
+    a:description.fr 
+    a:description.it
+    a:description.en
+  }
+
+  SESSION "1" o-- "1" TOPOLOGY
 
   TOPOLOGY "1" o-- "1" TRACKS
   TOPOLOGY "1" o-- "1" LINES
@@ -62,71 +257,125 @@
   TOPOLOGY "1" o-- "1" TRACKOBJECTS
   TOPOLOGY "1" o-- "1" TRACKPOINTS
   TOPOLOGY "1" o-- "1" PROPERTIES
+
 @enduml
 
-@startuml RCM_DX_MS_overview
+' RCM-DX Platform Structure Overview
+@startuml RCM_DX_Platform_overview
 
-object SESSION_GROUP {
-  a:EndTime
-  a:StartTime
-}
+  object SESSION {
+    a:Element = "SESSION"
+    a:EndTime
+    a:StartTime
+  }
 
-object MEASUREMENT_SYSTEM_GROUP
-object DATASOURCE_GROUP
-object timestamp
-object timeindex
-object duration
+  object PLATFORM {
+    a:Name
+    a:VehicleNumber
+  }
 
-object CHANNEL_GROUP {
-  a:ChannelBasis
-  a:CommonTriggerDistance
-  a:CommonTriggerFrequency
-  a:MeasurementType
-  a:Neighbor
-  a:PositionOffset
-  a:TriggerMode
-}
+  object CONFIGURATION
+  object global #LightGray
+  object network #LightGray
 
-object data {
-  a:Unit
-}
+  SESSION "1" o-- "1" PLATFORM
+  PLATFORM "1" o-- "1" CONFIGURATION
+  CONFIGURATION "1" o-- "1" global
+  CONFIGURATION "1" o-- "1" network
 
-object video {
-  a:Codec
-  a:Resolution?
-}
+@enduml
 
-object images {
-  a:ResolutionX
-  a:ResolutionY
-  a:ResolutionType
-  a:ContentType
-  a:Resolution?
-}
+' RCM-DX Environment Structure Overview
+@startuml RCM_DX_Environment_overview
 
-object jpegs
+  object SESSION {
+    a:Element = "SESSION"
+    a:EndTime
+    a:StartTime
+  }
 
-object limits {
-  a:Unit
-}
+  object ENVIRONMENT 
 
-object firstSamplePerTimeStampIndex {
-  a:Sorted
-}
+  object timestamp #LightGray
+  object VEHICLESPEED
+  object AMBIENTTEMPERATURE
+  object WINDSPEED
+  object WINDDIRECTION
+  object WEATHERCONDITIONS
 
-SESSION_GROUP "1" o-- "1..n" MEASUREMENT_SYSTEM_GROUP
-MEASUREMENT_SYSTEM_GROUP "1" o-- "1..n" DATASOURCE_GROUP
-DATASOURCE_GROUP "1" o-- "1" timestamp
-DATASOURCE_GROUP "1" o-- "0..1" timeindex
-DATASOURCE_GROUP "1" o-- "0..1" duration
+  SESSION "1" o-- "1" ENVIRONMENT
+  ENVIRONMENT "1" o-- "1" VEHICLESPEED
+  ENVIRONMENT "1" o-- "1" AMBIENTTEMPERATURE
+  ENVIRONMENT "1" o-- "1" WINDSPEED
+  ENVIRONMENT "1" o-- "1" WINDDIRECTION
+  ENVIRONMENT "1" o-- "1" WEATHERCONDITIONS
+  ENVIRONMENT "1" o-- "1" timestamp
 
-DATASOURCE_GROUP "1" o-- "1..n" CHANNEL_GROUP
+@enduml
 
-CHANNEL_GROUP "1" o-- "0..n" data
-CHANNEL_GROUP "1" o-- "0..n" video
-CHANNEL_GROUP "1" o-- "0..n" images
-CHANNEL_GROUP "1" o-- "0..1" jpegs
-CHANNEL_GROUP "1" o-- "0..n" limits
-CHANNEL_GROUP "1" o-- "0..1" firstSamplePerTimeStampIndex
+' RCM-DX Logging Structure Overview
+@startuml RCM_DX_Logging_overview
+
+  object MEASURINGSYSTEM {
+    a:Element = "MEASURINGSYSTEM"
+  }
+
+  object LOGGING
+
+  object MESSAGES {
+      **dataset:**message
+      **dataset:**level
+      **dataset:**reference
+      **dataset:**timestamp
+  }
+
+  object OUTAGES {
+      **dataset:**message
+      **dataset:**level
+      **dataset:**reference
+      **dataset:**timestamp
+      **dataset:**durations
+  }
+
+  MEASURINGSYSTEM "1" o-- "1" LOGGING
+
+  LOGGING "1" o-- "1" MESSAGES
+  LOGGING "1" o-- "1" OUTAGES
+
+@enduml
+
+' RCM-DX binary tree
+@startuml binaryTree
+
+  storage 64 #Red
+  storage 32
+  storage 16
+  storage 8
+  storage 24
+  storage 48
+  storage 96
+  storage 80
+  storage 112
+  storage 72
+  storage 88
+  storage 104
+  storage 120
+  storage 40
+  storage 56
+
+  64 -- 32
+  64 -- 96
+  96 -- 80
+  96 -- 112
+  80 -- 72
+  80 -- 88
+  112 -- 104
+  112 -- 120
+  32 -- 16
+  32 -- 48
+  16 -- 8
+  16 -- 24
+  48 -- 40
+  48 -- 56
 
 @enduml

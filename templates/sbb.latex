@@ -82,6 +82,7 @@ $if(background-image)$
   \includegraphics[width=\paperwidth]{$background-image$}%
 }
 $endif$
+
 \usepackage{pgfpages}
 \setbeamertemplate{caption}[numbered]
 \setbeamertemplate{caption label separator}{: }
@@ -243,10 +244,10 @@ $if(verbatim-in-note)$
 \usepackage{fancyvrb}
 $endif$
 \usepackage{xcolor}
-\definecolor{default-linkcolor}{HTML}{A50000}
-\definecolor{default-filecolor}{HTML}{A50000}
-\definecolor{default-citecolor}{HTML}{4077C0}
-\definecolor{default-urlcolor}{HTML}{4077C0}
+\definecolor{default-linkcolor}{HTML}{EB0000}
+\definecolor{default-filecolor}{HTML}{A20013}
+\definecolor{default-citecolor}{HTML}{5A5A5A}
+\definecolor{default-urlcolor}{HTML}{2D327D}
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
 \hypersetup{
@@ -361,7 +362,6 @@ $else$
 $endif$
 $if(beamer)$
 $else$
-$if(block-headings)$
 % Make \paragraph and \subparagraph free-standing
 \ifx\paragraph\undefined\else
   \let\oldparagraph\paragraph
@@ -370,8 +370,6 @@ $if(block-headings)$
 \ifx\subparagraph\undefined\else
   \let\oldsubparagraph\subparagraph
   \renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
-\fi
-$endif$
 $endif$
 $if(pagestyle)$
 \pagestyle{$pagestyle$}
@@ -518,7 +516,7 @@ $endif$
 %
 % captions
 %
-\definecolor{caption-color}{HTML}{777777}
+\definecolor{caption-color}{HTML}{767676}
 $if(beamer)$
 $else$
 \usepackage[font={stretch=1.2}, textfont={color=caption-color}, position=top, skip=4mm, labelfont=bf, singlelinecheck=false, justification=$if(caption-justification)$$caption-justification$$else$raggedright$endif$]{caption}
@@ -528,8 +526,8 @@ $endif$
 %
 % blockquote
 %
-\definecolor{blockquote-border}{RGB}{221,221,221}
-\definecolor{blockquote-text}{RGB}{119,119,119}
+\definecolor{blockquote-border}{HTML}{F27E00}
+\definecolor{blockquote-text}{HTML}{767676}
 \usepackage{mdframed}
 \newmdenv[rightline=false,bottomline=false,topline=false,linewidth=3pt,linecolor=blockquote-border,skipabove=\parskip]{customblockquote}
 \renewenvironment{quote}{\begin{customblockquote}\list{}{\rightmargin=0em\leftmargin=0em}%
@@ -594,8 +592,8 @@ $endif$
 %
 $if(tables)$
 
-\definecolor{table-row-color}{HTML}{F5F5F5}
-\definecolor{table-rule-color}{HTML}{999999}
+\definecolor{table-row-color}{HTML}{F6F6F6}
+\definecolor{table-rule-color}{HTML}{A8A8A8}
 
 %\arrayrulecolor{black!40}
 \arrayrulecolor{table-rule-color}     % color of \toprule, \midrule, \bottomrule
@@ -744,6 +742,8 @@ $endif$
 %%
 %% end added
 %%
+
+%\hypersetup{draft}
 
 \begin{document}
 
