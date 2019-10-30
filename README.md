@@ -32,6 +32,8 @@ Als Editor wird "Visual Studio Code" empfohlen, dieser ist kostenlos und ein Lei
 Für die Umwandlung in ein PDF wird das Tool [Pandoc](https://pandoc.org/) verwendet. Dieses ist kostenlos und kann noch viele weitere Ausgabeformate als nur PDF.
 Pandoc versteht einige weitere Befehle im **Markdown**, diese werden in den Unterkapiteln genauer beschrieben!
 
+Eine gute Übersicht bietet das Dokument unter Folgendem Link [pandoc2 Leseprobe](https://kofler.info/wp-content/uploads/pandoc2-leseprobe.pdf) von Michael Kofler.
+
 #### Neue Zeile
 
 Eine neue Zeile kann durch zwei Leerschläge am Ende der Zeile erreicht werden oder durch eine separate leere Zeile.
@@ -58,6 +60,8 @@ Referenzen und Links auf Kapitelüberschriften im Dokument selber, können wie e
 \[Bezeichnung](#titel-der-überschrift)  
 **Ergibt:**  
 [Bezeichnung](#interne-links)  
+
+Bei Verlinkungen intern muss darauf geachtet werden, dass Überschriften (beginnend mit #) nicht doppelt vorkommen. Dies kann bei der Erstellung des PDF's zu Problemen führen!
 
 #### Tabellengrösse
 

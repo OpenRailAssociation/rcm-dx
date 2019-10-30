@@ -20,7 +20,7 @@ java -jar plantuml.jar images.puml -o images/generated
 xcopy images %IMAGE_DIR% /s /e /h
 
 :: Create each secification from markdown original
-pandoc --from markdown --data-dir=%cd% --template sbb --listings --toc RCM-DX-Specification.md -o %PDF_DIR%\RCM-DX-Specification.pdf
+pandoc --from markdown --data-dir=%cd% --template sbb --listings --toc --number-sections RCM-DX-Specification.md -o %PDF_DIR%\RCM-DX-Specification.pdf 
 pandoc -s -c css/sbbTheme.css -A footer.html --toc RCM-DX-Specification.md -o %HTML_DIR%\RCM-DX-Specification.html
 
 :: Create CSS theme from LESS Style file
