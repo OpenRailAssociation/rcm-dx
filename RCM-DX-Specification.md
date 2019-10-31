@@ -78,7 +78,7 @@ Verweise auf ein anderes Kapitel, sehen wie folgt aus: [Verweis auf Kapitel "Hin
 Verweise auf eine Webseite, sehen wie folgt aus: [Link auf eine URL "sbb.ch"$\to$](http://www.sbb.ch)  
 Ein Wort das einen Verweis auf eine Fussnote erhält, sieht wie folgt aus: Fussnote^[Fussnote: Fussnoten werden am Ende der Seite dargestellt.]  
 
-> Dies ist ein wichtiger Hinweis, bitte beachten!
+> Das hier ist ein wichtiger Hinweis, bitte beachten!
 
 #### Diagramme
 
@@ -128,7 +128,7 @@ Attribute werden in dieser Spezifikation wie folgt beschrieben:
 |--|----|--|--|-------|
 | StartTime | 64 bit integer | "SESSION" | yes | Startzeit in Milisekunden, zum Beispiel: "1553237099000000000"  |
 
-**Name:** Der Name des Attribut  
+**Name:** Der Name des Attribute  
 **Data Type:** Primitiver Datentyp des Attributs, diese beschriebt den Typ des Inhaltes im Attribut selber  
 **Parent:** Ein Attribut ist immer einer Gruppe oder einem Datenset zugeordnet, hier wird der Name dieser Gruppe oder des Datensets erwähnt  
 **Mandatory:** Ist das Attribut zwingend notwendig und muss vorhanden sowie einen Wert beinhalten, so steht hier `yes` , ansonsten `no`  
@@ -146,7 +146,7 @@ Nachfolgend eine Auflistung der möglichen Arten, wie Daten im RCM-DX abgelegt w
 |--|-------|
 | Einzelwerte | Einfaches Array von undefinierter Länge. Ergibt ein Datenset. |
 | Indexierte Einzelwerte | Einfaches Array der Dimension 1D. Neben einem Datenset `timestamp` wird ein Datenset `timeindex` erstellt, dass eine Indexierung der Daten enthält und das lesen der Daten vereinfacht. Das Datenset `timeindex` wird im Kapitel [Time Indices](#time-indices) genauer beschrieben |
-| Bild | Ein Bilde, das zu einem definierten Zeitpunkt aufgenommen wurde |
+| Bild | Ein Bild, das zu einem definierten Zeitpunkt aufgenommen wurde |
 | Video | Ein Video das als Stream in mehrere einzelne Blöcke definierter grösse, aufgeteilt und gespeichert wurde |
 
 Die Datenset werden in der lowerCamelCase-Notation[^lower-Camel-Case-Notation] beschrieben. Datensets werden in dieser Spezifikation wie folgt beschrieben:
@@ -156,7 +156,7 @@ Die Datenset werden in der lowerCamelCase-Notation[^lower-Camel-Case-Notation] b
 | timestamp | 64 bit integer | Datenquellengruppe | yes | Einzelwerte |
 
 **Name:** Der Name des Datensets  
-**Data Type:** Primitiver Datentyp des Inhaltes im Datensets, somit der Datentyp der enthaltenen Daten  
+**Data Type:** Primitiver Datentyp des Inhaltes im Datenset, somit der Datentyp der enthaltenen Daten  
 **Parent:** Ein Datenset ist immer einer Gruppe zugeordnet, hier wird der Name dieser Gruppe erwähnt  
 **Mandatory:** Ist das Datenset zwingend notwendig und muss vorhanden sein, so steht hier `yes` , ansonsten `no`  
 **Ablageart:** Eine, der in diesem Kapitel beschriebenen Ablagearten  
@@ -183,7 +183,11 @@ Boolsche Werte (`true`/`false`) werden als `8 bit integer, litle endian` abgebil
 
 Werden Messdaten aufgenommen im 3D Raum, so müssen drei verschiedene Kanäle erstellt werden.
 
-Das Attribut "Unit" des Datensets, kann eine physikalische Einheit sein oder leer bleiben, falls die Daten keiner physikalischen Einheit entsprechen.
+Folgende Attribute sind dieser Art des Datenset zugewiesen:
+
+| Name | Data Type | Parent | Mandatory | Description |
+|---|----|--|--|-----|
+| Unit | string | Datenset | yes | Eine physikalische Einheit oder leer, falls die Daten keiner physikalischen Einheit entsprechen|
 
 ##### Koordinaten
 
@@ -199,25 +203,29 @@ Diese Art der Datenspeicherung erlaubt es, mehrere Einträge pro Messzeitpunkt a
 
 Das Datenset ist wie folgt definiert:
 
-| Name | Date Type | Mandatory | Ablageart |
-|--|------|--|--|
-| cord.CN | 8, 32 oder 64 bit signed integer oder 64 oder 32 bit floating point; (jeweils litle endian) | yes | Einzelwere |
+| Name | Date Type | Parent | Mandatory | Ablageart |
+|--|------|--|--|--|
+| cord.CN | 8, 32 oder 64 bit signed integer oder 64 oder 32 bit floating point; (jeweils litle endian) | Datenquellengruppe | yes | Einzelwere |
 
 HDF5 Chunking ist erlaubt und empfohlen.  
 Die HDF5 Compression ist erlaubt.  
 
-Das Attribut "Unit" des Datensets, kann eine physikalische Einheit sein oder leer bleiben, falls die Daten keiner physikalischen Einheit entsprechen.  
+Folgende Attribute sind dieser Art des Datenset zugewiesen:
+
+| Name | Data Type | Parent | Mandatory | Description |
+|---|----|--|--|-----|
+| Unit | string | Datenset | yes | Eine physikalische Einheit oder leer, falls die Daten keiner physikalischen Einheit entsprechen|
 
 ###### Sample Index
 
-Werden Datensets für Koordinaten angelegt, so muss zwingend ein Datenset mit dem Namen "sampleindex" vorhanden sein. Dieses Datenset beinhaltet pro Messzeitpunkt (pro Eintrag im Datenset "timestamp"), die genaue Anzahl der Messeinträge in dem Datenset, mit der Bezeichnung "cord.CN". Beim lesen und interpretieren der Daten ist diese Information wichtig, da die Daten in den Datenset`s "cord.CN" als Array und ohne weitere Information dazu abgelegt sind.
+Werden Datensets für Koordinaten angelegt, so muss zwingend ein Datenset mit dem Namen "sampleindex" vorhanden sein. Dieses Datenset beinhaltet pro Messzeitpunkt (pro Eintrag im Datenset "timestamp"), die genaue Anzahl der Messeinträge in dem Datenset, mit der Bezeichnung "cord.CN". Beim lesen und interpretieren der Daten ist diese Information wichtig, da die Daten in den Datensets "cord.CN" als Array und ohne weitere Information dazu abgelegt sind.
 
 Die im Datenset "sampleIndex" angegebene Gruppengrösse kann/darf untereinander abweichen.
 
 **Example**  
 Als Beispiel dient hier das Schienenquerprofil. Zu einem Zeitpunkt werden mehrere Punkte einem Schienenprofil gemessen und abgelegt. Es wird jeweils für die X-Achse sowie für die Y-Achse ein Kanal angelegt mit den Namen "cord.C0" und "cord.C1".
 
-Im Datenset "sampleindex" wird nun die Anzahl der zusammengehörenden Einträge aufgenommen. Steht darin zum Beispiel die Zahl "10", so gehören die ersten zehn Einträge von "cord.C0" udn "cord.C1" zusammen. Der erste Eintrag aus "cord.C0" ist der Wert auf der X-Achse und bei "cord.C1" der Wert der Y-Achse und dies gilt für die nächsten 10 Einträge. Nach den ersten zehn Einträgen folgt die nächste Gruppe mit den nächsten zehn Einträgen.
+Im Datenset "sampleindex" wird nun die Anzahl der zusammengehörenden Einträge aufgenommen. Steht darin zum Beispiel die Zahl "10", so gehören die ersten zehn Einträge von "cord.C0" und "cord.C1" zusammen. Der erste Eintrag aus "cord.C0" ist der Wert auf der X-Achse und bei "cord.C1" der Wert der Y-Achse und dies gilt für die nächsten 10 Einträge. Nach den ersten zehn Einträgen folgt die nächste Gruppe mit den nächsten zehn Einträgen.
 
 Nachfolgend ein Bild einer Schienenwuerprofilmessung mit ungefähr 2000 Messpunkten:
 
@@ -270,13 +278,13 @@ Die Bilder werden nach folgendem Muster benannt: `IMG.NNNNNNNNN`, nachfolgend ei
 #### Videos
 
 Wie bei den Bildern können Video in komprimierter oder unkomprimierter Form abgespeichert werden. Das Format wird in einem Attribut hinterlegt, um das lesen der Bilder zu vereinfachen.  
-Videos werden als Stream in einzelne Blöcke abgespeichert. Die Blöcke sind jeweils einzelne Datenset mit einer vorgegebenen Venennung.
+Videos werden als Stream in einzelne Blöcke abgespeichert. Die Blöcke sind jeweils einzelne Datenset mit einer vorgegebenen Benennung.
 
 | Name | Parent | Mandatory |
 |--|--|--|
 | VID | Datenquellengruppe | yes |
 
-Nachfolgend iene Auflistung der Attribute die der Datengruppe `VID` zugewiesen sind:
+Nachfolgend eine Auflistung der Attribute die der Datengruppe `VID` zugewiesen sind:
 
 | Name | Data Type | Parent | Mandatory | Description |
 |---|---|--|--|-----|
@@ -284,9 +292,9 @@ Nachfolgend iene Auflistung der Attribute die der Datengruppe `VID` zugewiesen s
 | DataTyp | string | VID | no | Beschreibung zum Datentyp, wenn kein Standard Video Format, siehe [ContentType ohne Video MIME-Typ](#contenttype-ohne-video-mime-typ) |
 | ResolutionX | 32 bit integer | VID | yes | Auflösung in X-Richtung in Pixel |
 | ResolutionY | 32 bit integer | VID | yes | Auflösung in Y-Richtung in Pixel |
-| FramesPerSecond | 16 bit integer | VID | yes | Anzahl Bilder Pro Sekunde (fps), inder das Video aufgenommen wurde |
+| FramesPerSecond | 16 bit integer | VID | yes | Anzahl Bilder Pro Sekunde (fps), in der das Video aufgenommen wurde |
 | PreambleDuration | 64 bit integer | VID | yes | Zeitdauer des Einleitungsviedeo Bereichs in Nanosekunden  |
-| TrailerDuration | 64 bit integer | VID | yes | Zeitdauer des Abstpannwiveo Bereichs in Nanosekunden |
+| TrailerDuration | 64 bit integer | VID | yes | Zeitdauer des Abspannvideo Bereichs in Nanosekunden |
 
 > TODO: Abklären:
 > Wann gibt es ein Preamble und ein Trailer?
@@ -315,7 +323,7 @@ HDF5 Chunking und HDF5 Compression wird nicht empfohlen.
 
 ### Timestamp
 
-Jeder Eintrag in einem Kanal, hat eine Referenz auf ein Datenset mit dem Namen `timestamp` innerhalb der Datenquellen Gruppe. In diesem `timestamp` Datenset, gibt es gleichviel Einträge wie es Einträge in einem Datenset eines Kanals gibt. Eingetragen wird ein Zeitstempel in Nanosekunden seit dem 01.01.1970 um 00:00 Uhr UTC.  
+Jeder Eintrag in einem Kanal, hat eine Referenz auf ein Datenset mit dem Namen `timestamp` innerhalb der Datenquellengruppe. In diesem `timestamp` Datenset, gibt es gleichviel Einträge wie es Einträge in einem Datenset eines Kanals gibt. Eingetragen wird ein Zeitstempel in Nanosekunden seit dem 01.01.1970 um 00:00 Uhr UTC.  
 
 Die Zeitstempel sind immer in steigender Reienfolge abgelegt und dürfen keine Sprünge enthalten.  
 
@@ -325,7 +333,7 @@ Die Zeitstempel sind immer in steigender Reienfolge abgelegt und dürfen keine S
 
 HDF5 Chunking ist erlaubt und HDF5 Compression wird empfohlen.
 
-Diese Zeitstempel werden entweder anhand einer definierten gefahrenen Strecke oder anhand einer Frequenz aufgezeichnet, dies wird im Kapitel [Common Trigger Distance or Frequence](#common-trigger-distance-or-frequence) genauer Beschrieben. Neben den Zeitstempel folgen die Messmittel dieser Vorgaben und nehmen zum gleichen Zeitpunkt auch Messdaten auf. Ein Zentrales System dient als Taktgeber für die Datenaufnahme aller Systeme (Messdaten und Zeitstempel).
+Diese Zeitstempel werden entweder anhand einer definierten gefahrenen Strecke oder anhand einer Frequenz aufgezeichnet, dies wird im Kapitel [Common Trigger Distance or Frequence](#common-trigger-distance-or-frequence) genauer Beschrieben. Neben den Zeitstempel folgen die Messmittel dieser Vorgabe und nehmen zum gleichen Zeitpunkt auch Messdaten auf. Ein zentrales System dient als Taktgeber für die Datenaufnahme aller Systeme (Messdaten und Zeitstempel).
 
 ### Time Indices
 
@@ -347,14 +355,14 @@ Folgende Attribute sind dem `timeindex` Datenset zugewiesen:
 
 #### Inhalt Datenset Time Indices
 
-Um den Inhalt im Datenset `timeindex` zu verstehen, muss zuerst erklärt werden, wie dieser entstanden ist. Im folgenden Beispiel beschreibt den Vorgang der zum Ergebniss führt und wieder zurück.
+Um den Inhalt im Datenset `timeindex` zu verstehen, muss zuerst erklärt werden, wie dieser entstanden ist. Im folgenden Beispiel beschreibt den Vorgang der zum Ergebnis führt und wieder zurück.
 
 Im Beispiel wollen wir Zeitstempel zwischen $10s$ und $155s$ abspeichern sowie indexieren. Diese Zeitstempel sind im Datenset `timestamp` enthalten. Die Abstände zwischen den einzelnen Zeitstempel folgen keinem einheitlichen Muster.  
 
-Als Erstes definieren wir einen $Offset$, dieser ergibt sich durch den ersten Eintrag im Datenset `timestamp`. In unserem Beispiel ist der erste Eintrag $10s$, somit ist $Offset=10s$. Dieser $Offset$ wird nicht im `timeindex` Datenset 
-Mit dem $Offset$ von $10*10^9ns$ haben wir somit einen Wertbereich von $0ns$ bis $145*10^9ns$ den wir Indexieren.  
+Als Erstes definieren wir einen $Offset$, dieser ergibt sich durch den ersten Eintrag im Datenset `timestamp`. In unserem Beispiel ist der erste Eintrag $10s$, somit ist $Offset=10s$.
+Mit dem $Offset$ von $10*10^9ns$ haben wir somit einen Wertbereich von $0ns$ bis $145*10^9ns$ den wir indexieren.  
 
-Verwenden wir nun eine Blockgrösse von $BlockSize=2x10^9ns$, erhalten wir $72$ Blöcke, die wir Indexieren, da $10s+72*2x10^9ns$ die Werte bis $156s$ abdekt und somit genügend für unseren Wertbereich.  
+Verwenden wir nun eine Blockgrösse von $BlockSize=2x10^9ns$, erhalten wir $72$ Blöcke, die wir indexieren, da $10s+72*2x10^9ns$ die Werte bis $156s$ abdeckt und somit für unseren Wertbereich ausreicht.
 Um alle $72$ Blöcke zu indexieren, benötigen wir nun einen genügend grossen Wert für LogTimeBlocks, wir nehmen einen Wert von $LogTimeBlocks=7$, da $2^7=128$ grösser als $72$ ist.
 
 > Hinweis: Möglich wäre ein LogTimeBlocks Wert von $LogTimeBlocks=6 => 2^6=64$. Alle Werte zwischen $64$ und $72$ würde dann aber nicht abgedekt werden in der Indexierung!
@@ -445,7 +453,7 @@ Bei der Berechnung weiter oben wird immer abgerundet und nicht der nächstgröss
 
 ### Durations
 
-Werden Daten aufgenommen die für eine bestimmte Zeitdauer gültig sind, so wird das Datenset mit dem Namen `duration` zum Datenset `timestamp` hinzugefügt. Der aufgenommene Zeitstempel im Datenset `timestamp`, gibt den Zeitpunkt an, an dem der Wert aufgenommen wurde und in der Datenset `duration` steht, wie lange dieser Wert gültig ist in Nanosekunden. Das Datenset `duration` ist innerhalb einer Datenquellengruppe neben dem Datenset `timestamp`.  
+Werden Daten aufgenommen die für eine bestimmte Zeitdauer gültig sind, so wird das Datenset mit dem Namen `duration` zum Datenset `timestamp` hinzugefügt. Der aufgenommene Zeitstempel im Datenset `timestamp`, gibt den Zeitpunkt an, an dem der Wert aufgenommen wurde und in dem Datenset `duration` steht, wie lange dieser Wert gültig ist in Nanosekunden. Das Datenset `duration` ist innerhalb einer Datenquellengruppe neben dem Datenset `timestamp`.  
 
 | Name | Date Type | Parent | Mandatory | Ablageart |
 |--|---|-----|--|--|
@@ -469,7 +477,7 @@ Im RCM-DX werden die einzelnen Gruppen und Datensets sowie deren Benennung defin
 
 ![RCM-DX Übersicht](images/generated/RCM_DX_Structure.png)
 
-Für einzelne Strukturgruppen wurden eigene, separate und detailliertere Spezifikation geschrieben. An einem Mess- und Inspektionsfahrzeug können mehrere Messmittel verbaut sein. Jedes dieser Messmittel erzeugt neue Kanäle an Daten sie in das RCM-DX einfliessen. Da diese Kanäle für jedes Messmittel unterschiedlich sein kann, wurden die Spezifikationen getrennt. Ein weiterer Grund dafür, ist die Tatsache, dass andere Bahnbetreiber wiederum andere Mess- und Inspektionsmittel einsetzen.
+Für einzelne Strukturgruppen wurden eigene, separate und detailliertere Spezifikation geschrieben. An einem Mess- und Inspektionsfahrzeug können mehrere Messmittel verbaut sein. Jedes dieser Messmittel erzeugt neue Kanäle an Daten, welche in das RCM-DX einfliessen. Da diese Kanäle für jedes Messmittel unterschiedlich sein können, wurden die Spezifikationen getrennt. Ein weiterer Grund dafür, ist die Tatsache, dass andere Bahnbetreiber wiederum andere Mess- und Inspektionsmittel einsetzen.
 
 Nachfolgend in den Unterkategorien werden die einzelnen Gruppen genauer spezifiziert.
 
@@ -541,7 +549,7 @@ Es gibt drei verschiedene Messmodi, die nachfolgend einzeln erklärt werden:
 
 ### Sections Group
 
-Die Gruppe Eine `SECTIONS`, beinhaltet Informationen zu einer Session.
+Die Gruppe `SECTIONS`, beinhaltet Informationen zu einer Session.
 
 | Name | Parent | Mandatory |
 |--|--|--|
@@ -549,7 +557,7 @@ Die Gruppe Eine `SECTIONS`, beinhaltet Informationen zu einer Session.
 
 #### Section Info
 
-In dieser Gruppe sind die Informationen bezüglich der Session selber enthalten.
+In dieser Gruppe sind die Informationen bezüglich der Section selber enthalten.
 
 | Name | Parent | Mandatory |
 |--|--|--|
@@ -597,7 +605,7 @@ In diesem Datenset wird definiert, wie viele Einträge in den Datensets der "Tra
 
 #### Track Info
 
-In dieser Gruppe sind die Informationen bezüglich der Session selber enthalten.
+In dieser Gruppe sind die Informationen bezüglich der Section selber enthalten.
 
 | Name | Parent | Mandatory |
 |--|--|--|
@@ -750,7 +758,7 @@ Pro Zeitstempel, wird im Datenset die Wetterbedingungen eingetragen. Dies könnt
 
 Jedes Messsystem hat seine eigenen Datenquellen, die einen eigenen Namen haben, sowie eigenen Kanälen die wiederum eigene Namen haben. Gemeinsamkeiten werden in dieser Spezifikation beschrieben, alles andere ist jeweils in einer eigenen Spezifikation definiert. Da dieser Teil sich stark von Bahnbetrieben und Messmitteln unterscheidet, wurde auf eine starre Spezifizierung verzichtet, dennoch wird ein gewisser Rahmen vorgegeben.
 
-Für jedes System, das Daten erfasst, wird eine Gruppe erstellt. Der Name der Gruppe ist für pro System eindeutig. Wie sich dieser Name zusammenstellt, ist nicht vorgegeben. Jedes System enthält weitere Untergruppen die am Ende jeweils eine Datenquelle beinhaltet.
+Für jedes System, das Daten erfasst, wird eine Gruppe erstellt. Der Name der Gruppe ist pro System eindeutig. Wie sich dieser Name zusammenstellt, ist nicht vorgegeben. Jedes System enthält weitere Untergruppen die am Ende jeweils eine Datenquelle beinhaltet.
 
 ![Übersicht der Messystem Struktur](images/generated/RCM_DX_MS_overview.png){ width=400px }
 
@@ -773,7 +781,7 @@ Folgende Attribute sind in der Gruppe des Messystems enthalten:
 
 Eine Datenquellengruppe kann mehrere Kanäle und somit mehrere Datenquellen enthalten. Diese Gruppe fasst diese Kanäle zusammen. Die Benennung kann frei gewählt werden, muss aber eindeutig sein.
 
-Für jeden einzelnen Messpunkt, innerhalb eines Datenquellen Gruppe, ist ein Zeitstempel vorhanden. Für eine Datenquellengruppe gibt es zwei Arten der Datenerfassung. Die eine ist immer nach einer definierten Distanz (zum Beispiel alle 25 Zentimeter) und die andere ist die Messdatenaufnahme in einer bestimmten Frequenz (zum Beispiel 4000 Hz).
+Für jeden einzelnen Messpunkt, innerhalb einer Datenquellengruppe, ist ein Zeitstempel vorhanden. Für eine Datenquellengruppe gibt es zwei Arten der Datenerfassung. Die eine ist immer nach einer definierten Distanz (zum Beispiel alle 25 Zentimeter) und die andere ist die Messdatenaufnahme in einer bestimmten Frequenz (zum Beispiel 4000 Hz).
 Die Art wie die Messdaten erfasst wurden, steht in zwei Attributen bei jeder Kanal Gruppe. Eine Beschreibung ist unter [Common Trigger Distance or Frequence](#common-trigger-distance-or-frequence).
 
 #### Attributes
@@ -782,22 +790,22 @@ Folgendes Attribut erhält die Gruppe:
 
 | Name | Data Type | Parent | Mandatory | Description |
 |--|----|--|--|------|
-| Element | string | yes | Datenquellengruppe | Enthält den Typ der Gruppe, dieser ist fix "DATASOURCE" |
+| Element | string | Datenquellengruppe | yes | Enthält den Typ der Gruppe, dieser ist fix "DATASOURCE" |
 
 #### Example
 
-In unserem Beispiel wird nun der Name der Datenquellen Gruppe vergeben, die unsere Umgebungsmessdaten enthalten soll, diese nennen wir `ENVIRONMENT`.  
+In unserem Beispiel wird nun der Name der Datenquellengruppe vergeben, die unsere Umgebungsmessdaten enthalten soll, diese nennen wir `ENVIRONMENT`.  
 In dieser Gruppe befindet sich nun auch das Dataset `timestamp`.  
 
 #### Timestamp Dataset
 
-In jeder Datenquellen Gruppe befindet sich ein Datenset mit dem Namen `timestamp`. Darin sind alle Zeitstempel, an dem eine Messung aufgenommen wurde. Die grösse dieser Liste an Zeitstempeln, ist gleich gross wie die der Datensets pro Kanal.
+In jeder Datenquellengruppe befindet sich ein Datenset mit dem Namen `timestamp`. Darin sind alle Zeitstempel, an dem eine Messung aufgenommen wurde. Die Grösse dieser Liste an Zeitstempeln, ist gleich gross wie die der Datensets pro Kanal.
 
 Eine genauere Beschreibung dazu ist im Kapitel [Timestamp Array](#timestamp) zu finden!
 
 ### Channel Group
 
-Eine Kanalgruppe enthält Metadaten zu den eigentlichen Messdaten und somit zu den verschiedenen Kanälen. Die Benennung kann frei gewählt werden, muss aber innerhalb der Datenquellen Gruppe eindeutig sein.
+Eine Kanalgruppe enthält Metadaten zu den eigentlichen Messdaten und somit zu den verschiedenen Kanälen. Die Benennung kann frei gewählt werden, muss aber innerhalb der Datenquellengruppe eindeutig sein.
 
 Folgende Attribute sind in dieser Gruppe enthalten:  
 
@@ -841,7 +849,7 @@ Werden die Daten in einer gewissen Frequenz aufgenommen, so wir beim Attribut `C
 
 #### Channel Type
 
-Definiert wie ein Wert entstanden ist. Dieser kann gemessen, errechnet oder aus einer zuvor definierten Datenquelle stammen, die von da ausgelesen und in die Datei eingefügt wurden.
+Definiert wie ein Wert entstanden ist. Dieser kann gemessen, errechnet oder aus einer zuvor definierten Datenquelle stammen, die von da ausgelesen und in die Datei eingefügt wurde.
 
 Folgende Werte sind möglich:
 
@@ -855,7 +863,7 @@ Ein Beispiel für Referenzwerte, sind definierte Sollwerte die aus einer anderen
 #### Neighbor
 
 Verweist auf den Namen eines benachbarten Kanals. Dies kann zum Beispiel bei der Messung der Gleistemperatur der linken Schiene, die rechte Schiene sein.
-Somit würde im Attribut "neighbor" von des Kanals "TEMP_RAIL_L" der Name "TEMP_RAIL_L" stehen und umgekehrt.
+Somit würde im Attribut `neighbor` des Kanals "TEMP_RAIL_**L**" der Name "TEMP_RAIL_**R**" stehen und umgekehrt.
 
 #### Position Offset
 
@@ -904,15 +912,15 @@ Jede Kanalgruppe erhält ein Datenset mit den eigentlichen Messdaten:
 |--|---|--|
 | data | HDF5 Dataset | yes |
 
-> Es gibt genau so viele Messdateneinträge wie es Zeitstempel im Dataset "timestamp" gibt, das der Datenquellen Gruppe beiliegt.
+> Es gibt genau so viele Messdateneinträge wie es Zeitstempel im Dataset `timestamp` gibt, das der Kanalgruppe beiliegt.
 
-Das Datenset benötigt weitere Informationen, diese werden als Attribute dazu angegeben:
+Das Datenset benötigt weitere Informationen, diese werden als Attribute angegeben:
 
 | Name | Date Type | Parent | Mandatory | Ablageart |
 |--|----|----|--|--|
 | Unit | string | Kanalgruppe | yes | Einzelwerte |
 
-**Unit:** Die Einheit der Messdaten, wie zum Beispiel "Millimeter"
+**Unit:** Die physikalische Einheit der Messdaten, wie zum Beispiel "Millimeter". Falls keine physikalische Einheit den Daten zugewiesen werden kann, bleibt dieses Attribut leer.
 
 Das Datenset und die möglichen Daten die abgespeichert werden können, wird in einem eigenen Kapitel genauer beschrieben: [Datenset](#hdf5-datenset)
 
@@ -1005,7 +1013,7 @@ Die Gruppe `TOPOLOGY` enthält folgende Attribute:
 
 **DfAExportTimestamp:**Zeitpunkt, an dem die DfA exportiert wurde und somit ein Verweis auf die Version
 
-Die DfA (Datenbank feste Anlagen) ist ein SBB Konstrukt und wieder Spiegelt das Streckennetz der SBB. Die Daten stammen aus einer Datenbank und werden als Datei an die Messfahrzeuge der SBB verteilt. Diese können die darin enthaltenen Informationen lesen und fügen diese auch dem RCM-DX hinzu. Für die Positionierung wird diese DfA verwendet und es ist somit möglich, die gemessenen Daten einem Objekt aus dem Streckennetz zuzuordnen.
+Die DfA (Datenbank feste Anlagen) ist ein SBB Konstrukt und wiederspiegelt das Streckennetz der SBB. Die Daten stammen aus einer Datenbank und werden als Datei an die Messfahrzeuge der SBB verteilt. Diese können die darin enthaltenen Informationen lesen und fügen diese auch dem RCM-DX hinzu. Für die Positionierung wird diese DfA verwendet und es ist somit möglich, die gemessenen Daten einem Objekt aus dem Streckennetz zuzuordnen.
 
 ### Tracks Group
 
@@ -1031,8 +1039,8 @@ Folgende Datensets sind in dieser Gruppe enthalten, davon werden einige in den U
 | trackType | 8 bit signed integer, little endian | TRACKS | yes | Einzelwerte |
 
 **direction:** Wird in einem eigenen Kapitel bescheieben: [direction](#direction)  
-**id:** Eindeutige ID des Gleisstrangs. Diese ist in Metern angegeben  
-**gtgId:** Eindeutige GTG-ID eines GTG-Strang. Diese ID ist als UUID abgelegt  
+**id:** Eindeutige ID des Gleisstrangs. 
+**gtgId:** Eindeutige GTG-ID eines GTG-Strang, diese ID ist als UUID abgelegt  
 **length:** Die länge des Gleisstrangs  
 **name:** Name des Gleisstrangs  
 **nrLine:** Nummer der Linie für den Gleisstrangs  
@@ -1088,14 +1096,14 @@ Folgende Datensets sind in dieser Gruppe enthalten:
 
 | Name | Date Type | Parent | Mandatory | Ablageart |
 |--|----|----|--|--|
-| id | 32 bit signed integer, little endian | yes | Einzelwerte |
+| id | 32 bit signed integer, little endian | LINES | yes | Einzelwerte |
 | name | string | LINES | yes | Einzelwerte |
 | firstStation | string | LINES | yes | Einzelwerte |
 | lastStation | string | LINES | yes | Einzelwerte |
 | fromKilometer | string | LINES | yes | Einzelwerte |
 | toKilometer | string | LINES | yes | Einzelwerte |
 
-**id:** Definiert die ID der Linie. Diese ist Eindeutig pro ID  
+**id:** Definiert die ID der Linie, diese ist Eindeutig  
 **name:** Der Name der Linie  
 **firstStation:** Der Name der ersten Station dieser Linie  
 **lastStation:** Der Name der letzten Station dieser Linie  
@@ -1176,7 +1184,7 @@ Folgende Datensets sind in dieser Gruppe enthalten:
 | positionEnd | 32 bit signed integer | TRACKOBJECTS | yes | Einzelwerte |
 | extraInfo | string | TRACKOBJECTS | yes | Einzelwerte |
 
-**trackId:** Enthält die ID des Objektes  
+**trackId:** Enthält die ID des auf einen Gleisstrang
 **type:** Typ des Objekts  
 **positionStart:** Startposition des Objekts in Meter  
 **positionEnd:** Endposition des Objekts in Meter  
@@ -1245,7 +1253,7 @@ Folgende Datensets sind in dieser Gruppe enthalten:
 ### Events Group  
 
 Die Event-Gruppe dient der Ablage von Ereignissen, die während der Aufnahme von Daten geschehen sind. Ereignisse sind Kanal-, System- oder Session gebunden und haben einen Link auf darauf. Neben Ereignissen können auch Protokolleinträge erstellt werden, diese werden im Kapitel [Record Group](#record-group) genauer beschrieben.
-Systeme können zum Beispiel ein Ereignis bei einer Grenzwertüberschreitung auslösen. Ereignisse sind immer zeitgebunden was bedeutet, ein Ereignis beinhaltet den genauen Zeitpunkt des Auftretens sowie die Zeitdauer des Ereignisses. Die Dauer kann auch Null sein, somit ist das Ereignis genau zum angegebenen Zeitpunkt aufgetreten. 
+Systeme können zum Beispiel ein Ereignis bei einer Grenzwertüberschreitung auslösen. Ereignisse sind immer zeitgebunden was bedeutet, ein Ereignis beinhaltet den genauen Zeitpunkt des Auftretens sowie die Zeitdauer des Ereignisses. Die Dauer kann auch Null sein, somit ist das Ereignis genau zum angegebenen Zeitpunkt aufgetreten.  
 
 | Name | HDF5 Type | Parent | Mandatory |
 |--|--|---|--|
@@ -1305,7 +1313,7 @@ In der Liste "eventtype" wird der Typ, des zu diesem Zeitpunkt aufgenommenen Ere
 ##### Defect
 
 Ein Defekt kann zum Beispiel, ein Bild einer Schiene sein, das eine Beschädigung der Oberfläche aufzeigt. Dieser Fehler wird von einem System aufgenommen. Es kann vorkommen, dass dieser Fehler jedoch keiner ist (falsch erkannt), diese Information kann im Nachhinein angegeben werden (Attribut "PossibleValidationResults").
-Defekte sind immer Kanal Gebunden und von einem System aufgenommen oder ausgewertet.
+Defekte sind immer Kanal gebunden und von einem System aufgenommen oder ausgewertet.
 Nachfolgend werden die Elemente und Attribute, die in einem *Defect* als XML vorkommen, genauer beschrieben.
 
 Das XML-Schema ist in der Datei [EventsDefect](#events-defect) definiert, das dieser Spezifikation beiliegt.
@@ -1334,7 +1342,7 @@ Nachfolgend die Attribute des Root-Elements "Defect":
 | Parameter1Value | Wert des Parameters 1 | Defect |
 | Parameter2Name | Name des Parameters 2 | Defect |
 | Parameter2Value | Wert des Parameters 2 | Defect |
-| Parameter3Name | Name des Parameters 2 | Defect |
+| Parameter3Name | Name des Parameters 3 | Defect |
 | Parameter3Value | Wert des Parameters 3 | Defect |
 | ID | Einmalige Nummer zur Identifikation des Fehlers | Defect |
 
@@ -1406,7 +1414,7 @@ Das XML-Schema ist in der Datei [EventsGeneric](#events-generic) definiert, das 
 | Result | Resultat der Konsistenzprüfung. | Consistency |
 | ID | Eindeutige ID des Ereignisses (UUID) | Consistency |
 
-**Result:** Das eigentliche Ergebniss der Konsistenzprüfung. Jedes System das eine Konsistenzprüfung durchführt, hat unterschiedliche Resultate, die wiederum in deren Spezifikation genauer beschrieben werden müssen.
+**Result:** Das eigentliche Ergebnis der Konsistenzprüfung. Jedes System das eine Konsistenzprüfung durchführt, hat unterschiedliche Resultate, die wiederum in deren Spezifikation genauer beschrieben werden müssen.
 
 #### Reference "reference"
 
@@ -1467,7 +1475,7 @@ Die HDF5 Compression ist erlaubt.
 
 #### Reference "reference"
 
-Beinhaltet eine Liste mit Einträgen, die den Namen des Systems beinhalten, welches das diesen ausgelöst hat.
+Beinhaltet eine Liste mit Einträgen, die den Namen des Systems beinhalten, welches diesen ausgelöst hat.
 
 | Name | Date Type | Parent | Mandatory | Ablageart |
 |--|----|----|--|--|
@@ -1543,8 +1551,8 @@ In dieser Gruppe gibt es zwei Datensets enthalten:
 | key | string | CONFIGURATION | yes | Einzelwerte |
 | value | string or binary | CONFIGURATION | yes | Einzelwerte |
 
-**key:** In diesem Datenset wird der Name des Messystems angegeben, zu dem die abgelegte Konfiguration gehört.
-**value:** In diesem Datentset wird die eigentliche Konfiguration abgelegt. Diese Konfigutation kann Binär oder als Zeichenkette abgelegt werden.
+**key:** In diesem Datenset wird der Name des Messystems angegeben, zu dem die abgelegte Konfiguration gehört.  
+**value:** In diesem Datentset wird die eigentliche Konfiguration abgelegt. Diese Konfigutation kann Binär oder als Zeichenkette abgelegt werden.  
 
 ### Data Processing Group
 
