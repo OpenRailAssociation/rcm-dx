@@ -175,7 +175,7 @@ Neben dem "HDF5 Compression" gibt es das "HDF5 Chunking" für Daten innerhalb ei
 
 #### Einzelwerte
 
-Kanäle, die einzelne Messwerte erfassen, enthalten ein Datenset mit dem Namen "data", dieses Dataset ist obligatorisch. Einzelwerte werden in diesem Datenset als 1D Array abgelegt, die Länge dieses Array's (oder Liste), ist dabei nicht begrenzt.
+Kanäle, die einzelne Messwerte erfassen, enthalten ein Datenset mit dem Namen "data", dieses Dataset ist obligatorisch. Einzelwerte werden in diesem Datenset als 1D Array abgelegt, die Länge dieses Array`s (oder Liste), ist dabei nicht begrenzt.
 
 Die möglichen Datentypen sind durch die HDF5 Group definiert, und können auf der Webseite der HDF5 Group nachgelesen werden.
 
@@ -210,7 +210,7 @@ Das Attribut "Unit" des Datensets, kann eine physikalische Einheit sein oder lee
 
 ###### Sample Index
 
-Werden Datensets für Koordinaten angelegt, so muss zwingend ein Datenset mit dem Namen "sampleindex" vorhanden sein. Dieses Datenset beinhaltet pro Messzeitpunkt (pro Eintrag im Datenset "timestamp"), die genaue Anzahl der Messeinträge in dem Datenset, mit der Bezeichnung "cord.CN". Beim lesen und interpretieren der Daten ist diese Information wichtig, da die Daten in den Datenset's "cord.CN" als Array und ohne weitere Information dazu abgelegt sind.
+Werden Datensets für Koordinaten angelegt, so muss zwingend ein Datenset mit dem Namen "sampleindex" vorhanden sein. Dieses Datenset beinhaltet pro Messzeitpunkt (pro Eintrag im Datenset "timestamp"), die genaue Anzahl der Messeinträge in dem Datenset, mit der Bezeichnung "cord.CN". Beim lesen und interpretieren der Daten ist diese Information wichtig, da die Daten in den Datenset`s "cord.CN" als Array und ohne weitere Information dazu abgelegt sind.
 
 Die im Datenset "sampleIndex" angegebene Gruppengrösse kann/darf untereinander abweichen.
 
@@ -276,7 +276,7 @@ Videos werden als Stream in einzelne Blöcke abgespeichert. Die Blöcke sind jew
 |--|--|-|
 | VID | Datenquellengruppe | yes |
 
-Nachfolgend iene Auflistung der Attribute die der Datengruppe `VID` zugewiesen sind: 
+Nachfolgend iene Auflistung der Attribute die der Datengruppe `VID` zugewiesen sind:
 
 | Name | Data Type | Parent | Mandatory | Description |
 |---|--|-|--|-----|
@@ -388,15 +388,15 @@ Als Nächstes errechnen wir für jeden Zeitstempel, die passenden Nummer des ent
 
 $BlockNumber=\frac{timestamp - Offset}{BlockSize}$
 
-Jede $BlockNumber$ erhält eine Indexnummer aufsteigend, beginnend mit Null bis 40. Diese dient uns später für die Bestimmung der Offset Position die in das Datenset 'timeindex' geschrieben wird.
+Jede $BlockNumber$ erhält eine Indexnummer aufsteigend, beginnend mit Null bis 40. Diese dient uns später für die Bestimmung der Offset Position die in das Datenset `timeindex` geschrieben wird.
 Nachfolgend die berechneten $BlockNumber$ und der dazugehörige Zeitstempel, als Übersicht in einer Tabelle:
 
 ![Tabellenübersicht 1: $BlockNumber$ zu jedem Zeitstempel](images/TimeIndicesExampleTable1.png)
 
 ![Tabellenübersicht 2: $BlockNumber$ zu jedem Zeitstempel](images/TimeIndicesExampleTable2.png)
 
-Im nächsten Schritt verwenden wir die zuvor erstellte Tabelle des binären Baums und schreiben für jeden Eintrag, den entsprechende $BlockNummer$ in das Datenset 'timeindex'.
-Die erste Nummer des binären Baumes ist $64$. Somit suchen wir in der erstellten Tabelle die gröstmögliche $BlockNumber$, die kleiner oder gleich dem Wert $64$ ist. Somit finden wir die Nummer $63$ in der Tabelle mit dem Index $35$. Somit schreiben wir die Zahl $35$ in das Datenset 'timeindex'. Der zweite der Tabelle mit dem binären baum, hat den Wert $32$. In der Tabelle mit den $BlockNumber$ finden wir die Nummer $32$, somit wird die Zahl $32$ in das Datenset 'timeindex' geschrieben. Nun folgt die Zahl $96$, für diese gibt es keinen Eintrag in der tabelle mit den $BlockNumber$, somit schreiben wir die eine $-1$ in das Datenset 'timeindex'. Führen wir dies so weiter, erhalten wir folgende Tabelle, die das Datenset 'timeindex' abbildet:
+Im nächsten Schritt verwenden wir die zuvor erstellte Tabelle des binären Baums und schreiben für jeden Eintrag, den entsprechende $BlockNummer$ in das Datenset `timeindex`.
+Die erste Nummer des binären Baumes ist $64$. Somit suchen wir in der erstellten Tabelle die gröstmögliche $BlockNumber$, die kleiner oder gleich dem Wert $64$ ist. Somit finden wir die Nummer $63$ in der Tabelle mit dem Index $35$. Somit schreiben wir die Zahl $35$ in das Datenset `timeindex`. Der zweite der Tabelle mit dem binären baum, hat den Wert $32$. In der Tabelle mit den $BlockNumber$ finden wir die Nummer $32$, somit wird die Zahl $32$ in das Datenset `timeindex` geschrieben. Nun folgt die Zahl $96$, für diese gibt es keinen Eintrag in der tabelle mit den $BlockNumber$, somit schreiben wir die eine $-1$ in das Datenset `timeindex`. Führen wir dies so weiter, erhalten wir folgende Tabelle, die das Datenset `timeindex` abbildet:
 
 | NodeNumber | Inhalt `timeindex` |
 |:--:|:--:|
@@ -1769,9 +1769,7 @@ Weiter ist ein `timestamp` Datenset notwendig. Darin der Erstellungszeitpunkt de
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
-  elementFormDefault="qualified">
-
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
   <xs:simpleType name="restrictedString">
     <xs:restriction base="xs:string">
       <xs:minLength value="1" />
@@ -1869,7 +1867,7 @@ Weiter ist ein `timestamp` Datenset notwendig. Darin der Erstellungszeitpunkt de
   </xs:simpleType>
   <xs:simpleType name="mimeType">
     <xs:restriction base="xs:string">
-      <xs:pattern value="[!#$%'*+\-0-9A-Z\^_`a-z{|}~]+/[!#$%'*+\-0-9A-Z\^_`a-z{|}~]+(; *[^;]+)*" />
+      <xs:pattern value="[!#$%'*+\-0-9A-Z\^_'a-z{|}~]+/[!#$%'*+\-0-9A-Z\^_'a-z{|}~]+(; *[^;]+)*" />
     </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="nonEmptyString">
@@ -1879,7 +1877,8 @@ Weiter ist ein `timestamp` Datenset notwendig. Darin der Erstellungszeitpunkt de
   </xs:simpleType>
   <xs:simpleType name="UUID">
     <xs:restriction base="xs:string">
-      <xs:pattern value="(urn:uuid:)?[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}|\{[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}\}" />
+      <xs:pattern
+        value="(urn:uuid:)?[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}|\{[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}\}" />
     </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="vehicleNumber">
