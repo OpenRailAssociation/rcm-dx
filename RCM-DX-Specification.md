@@ -1,6 +1,6 @@
 ---
 title: "RCM-DX Specification"
-subtitle: "Version 0.30"
+subtitle: "Version 1.0.0"
 keywords: [RCM-DX, Specification]
 logo: "images/SBB-Logo.png"
 logo-width: 150
@@ -48,7 +48,7 @@ toc-own-page: true
 | V0.26 | 28.11.2018 | Pascal Brem (SCS) | New minor version for the topology attributes. |
 | V0.27 | 08.01.2019 | Pascal Brem (SCS) | New availability group. |
 | V0.28 | 05.06.2019 | Pascal Brem (SCS) | New switchtracks in the DfA |
-| V1.0 | 29.10.2019 | Michael Ammann (SBB) | Komplette Änderung des Designs, Anpassung der Struktur RCM-DX sowie inhaltliche Änderungen die einen Major Release der Spezifikation und des RCM-DX Formats ergeben. |
+| V1.0.0| 29.10.2019 | Michael Ammann (SBB) | Komplette Änderung des Designs, Anpassung der Struktur RCM-DX sowie inhaltliche Änderungen die einen Major Release der Spezifikation und des RCM-DX Formats ergeben. |
 
 ## Approval
 
@@ -79,7 +79,11 @@ Eine Erweiterung dieser Spezifikation ist erlaubt, jedoch ist nicht garantiert, 
 
 #### Versionierung der Spezifikation
 
-Das RCM-DX Datenformat unterliegt Änderungen. Wird 
+Das RCM-DX Datenformat unterliegt Änderungen, diese sind ersichtlich durch die Versionsnummer im Dokument. Die Versionsnummer besteht aus drei Zahlen die durch einen Punkt getrennt wurden und setzt sich wie folgt zusammen: **[Major].[Minor].[Patch]**. Beispiel: **1.0.0**
+
+**Major:** Zeigt eine Änderung die für das Datenformat grosse Umstellung bedeuten und nicht Rückwärts kompatibel sind. Zum Beispiel die Änderung der Strukturen oder Benennungen von bestehenden Gruppen usw.
+**Minor:** Kleinere Änderungen, die eine Erweiterung darstellen und immer noch Rückwärts kompatibel sind. Zum Beispiel das Definieren neuer Gruppen für Datensets oder neue Datentypen usw.
+**Patch:** Hinweis auf Fehlerbehebungen. Dies können Anpassungen von Beschreibungen in dieser Dokumentation sein, alles was in dieser Spezifikation angepasst wird aber die Struktur des RCM-DX nicht beeinflusst.
 
 #### Text Formatierungen
 
