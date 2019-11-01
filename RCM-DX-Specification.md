@@ -72,6 +72,17 @@ Diese Spezifikation können andere Bahnbetreiber ebenfalls verwenden. Aus diesem
 
 ### Hinweis
 
+#### RCM-DX Struktur
+
+Die in diesem Dokument beschriebene Struktur (RCM-DX), definiert Gruppen und Datensets sowie Attribute, die für Software Lösungen, die dieses Format unterstützen, eingehalten werden muss.  
+Eine Erweiterung dieser Spezifikation ist erlaubt, jedoch ist nicht garantiert, dass die Daten von bestehenden Systemen gelesen sowie verarbeitet werden können. Dies muss bei einem Datenaustausch berücksichtigt werden.  
+
+#### Versionierung der Spezifikation
+
+Das RCM-DX Datenformat unterliegt Änderungen. Wird 
+
+#### Text Formatierungen
+
 Die einzelnen Formatierungen von Text, werden hier kurz aufgezeigt, da diese das Lesen dieser Spezifikation deutlich vereinfachen.
 
 Verweise auf ein anderes Kapitel, sehen wie folgt aus: [Verweis auf Kapitel "Hinweis"](#hinweise)  
