@@ -66,28 +66,28 @@ toc-own-page: true
 
 ### Motivation  
 
-Um die Sicherheit der Reisenden in den SBB Schienenfahrzeugen sicherzustellen, überprüft und repariert die SBB ihr Schienennetz regelmässig. Die Überprüfung wird neben den manuellen Messungen auch automatisch durchgeführt, dies mithilfe von Mess- und Diagnosefahrzeugen. Bei den Messungen fällt eine riesige Datenmenge an, die danach einfach verarbeitet und archiviert werden soll.  
-Für die Darstellung und Weiterverarbeitung dieser Daten, wurde bereits ein ganzes Ökosystem aufgebaut. Aus diesem Grund soll mit dieser Spezifikation und somit dem RCM-DX, eine definierte Schnittstelle beschrieben werden, damit Umsysteme die sich an diese Spezifikation richten, die Daten in irgend einer Form, weiterverarbeiten können.  
-Diese Spezifikation können andere Bahnbetreiber ebenfalls verwenden. Aus diesem Grund liegt diese Spezifikation der Öffentlichkeit zur Verfügung. Die Weiterentwicklung wird durch die SBB getrieben, diese ist auch für die Koordination und das Release dieser Spezifikation verantwortlich.
+Um die Sicherheit der Reisenden in den SBB Schienenfahrzeugen sicherzustellen überprüft und repariert die SBB ihr Schienennetz regelmässig. Die Überprüfung wird neben den manuellen Messungen auch automatisch durchgeführt, dies mithilfe von Mess- und Diagnosefahrzeugen. Bei den Messungen fällt eine riesige Datenmenge an, die danach einfach verarbeitet und archiviert werden soll.  
+Für die Darstellung und Weiterverarbeitung dieser Daten wurde bereits ein ganzes Ökosystem aufgebaut. Aus diesem Grund soll mit dieser Spezifikation von RCM-DX ein definiertes Format beschrieben werden, damit Umsysteme, die diese Spezifikation verwenden, die Daten kontrolliert weiterverarbeiten können.  
+Diese Spezifikation richtet sich auch an weitere Bahnbetreiber. Aus diesem Grund liegt diese Spezifikation der Öffentlichkeit zur Verfügung. Die Weiterentwicklung wird durch die SBB getrieben, diese ist auch für die koordinierte Weiterentwickung und die Freigabe der Spezifikation verantwortlich.
 
 ### Hinweis
 
 #### RCM-DX Struktur
 
-Die in diesem Dokument beschriebene Struktur (RCM-DX), definiert Gruppen und Datensets sowie Attribute, die für Software Lösungen, die dieses Format unterstützen, eingehalten werden muss.  
-Eine Erweiterung dieser Spezifikation ist erlaubt, jedoch ist nicht garantiert, dass die Daten von bestehenden Systemen gelesen sowie verarbeitet werden können. Dies muss bei einem Datenaustausch berücksichtigt werden.  
+RCM-DX definiert eine Struktur aus HDF5-Gruppen, Datensets sowie Attributen, die Softwarelösungen, die dieses Format verwenden, einhalten müssen.  
+Die Erweiterung der Spezifikation ist erlaubt. Es ist jedoch zu berücksichtigen, dass dadurch solche Daten von bestehenden Systemen eventuell nicht mehr gelesen oder verarbeitet werden können.  
 
 #### Versionierung
 
-Das RCM-DX Datenformat unterliegt Änderungen, diese sind ersichtlich durch die Versionsnummer im Dokument, siehe Kapitel [Root Group](#root-group). Die Versionsnummer besteht aus drei Zahlen die durch einen Punkt getrennt wurden und setzt sich wie folgt zusammen: **[Major].[Minor].[Patch]**. Beispiel: **1.0.0**  
+Das RCM-DX Datenformat unterliegt Änderungen, diese sind ersichtlich durch die Versionsnummer im Dokument, siehe Kapitel [Root Group](#root-group). Die Versionsnummer besteht aus drei durch Punkte getrennte Zahlen und setzt sich wie folgt zusammen: **[Major].[Minor].[Patch]**. Beispiel: **1.0.0**  
 
-**Major:** Zeigt eine Änderung die für das Datenformat grosse Umstellung bedeuten und nicht Rückwärts kompatibel sind. Zum Beispiel die Änderung der Strukturen oder Benennungen von bestehenden Gruppen usw.  
-**Minor:** Kleinere Änderungen, die eine Erweiterung darstellen und immer noch Rückwärts kompatibel sind. Zum Beispiel das Definieren neuer Gruppen für Datensets oder neue Datentypen usw.  
-**Patch:** Hinweis auf Fehlerbehebungen. Dies können Anpassungen von Beschreibungen in dieser Dokumentation sein, alles was in dieser Spezifikation angepasst wird, aber die Struktur des RCM-DX nicht beeinflusst.  
+**Major:** Zeigt grosse Änderung des Datenformat an, die nicht Rückwärts kompatibel sind. Beispiele dafür sind die Änderung von Strukturen oder die Benennungen von bestehenden Gruppen.  
+**Minor:** Kleinere Änderungen, die eine Erweiterung darstellen und immer noch Rückwärts kompatibel sind. Beispiele dafür sind das Definieren neuer Gruppen für Datensets oder neue Datentypen usw.  
+**Patch:** Hinweis auf Fehlerbehebungen. Dies können Anpassungen von Beschreibungen in der Dokumentation sein, das heisst Änderungen dieser Spezifikation, die die Struktur des RCM-DX nicht beeinflusst.  
 
 #### Text Formatierungen
 
-Die einzelnen Formatierungen von Text, werden hier kurz aufgezeigt, da diese das Lesen dieser Spezifikation deutlich vereinfachen.
+Folgende typographische Konventionen werden verwendet, um das Lesen der Spezifikation zu vereinfachen:
 
 Verweise auf ein anderes Kapitel, sehen wie folgt aus: [Verweis auf Kapitel "Hinweis"](#hinweise)  
 Verweise auf eine Webseite, sehen wie folgt aus: [Link auf eine URL "sbb.ch"$\to$](http://www.sbb.ch)  
@@ -97,17 +97,17 @@ Ein Wort das einen Verweis auf eine Fussnote erhält, sieht wie folgt aus: Fussn
 
 #### Diagramme
 
-Im nachfolgenden Bild eine Übersicht eines verwendeten Diagrammtyps und dessen Elemente:
+Im nachfolgenden Bild zeigt ein Beispiel eines verwendeten Diagrammtyps und dessen Elemente:
 
 ![RCM-DX Diagramm Übersicht](images/generated/RCM_DX_diagram_example.png)
 
 ## Definitionen
 
-In diesem Dokument werden neben den inhaltlichen Beschreibungen auch Technische Restriktionen spezifiziert. Dieses Kapitel gibt eine Übersicht über die verwendeten Datentypen, Arten von Benennungen und vielen weiteren wichtigen Punkten.
+In diesem Dokument werden neben den inhaltlichen Beschreibungen auch technische Restriktionen definiert. Dieses Kapitel gibt eine Übersicht über verwendete Datentypen, Arten von Benennungen und weitere wichtige Punkte.
 
 ### Dateibenennungen
 
-Dateien die der RCM-DX Spezifikation folgen, sollen einheitlich benannt werden. Die Benennung soll folgendem Muster folgen:
+Dateien, die der RCM-DX Spezifikation folgen, werden einheitlich benannt. Die Benennung hält folgendes Muster ein:
 
 `yyyymmdd-hhmmss_MESSSYSTEM_[created]-yyyymmdd-hhmmss.rcmdx`
 
@@ -119,7 +119,7 @@ Beschreibung der Elemente:
 |--|------|
 | `yyyymmdd` | Datum: Jahr vierstellig, Monat zweistellig, Tag zweistellig. |
 | `hhmmss` | Zeit: Stunden zweistellig, Minuten zweistellig, Sekunden zweistellig |
-| `MESSSYSTEM` | Hier folgt das eindeutige Kurzzeichen des Messsystems wie in den Spezifikationen definiert. Zum Beispiel "TGMS" |
+| `MESSSYSTEM` | Hier folgt das eindeutige Kurzzeichen des Messsystems, wie in den Spezifikationen definiert. Zum Beispiel "TGMS" |
 | `[created]` | Das Wort "created" das darauf hinweist, dass danach das Datum und die Zeit der Erstellung der Datei folgt. |
 | "-" oder "_" oder "." | Trennzeichen |
 | `.rcmdx` | Dateiendung des RCM-DX Dateiformats. |
@@ -133,7 +133,7 @@ Beschreibung der Elemente:
 
 
 
-### Primitive Datentypen und andere
+### Primitive und erweiterte Datentypen
 
 Mögliche Datentypen für Kanäle sollen aus der HDF5 Spezifikation entnommen werden.  
 
@@ -387,7 +387,7 @@ Diese Zeitstempel werden entweder anhand einer definierten gefahrenen Strecke od
 
 ### Time Indices
 
-Für ein schnelles finden von Zeitstempeln wird dieses Datenset zusätzlich zum Datenset `timestamp` erstellt. Das Zeitindex Datenset speichert einen Offsetwert einer Position von Zeitstempel-Gruppen ab und ist in der `Datasource Group`, auf gleicher Ebene wie das Datenset `timestamp`. Eine genaue Beschreibung zum Inhalt, ist im nachfolgenden Kapitel [Inhalt Datenset Time Indices](#inhalt-datenset-time-indices) zu finden.
+Für ein schnelles finden von Zeitstempeln wird dieses Datenset zusätzlich zum Datenset `timestamp` erstellt. Das Zeitindex Datenset speichert einen Offsetwert einer Position von Zeitstempel-Gruppen ab und befindet sich in der `Datasource Group`, auf gleicher Ebene wie das Datenset `timestamp`. Eine genaue Beschreibung zum Inhalt ist im nachfolgenden Kapitel [Inhalt Datenset Time Indices](#inhalt-datenset-time-indices) zu finden.
 
 | Name | Date Type | Parent | Mandatory | Ablageart |
 |--|----|----|--|--|
