@@ -17,7 +17,7 @@ Dies ist eine Vorlage für weitere Spezifikationen für Messmittel innerhalb dem
 ## History
 
 | Version | Datum | Autor | Beschreibung |
-|-|-|--|----|
+|--|--|----|------|
 | V0.1 | 24.10.2019 | Michael Ammann (SBB) | Erstellung der Vorlage. Diese Seile ersetzen! |
 
 ## Approval
@@ -29,7 +29,7 @@ Dies ist eine Vorlage für weitere Spezifikationen für Messmittel innerhalb dem
 ## Referenzierte Dokumente
 
 | ID | Dokumentenname | Version | Datum |
-|:-:|------|-|-|
+|:-:|---|--|---|
 | 0000 | Name | zu | definieren! |
 
 ## Introduction  
@@ -44,7 +44,8 @@ Grund für dieses Dokument...
 
 [Link auf eine Seite](https://www.sbb.ch/de/home.html)
 
-![Bildbeschreibung](https://media.giphy.com/media/1AfIms1kZLGNinEvOI/giphy.gif)
+![Übersicht der Platform Struktur](images/generated/RCM_DX_Platform_overview.png){ width=110px }
+
 
 ### Überschrift 3
 
@@ -70,7 +71,7 @@ Oder eine inline `Source Code` definition.
 #### Überschrift 4
 
 | Linksbündig | Mittig ausgerichtet | Rechtsbündig |
-|--|:--:|--:|
+|----|:----:|----:|
 | Links | Mitte | Rechts |
 
 ##### Überschrift 5
