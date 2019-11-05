@@ -77,13 +77,13 @@ Diese Spezifikation können andere Bahnbetreiber ebenfalls verwenden. Aus diesem
 Die in diesem Dokument beschriebene Struktur (RCM-DX), definiert Gruppen und Datensets sowie Attribute, die für Software Lösungen, die dieses Format unterstützen, eingehalten werden muss.  
 Eine Erweiterung dieser Spezifikation ist erlaubt, jedoch ist nicht garantiert, dass die Daten von bestehenden Systemen gelesen sowie verarbeitet werden können. Dies muss bei einem Datenaustausch berücksichtigt werden.  
 
-#### Versionierung der Spezifikation
+#### Versionierung
 
-Das RCM-DX Datenformat unterliegt Änderungen, diese sind ersichtlich durch die Versionsnummer im Dokument. Die Versionsnummer besteht aus drei Zahlen die durch einen Punkt getrennt wurden und setzt sich wie folgt zusammen: **[Major].[Minor].[Patch]**. Beispiel: **1.0.0**
+Das RCM-DX Datenformat unterliegt Änderungen, diese sind ersichtlich durch die Versionsnummer im Dokument, siehe Kapitel [Root Group](#root-group). Die Versionsnummer besteht aus drei Zahlen die durch einen Punkt getrennt wurden und setzt sich wie folgt zusammen: **[Major].[Minor].[Patch]**. Beispiel: **1.0.0**  
 
-**Major:** Zeigt eine Änderung die für das Datenformat grosse Umstellung bedeuten und nicht Rückwärts kompatibel sind. Zum Beispiel die Änderung der Strukturen oder Benennungen von bestehenden Gruppen usw.
-**Minor:** Kleinere Änderungen, die eine Erweiterung darstellen und immer noch Rückwärts kompatibel sind. Zum Beispiel das Definieren neuer Gruppen für Datensets oder neue Datentypen usw.
-**Patch:** Hinweis auf Fehlerbehebungen. Dies können Anpassungen von Beschreibungen in dieser Dokumentation sein, alles was in dieser Spezifikation angepasst wird aber die Struktur des RCM-DX nicht beeinflusst.
+**Major:** Zeigt eine Änderung die für das Datenformat grosse Umstellung bedeuten und nicht Rückwärts kompatibel sind. Zum Beispiel die Änderung der Strukturen oder Benennungen von bestehenden Gruppen usw.  
+**Minor:** Kleinere Änderungen, die eine Erweiterung darstellen und immer noch Rückwärts kompatibel sind. Zum Beispiel das Definieren neuer Gruppen für Datensets oder neue Datentypen usw.  
+**Patch:** Hinweis auf Fehlerbehebungen. Dies können Anpassungen von Beschreibungen in dieser Dokumentation sein, alles was in dieser Spezifikation angepasst wird, aber die Struktur des RCM-DX nicht beeinflusst.  
 
 #### Text Formatierungen
 
@@ -104,6 +104,26 @@ Im nachfolgenden Bild eine Übersicht eines verwendeten Diagrammtyps und dessen 
 ## Definitionen
 
 In diesem Dokument werden neben den inhaltlichen Beschreibungen auch Technische Restriktionen spezifiziert. Dieses Kapitel gibt eine Übersicht über die verwendeten Datentypen, Arten von Benennungen und vielen weiteren wichtigen Punkten.
+
+### Dateibenennungen
+
+Dateien die der RCM-DX Spezigikation folgen, sollen einheitlich benannt werden. Die Bennenung soll folgendem Muster folgen:
+
+`yyyymmdd-hhmmss_MESSSYSTEM_[created]-yyyymmdd-hhmmss.rcmdx`
+
+Datum und Zeit der Messung, gefolgt vom Kurzzeichen des Messsystems, danach das Wort "created" und anschliessend das Datum und die Zeit der Erstelleung der Datei. Zum Schluss die Dateiendung `rcmdx`. Die Trennzeichen sind wie oben abgebildet zu setzen.
+
+Beschreibung der Elemente:
+
+| Element | Beschreibung |
+|--|------|
+| `yyyymmdd` | Datum: Jahr vierstellig, Monat zweistellig, Tag zweistellig. |
+| `hhmmss` | Zeit: Stunden zweistellig, Minuten zweistellig, Sekunden zweistellig |
+| `MESSSYSTEM` | Hier folgt das eindeutige Kurzzeichen des Messsystems wie in den Spezifikationen definiert. Zum Beispiel "TGMS" |
+| `[created]` | Das Wort "created" das darauf hinweist, dass danach das Datum und die Zeit der Erstellung der Datei folgt. |
+| `.rcmdx` | Dateiendung des RCM-DX Dateiformats. |
+
+> TODO: Definieren ob Endung h5 oder rcmdx!
 
 ### Primitive Datentypen und andere
 
@@ -206,15 +226,15 @@ Folgende Attribute sind dieser Art des Datenset zugewiesen:
 
 ##### Koordinaten
 
-Messdaten die einem Koordinatensystem zugewiesen werden können, erhalten einen definierten Namen nach folgendem Muster: cord.CN  
+Messdaten die einem Koordinatensystem zugewiesen werden können, erhalten einen definierten Namen nach folgendem Muster: `cord.CN`.  
 Diese Art der Datenspeicherung erlaubt es, mehrere Einträge pro Messzeitpunkt aufzunehmen.
 
 | Element | Beschreibung |
 |--|------|
-| cord | Einfache Zeichenfolge zur Kennzeichnung von Daten des Typs Koordinaten|
-| . |Trennzeichen|
-| C |Zusatzzeichen zur Kennzeichnung von Daten des Typs Koordinaten|
-| N |Index Nummer beginnend mit "0", steigend je weiteren Kanal|
+| cord | Einfache Zeichenfolge zur Kennzeichnung von Daten des Typs Koordinaten |
+| . | Trennzeichen |
+| C | Zusatzzeichen zur Kennzeichnung von Daten des Typs Koordinaten |
+| N | Index Nummer beginnend mit "0", steigend je weiteren Kanal |
 
 Das Datenset ist wie folgt definiert:
 
@@ -229,7 +249,7 @@ Folgende Attribute sind dieser Art des Datenset zugewiesen:
 
 | Name | Data Type | Parent | Mandatory | Description |
 |---|----|--|--|-----|
-| Unit | string | Datenset | yes | Eine physikalische Einheit oder leer, falls die Daten keiner physikalischen Einheit entsprechen|
+| Unit | string | Datenset | yes | Eine physikalische Einheit oder leer, falls die Daten keiner physikalischen Einheit entsprechen |
 
 ###### Sample Index
 
@@ -506,13 +526,13 @@ Die Root-Gruppe beinhaltet alle weiteren Untergruppen. Diese Gruppe definiert da
 
 #### Attributes  
 
-Nachfolgende Attribute sind der Gruppe RCMDX zugeordnet:
+Nachfolgende Attribute sind der Gruppe `RCMDX` zugeordnet:
 
 | Name | Data Type | Parent | Mandatory | Description |
 |--|----|--|--|-----|
-| MajorVersion | 16-bit integer | RCMDX | yes | Major Version des RCM-DX Dateiformats |
-| MinorVersion | 16-bit integer | RCMDX | yes | Minor Version des RCM-DX Dateiformats |
-| FeatureVersion | 16-bit integer | RCMDX | yes | Feature Version des RCM-DX Dateiformats |
+| Major | 16-bit integer | RCMDX | yes | Major Version der RCM-DX Spezifikation, die der Struktur der erstellten Datei entspricht |
+| Minor | 16-bit integer | RCMDX | yes | Minor Version der RCM-DX Spezifikation, die der Struktur der erstellten Datei entspricht |
+| Patch | 16-bit integer | RCMDX | yes | Patch Version der RCM-DX Spezifikation, die der Struktur der erstellten Datei entspricht |
 
 ### Session Group  
 
