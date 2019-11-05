@@ -7,7 +7,7 @@ logo-width: 150
 lang: "de-CH"
 titlepage: true
 titlepage-rule-color: "EB0000"
-author: "Schweizerische Bundesbahnen, SBB CFF FFS"
+author: "Schweizerische Bundesbahnen SBB, Chemins de fer fédéraux suisses CFF, Ferrovie federali svizzere FFS"
 numbersections: true
 secnumdepth: 5
 colorlinks: true
@@ -35,7 +35,7 @@ toc-own-page: true
 | V0.13 | 17.02.2016 | Martin Frey (SCS) | Review topology model |
 | V0.14 | 19.02.2016 | Pascal Brem (SCS) | Sections added to file format. |
 | V0.15 | 23.02.2016 | Martin Frey (SCS) | Global configuration and settings updated |
-|  V0.16 | 11.07.2016 | Pascal Brem (SCS) | New Hash code attribute for the topology. |
+| V0.16 | 11.07.2016 | Pascal Brem (SCS) | New Hash code attribute for the topology. |
 | V0.17 | 15.07.2016 | Pascal Brem (SCS) | New units and data types for positions |
 | V0.18 | 03.01.2018 | Pascal Brem (SCS) | New GTG Track Id in the Topology. |
 | V0.19 | 03.01.2018 | Pascal Brem (SCS) | Events are stored on session level. |
@@ -107,11 +107,11 @@ In diesem Dokument werden neben den inhaltlichen Beschreibungen auch Technische 
 
 ### Dateibenennungen
 
-Dateien die der RCM-DX Spezigikation folgen, sollen einheitlich benannt werden. Die Bennenung soll folgendem Muster folgen:
+Dateien die der RCM-DX Spezifikation folgen, sollen einheitlich benannt werden. Die Benennung soll folgendem Muster folgen:
 
 `yyyymmdd-hhmmss_MESSSYSTEM_[created]-yyyymmdd-hhmmss.rcmdx`
 
-Datum und Zeit der Messung, gefolgt vom Kurzzeichen des Messsystems, danach das Wort "created" und anschliessend das Datum und die Zeit der Erstelleung der Datei. Zum Schluss die Dateiendung `rcmdx`. Die Trennzeichen sind wie oben abgebildet zu setzen.
+Datum und Zeit der Messung, gefolgt vom Kurzzeichen des Messsystems, danach das Wort "created" und anschliessend das Datum und die Zeit der Erstellung der Datei. Zum Schluss die Dateiendung 'rcmdx'. Die Trennzeichen sind wie oben abgebildet zu setzen.
 
 Beschreibung der Elemente:
 
@@ -121,9 +121,17 @@ Beschreibung der Elemente:
 | `hhmmss` | Zeit: Stunden zweistellig, Minuten zweistellig, Sekunden zweistellig |
 | `MESSSYSTEM` | Hier folgt das eindeutige Kurzzeichen des Messsystems wie in den Spezifikationen definiert. Zum Beispiel "TGMS" |
 | `[created]` | Das Wort "created" das darauf hinweist, dass danach das Datum und die Zeit der Erstellung der Datei folgt. |
+| "-" oder "_" oder "." | Trennzeichen |
 | `.rcmdx` | Dateiendung des RCM-DX Dateiformats. |
 
+
+
+
 > TODO: Definieren ob Endung h5 oder rcmdx!
+
+
+
+
 
 ### Primitive Datentypen und andere
 
@@ -331,9 +339,16 @@ Nachfolgend eine Auflistung der Attribute die der Datengruppe `VID` zugewiesen s
 | PreambleDuration | 64 bit integer | VID | yes | Zeitdauer des Einleitungsviedeo Bereichs in Nanosekunden  |
 | TrailerDuration | 64 bit integer | VID | yes | Zeitdauer des Abspannvideo Bereichs in Nanosekunden |
 
+
+
 > TODO: Abklären:
 > Wann gibt es ein Preamble und ein Trailer?
 > Was ist im Datenset Duration?
+
+
+
+
+
 
 [^MIME]: Eine Auflistung der möglichen MIME-Typen ist unter dem Link [https://www.iana.org/assignments/media-types/media-types.xhtml$\to$](https://www.iana.org/assignments/media-types/media-types.xhtml) zu finden. Diese wird von der [Internet Assigned Numbers Authority, IANA$\to$](https://www.iana.org/) geführt.
 
