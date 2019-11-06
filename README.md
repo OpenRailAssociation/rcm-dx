@@ -108,6 +108,7 @@ Der Windows Installer ist am Ende der Seite zu finden. Nach der Ausführung muss
 
 MiKTeX wird für die Erstellung von PDF's benötigt. Das Tool kann auf folgender Seite heruntergeladen werden: [MiKTex Download](https://miktex.org/download)  
 Die Installation ist einfach und es benötigt keine Anpassungen an den Konfigurationen.  
+Es werden bei der ersten Erzeugung von PDF's Pakete heruntergeladen. Falls dies nicht gelingt und diese nicht heruntergeladen werden können, muss ein Proxy angegeben werden. Danach müsste der Download und die Updates funktionieren.
 
 ## PlantUml, UML-Diagramme aus Text
 
