@@ -1,19 +1,3 @@
----
-title: "RCM-DX Specification"
-subtitle: "Version 1.0.0"
-keywords: [RCM-DX, Specification]
-logo: "images/SBB-Logo.png"
-logo-width: 150
-lang: "de-CH"
-titlepage: true
-titlepage-rule-color: "EB0000"
-author: "Schweizerische Bundesbahnen SBB, Chemins de fer fédéraux suisses CFF, Ferrovie federali svizzere FFS"
-numbersections: true
-secnumdepth: 5
-colorlinks: true
-toc-own-page: true
-...
-
 # RCM-DX Structure
 
 ## History
@@ -70,7 +54,7 @@ Um die Sicherheit der Reisenden in den SBB Schienenfahrzeugen sicherzustellen ü
 Für die Darstellung und Weiterverarbeitung dieser Daten wurde bereits ein ganzes Ökosystem aufgebaut. Aus diesem Grund soll mit dieser Spezifikation von RCM-DX ein definiertes Format beschrieben werden, damit Umsysteme, die diese Spezifikation verwenden, die Daten kontrolliert weiterverarbeiten können.  
 Diese Spezifikation richtet sich auch an weitere Bahnbetreiber. Aus diesem Grund liegt diese Spezifikation der Öffentlichkeit zur Verfügung. Die Weiterentwicklung wird durch die SBB getrieben, diese ist auch für die koordinierte Weiterentwickung und die Freigabe der Spezifikation verantwortlich.
 
-### Hinweis
+### Hinweise
 
 #### RCM-DX Struktur
 
@@ -107,33 +91,9 @@ In diesem Dokument werden neben den inhaltlichen Beschreibungen auch technische 
 
 ### Dateibenennungen
 
-Dateien, die der RCM-DX Spezifikation folgen, werden einheitlich benannt. Die Benennung hält folgendes Muster ein:
+Dateien, die der RCM-DX Spezifikation folgen, erhalten eine eigenen definierte Dateiendeung, diese lautet `rcmdx`.  
 
-`yyyymmdd-hhmmss_MESSSYSTEM_[created]-yyyymmdd-hhmmss.rcmdx`
-
-Datum und Zeit der Messung, gefolgt vom Kurzzeichen des Messsystems, danach das Wort "created" und anschliessend das Datum und die Zeit der Erstellung der Datei. Zum Schluss die Dateiendung 'rcmdx'. Die Trennzeichen sind wie oben abgebildet zu setzen.
-
-Beschreibung der Elemente:
-
-| Element | Beschreibung |
-|--|------|
-| `yyyymmdd` | Datum: Jahr vierstellig, Monat zweistellig, Tag zweistellig. |
-| `hhmmss` | Zeit: Stunden zweistellig, Minuten zweistellig, Sekunden zweistellig |
-| `MESSSYSTEM` | Hier folgt das eindeutige Kurzzeichen des Messsystems, wie in den Spezifikationen definiert. Zum Beispiel "TGMS" |
-| `[created]` | Das Wort "created" das darauf hinweist, dass danach das Datum und die Zeit der Erstellung der Datei folgt. |
-| "-" oder "_" oder "." | Trennzeichen |
-| `.rcmdx` | Dateiendung des RCM-DX Dateiformats. |
-
-
-
-
-
-
-> TODO: Definieren ob Endung h5 oder rcmdx!
-
-
-
-
+Beispiel einer Dateibenennung: `20201228_081522_TGMS.rcmdx`
 
 ### Primitive und erweiterte Datentypen
 
@@ -153,33 +113,34 @@ Ist die Rede von einer Gruppe in diesem Dokument, sind die Gruppen im HDF5 Forma
 Ist ein Name einer Gruppe in diesem Dokument, in Grossbuchstaben geschrieben (zum Beispiel "TOPOLOGY"), so ist dieser exakt so, in der RCM-DX Datei zu finden. Ist die Bennenung einer Gruppe nicht fix definiert, so wird im entsprechenden Kapitel genauer beschrieben, wie sich der Name zusammensetzt.
 
 Soll ein Name einer Gruppe in einer Form sichtbare Wort-Trennungen enthalten, so soll dies mit einem Punkt erfolgen. Dazu folgendes Beispiel: "XPOS.DATA.LONGITUDE".  
+
 Gruppen werden in dieser Spezifikation wie folgt beschrieben:
 
 | Name | Elternobjekt | Obligatorisch |
 |--|--|--|
-| SectionInfo | SESSION | yes |
+| SectionInfo | "session_name" | ja |
 
 **Name:** Der Name der Gruppe  
-**Elternobjekt:** Eine Gruppe kann eine Untergruppe einer Gruppe sein, hier wird der Name dieser Gruppe erwähnt  
-**Obligatorisch:** Ist die Gruppe zwingend notwendig und muss vorhanden, so steht hier `yes` , ansonsten `no`  
+**Elternobjekt:** Eine Gruppe kann eine Untergruppe einer Gruppe sein, hier wird der Name dieser Gruppe erwähnt. Ist der Name in Anführungszeichen geschrieben, so kann dieser vom Ersteller der Datei, frei gewählt werden. Ohne Anführungszeichen, ist der Name der Gruppe gemeint.
+**Obligatorisch:** Ist die Gruppe zwingend notwendig und muss vorhanden, so steht hier `ja` , ansonsten `nein`  
 
 ### (HDF5) Attribute
 
-Im RCM-DX können Attribute, den Gruppen sowie den Datensets zugewiesen werden. Die Namen der Attribute werden in der UpperCamelCase-Notation[^Upper-Camel-Case-Notation] geschrieben. Attribute sind immer vom Typ `HDF5 Attribut`, ausser es ist anders angegeben.
+Im RCM-DX können Attribute, den Gruppen sowie den Datensets zugewiesen werden. Die Namen der Attribute werden in der UpperCamelCase-Notation^1^ geschrieben. Attribute sind immer vom Typ `HDF5 Attribut`, ausser es ist anders angegeben.
 
 Attribute werden in dieser Spezifikation wie folgt beschrieben:
 
 | Name | Data Type | Elternobjekt | Obligatorisch | Description |
 |--|----|--|--|-------|
-| StartTime | 64 bit integer | "SESSION" | yes | Startzeit in Milisekunden, zum Beispiel: "1553237099000000000"  |
+| StartTime | 64 bit integer | "session_name" | ja | Startzeit in Milisekunden, zum Beispiel: "1553237099000000000"  |
 
 **Name:** Der Name des Attribute  
 **Data Type:** Primitiver Datentyp des Attributs, diese beschriebt den Typ des Inhaltes im Attribut selber  
 **Elternobjekt:** Ein Attribut ist immer einer Gruppe oder einem Datenset zugeordnet, hier wird der Name dieser Gruppe oder des Datensets erwähnt  
-**Obligatorisch:** Ist das Attribut zwingend notwendig und muss vorhanden sowie einen Wert beinhalten, so steht hier `yes` , ansonsten `no`  
+**Obligatorisch:** Ist das Attribut zwingend notwendig und muss vorhanden sowie einen Wert beinhalten, so steht hier `ja` , ansonsten `nein`  
 **Description:** Beschreibung und oder Beispiele des Attributs  
 
-[^Upper-Camel-Case-Notation]: Die Upper Camel Case Notation definiert die Art und Weise wie eine zusammengesetzte Bezeichnung geschrieben wird. Weitere Informationen dazu unter folgendem Link: [Uper Camel Case$\to$](https://en.wikipedia.org/wiki/Camel_case)
+**^1^Upper-Camel-Case-Notation:** Die Upper Camel Case Notation definiert die Art und Weise wie eine zusammengesetzte Bezeichnung geschrieben wird. Weitere Informationen dazu unter folgendem Link: [Uper Camel Case$\to$](https://en.wikipedia.org/wiki/Camel_case)
 
 ### (HDF5) Datenset
 
@@ -194,21 +155,21 @@ Nachfolgend eine Auflistung der möglichen Arten, wie Daten im RCM-DX abgelegt w
 | Bild | Ein Bild, das zu einem definierten Zeitpunkt aufgenommen wurde |
 | Video | Ein Video das als Stream in mehrere einzelne Blöcke definierter grösse, aufgeteilt und gespeichert wurde |
 
-Die Datenset werden in der lowerCamelCase-Notation[^lower-Camel-Case-Notation] beschrieben. Datensets werden in dieser Spezifikation wie folgt beschrieben:
+Die Datenset werden in der lowerCamelCase-Notation^2^ beschrieben. Datensets werden in dieser Spezifikation wie folgt beschrieben:
 
 | Name | Datentyp | Elternobjekt | Obligatorisch | Ablageart |
-|--|----|----|--|--|
-| timestamp | 64 bit integer | Datenquellengruppe | yes | Einzelwerte |
+|--|---|----|---|------|
+| timestamp | 64 bit integer | "datasource_name" | ja | Einzelwerte |
 
 **Name:** Der Name des Datensets  
 **Data Type:** Primitiver Datentyp des Inhaltes im Datenset, somit der Datentyp der enthaltenen Daten  
 **Elternobjekt:** Ein Datenset ist immer einer Gruppe zugeordnet, hier wird der Name dieser Gruppe erwähnt  
-**Obligatorisch:** Ist das Datenset zwingend notwendig und muss vorhanden sein, so steht hier `yes` , ansonsten `no`  
+**Obligatorisch:** Ist das Datenset zwingend notwendig und muss vorhanden sein, so steht hier `ja` , ansonsten `nein`  
 **Ablageart:** Eine, der in diesem Kapitel beschriebenen Ablagearten  
 
 Beschreibungen zum Datenset werden ausserhalb der Tabelle ergänzt.  
 
-[^lower-Camel-Case-Notation]: Die lower Camel Case-Notation definiert die Art und Weise wie eine zusammengesetzte Bezeichnung geschrieben wird. Weitere Informationen dazu unter folgendem Link: [lower Camel Case$\to$](https://en.wikipedia.org/wiki/Camel_case)
+**^2^lower-Camel-Case-Notation:** Die lower Camel Case-Notation definiert die Art und Weise wie eine zusammengesetzte Bezeichnung geschrieben wird. Weitere Informationen dazu unter folgendem Link: [lower Camel Case$\to$](https://en.wikipedia.org/wiki/Camel_case)
 
 #### HDF5 Compression
 
@@ -218,9 +179,11 @@ Um Platz zu sparen, können komprimierungsfilter auf Datensets angewendet werden
 
 Neben dem "HDF5 Compression" gibt es das "HDF5 Chunking" für Daten innerhalb eines Datensets. Dies bedeutet, die Daten werden in Blöcke aufgeteilt, diese wiederum können eigenständig bearbeitet werden. Dies erlaubt auch einen schnelleren Zugriff auf Teile der Daten. Ob eine Aufteilung erlaubt und empfohlen wird, steht jeweils bei einem Datenset, als Beispiel: "HDF5 Chunking" ist erlaubt und empfohlen. Das HDF5 Chunking wird auf der Webseite der HDF5 Gruppe genauer beschrieben: [HDF5 Chunking Webseite$\to$](https://support.hdfgroup.org/HDF5/doc/H5.user/Chunking.html)
 
-#### Einzelwerte
+## Datenstrukturen
 
-Kanäle, die einzelne Messwerte erfassen, enthalten ein Datenset mit dem Namen "data", dieses Dataset ist obligatorisch. Einzelwerte werden in diesem Datenset als 1D Array abgelegt, die Länge dieses Array`s (oder Liste), ist dabei nicht begrenzt.
+### Einzelwerte
+
+Kanäle, die einzelne Messwerte erfassen, enthalten ein Datenset mit dem Namen `data`, dieses Dataset ist obligatorisch. Einzelwerte werden in diesem Datenset als 1D Array abgelegt, die Länge dieses Array`s (oder Liste), ist dabei nicht begrenzt.
 
 Die möglichen Datentypen sind durch die HDF5 Group definiert, und können auf der Webseite der HDF5 Group nachgelesen werden.
 
@@ -232,25 +195,71 @@ Folgende Attribute sind dieser Art des Datenset zugewiesen:
 
 | Name | Data Type | Elternobjekt | Obligatorisch | Description |
 |---|----|--|--|-----|
-| Unit | string | Datenset | yes | Eine physikalische Einheit oder leer, falls die Daten keiner physikalischen Einheit entsprechen|
+| Unit | string | Datenset | ja | Eine physikalische Einheit oder leer, falls die Daten keiner physikalischen Einheit entsprechen |
 
-##### Koordinaten
+### Datenvorschau
 
-Messdaten die einem Koordinatensystem zugewiesen werden können, erhalten einen definierten Namen nach folgendem Muster: `cord.CN`.  
-Diese Art der Datenspeicherung erlaubt es, mehrere Einträge pro Messzeitpunkt aufzunehmen.
+Zusätzlich zu Datensets der Typen Ganzzahl und Gleitkommazahl, können spezielle Datenset mit Vorschaudaten erstellt werden. Für einen Vorschauwert wird eine definierte Menge an Einträgen (Datenblock) aus einem Datenset zusammen verrechnet und ergeben so zum Beispiel einen Durchschnittswert. Dieser Typ von Datensets ermöglihckt eine schnelle Übersicht über die Aufgenommenen Daten.  
+Drei Datenset mit eindeutiger Benennnung sind wie folgt definiert, um Vorschauwerte aufzunehmen:
+
+| Benennung | Inhalt |
+|----|----|
+| data.PRE.AVG.X | Berechneter Durchschnitt des Datenblocks |
+| data.PRE.MIN.X | Kleinster Wert im Datenblock  |
+| data.PRE.MAX.X | Grösster Wert im Datenblock |
+
+Das `X` wird durch die Blockgrösse ersetzt. Wird zum Beispiel die Blockgrösse von zehn Einträgen definiert und der Durchschnitt der Werte errechnet, so würde das Datenset wie folgt benannt werden: `data.PRE.AVG.10`  
+Durch die Angabe der Blockgrösse ist es nicht nötig, ein Datenset zu erstellen, das den Anfangszeitstempel des Datenblocks enthält.  
+Sind in einem Datenset $600$ Einträge, sind im Datenset `timestamp` gleichviele Einträge jedoch im Datenset `data.PRE.AVG.10` nur $60$ Einträge enthalten sein.  
+Weiter dind die beiden Datensets `timestamp` und `duration` innerhalb der Gruppe enthalten.
+
+| Name | Datentyp | Elternobjekt | Obligatorisch | Ablageart |
+|--|---|----|---|------|
+| timestamp | 64 bit integer | "limit_name" | ja | Einzelwerte |
+| duration | 64 bit integer | "limit_name" | nein | Einzelwerte |
+
+### Grenzwerte
+
+Eine Kanalgruppe kann eine oder mehrere Limit Gruppen enthalten. Jede Limit Gruppe enthält jeweils ein eigenes `timestamp` Datenset und kann auch zusätzlich ein `duration` Datenset enthalten. Bei einer definierten Grenzwertüberschreitung eines Messwerts des Kanals, folgt ein Eintrag im Datenset `timestamp`. Mit Hilfe des optionalen Datenset `duration`, kann die Dauer einer Grenzwertüberschreitung angegeben werden, pro Eintrag im Datenset `timestamp`. Sind beide Datensets vorhanden, enthalten diese gleichviele Einträge!  
+
+Die Gruppe der Grenzwerte ist wie folgt definiert:
+
+| Name | Elternobjekt | Obligatorisch |
+|--|--|--|
+| LIMIT | "channel_name" | nein |
+
+In der Gruppe `LIMIT` sind nun weitere Gruppen enthalten, diese jeweils mit dem Namen der Grenzwertüberschreitung wie zum Beispiel `TEMP`:
+
+| Name | Elternobjekt | Obligatorisch |
+|--|--|--|
+| "Grenzwert_Name" | `LIMIT` | ja |
+
+Darin sind folgende Datenset enthalten:
+
+| Name | Datentyp | Elternobjekt | Obligatorisch | Ablageart |
+|--|---|----|---|------|
+| timestamp | 64 bit integer | "Grenzwert_Name" | ja | Einzelwerte |
+| duration | 64 bit integer | "Grenzwert_Name" | nein | Einzelwerte |
+
+![Struktur für die Aufnahme von Grenzwertüberschreitungen](images/generated/Limit_overview.png){width=180px}
+
+### Koordinaten
+
+Messdaten die einem Koordinatensystem zugewiesen werden können, erhalten einen definierten Namen nach folgendem Muster: `coord.CN`.  
+Diese Art der Datenspeicherung erlaubt es, mehrere Einträge pro Messzeitpunkt aufzunehmen. Somit sind in diesen Datensets mehr Einträge enthalten als im Datenset `timestamp`. Wie viele Einträge pro Zeitstempel zueinander gehören (als Gruppe), wird in einem weiteren Datenset mit dem Namen `sampleindex` abgespeichert.
 
 | Element | Beschreibung |
 |--|------|
-| cord | Einfache Zeichenfolge zur Kennzeichnung von Daten des Typs Koordinaten |
+| coord | Einfache Zeichenfolge zur Kennzeichnung von Daten des Typs Koordinaten |
 | . | Trennzeichen |
 | C | Zusatzzeichen zur Kennzeichnung von Daten des Typs Koordinaten |
-| N | Index Nummer beginnend mit "0", steigend je weiteren Kanal |
+| N | Index Nummer beginnend mit "0", steigend je weiteres Koordinaten Datensets |
 
 Das Datenset ist wie folgt definiert:
 
 | Name | Datentyp | Elternobjekt | Obligatorisch | Ablageart |
 |--|------|--|---|---|
-| cord.CN | 8, 32 oder 64 bit signed integer oder 64 oder 32 bit floating point; (jeweils little endian) | Datenquellengruppe | yes | Einzelwere |
+| coord.CN | 8, 32 oder 64 bit signed integer oder 64 oder 32 bit floating point; (jeweils little endian) | "channel_name" | ja | Einzelwere |
 
 HDF5 Chunking ist erlaubt und empfohlen.  
 Die HDF5 Compression ist erlaubt.  
@@ -259,24 +268,24 @@ Folgende Attribute sind dieser Art des Datenset zugewiesen:
 
 | Name | Data Type | Elternobjekt | Obligatorisch | Description |
 |---|----|--|--|-----|
-| Unit | string | Datenset | yes | Eine physikalische Einheit oder leer, falls die Daten keiner physikalischen Einheit entsprechen |
+| Unit | string | Datenset `coord.CN` | ja | Eine physikalische Einheit oder leer, falls die Daten keiner physikalischen Einheit entsprechen |
 
-###### Sample Index
+#### Sample Index
 
-Werden Datensets für Koordinaten angelegt, so muss zwingend ein Datenset mit dem Namen `sampleindex` vorhanden sein. Dieses Datenset beinhaltet pro Messzeitpunkt (pro Eintrag im Datenset `timestamp`), die genaue Anzahl der Messeinträge in dem Datenset, mit der Bezeichnung `cord.CN`. Beim lesen und interpretieren der Daten ist diese Information wichtig, da die Daten in den Datensets `cord.CN` als Array und ohne weitere Information dazu abgelegt sind.
+Werden Datensets für Koordinaten angelegt, so muss zwingend ein Datenset, auf gleicher Ebene und mit dem Namen `sampleindex`, vorhanden sein. Darin wird pro Zeitstempel in `timestamp`, die Indexnummer eines Eintrags aus `coord.CN`, als Start der nächsten Gruppe eingetragen. Ist im Datenset `sampleindex` bei Index Null ein Wert von $21$, so gehören die ersten $20$ Einträge aus dem Datenset `coord.CN` zusammen.
 
-Die im Datenset `sampleIndex` angegebene Gruppengrösse kann/darf untereinander abweichen.
+Die sich im Datenset `sampleIndex` ergebenden Gruppengrösse könenn untereinander abweichen.
 
 *Example*  
-Als Beispiel dient hier das Schienenquerprofil. Zu einem Zeitpunkt werden mehrere Punkte einem Schienenprofil gemessen und abgelegt. Es wird jeweils für die X-Achse sowie für die Y-Achse ein Kanal angelegt mit den Namen `cord.C0` und `cord.C1`.
+Als Beispiel dient hier das Schienenquerprofil. Zu einem Zeitpunkt werden mehrere Punkte eines Schienenprofils gemessen und abgespeichert. Es wird jeweils für die X-Achse sowie für die Y-Achse ein Kanal angelegt mit den Namen `coord.C0` und `coord.C1`.
 
-Im Datenset `sampleindex` wird nun die Anzahl der zusammengehörenden Einträge aufgenommen. Steht darin zum Beispiel die Zahl $10$, so gehören die ersten zehn Einträge von `cord.C0` und `cord.C1` zusammen. Der erste Eintrag aus `cord.C0` ist der Wert auf der X-Achse und bei `cord.C1` der Wert der Y-Achse und dies gilt für die nächsten 10 Einträge. Nach den ersten zehn Einträgen folgt die nächste Gruppe mit den nächsten zehn Einträgen.
+Im Datenset `sampleindex` wird nun die Anzahl der zusammengehörenden Einträge aufgenommen.  
 
 Nachfolgend ein Bild einer Schienenquerprofilmessung mit ungefähr 2000 Messpunkten:
 
-![Bild einer Schienenquerprofilmessung](images/SchienenquerprofilSample.jpg)
+![Bild einer Schienenquerprofilmessung](images/rail-cross-profile.jpg)
 
-#### Bilder
+### Bilder
 
 Bilder können in komprimierter oder unkomprimierter Form abgespeichert werden. Das Format der Bilder wird in einem Attribut hinterlegt, damit das Bild korrekt ausgelesen werden kann.  
 Bilder werden als binäre Datenblöcke abgelegt, ein Bild ergibt somit ein Datenset.  
@@ -285,32 +294,33 @@ Alle Bilder werden in einer Gruppe mir dem Namen `IMG` abgelegt. Alle Bilder in 
 
 | Name | Elternobjekt | Obligatorisch |
 |--|----|--|
-| IMG | "DatasourceGroup" | yes |
+| IMG | "datasource_name" | ja |
 
 Die Gruppe `IMG` erhält folgende Attribute für die genauere Beschriebung der darin enthaltenen Bilder:
 
 | Name | Data Type | Elternobjekt | Obligatorisch | Description |
 |---|----|---|---|-----|
-| ContentType | string | IMG | yes | Datentyp der Bilder als MIME-Typ[^MIME] angegeben, zum Beispiel `Content-Type: <image/jpeg>`|
-| DataTyp | string | IMG | no | Beschreibung zum Datentyp, wenn kein Standard Bild, siehe [ContentType ohne Image MIME-Typ](#contenttype-ohne-image-mime-typ) |
-| ResolutionType | string | IMG | yes | Angaben zur Punktedichte der Bilder (Beispiel: $ppmm = Pixel pro Millimeter$) |
-| ResolutionInfoX | 32 bit integer | IMG | yes | Auflösung in X-Richtung |
-| ResolutionInfoY | 32 bit integer | IMG | yes | Auflösung in Y-Richtung |
+| ContentType | string | IMG | ja | Datentyp der Bilder als MIME-Typ^3^ angegeben, zum Beispiel `Content-Type: <image/jpeg>`|
+| DataTyp | string | IMG | nein | Beschreibung zum Datentyp, wenn kein Standard Bild, siehe [ContentType ohne Image MIME-Typ](#contenttype-ohne-image-mime-typ) |
+| ResolutionType | string | IMG | ja | Angaben zur Punktedichte der Bilder (Beispiel: $ppmm = Pixel pro Millimeter$) |
+| ResolutionX | 32 bit integer | IMG | ja | Auflösung in X-Richtung |
+| ResolutionY | 32 bit integer | IMG | ja | Auflösung in Y-Richtung |
 
 Bilder können in X- und Y-Richtung unterschiedliche Auflösungen haben, dies muss für eine korrekte Darstellung und Auswertung der Bilder berücksichtigt werden.
+HDF5 Chunking wird empfohlen und die HDF5 Compression ist erlaubt.
 
-HDF5 Chunking wird empfohlen und die HDF5 Compression ist erlaubt.  
+**^3^MIME:** Eine Auflistung der möglichen MIME-Typen ist unter dem Link [https://www.iana.org/assignments/media-types/media-types.xhtml$\to$](https://www.iana.org/assignments/media-types/media-types.xhtml) zu finden. Diese wird von der [Internet Assigned Numbers Authority, IANA$\to$](https://www.iana.org/) geführt.
 
-##### ContentType ohne Image MIME-Typ
+#### ContentType ohne Image MIME-Typ
 
 Falls das erzeugte und gespeicherte Bild, eine eigene Spezialsoftware benötigt um dieses Darzustellen, so soll folgender MIME-Typ in das Attribut `ContentType` hintelegt werden: `Content-Type: <application/octet-stream>`.  
 Um weitere Informationen zu hinterlegen, zum Beispiel welches System die Daten erzeugt hat, kann ein nueues Attribut der Gruppe `IMG` hinzugefügt werden. Das Attribut erhält den Namen `DataTyp`.
 
-##### Benennung des Datenset für ein Bild
+#### Benennung des Datenset für ein Bild
 
 | Name | Datentyp | Elternobjekt | Obligatorisch | Ablageart |
 |---|-----|--|--|--|
-| IMG.NNNNNNNNN | 8, 16, 32 bit integer, je nach Farbtiefe | IMG | yes | Bild |
+| IMG.NNNNNNNNN | 8, 16, 32 bit integer, je nach Farbtiefe | `IMG` | ja | Bild |
 
 Die Bilder werden nach folgendem Muster benannt: `IMG.NNNNNNNNN`, nachfolgend eine Beschreibung der einzelnen Elemente.
 
@@ -320,26 +330,26 @@ Die Bilder werden nach folgendem Muster benannt: `IMG.NNNNNNNNN`, nachfolgend ei
 | . | Trennzeichen |
 | NNNNNNNNN | Bildnummer, beginnend mit 000000000 (neun Zeichen)|
 
-#### Videos
+### Videos
 
 Wie bei den Bildern können Videos in komprimierter oder unkomprimierter Form abgespeichert werden. Das Format wird in einem Attribut hinterlegt, um das lesen der Bilder zu vereinfachen.  
 Videos werden als Stream in einzelne Blöcke abgespeichert. Die Blöcke sind jeweils einzelne Datenset mit einer vorgegebenen Benennung.
 
 | Name | Elternobjekt | Obligatorisch |
 |--|--|--|
-| VID | Datenquellengruppe | yes |
+| VID | "datasource_name" | ja |
 
 Nachfolgend eine Auflistung der Attribute die der Datengruppe `VID` zugewiesen sind:
 
 | Name | Data Type | Elternobjekt | Obligatorisch | Description |
 |---|---|--|--|-----|
-| ContentType | string | VID | yes | Datentyp des Videostrams als MIME-Typ[^MIME] angegeben, zum Beispiel `Content-Type: <video/h264>`|
-| DataTyp | string | VID | no | Beschreibung zum Datentyp, wenn kein Standard Video Format, siehe [ContentType ohne Video MIME-Typ](#contenttype-ohne-video-mime-typ) |
-| ResolutionX | 32 bit integer | VID | yes | Auflösung in X-Richtung in Pixel |
-| ResolutionY | 32 bit integer | VID | yes | Auflösung in Y-Richtung in Pixel |
-| FramesPerSecond | 16 bit integer | VID | yes | Anzahl Bilder Pro Sekunde (fps), in der das Video aufgenommen wurde |
-| PreambleDuration | 64 bit integer | VID | yes | Zeitdauer des Einleitungsviedeo Bereichs in Nanosekunden  |
-| TrailerDuration | 64 bit integer | VID | yes | Zeitdauer des Abspannvideo Bereichs in Nanosekunden |
+| ContentType | string | `VID` | ja | Datentyp des Videostrams als MIME-Typ^4^ angegeben, zum Beispiel `Content-Type: <video/h264>`|
+| DataTyp | string | `VID` | nein | Beschreibung zum Datentyp, wenn kein Standard Video Format, siehe [ContentType ohne Video MIME-Typ](#contenttype-ohne-video-mime-typ) |
+| ResolutionX | 32 bit integer | `VID` | ja | Auflösung in X-Richtung in Pixel |
+| ResolutionY | 32 bit integer | `VID` | ja | Auflösung in Y-Richtung in Pixel |
+| FramesPerSecond | 16 bit integer | `VID` | ja | Anzahl Bilder Pro Sekunde (fps), in der das Video aufgenommen wurde |
+| PreambleDuration | 64 bit integer | `VID` | ja | Zeitdauer des Einleitungsviedeo Bereichs in Nanosekunden  |
+| TrailerDuration | 64 bit integer | `VID` | ja | Zeitdauer des Abspannvideo Bereichs in Nanosekunden |
 
 
 
@@ -349,17 +359,14 @@ Nachfolgend eine Auflistung der Attribute die der Datengruppe `VID` zugewiesen s
 
 
 
+**^4^MIME:** Eine Auflistung der möglichen MIME-Typen ist unter dem Link [https://www.iana.org/assignments/media-types/media-types.xhtml$\to$](https://www.iana.org/assignments/media-types/media-types.xhtml) zu finden. Diese wird von der [Internet Assigned Numbers Authority, IANA$\to$](https://www.iana.org/) geführt.
 
-
-
-[^MIME]: Eine Auflistung der möglichen MIME-Typen ist unter dem Link [https://www.iana.org/assignments/media-types/media-types.xhtml$\to$](https://www.iana.org/assignments/media-types/media-types.xhtml) zu finden. Diese wird von der [Internet Assigned Numbers Authority, IANA$\to$](https://www.iana.org/) geführt.
-
-##### ContentType ohne Video MIME-Typ
+#### ContentType ohne Video MIME-Typ
 
 Falls der erzeugte und gespeicherte Videostream, eine eigene Spezialsoftware benötigt um diesen anzuzeigen, soll folgender MIME-Typ in das Attribut `ContentType` hintelegt werden: `Content-Type: <application/octet-stream>`.  
 Um weitere Informationen zu hinterlegen, zum Beispiel welches System die Daten erzeugt hat, kann ein nueues Attribut der Gruppe `VID` hinzugefügt werden. Das Attribut erhält den Namen `DataTyp`.
 
-##### Bennenung des Datenset für ein Video
+#### Bennenung des Datenset für ein Video
 
 Ein Video Datenblock wird nach folgendem Muster benannt: `VID.NNNNNNNNN`, nachfolgend eine Beschreibung der einzelnen Elemente.
 
@@ -371,17 +378,17 @@ Element|Beschreibung|
 
 HDF5 Chunking und HDF5 Compression wird nicht empfohlen.
 
-## Datenquellen
+## Zeitbasierte Datenstrukturen
 
 ### Timestamp
 
-Jeder Eintrag in einem Kanal, hat eine Referenz auf ein Datenset mit dem Namen `timestamp` innerhalb der Datenquellengruppe. In diesem `timestamp` Datenset, gibt es gleichviel Einträge wie es Einträge in einem Datenset eines Kanals gibt. Eingetragen wird ein Zeitstempel in Nanosekunden seit dem 01.01.1970 um 00:00 Uhr UTC.  
+Jeder Eintrag in einem Datenset eines Kanals, hat eine Referenz auf einen Eintrag in einem Datenset, mit dem Namen `timestamp`, welches innerhalb der Datenquellengruppe liegt. In diesem `timestamp` Datenset, gibt es gleichviel Einträge, wie es Einträge in einem Datenset, eines Kanals gibt. Eingetragen wird ein Zeitstempel in Nanosekunden seit dem 01.01.1970 um 00:00 Uhr UTC.  
 
 Die Zeitstempel sind immer in aufsteigender Reienfolge abgelegt und dürfen keine Sprünge enthalten.  
 
 | Name | Datentyp | Elternobjekt | Obligatorisch | Ablageart |
-|--|----|----|--|--|
-| timestamp | 64 bit integer | Datenquellengruppe | yes | Einzelwerte |
+|--|---|----|---|------|
+| timestamp | 64 bit integer | "datasource_name" | ja | Einzelwerte |
 
 HDF5 Chunking ist erlaubt und HDF5 Compression wird empfohlen.
 
@@ -389,11 +396,11 @@ Diese Zeitstempel werden entweder anhand einer definierten gefahrenen Strecke od
 
 ### Time Indices
 
-Für ein schnelles finden von Zeitstempeln wird dieses Datenset zusätzlich zum Datenset `timestamp` erstellt. Das Zeitindex Datenset speichert einen Offsetwert einer Position von Zeitstempel-Gruppen ab und befindet sich in der `Datasource Group`, auf gleicher Ebene wie das Datenset `timestamp`. Eine genaue Beschreibung zum Inhalt ist im nachfolgenden Kapitel [Inhalt Datenset Time Indices](#inhalt-datenset-time-indices) zu finden.
+Für ein schnelles finden von Zeitstempeln wird dieses Datenset zusätzlich zum Datenset `timestamp` erstellt. Das Zeitindex Datenset speichert einen Offsetwert einer Position von Zeitstempel-Gruppen ab und befindet sich in der `Datasource Group`, auf gleicher Ebene wie das Datenset `timestamp`. Eine genaue Beschreibung zum Inhalt ist im nachfolgenden Kapitel [Inhalt Datenset Time Indices](#inhalt-datenset-time-indices) zu finden. In diesem Datenset sind nicht gleichviel Einträge enthalten, wie im Datenset `timestamp`.
 
 | Name | Datentyp | Elternobjekt | Obligatorisch | Ablageart |
-|--|----|----|--|--|
-| timeindex | 64 bit integer | Datenquellengruppe | yes | Einzelwerte |
+|--|---|----|---|------|
+| timeindex | 64 bit integer | "datasource_name" | ja | Einzelwerte |
 
 HDF5 Chunking ist erlaubt und HDF5 Compression wird empfohlen.
 
@@ -401,9 +408,9 @@ Folgende Attribute sind dem `timeindex` Datenset zugewiesen:
 
 | Name | Data Type | Elternobjekt | Obligatorisch | Description |
 |---|---|--|--|-------|
-| BlockSize | long | timeindex | yes | Zeitdauer in Nanosekunden eines Zeitblocks. Zeitstempel innerhalb desselben Zeitblocks werden mit dem gleichen Wert indiziert |
-| LogTimeBlocks | integer | timeindex | yes | $2^{LogTimeBlocks}$ ist gleich der Anzahl an Blöcke, die für die Generierung des binären Baumes. Es können grössere Zeitversetzungen als $2^{LogTimeBlocks}*BlockSize$ im Zeitstempel Datenset enthalten sein, diese werden dann aber nicht indexiert. |
-| Depth | integer | timeindex | yes | Höhe des binären Baumes |
+| BlockSize | long | Datenset `timeindex` | ja | Zeitdauer in Nanosekunden eines Zeitblocks. Zeitstempel innerhalb desselben Zeitblocks werden mit dem gleichen Wert indiziert |
+| LogTimeBlocks | integer | Datenset `timeindex` | ja | $2^{LogTimeBlocks}$ ist gleich der Anzahl an Blöcke, die für die Generierung des binären Baumes. Es können grössere Zeitversetzungen als $2^{LogTimeBlocks}*BlockSize$ im Zeitstempel Datenset enthalten sein, diese werden dann aber nicht indexiert. |
+| Depth | integer | Datenset `timeindex` | ja | Höhe des binären Baumes |
 
 #### Inhalt Datenset Time Indices
 
@@ -499,7 +506,7 @@ Mit der errechneten $NodeNumber$ können wir nun die Position mit Hilfe des `tim
 
 Nun wird bei der Position $18$ mit der Suche des Zeitstempels begonnen und über die Werte $74, 75, 80, 81$ gesucht bis $86$ an Position $22$.
 
-![Tabellenübersicht 2: $BlockNumber$ zu jedem Zeitstempel](images/TimeIndicesTableSearchExample.png){width=400px}
+![Zeitstempelsuche in Tabelle](images/TimeIndicesTableSearchExample.png){width=400px}
 
 Bei der Berechnung weiter oben wird immer abgerundet und nicht der nächstgrössere Wert (hier $40$) verwendet. Dies aus dem Grund, dass die Position beim Wert $40$ höher sein könnte (Ende des Blocks) als die Position im gesuchten Block selber. Somit würde der gesuchte Zeitstempel nicht gefunden werden!
 
@@ -509,7 +516,7 @@ Werden Daten aufgenommen die für eine bestimmte Zeitdauer gültig sind, so wird
 
 | Name | Datentyp | Elternobjekt | Obligatorisch | Ablageart |
 |--|---|-----|--|--|
-| duration | 32 bit integer | Datenquellengruppe | yes | Einzelwerte |
+| duration | 32 bit integer | "datasource_name" | ja | Einzelwerte |
 
 HDF5 Chunking ist erlaubt und HDF5 Compression wird empfohlen.
 
@@ -527,9 +534,9 @@ Weitere Informationen zum Aufbau des HDF5-Dateiformats sind unter folgendem Link
 
 Im RCM-DX werden die einzelnen Gruppen und Datensets sowie deren Benennung definiert. Nachfolgend eine Übersicht über die in diesem Dokument spezifizierte Struktur:
 
-![RCM-DX Übersicht](images/generated/RCM_DX_Structure.png)
+![RCM-DX Strukturübersicht](images/generated/RCM_DX_Structure.png)
 
-Für einzelne Strukturgruppen wurden eigene, separate und detailliertere Spezifikationen geschrieben. An einem Mess- und Inspektionsfahrzeug können mehrere Messmittel verbaut sein. Jedes dieser Messmittel erzeugt neue Kanäle an Daten, welche in das RCM-DX einfliessen. Da diese Kanäle für jedes Messmittel unterschiedlich sein können, wurden die Spezifikationen getrennt. Ein weiterer Grund dafür, ist die Tatsache, dass andere Bahnbetreiber wiederum andere Mess- und Inspektionsmittel einsetzen.
+Für einzelne Strukturgruppen wurden eigene und detailliertere Spezifikationen geschrieben. An einem Mess- und Inspektionsfahrzeug können mehrere Messmittel verbaut sein. Jedes dieser Messmittel erzeugt neue Kanäle an Daten, welche in das RCM-DX einfliessen. Da diese Kanäle für jedes Messmittel unterschiedlich sein können, wurden die Spezifikationen getrennt. Ein weiterer Grund dafür, ist die Tatsache, dass andere Bahnbetreiber wiederum andere Mess- und Inspektionsmittel einsetzen.
 
 Nachfolgend in den Unterkategorien werden die einzelnen Gruppen genauer spezifiziert.
 
@@ -539,7 +546,7 @@ Die Root-Gruppe beinhaltet alle weiteren Untergruppen. Diese Gruppe definiert da
 
 | Name | Elternobjekt | Obligatorisch |
 |--|--|--|
-| RCMDX | none (Root) | yes |
+| RCMDX | none (Root) | ja |
 
 #### Attributes  
 
@@ -547,9 +554,9 @@ Nachfolgende Attribute sind der Gruppe `RCMDX` zugeordnet:
 
 | Name | Data Type | Elternobjekt | Obligatorisch | Description |
 |--|----|--|--|-----|
-| Major | 16-bit integer | RCMDX | yes | Major Version der RCM-DX Spezifikation, die der Struktur der erstellten Datei entspricht |
-| Minor | 16-bit integer | RCMDX | yes | Minor Version der RCM-DX Spezifikation, die der Struktur der erstellten Datei entspricht |
-| Patch | 16-bit integer | RCMDX | yes | Patch Version der RCM-DX Spezifikation, die der Struktur der erstellten Datei entspricht |
+| Major | 16-bit integer | `RCMDX` | ja | Major Version der RCM-DX Spezifikation, die der Struktur der erstellten Datei entspricht |
+| Minor | 16-bit integer | `RCMDX` | ja | Minor Version der RCM-DX Spezifikation, die der Struktur der erstellten Datei entspricht |
+| Patch | 16-bit integer | `RCMDX` | ja | Patch Version der RCM-DX Spezifikation, die der Struktur der erstellten Datei entspricht |
 
 ### Session Group  
 
@@ -561,7 +568,9 @@ Da mehrere Session-Gruppen in einer RCM-DX Datei enthalten sein können, müssen
 
 | Name | Elternobjekt | Obligatorisch |
 |--|--|--|
-| YYYY-MM-ddTHH:mm:ss.SSSZ | RCMDX | yes |
+| YYYYMMDD_hhmmss.SSS | `RCMDX` | ja |
+
+Beispiel: 20190212_231255.592
 
 Nachfolgend sind die einzelnen Elemente und deren Bedeutung beschrieben:
 
@@ -569,14 +578,12 @@ Nachfolgend sind die einzelnen Elemente und deren Bedeutung beschrieben:
 |---|-------|
 | YYYY | The year in four digit representation |
 | MM | The month in the year (01 for January) |
-| dd | The day in the month |
-| "T" | "T" as date marking |
-| HH | The hour in the day (0-23) |
+| DD | The day in the month |
+| hh | The hour in the day (0-23) |
 | mm | The minute in the hour |
 | ss | The seconds in the minute |
 | SSS | The Milliseconds in the seconds |
-| "Z" | "Z" as marking of the time |
-| "-" or ":" or "." | Characters as separator |
+| "_" or "." | Characters as separator |
 
 In einer Session Gruppe sind die Daten der Messmittel enthalten. Für eine gegebene Millisekunde kann nur eine Session vorhanden sein, dies muss der Ersteller implementieren und sicherstellen.
 
@@ -584,10 +591,10 @@ In einer Session Gruppe sind die Daten der Messmittel enthalten. Für eine gegeb
 
 | Name | Data Type | Elternobjekt | Obligatorisch | Description |
 |--|---|--|--|-----|
-| StartTime | long | Session Gruppe | yes | Zeitstempel in Nanosekunden seit dem 1.1.1970 UTC als Startzeit der Session |
-| EndTime | long | Session Gruppe | no | Zeitstempel in Nanosekunden seit dem 1.1.1970 UTC als Endzeit der Session. Falls die Session noch nicht geschlossen wurde, fehlt dieses Attribut |
-| MeasuringMode | string | Session Gruppe | yes | Gibt Aufschluss auf den Messmodus. Details unter [Messmodus](#messmodus).|
-| Element | string | Session Gruppe | yes | Enthält den Typ der Gruppe, dieser ist fix "SESSION" |
+| StartTime | long | "session_name" | ja | Zeitstempel in Nanosekunden seit dem 1.1.1970 UTC als Startzeit der Session |
+| EndTime | long | "session_name" | nein | Zeitstempel in Nanosekunden seit dem 1.1.1970 UTC als Endzeit der Session. Falls die Session noch nicht geschlossen wurde, fehlt dieses Attribut |
+| MeasuringMode | string | "session_name" | ja | Gibt Aufschluss auf den Messmodus. Details unter [Messmodus](#messmodus).|
+| Element | string | "session_name" | ja | Enthält den Typ der Gruppe, dieser ist fix "SESSION" |
 
 ##### Messmodus
 
@@ -605,7 +612,7 @@ Die Gruppe `SECTIONS`, beinhaltet Informationen zu einer Session.
 
 | Name | Elternobjekt | Obligatorisch |
 |--|--|--|
-| SECTIONS | Session Gruppe | yes |
+| SECTIONS | "session_name" | ja |
 
 #### Section Info
 
@@ -613,7 +620,7 @@ In dieser Gruppe sind die Informationen bezüglich der Section selber enthalten.
 
 | Name | Elternobjekt | Obligatorisch |
 |--|--|--|
-| SECTIONINFO | SECTIONS | yes |
+| SECTIONINFO | `SECTIONS` | ja |
 
 ##### Datenfelder
 
@@ -621,11 +628,11 @@ Nachfolgende Datenfelder sind in der Gruppe "SECTIONINFO" enthalten:
 
 | Name | Datentyp | Elternobjekt | Obligatorisch | Ablageart |
 |---|----|---|--|--|
-| coachDirection | 8 bit integer | SECTIONINFO | yes | Einzelwerte |
-| firstTrackOffset | 64 bit float | SECTIONINFO | yes | Einzelwerte |
-| lastTrackOffset | 64 bit float | SECTIONINFO | yes | Einzelwerte |
-| startTimestamp | 64 bit integer | SECTIONINFO | yes | Einzelwerte |
-| trackInfoOffset | 64 bit float | SECTIONINFO | yes | Einzelwerte |
+| coachDirection | 8 bit integer | `SECTIONINFO` | ja | Einzelwerte |
+| firstTrackOffset | 64 bit float | `SECTIONINFO` | ja | Einzelwerte |
+| lastTrackOffset | 64 bit float | `SECTIONINFO` | ja | Einzelwerte |
+| startTimestamp | 64 bit integer | `SECTIONINFO` | ja | Einzelwerte |
+| trackInfoOffset | 64 bit float | `SECTIONINFO` | ja | Einzelwerte |
 
 HDF5 Chunking ist bei allen erlaubt und empfohlen.  
 Die HDF5 Compression ist erlaubt.  
@@ -661,7 +668,7 @@ In dieser Gruppe sind die Informationen bezüglich der Section selber enthalten.
 
 | Name | Elternobjekt | Obligatorisch |
 |--|--|--|
-| TRACKINFO | SECTIONS | yes |
+| TRACKINFO | `SECTIONS` | ja |
 
 ##### Datenfelder
 
@@ -669,12 +676,12 @@ In dieser Gruppe sind die Informationen bezüglich der Section selber enthalten.
 
 | Name | Datentyp | Elternobjekt | Obligatorisch | Ablageart |
 |------|-----|----|---|---|
-| trackId | 32 bit signed integer | TRACKINFO | yes | Einzelwerte |
-| trackStartTimestamp | 64 bit signed integer | TRACKINFO | yes | Einzelwerte |
-| trackEndTimestamp | 64 bit signed integer | TRACKINFO | yes | Einzelwerte |
-| trackOrientation | 8 bit signed integer | TRACKINFO | yes | Einzelwerte |
-| trackStartCoveredDistance | 64 bit float | TRACKINFO | yes | Einzelwerte |
-| trackEndCoveredDistance | 64 bit float | TRACKINFO | yes | Einzelwerte |
+| trackId | 32 bit signed integer | `TRACKINFO` | ja | Einzelwerte |
+| trackStartTimestamp | 64 bit signed integer | `TRACKINFO` | ja | Einzelwerte |
+| trackEndTimestamp | 64 bit signed integer | `TRACKINFO` | ja | Einzelwerte |
+| trackOrientation | 8 bit signed integer | `TRACKINFO` | ja | Einzelwerte |
+| trackStartCoveredDistance | 64 bit float | `TRACKINFO` | ja | Einzelwerte |
+| trackEndCoveredDistance | 64 bit float | `TRACKINFO` | ja | Einzelwerte |
 
 HDF5 Chunking ist bei allen erlaubt und empfohlen.  
 Die HDF5 Compression ist erlaubt.  
@@ -692,12 +699,12 @@ Die HDF5 Compression ist erlaubt.
 
 | Name | Datentyp | Elternobjekt | Obligatorisch | Ablageart |
 |------|-----|----|---|---|
-| id | 32 bit signed integer | TRACKINFO | yes | Einzelwerte |
-| startTimestamp | 64 bit signed integer | TRACKINFO | yes | Einzelwerte |
-| endTimestamp | 64 bit signed integer | TRACKINFO | yes | Einzelwerte |
-| orientation | 8 bit signed integer | TRACKINFO | yes | Einzelwerte |
-| startCoveredDistance | 64 bit float | TRACKINFO | yes | Einzelwerte |
-| endCoveredDistance | 64 bit float | TRACKINFO | yes | Einzelwerte |
+| id | 32 bit signed integer | `TRACKINFO` | ja | Einzelwerte |
+| startTimestamp | 64 bit signed integer | `TRACKINFO` | ja | Einzelwerte |
+| endTimestamp | 64 bit signed integer | `TRACKINFO` | ja | Einzelwerte |
+| orientation | 8 bit signed integer | `TRACKINFO` | ja | Einzelwerte |
+| startCoveredDistance | 64 bit float | `TRACKINFO` | ja | Einzelwerte |
+| endCoveredDistance | 64 bit float | `TRACKINFO` | ja | Einzelwerte |
 
 
 
@@ -725,7 +732,7 @@ In dieser Gruppe sind allgemeine Informationen zu der Position enthalten.
 
 | Name | Elternobjekt | Obligatorisch |
 |--|--|--|
-| POSITION | SECTIONS | yes |
+| POSITION | `SECTIONS` | ja |
 
 #### Datenfelder
 
@@ -733,15 +740,15 @@ In dieser Gruppe sind allgemeine Informationen zu der Position enthalten.
 
 | Name | Datentyp | Elternobjekt | Obligatorisch | Ablageart |
 |------|-----|----|---|---|
-| coveredDistance | 64 bit float | POSITION | yes | Einzelwerte |
-| vehicleOrientation | 8 bit integer | POSITION | yes | Einzelwerte |
-| vehicleSpeed | 64 bit float | POSITION | yes | Einzelwerte |
-| trackOrientation | 8 bit integer | POSITION | yes | Einzelwerte |
-| trackId | 32 bit integer | POSITION | yes | Einzelwerte |
-| trackOffset | 64 bit float | POSITION | yes | Einzelwerte |
-| lineKilometer | 64 bit float | POSITION | yes | Einzelwerte |
-| positionAccuracy | 8 bit integer | POSITION | yes | Einzelwerte |
-| positionQuality | 8 bit integer | POSITION | yes | Einzelwerte |
+| coveredDistance | 64 bit float | `POSITION` | ja | Einzelwerte |
+| vehicleOrientation | 8 bit integer | `POSITION` | ja | Einzelwerte |
+| vehicleSpeed | 64 bit float | `POSITION` | ja | Einzelwerte |
+| trackOrientation | 8 bit integer | `POSITION` | ja | Einzelwerte |
+| trackId | 32 bit integer | `POSITION` | ja | Einzelwerte |
+| trackOffset | 64 bit float | `POSITION` | ja | Einzelwerte |
+| lineKilometer | 64 bit float | `POSITION` | ja | Einzelwerte |
+| positionAccuracy | 8 bit integer | `POSITION` | ja | Einzelwerte |
+| positionQuality | 8 bit integer | `POSITION` | ja | Einzelwerte |
 
 **coveredDistance:** Gesamtlänge der Strecke einer Session in Meter $[m]$
 **vehicleSpeed:** Geschwindikeit des Fahrzeugs zum Zeitpunkt der Aufnahme in $[m/h]$
@@ -790,9 +797,9 @@ Die Namensgebung der Gruppe ist definiert, jenachdem welche Platform die Daten p
 
 | Name | Elternobjekt | Obligatorisch |
 |--|--|--|
-| Plattform | SESSION | yes |
+| Plattform | "session_name" | ja |
 
-![Übersicht der Plattform Struktur](images/generated/RCM_DX_Platform_overview.png){ width=130px }
+![Übersicht der Plattform Struktur](images/generated/RCM_DX_Platform_overview.png){ width=150px }
 
 #### Attribute
 
@@ -800,18 +807,18 @@ Die Plattform Gruppe enthält folgende Attribute:
 
 | Name | Data Type | Obligatorisch | Description |
 |---|--|:--:|------|
-| Name | string | yes | Eindeutiger Name des Fahrzeugs |
-| VehicleNumber | string | yes | Eindeutige Nummer des Fahrzeugs |
+| Name | string | ja | Eindeutiger Name des Fahrzeugs |
+| VehicleNumber | string | ja | Eindeutige Nummer des Fahrzeugs |
 
 #### Plattformen bei der SBB
 
 Nachfolgend eine Liste der definierten eindeutigen Bezeichnungen der Plattformen sowie deren deren Namen.
 
-| Kurzzeichen | Plattform Name |
-|--|---|
-| DFZ00 | DFZ |
-| DFZ01 | gDFZ |
-| DFZ02 | SPZ |
+| Kurzzeichen | Plattform Name | Fahrzeugnummer |
+|---|---|-----|
+| DFZ00 | DFZ | - |
+| DFZ01 | gDFZ | - |
+| DFZ02 | SPZ | - |
 
 #### Configuration
 
@@ -819,14 +826,14 @@ In den Datensets dieser Gruppe können Konfigurationen von diversen Systemen abg
 
 | Name | Elternobjekt | Obligatorisch |
 |--|--|--|
-| CONFIGURATION |PLATFORM | yes |
+| CONFIGURATION | `PLATFORM` | ja |
 
 Nachfolgende Datensets sind dieser Gruppe untergeordnet:
 
 | Name | Datentyp | Elternobjekt | Obligatorisch | Ablageart |
-|--|----|----|--|--|
-| global | string | CONFIGURATION | yes | Einzelwerte |
-| network | string | CONFIGURATION | yes | Einzelwerte |
+|--|---|----|---|------|
+| global | string | `CONFIGURATION` | ja | Einzelwerte |
+| network | string | `CONFIGURATION` | ja | Einzelwerte |
 
 HDF5 Chunking ist bei allen erlaubt und empfohlen.  
 Die HDF5 Compression ist erlaubt.  
@@ -835,7 +842,7 @@ Die HDF5 Compression ist erlaubt.
 
 | Name | Elternobjekt | Obligatorisch |
 |--|--|--|
-| ENVIRONMENT | Session Gruppe | yes |
+| ENVIRONMENT | "session_name" | ja |
 
 Informationen über die Umgebung, können in den Untergruppen und deren Datensets abgespeichert werden. Da solche Informationen für alle Messysteme gelten, ist dies der richtige Platz dafür.  
 
@@ -847,13 +854,13 @@ Wie immer bei einer Datenquelle, darf das Datenset `timestamp` nicht vergessen g
 
 | Name | Elternobjekt | Obligatorisch |
 |--|--|--|
-| VEHICLESPEED | ENVIRONMENT | yes |
+| VEHICLESPEED | `ENVIRONMENT` | ja |
 
 Das Datenset enthält zu jedem Zeitstempel eine gemessene Fahrzeuggeschwindigkeit.
 
 | Name | Datentyp | Elternobjekt | Obligatorisch | Ablageart |
-|--|----|----|--|--|
-| `data` | 64 bit integer | VEHICLESPEED | yes | Einzelwerte |
+|--|---|----|---|------|
+| `data` | 64 bit integer | `VEHICLESPEED` | ja | Einzelwerte |
 
 Auch diese Datenquelle hat ein gemeinsames Datenset `timestamp`.
 
@@ -863,13 +870,13 @@ Diese Gruppe beinhaltet ein Datenset in dem die Umgebungstemperaturen enthalten 
 
 | Name | Elternobjekt | Obligatorisch |
 |--|--|--|
-| AMBIENTTEMPERATURE | ENVIRONMENT | yes |
+| AMBIENTTEMPERATURE | `ENVIRONMENT` | ja |
 
 Pro Zeitstempel, wird im Datenset die Umgebungstemperatur eingetragen.
 
 | Name | Datentyp | Elternobjekt | Obligatorisch | Ablageart |
-|--|----|----|--|--|
-| `data` | 64 bit integer | AMBIENTTEMPERATURE | yes | Einzelwerte |
+|--|---|----|---|------|
+| `data` | 64 bit integer | `AMBIENTTEMPERATURE` | ja | Einzelwerte |
 
 #### Wind Speed Group
 
@@ -877,13 +884,13 @@ Die Windgeschwindigkeit kann im Datenset der Gruppe `WINDSPEED` abgelegt werden.
 
 | Name | Elternobjekt | Obligatorisch |
 |--|--|--|
-| WINDSPEED | ENVIRONMENT | yes |
+| WINDSPEED | `ENVIRONMENT` | ja |
 
 Pro Zeitstempel, wird im Datenset die Windgeschwindigkeit eingetragen.
 
 | Name | Datentyp | Elternobjekt | Obligatorisch | Ablageart |
-|--|----|----|--|--|
-| `data` | 64 bit integer | WINDSPEED | yes | Einzelwerte |
+|--|---|----|---|------|
+| `data` | 64 bit integer | `WINDSPEED` | ja | Einzelwerte |
 
 #### Wind Direction Group
 
@@ -891,13 +898,13 @@ Neben der Windgeschwindigkeit wird auch die Windrichtung abgespeichert, dies wir
 
 | Name | Elternobjekt | Obligatorisch |
 |--|--|--|
-| WINDDIRECTION | ENVIRONMENT | yes |
+| WINDDIRECTION | `ENVIRONMENT` | ja |
 
 Pro Zeitstempel, wird im Datenset die Windrichtung eingetragen.
 
 | Name | Datentyp | Elternobjekt | Obligatorisch | Ablageart |
-|--|----|----|--|--|
-| `data` | 64 bit integer | WINDDIRECTION | yes | Einzelwerte |
+|--|---|----|---|------|
+| `data` | 64 bit integer | `WINDDIRECTION` | ja | Einzelwerte |
 
 #### Weather Conditions Group
 
@@ -905,13 +912,13 @@ Das Wetter hat Einflüsse auf die Messungen. Wie das Wetter zum Zeitpunkt der Me
 
 | Name | Elternobjekt | Obligatorisch |
 |--|--|--|
-| WEATHERCONDITIONS | ENVIRONMENT | yes |
+| WEATHERCONDITIONS | `ENVIRONMENT` | ja |
 
 Pro Zeitstempel, wird im Datenset die Wetterbedingungen eingetragen. Dies könnte zum Beispiel sein "Regen, Nebel, Schneefall".
 
 | Name | Datentyp | Elternobjekt | Obligatorisch | Ablageart |
-|--|----|----|--|--|
-| `data` | 64 bit integer | WEATHERCONDITIONS | yes | Einzelwerte |
+|--|---|----|---|------|
+| `data` | 64 bit integer | `WEATHERCONDITIONS` | ja | Einzelwerte |
 
 ### Measuring System Group
 
@@ -919,7 +926,7 @@ Jedes Messsystem hat seine eigenen Datenquellen, die einen eigenen Namen haben, 
 
 Für jedes System, das Daten erfasst, wird eine Gruppe erstellt. Der Name der Gruppe ist pro System eindeutig. Wie sich dieser Name zusammensetzt, ist nicht vorgegeben. Jedes System enthält weitere Untergruppen die am Ende jeweils eine Datenquelle beinhaltet.
 
-![Übersicht der Messystem Struktur](images/generated/RCM_DX_MS_overview.png){ width=400px }
+![Übersicht der Messystem Struktur](images/generated/RCM_DX_MS_overview.png)
 
 #### Beispiel
 
@@ -930,11 +937,11 @@ Als Beispiel soll hier ein Messsystem beschrieben werden, dass Umgebungsdaten au
 Folgende Attribute sind in der Gruppe des Messystems enthalten:
 
 | Name | Data Type | Elternobjekt | Obligatorisch | Description |
-|--|----|--|--|------|
-| Family | string | Measuring System Group | yes | Allgemeiner Name des Messystems |
-| Revision | string | Measuring System Group | yes | Versionstand der Software auf dem Messystem, vergeben durch den Messmittelhersteller |
-| IstanceVersion | string | Measuring System Group | yes | Version des Datenformat das vom Messmittel erstellt wird. Diese Version kann unterschiedlich sein innerhalb verschiedener Messmittel der gleichen Familie |
-| Element | string | Measuring System Group | yes | Enthält den Typ der Gruppe, dieser ist fix "MEASURINGSYSTEM" |
+|--|---|----|---|------|
+| Family | string | "measuringsystem_name" | ja | Allgemeiner Name des Messystems |
+| Revision | string | "measuringsystem_name" | ja | Versionstand der Software auf dem Messystem, vergeben durch den Messmittelhersteller |
+| IstanceVersion | string | "measuringsystem_name" | ja | Version des Datenformat das vom Messmittel erstellt wird. Diese Version kann unterschiedlich sein innerhalb verschiedener Messmittel der gleichen Familie |
+| Element | string | "measuringsystem_name" | ja | Enthält den Typ der Gruppe, dieser ist fix "MEASURINGSYSTEM" |
 
 ### Datasource Group
 
@@ -948,8 +955,8 @@ Die Art wie die Messdaten erfasst wurden, steht in zwei Attributen bei jeder Kan
 Folgendes Attribut erhält die Gruppe:
 
 | Name | Data Type | Elternobjekt | Obligatorisch | Description |
-|--|---|---|---|------|
-| Element | string | Datenquellengruppe | yes | Enthält den Typ der Gruppe, dieser ist fix "DATASOURCE" |
+|--|---|----|---|------|
+| Element | string | "datasource_name" | ja | Enthält den Typ der Gruppe, dieser ist fix "DATASOURCE" |
 
 #### Example
 
@@ -969,15 +976,15 @@ Eine Kanalgruppe enthält Metadaten zu den eigentlichen Messdaten und somit zu d
 Folgende Attribute sind in dieser Gruppe enthalten:  
 
 | Name | Data Type | Elternobjekt | Obligatorisch | Description |
-|----|--|---|--|------|
-| PositionOffset | 32 bit float | Kanalgruppe | yes | [Position Offset](#position-offset) |
-| TriggerMode | string | Kanalgruppe | yes | [Trigger Mode](#trigger-mode) |
-| ChannelBasis | string | Kanalgruppe | yes | [Channel Basis](#channel-basis) |
-| CommonTriggerDistance | 32 bit float | Kanalgruppe | yes | [Common Trigger Distance or Frequence](#common-trigger-distance-or-frequence) |
-| CommonTriggerFrequence | 32 bit float | Kanalgruppe | yes | [Common Trigger Distance or Frequence](#common-trigger-distance-or-frequence) |
-| ChannelTyp | string | Kanalgruppe | yes | [Channel Type](#channel-type) |
-| Neighbor | string | Kanalgruppe | yes | [Neighbor](#neighbor) |
-| Element | string | Kanalgruppe | yes | Enthält den Typ der Gruppe, dieser ist fix "CHANNEL" |
+|--|---|----|---|------|
+| PositionOffset | 32 bit float | "channel_name" | ja | [Position Offset](#position-offset) |
+| TriggerMode | string | "channel_name" | ja | [Trigger Mode](#trigger-mode) |
+| ChannelBasis | string | "channel_name" | ja | [Channel Basis](#channel-basis) |
+| CommonTriggerDistance | 32 bit float | "channel_name" | ja | [Common Trigger Distance or Frequence](#common-trigger-distance-or-frequence) |
+| CommonTriggerFrequence | 32 bit float | "channel_name" | ja | [Common Trigger Distance or Frequence](#common-trigger-distance-or-frequence) |
+| ChannelTyp | string | "channel_name" | ja | [Channel Type](#channel-type) |
+| Neighbor | string | "channel_name" | ja | [Neighbor](#neighbor) |
+| Element | string | "channel_name" | ja | Enthält den Typ der Gruppe, dieser ist fix "CHANNEL" |
 
 #### Channel Basis
 
@@ -1046,10 +1053,10 @@ Als Kanal folgen hier alle Arten von Daten, die zum gleichen Zeitpunkt aufgenomm
 
 | Name | Obligatorisch | Description |
 |----|---|--------|
-| TEMP | no | Temperatur |
-| WIND_DIR | no | Windrichtung |
-| WIND_SPEED | no | Windgeschwindigkeit |
-| HUM | no | Feuchtigkeit |
+| TEMP | nein | Temperatur |
+| WIND_DIR | nein | Windrichtung |
+| WIND_SPEED | nein | Windgeschwindigkeit |
+| HUM | nein | Feuchtigkeit |
 
 Weiter erhalten alle Kanäle die folgenden Attribute und Werte:
 
@@ -1069,15 +1076,15 @@ Jede Kanalgruppe erhält ein Datenset mit den eigentlichen Messdaten:
 
 | Name | HDF5 Type | Obligatorisch |
 |--|---|--|
-| data | HDF5 Dataset | yes |
+| data | HDF5 Dataset | ja |
 
 > Es gibt genau so viele Messdateneinträge wie es Zeitstempel im Dataset `timestamp` gibt, das der Kanalgruppe beiliegt.
 
 Das Datenset benötigt weitere Informationen, diese werden als Attribute angegeben:
 
 | Name | Datentyp | Elternobjekt | Obligatorisch | Ablageart |
-|--|----|----|--|--|
-| Unit | string | Kanalgruppe | yes | Einzelwerte |
+|--|---|----|---|------|
+| Unit | string | "channel_name" | ja | Einzelwerte |
 
 **Unit:** Die physikalische Einheit der Messdaten, wie zum Beispiel "Millimeter". Falls keine physikalische Einheit den Daten zugewiesen werden kann, bleibt dieses Attribut leer.
 
@@ -1100,7 +1107,7 @@ Die Logging Gruppe enthält Informationen über Zustände der Messsysteme. Die D
 
 | Name | Elternobjekt | Obligatorisch |
 |--|---|--|
-| LOGGING | Measuring System Group | yes |
+| LOGGING | "measuringsystem_name" | ja |
 
 ![Übersicht der Logging Struktur](images/generated/RCM_DX_Logging_overview.png){width=250px}
 
@@ -1111,10 +1118,10 @@ In dieser Gruppe werden Ausfälle und Unterbrüche von Messsystemen in definiert
 Folgende Datensets sind in dieser Gruppe enthalten:
 
 | Name | Datentyp | Elternobjekt | Obligatorisch | Ablageart |
-|--|----|----|--|--|
-| reference | string | LOGGING | yes | Einzelwerte |
-| level | string | LOGGING | yes | Einzelwerte |
-| message | string | LOGGING | yes | Einzelwerte |
+|--|---|----|---|------|
+| reference | string | `LOGGING` | ja | Einzelwerte |
+| level | string | `LOGGING` | ja | Einzelwerte |
+| message | string | `LOGGING` | ja | Einzelwerte |
 
 HDF5 Chunking ist erlaubt und HDF5 Compression ist erlaubt.
 
@@ -1131,16 +1138,23 @@ Statusmeldungen zu einem System oder einer Datenquelle, werden in dieser Gruppe 
 Folgende Datensets sind in dieser Gruppe enthalten:
 
 | Name | Datentyp | Elternobjekt | Obligatorisch | Ablageart |
-|--|----|----|--|---|
-| message | string | LOGGING | yes | Einzelwerte |
-| level | string | LOGGING | yes | Einzelwerte |
-| reference | string | LOGGING | yes | Einzelwerte |
-| timestamp | 64 bit integer | LOGGING | yes | Einzelwerte |
+|--|---|----|---|------|
+| message | string | `LOGGING` | ja | Einzelwerte |
+| level | string | `LOGGING` | ja | Einzelwerte |
+| reference | string | `LOGGING` | ja | Einzelwerte |
+| timestamp | 64 bit integer | `LOGGING` | ja | Einzelwerte |
 
 HDF5 Chunking ist empfohlen und HDF5 Compression ist erlaubt.
 
-**reference:** Eine Referenz auf das betroffene Messsystem oder der Datenquelle selber, wird in diesem Datenset hinterlegt.  
+**reference:** Eine Referenz auf das betroffene Messsystem oder der Datenquelle selber, wird in diesem Datenset hinterlegt.
+
+
+
+
 > **level:** TODO: Level? Was für welche gibt es?  
+
+
+
 
 **message:** Die eigentliche Nachricht die aufgenommen werden soll für ein Messsystem.  
 
@@ -1150,7 +1164,7 @@ In einer Topologie Gruppe befinden sich alle Informationen zum Streckennetz der 
 
 | Name | HDF5 Type | Elternobjekt | Obligatorisch |
 |--|--|---|--|
-| TOPOLOGY | HDF5 Group | SESSION | yes |
+| TOPOLOGY | HDF5 Group | "session_name" | ja |
 
 ![Übersicht Topology Struktur](images/generated/RCM_DX_Topology_overview.png)
 
@@ -1160,7 +1174,7 @@ Die Gruppe `TOPOLOGY` enthält folgende Attribute:
 
 | Name | Datentyp | Elternobjekt | Obligatorisch | Ablageart |
 |---|--|---|--|--|
-| DfAExportTimestamp | string | TOPOLOGY | yes | Einzelwerte |
+| DfAExportTimestamp | string | `TOPOLOGY` | ja | Einzelwerte |
 
 **DfAExportTimestamp:** Zeitpunkt, an dem die DfA exportiert wurde und somit ein Verweis auf die Version
 
@@ -1172,22 +1186,22 @@ Diese Gruppe enthält Informationen zu den Gleissträngen des Streckennetzes. Di
 
 | Name | Elternobjekt | Obligatorisch |
 |--|--|--|
-| TRACKS | TOPOLOGY | yes |
+| TRACKS | TOPOLOGY | ja |
 
 Folgende Datensets sind in dieser Gruppe enthalten, davon werden einige in den Unterkapiteln genauer beschrieben:
 
 | Name | Datentyp | Elternobjekt | Obligatorisch | Beschreibung |
 |--|---|--|--|---|
-| direction | 8 bit signed integer, little endian | TRACKS | yes | Einzelwerte |
-| id | 32 bit integer, little endian | TRACKS | yes | Einzelwerte |
-| gtgId | string | TRACKS | yes | Einzelwerte |
-| length | string | TRACKS | yes | Einzelwerte |
-| name | string | TRACKS | yes | Einzelwerte |
-| nrLine | string | TRACKS | yes | Einzelwerte |
-| pointFrom | 32 bit integer, little endian | TRACKS | yes | Einzelwerte |
-| pointTo | 32 bit integer, little endian | TRACKS | yes | Einzelwerte |
-| switchType | 8 bit signed integer, little endian | TRACKS | yes | Einzelwerte |
-| trackType | 8 bit signed integer, little endian | TRACKS | yes | Einzelwerte |
+| direction | 8 bit signed integer, little endian | TRACKS | ja | Einzelwerte |
+| id | 32 bit integer, little endian | TRACKS | ja | Einzelwerte |
+| gtgId | string | TRACKS | ja | Einzelwerte |
+| length | string | TRACKS | ja | Einzelwerte |
+| name | string | TRACKS | ja | Einzelwerte |
+| nrLine | string | TRACKS | ja | Einzelwerte |
+| pointFrom | 32 bit integer, little endian | TRACKS | ja | Einzelwerte |
+| pointTo | 32 bit integer, little endian | TRACKS | ja | Einzelwerte |
+| switchType | 8 bit signed integer, little endian | TRACKS | ja | Einzelwerte |
+| trackType | 8 bit signed integer, little endian | TRACKS | ja | Einzelwerte |
 
 **direction:** Wird in einem eigenen Kapitel bescheieben: [direction](#direction)  
 **id:** Eindeutige ID des Gleisstrangs.
@@ -1241,18 +1255,18 @@ Diese Gruppe enthält Informationen zu einer Linie im Streckennetz. Die Informat
 
 | Name | Elternobjekt | Obligatorisch |
 |--|--|--|
-| LINES | TOPOLOGY | yes |
+| LINES | TOPOLOGY | ja |
 
 Folgende Datensets sind in dieser Gruppe enthalten:
 
 | Name | Datentyp | Elternobjekt | Obligatorisch | Ablageart |
-|--|----|----|--|--|
-| id | 32 bit signed integer, little endian | LINES | yes | Einzelwerte |
-| name | string | LINES | yes | Einzelwerte |
-| firstStation | string | LINES | yes | Einzelwerte |
-| lastStation | string | LINES | yes | Einzelwerte |
-| fromKilometer | string | LINES | yes | Einzelwerte |
-| toKilometer | string | LINES | yes | Einzelwerte |
+|--|---|----|---|------|
+| id | 32 bit signed integer, little endian | `LINES` | ja | Einzelwerte |
+| name | string | `LINES` | ja | Einzelwerte |
+| firstStation | string | `LINES` | ja | Einzelwerte |
+| lastStation | string | `LINES` | ja | Einzelwerte |
+| fromKilometer | string | `LINES` | ja | Einzelwerte |
+| toKilometer | string | `LINES` | ja | Einzelwerte |
 
 **id:** Definiert die ID der Linie, diese ist Eindeutig  
 **name:** Der Name der Linie  
@@ -1267,32 +1281,32 @@ Diese Gruppe enthält Informationen über Weichen im Streckennetz. Die Informati
 
 | Name | Elternobjekt | Obligatorisch |
 |--|--|--|
-| SWITCHTRACKS | TOPOLOGY | yes |
+| SWITCHTRACKS | `TOPOLOGY` | ja |
 
 Folgende Datensets sind in dieser Gruppe enthalten:
 
 | Name | Datentyp | Elternobjekt | Obligatorisch | Beschreibung |
-|---|---|---|--|---|
-| gleisstrangId | 32 bit signed integer | SWITCHTRACKS | yes | Einzelwerte |
-| gleisstrangBez | string | SWITCHTRACKS | yes | Einzelwerte |
-| weicheId | 32 bit signed integer | SWITCHTRACKS | yes | Einzelwerte |
-| ablenkRichtung | string | SWITCHTRACKS | yes | Einzelwerte |
-| ablenkung | string | SWITCHTRACKS | yes | Einzelwerte |
-| betriebspunkt | string | SWITCHTRACKS | yes | Einzelwerte |
-| herzStueck | string | SWITCHTRACKS | yes | Einzelwerte |
-| minRadius | 32 bit signed integer | SWITCHTRACKS | yes | Einzelwerte |
-| nr | 32 bit signed integer | SWITCHTRACKS | yes | Einzelwerte |
-| zusNr | string | SWITCHTRACKS | yes | Einzelwerte |
-| schienenProfil | string | SWITCHTRACKS | yes | Einzelwerte |
-| status | string | SWITCHTRACKS | yes | Einzelwerte |
-| schienenProfil | string | SWITCHTRACKS | yes | Einzelwerte |
-| schwellenArt | string | SWITCHTRACKS | yes | Einzelwerte |
-| typenPlanNr | 32 bit signed integer | SWITCHTRACKS | yes | Einzelwerte |
-| typNrZusatz | string | SWITCHTRACKS | yes | Einzelwerte |
-| weichenArt | string | SWITCHTRACKS | yes | Einzelwerte |
-| weichenTyp | string | SWITCHTRACKS | yes | Einzelwerte |
-| weichenForm | string | SWITCHTRACKS | yes | Einzelwerte |
-| weichenZunge | string | SWITCHTRACKS | yes | Einzelwerte |
+|--|---|----|---|------|
+| gleisstrangId | 32 bit signed integer | `SWITCHTRACKS` | ja | Einzelwerte |
+| gleisstrangBez | string | `SWITCHTRACKS` | ja | Einzelwerte |
+| weicheId | 32 bit signed integer | `SWITCHTRACKS` | ja | Einzelwerte |
+| ablenkRichtung | string | `SWITCHTRACKS` | ja | Einzelwerte |
+| ablenkung | string | `SWITCHTRACKS` | ja | Einzelwerte |
+| betriebspunkt | string | `SWITCHTRACKS` | ja | Einzelwerte |
+| herzStueck | string | `SWITCHTRACKS` | ja | Einzelwerte |
+| minRadius | 32 bit signed integer | `SWITCHTRACKS` | ja | Einzelwerte |
+| nr | 32 bit signed integer | `SWITCHTRACKS` | ja | Einzelwerte |
+| zusNr | string | `SWITCHTRACKS` | ja | Einzelwerte |
+| schienenProfil | string | `SWITCHTRACKS` | ja | Einzelwerte |
+| status | string | `SWITCHTRACKS` | ja | Einzelwerte |
+| schienenProfil | string | `SWITCHTRACKS` | ja | Einzelwerte |
+| schwellenArt | string | `SWITCHTRACKS` | ja | Einzelwerte |
+| typenPlanNr | 32 bit signed integer | `SWITCHTRACKS` | ja | Einzelwerte |
+| typNrZusatz | string | `SWITCHTRACKS` | ja | Einzelwerte |
+| weichenArt | string | `SWITCHTRACKS` | ja | Einzelwerte |
+| weichenTyp | string | `SWITCHTRACKS` | ja | Einzelwerte |
+| weichenForm | string | `SWITCHTRACKS` | ja | Einzelwerte |
+| weichenZunge | string | `SWITCHTRACKS` | ja | Einzelwerte |
 
 **gleisstrangId:** Eine referenz auf die GTG-ID  
 **gleisstrangBez:** Enthält eine Beschreibung zum Gleisabschnitt  
@@ -1323,17 +1337,17 @@ Diese Gruppe enthält Informationen über Objekte im Streckennetz, dies kann zum
 
 | Name | Elternobjekt | Obligatorisch |
 |--|--|--|
-| TRACKOBJECTS | TOPOLOGY | yes |
+| TRACKOBJECTS | `TOPOLOGY` | ja |
 
 Folgende Datensets sind in dieser Gruppe enthalten:
 
 | Name | Datentyp | Elternobjekt | Obligatorisch | Ablageart |
-|--|----|----|--|--|
-| trackId | 32 bit signed integer | TRACKOBJECTS | yes | Einzelwerte |
-| type | 32 bit signed integer | TRACKOBJECTS | yes | Einzelwerte |
-| positionStart | 32 bit signed integer | TRACKOBJECTS | yes | Einzelwerte |
-| positionEnd | 32 bit signed integer | TRACKOBJECTS | yes | Einzelwerte |
-| extraInfo | string | TRACKOBJECTS | yes | Einzelwerte |
+|--|---|----|---|------|
+| trackId | 32 bit signed integer | `TRACKOBJECTS` | ja | Einzelwerte |
+| type | 32 bit signed integer | `TRACKOBJECTS` | ja | Einzelwerte |
+| positionStart | 32 bit signed integer | `TRACKOBJECTS` | ja | Einzelwerte |
+| positionEnd | 32 bit signed integer | `TRACKOBJECTS` | ja | Einzelwerte |
+| extraInfo | string | `TRACKOBJECTS` | ja | Einzelwerte |
 
 **trackId:** Enthält die ID des auf einen Gleisstrang
 **type:** Typ des Objekts  
@@ -1347,22 +1361,22 @@ Diese Gruppe enthält Informationen über definierte Punkte auf dem Streckennetz
 
 | Name | Elternobjekt | Obligatorisch |
 |--|--|--|
-| TRACKPOINTS | TOPOLOGY | yes |
+| TRACKPOINTS | `TOPOLOGY` | ja |
 
 Folgende Datensets sind in dieser Gruppe enthalten:
 
 | Name | Datentyp | Elternobjekt | Obligatorisch | Ablageart |
-|--|----|----|--|--|
-| trackId | 32 bit signed integer | TRACKPOINTS | yes | Einzelwerte |
-| lineId | 32 bit signed integer | TRACKPOINTS | yes | Einzelwerte |
-| x | 32 bit float | TRACKPOINTS | yes | Einzelwerte |
-| y | 32 bit float | TRACKPOINTS | yes | Einzelwerte |
-| z | 32 bit float | TRACKPOINTS | yes | Einzelwerte |
-| radius | 32 bit float | TRACKPOINTS | yes | Einzelwerte |
-| kilometer | 32 bit float | TRACKPOINTS | yes | Einzelwerte |
-| position | 32 bit float | TRACKPOINTS | yes | Einzelwerte |
-| cant | 32 bit float | TRACKPOINTS | yes | Einzelwerte |
-| inclination | 32 bit float | TRACKPOINTS | yes | Einzelwerte |
+|--|---|----|---|------|
+| trackId | 32 bit signed integer | `TRACKPOINTS` | ja | Einzelwerte |
+| lineId | 32 bit signed integer | `TRACKPOINTS` | ja | Einzelwerte |
+| x | 32 bit float | `TRACKPOINTS` | ja | Einzelwerte |
+| y | 32 bit float | `TRACKPOINTS` | ja | Einzelwerte |
+| z | 32 bit float | `TRACKPOINTS` | ja | Einzelwerte |
+| radius | 32 bit float | `TRACKPOINTS` | ja | Einzelwerte |
+| kilometer | 32 bit float | `TRACKPOINTS` | ja | Einzelwerte |
+| position | 32 bit float | `TRACKPOINTS` | ja | Einzelwerte |
+| cant | 32 bit float | `TRACKPOINTS` | ja | Einzelwerte |
+| inclination | 32 bit float | `TRACKPOINTS` | ja | Einzelwerte |
 
 **trackId:** Referenz auf die ID des Gleisstrangs  
 **lineId:** Referenz auf die ID der Linie  
@@ -1381,18 +1395,18 @@ Diese Gruppe enthält Informationen über Eigenschaften der Topologie selber. Di
 
 | Name | Elternobjekt | Obligatorisch |
 |--|--|--|
-| PROPERTIES | TOPOLOGY | yes |
+| PROPERTIES | `TOPOLOGY` | ja |
 
 Folgende Datensets sind in dieser Gruppe enthalten:
 
 | Name | Datentyp | Elternobjekt | Obligatorisch | Beschreibung |
-|---|--|--|--|--|---|
-| propertyId | 32 bit signed integer | PROPERTIES | yes | Einzelwerte |
-| name | string | PROPERTIES | yes | Einzelwerte |
-| description.ge | string | PROPERTIES | yes | Einzelwerte |
-| description.fr | string | PROPERTIES | yes | Einzelwerte |
-| description.it | string | PROPERTIES | yes | Einzelwerte |
-| description.en | string | PROPERTIES | yes | Einzelwerte |
+|--|---|----|---|------|
+| propertyId | 32 bit signed integer | `PROPERTIES` | ja | Einzelwerte |
+| name | string | `PROPERTIES` | ja | Einzelwerte |
+| description.ge | string | `PROPERTIES` | ja | Einzelwerte |
+| description.fr | string | `PROPERTIES` | ja | Einzelwerte |
+| description.it | string | `PROPERTIES` | ja | Einzelwerte |
+| description.en | string | `PROPERTIES` | ja | Einzelwerte |
 
 **propertyId:** Eindeutige ID des Merkmals  
 **name:** Name des Merkmals  
@@ -1408,17 +1422,17 @@ Systeme können zum Beispiel ein Ereignis bei einer Grenzwertüberschreitung aus
 
 | Name | HDF5 Type | Elternobjekt | Obligatorisch |
 |--|--|---|--|
-| EVENTS | HDF5 Group | Session Group | yes |
+| EVENTS | HDF5 Group | "session_name" | ja |
 
 Innerhalb der Gruppe gibt es nachfolgende Datenfelder:
 
 | Name | Datentyp | Elternobjekt | Obligatorisch | Ablageart |
-|--|----|---|--|---|
-| reference | string | EVENTS | yes | Einzelwerte |
-| data | string (XML) | EVENTS | yes | Einzelwerte |
-| eventtype | string | EVENTS | yes | Einzelwerte |
-| duration | 64 bit signed integer little endian | EVENTS | yes | Einzelwerte |
-| timestamp | 64 bit signed integer little endian | EVENTS | yes | Einzelwerte |
+|--|---|----|---|------|
+| reference | string | EVENTS | ja | Einzelwerte |
+| data | string (XML) | `EVENTS` | ja | Einzelwerte |
+| eventtype | string | `EVENTS` | ja | Einzelwerte |
+| duration | 64 bit signed integer little endian | `EVENTS` | ja | Einzelwerte |
+| timestamp | 64 bit signed integer little endian | `EVENTS` | ja | Einzelwerte |
 
 Bei allen Datensets, wird HDF5 Chunking empfohlen und HDF5 Compression ist erlaubt.
 
@@ -1428,8 +1442,8 @@ Jedes Datenset wird nachfolgend in den jeweiligen Unterkapiteln, genauer beschri
 #### Event Data
 
 | Name | Datentyp | Elternobjekt | Obligatorisch | Ablageart |
-|--|----|----|--|--|
-| "data" | string | EVENTS | yes | Einzelwerte |
+|--|---|----|---|------|
+| "data" | string | `EVENTS` | ja | Einzelwerte |
 
 HDF5 Chunking ist erlaubt und empfohlen.  
 Die HDF5 Compression ist erlaubt.  
@@ -1442,8 +1456,8 @@ Die Ereignisse werden in diesem Datenset als Liste abgespeichert. Für jedes Ere
 Definiert pro Ereignis die Zeitdauer des Ereignisses selber. Dieser Wert kann auch Null sein.
 
 | Name | Datentyp | Elternobjekt | Obligatorisch | Ablageart |
-|--|----|----|--|--|
-| "duration" | 64 bit integer | EVENTS | yes | Einzelwerte |
+|--|---|----|---|------|
+| "duration" | 64 bit integer | `EVENTS` | ja | Einzelwerte |
 
 HDF5 Chunking ist erlaubt und empfohlen.  
 Die HDF5 Compression ist erlaubt.  
@@ -1453,8 +1467,8 @@ Die HDF5 Compression ist erlaubt.
 Beinhaltet den Typ eines Ereignisses.
 
 | Name | Datentyp | Elternobjekt | Obligatorisch | Ablageart |
-|--|----|----|--|--|
-| "eventtype" | string | EVENTS | yes | Einzelwerte |
+|--|---|----|---|------|
+| "eventtype" | string | `EVENTS` | ja | Einzelwerte |
 
 HDF5 Chunking ist bei allen erlaubt und empfohlen.  
 Die HDF5 Compression ist erlaubt.  
@@ -1563,7 +1577,7 @@ Das XML-Schema ist im Kapitel [EventsGeneric](#events-generic) zu finden.
 | Type | Art oder Typ der Konsistenzprüfung als Antwort auf die Frage "Was wurde geprüft?" | Consistency |
 | ProcessName | Name des Prozesses der die Konsistenz geprüft hat | Consistency |
 | Result | Resultat der Konsistenzprüfung. | Consistency |
-| ID | Eindeutige ID des Ereignisses (UUID) | Consistency |
+| ID | Eindeutige ID des Ereignisses (UUID) | Consitimestency |
 
 **Result:** Das eigentliche Ergebnis der Konsistenzprüfung. Jedes System das eine Konsistenzprüfung durchführt, hat unterschiedliche Resultate, die wiederum in deren Spezifikation genauer beschrieben werden müssen.
 
@@ -1572,8 +1586,8 @@ Das XML-Schema ist im Kapitel [EventsGeneric](#events-generic) zu finden.
 Beinhaltet eine Liste mit Einträgen, die den Namen des Systems beinhalten, welches das Ereignis ausgelöst hat.
 
 | Name | Datentyp | Elternobjekt | Obligatorisch | Ablageart |
-|--|----|----|--|--|
-| "reference" | string | yes | Einzelwerte |
+|--|---|----|---|------|
+| "reference" | string | ja | Einzelwerte |
 
 HDF5 Chunking ist erlaubt und empfohlen.  
 Die HDF5 Compression ist erlaubt.  
@@ -1586,17 +1600,17 @@ Protokolleinträge können Referenzen zu Systemen, Sessions und Kanälen haben.
 
 | Name | HDF5 Type | Obligatorisch |
 |---|-----|--|
-| RECORDS | HDF5 Group | yes |
+| RECORDS | HDF5 Group | ja |
 
 Innerhalb der Gruppe gibt es nachfolgende Datenfelder:
 
 | Name | Datentyp | Elternobjekt | Obligatorisch | Ablageart |
-|--|----|----|--|--|
-| data | string (XML) | RECORDS | yes | Einzelwerte |
-| duration | 64 bit signed integer little endian | RECORDS | yes | Einzelwerte |
-| eventtype | string | RECORDS | yes | Einzelwerte |
-| reference | string  | RECORDS | yes | Einzelwerte |
-| timestamp | 64 bit signed integer little endian | RECORDS | yes | Einzelwerte |
+|--|---|----|---|------|
+| data | string (XML) | `RECORDS` | ja | Einzelwerte |
+| duration | 64 bit signed integer little endian | `RECORDS` | ja | Einzelwerte |
+| eventtype | string | `RECORDS` | ja | Einzelwerte |
+| reference | string  | `RECORDS` | ja | Einzelwerte |
+| timestamp | 64 bit signed integer little endian | `RECORDS` | ja | Einzelwerte |
 
 Jedes dieser Datensets enthält eine Liste mit Informationen zu einem Eintrag, zu einem bestimmten Zeitpunkt.
 Jedes Datenset wird nachfolgend in den jeweiligen Unterkapiteln, genauer beschrieben.  
@@ -1604,8 +1618,8 @@ Jedes Datenset wird nachfolgend in den jeweiligen Unterkapiteln, genauer beschri
 #### Record Data
 
 | Name | Datentyp | Elternobjekt | Obligatorisch | Ablageart |
-|--|----|----|--|--|
-| "data" | string | RECORDS | yes | Einzelwerte |
+|--|---|----|---|------|
+| "data" | string | `RECORDS` | ja | Einzelwerte |
 
 HDF5 Chunking ist erlaubt und empfohlen.  
 Die HDF5 Compression ist erlaubt.  
@@ -1618,8 +1632,8 @@ Die Protokolleinträge werden in diesem Datenset als Liste abgespeichert. Für j
 Definiert pro Eintrag die Zeitdauer des Protokolleintrags selber. Dieser Wert kann auch Null sein.
 
 | Name | Datentyp | Elternobjekt | Obligatorisch | Ablageart |
-|--|----|----|--|--|
-| "duration" | 64 bit integer | RECORDS | yes | Einzelwerte |
+|--|---|----|---|------|
+| "duration" | 64 bit integer | `RECORDS` | ja | Einzelwerte |
 
 HDF5 Chunking ist erlaubt und empfohlen.  
 Die HDF5 Compression ist erlaubt.  
@@ -1629,8 +1643,8 @@ Die HDF5 Compression ist erlaubt.
 Beinhaltet eine Liste mit Einträgen, die den Namen des Systems beinhalten, welches diesen ausgelöst hat.
 
 | Name | Datentyp | Elternobjekt | Obligatorisch | Ablageart |
-|--|----|----|--|--|
-| "reference" | string | RECORDS | yes | Einzelwerte |
+|--|---|----|---|------|
+| "reference" | string | `RECORDS` | ja | Einzelwerte |
 
 HDF5 Chunking ist erlaubt und empfohlen.  
 Die HDF5 Compression ist erlaubt.  
@@ -1640,8 +1654,8 @@ Die HDF5 Compression ist erlaubt.
 Beinhaltet den Typ eines Protokolleintrags.
 
 | Name | Datentyp | Elternobjekt | Obligatorisch | Ablageart |
-|--|----|----|--|--|
-| "recordtype" | string | RECORDS | yes | Einzelwerte |
+|--|---|----|---|------|
+| "recordtype" | string | `RECORDS` | ja | Einzelwerte |
 
 HDF5 Chunking ist erlaubt und empfohlen.  
 Die HDF5 Compression ist erlaubt.  
@@ -1691,16 +1705,16 @@ Diese Gruppe ist unterhalb der eines Messsystems und somit innerhalb der Gruppe 
 
 | Name | Elternobjekt | Obligatorisch |
 |--|--|--|
-| CONFIGURATION | MEASURINGSYSTEM | yes |
+| CONFIGURATION | `MEASURINGSYSTEM` | ja |
 
 #### Configuration Group Datensets
 
 In dieser Gruppe sind zwei Datensets enthalten:
 
 | Name | Datentyp | Elternobjekt | Obligatorisch | Ablageart |
-|--|----|----|--|--|
-| key | string | CONFIGURATION | yes | Einzelwerte |
-| value | string or binary | CONFIGURATION | yes | Einzelwerte |
+|--|---|----|---|------|
+| key | string | `CONFIGURATION` | ja | Einzelwerte |
+| value | string or binary | `CONFIGURATION` | ja | Einzelwerte |
 
 **key:** In diesem Datenset wird der Name des Messystems angegeben, zu dem die abgelegte Konfiguration gehört.  
 **value:** In diesem Datentset wird die eigentliche Konfiguration abgelegt. Diese Konfigutation kann Binär oder als Zeichenkette abgelegt werden.  
@@ -1711,16 +1725,16 @@ Die Datenquellengruppe `DATAPROCESSING` enthält Informationen zur Datenverarbei
 
 | Name | Elternobjekt | Obligatorisch |
 |--|--|--|
-| DATAPROCESSING | RCMDX | yes |
+| DATAPROCESSING | RCMDX | ja |
 
 #### Data Processing Group Datensets
 
 Die Gruppe `DATAPROCESSING` enthält zwei Datenset:
 
 | Name | Datentyp | Elternobjekt | Obligatorisch | Ablageart |
-|--|----|----|--|--|
-| key | string | DATAPROCESSING | yes | Einzelwerte |
-| value | string | DATAPROCESSING | yes | Einzelwerte |
+|--|---|----|---|------|
+| key | string | `DATAPROCESSING` | ja | Einzelwerte |
+| value | string | `DATAPROCESSING` | ja | Einzelwerte |
 
 **key:** In diesem Datenset wird der Name des Systems gespeichert, die Änderungen an den Daten vorgenommen haben.  
 **value:** In diesem Datentset wird die eigentliche Information abgelegt (was wurde geändert?).  
@@ -1733,14 +1747,14 @@ Diese Gruppe dient der SBB für das Festhalten von Informationen über die Daten
 
 | Name | Elternobjekt | Obligatorisch |
 |--|--|--|
-| CLEARANCEINFORMATION | RCMDX | yes |
+| CLEARANCEINFORMATION | `RCMDX` | ja |
 
 Folgende Attribute sind in dieser Gruppe enthalten:
 
 | Name | Data Type | Elternobjekt | Obligatorisch | Description |
 |--|---|----|---|-----|
-| clearance | 8 bit integer (boolean) | CLEARANCEINFORMATION | yes | **Null (0)** für `false`, **eins (1)** für `true`. Bei `true` wurden die Daten in der gesammten Datei freigegeben, ansonsten sind die Daten als Testdaten zu betrachten oder sind von geringerer Qualität. |
-| clearance_date | 64 bit integer | CLEARANCEINFORMATION | yes | Zeitstempel an dem die Daten freigegeben wurden (`clearance` auf `true`). |
+| clearance | 8 bit integer (boolean) | CLEARANCEINFORMATION | ja | **Null (0)** für `false`, **eins (1)** für `true`. Bei `true` wurden die Daten in der gesammten Datei freigegeben, ansonsten sind die Daten als Testdaten zu betrachten oder sind von geringerer Qualität. |
+| clearance_date | 64 bit integer | CLEARANCEINFORMATION | ja | Zeitstempel an dem die Daten freigegeben wurden (`clearance` auf `true`). |
 
 Im Datenset `timestamp` wird der Zeitpunkt der Erfassung eines Key-Value Paares festgehalten.
 
@@ -1749,9 +1763,9 @@ Im Datenset `timestamp` wird der Zeitpunkt der Erfassung eines Key-Value Paares 
 Die Gruppe `CLEARANCEINFORMATION` enthält zwei Datensets:
 
 | Name | Datentyp | Elternobjekt | Obligatorisch | Ablageart |
-|--|----|----|--|--|
-| key | string | CLEARANCEINFORMATION | yes | Einzelwerte |
-| value | string | CLEARANCEINFORMATION | yes | Einzelwerte |
+|--|---|----|---|------|
+| key | string | `CLEARANCEINFORMATION` | ja | Einzelwerte |
+| value | string | `CLEARANCEINFORMATION` | ja | Einzelwerte |
 
 **key:** In diesem Datenset wird der Name des Systems eingetragen, der diesen Eintrag erstellt hat.  
 **value:** In diesem Datenset wird die eigentliche Freigabeinformation eingetragen.  

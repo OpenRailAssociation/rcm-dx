@@ -32,9 +32,9 @@
 
   note as HINT
     <size:30><&warning>
-    Sometimes, datasets are
-    described inside a group
-    with "dataset:" at the beginning!
+    Datasets can be described
+    inside a group with "d:"
+     at the beginning!
   end note
 
   DATASOURCE "1" o-- "1" timestamp
@@ -48,13 +48,9 @@
 
   object RCM_DX
 
-  object SESSION {
-    Element = "SESSION"
-  }
+  object "'session_name'" as session_name
 
-  object MEASURINGSYSTEM {
-    a:Element = "MEASURINGSYSTEM"
-  }
+  object "'measuringsystem_name'" as measuringsystem_name
 
   object CLEARANCEINFORMATION
   object DATAPROCESSING
@@ -71,91 +67,98 @@
 
   object TOPOLOGY
 
-  RCM_DX "1" o-- "1..n" SESSION
+  RCM_DX "1" o-- "1..n" session_name
   RCM_DX "1" o-- "0..1" CLEARANCEINFORMATION
   RCM_DX "1" o-- "0..1" DATAPROCESSING
   
-  SESSION "1" o-- "1" PLATTFORM
-  SESSION "1" o-- "1" POSITION
-  SESSION "1" o-- "0..1" ENVIRONMENT
-  SESSION "1" o-- "1" MEASURINGSYSTEM
-  SESSION "1" o-- "0..1" EVENTS
-  SESSION "1" o-- "0..1" RECORDS
-  SESSION "1" o-- "1" TOPOLOGY
-  SESSION "1" o-- "1" SECTION
+  session_name "1" o-- "1" PLATTFORM
+  session_name "1" o-- "1" POSITION
+  session_name "1" o-- "0..1" ENVIRONMENT
+  session_name "1" o-- "1" measuringsystem_name
+  session_name "1" o-- "0..1" EVENTS
+  session_name "1" o-- "0..1" RECORDS
+  session_name "1" o-- "1" TOPOLOGY
+  session_name "1" o-- "1" SECTION
   
 @enduml
 
 ' RCM-DX Measurement Structure Overview
 @startuml RCM_DX_MS_overview
 
-  object SESSION {
-    a:Element = "SESSION"
-    a:EndTime
-    a:StartTime
+  object "'session_name'" as session_name {
+    a:Element (string) = "SESSION"
+    a:EndTime (64bit integer, timestamp)
+    a:StartTime (64bit integer, timestamp)
   }
 
-  object MEASURINGSYSTEM {
-    a:Element = "MEASURINGSYSTEM"
+  object "'measuringsystem_name'" as measuringsystem_name {
+    a:Element (string) = "MEASURINGSYSTEM"
   }
 
-  object DATASOURCE {
-    a:Element = "DATASOURCE"
+  object "'datasource_name'" as datasource_name {
+    a:Element (string) = "DATASOURCE"
   }
 
-  object timestamp #LightGray
-  object timeindex #LightGray
-  object duration #LightGray
-
-  object CHANNEL {
-    a:Element = "CHANNEL"
-    a:ChannelBasis
-    a:CommonTriggerDistance
-    a:CommonTriggerFrequency
-    a:MeasurementType
-    a:Neighbor
-    a:PositionOffset
-    a:TriggerMode
+  object "'channel_name'" as channel_name {
+    a:Element (string) = "CHANNEL"
+    a:ChannelBasis (string)
+    a:CommonTriggerDistance (32bit float)
+    a:CommonTriggerFrequency (32bit float)
+    a:ChannelType (string)
+    a:Neighbor (string)
+    a:PositionOffset (32bit float)
+    a:TriggerMode (string)
   }
-
-  object data #LightGray{
-    a:Unit
-  }
-
-  object IMG.NNNNNNNNN
-
-  object VID.NNNNNNNNN
 
   object VID {
-    a:ContentType
-    a:DataTyp
-    a:ResolutionX
-    a:ResolutionY
-    a:FramesPerSecond
-    a:PreambleDuration
-    a:TrailerDuration
+    a:ContentType (MIME-Type, string)
+    a:DataTyp (string)
+    a:ResolutionX (32bit signed integer)
+    a:ResolutionY (32bit signed integer)
+    a:FramesPerSecond (16bit signed integer)
+    a:PreambleDuration (64bit integer)
+    a:TrailerDuration (64bit integer)
   }
 
   object IMG {
-    a:ResolutionX
-    a:ResolutionY
-    a:ResolutionType
-    a:ContentType
-    a:DataTyp
+    a:ResolutionX (32bit signed integer)
+    a:ResolutionY (32bit signed integer)
+    a:ResolutionType (string)
+    a:ContentType (MIME-Type, string)
+    a:DataTyp (string)
   }
 
-  SESSION "1" o-- "1..n" MEASURINGSYSTEM
 
-  MEASURINGSYSTEM "1" o-- "1..n" DATASOURCE
-  DATASOURCE "1" o-- "1" timestamp
-  DATASOURCE "1" o-- "0..1" timeindex
-  DATASOURCE "1" o-- "0..1" duration
+  object data #LightGray {
+    a:Unit
+  }
 
-  DATASOURCE "1" o-- "1..n" CHANNEL
+  object IMG.NNNNNNNNN #LightGray
+  object VID.NNNNNNNNN #LightGray
+  object timestamp #LightGray
+  object timeindex #LightGray
+  object duration #LightGray
+  object sampleindex #LightGray
+  
+  object coord.CN #LightGray {
+    a:Unit (string)
+  }
 
-  CHANNEL "1" o-- "0..n" data
-  CHANNEL "1" o-- "1" VID
-  CHANNEL "1" o-- "1" IMG
+  session_name "1" o-- "1..n" measuringsystem_name
+
+  measuringsystem_name "1" o-- "1..n" datasource_name
+  datasource_name "1" o-- "1" timestamp
+  datasource_name "1" o-- "0..1" timeindex
+  datasource_name "1" o-- "0..1" duration
+
+  datasource_name "1" o-- "1..n" channel_name
+
+  channel_name "1" o-- "0..n" data
+  channel_name "1" o-- "0..1" sampleindex
+  channel_name "1" o-- "0..n" coord.CN
+
+  channel_name "1" o-- "0..1" VID
+  channel_name "1" o-- "0..1" IMG
 
   IMG "1" o-- "1..n" IMG.NNNNNNNNN
   VID "1" o-- "1..n" VID.NNNNNNNNN
@@ -165,91 +168,93 @@
 ' RCM-DX Topology Structure Overview
 @startuml RCM_DX_Topology_overview
 
-  object SESSION {
-    a:Element = "SESSION"
-    a:EndTime
-    a:StartTime
+  object "'session_name'" as session_name {
+    a:Element (string) = "SESSION"
+    a:EndTime (64bit integer, timestamp)
+    a:StartTime (64bit integer, timestamp)
   }
 
   object TOPOLOGY {
-    a:DfAExportTimestamp
+    a:DfAExportTimestamp (64bit integer, timestamp)
+    a:DfAVersion (string)
   }
 
   object TRACKS {
-    a:id
-    a:direction
-    a:gtgId
-    a:length
-    a:name
-    a:nrLine
-    a:pointFrom
-    a:pointTo
-    a:switchType
-    a:trackType
+    d:id (32bit signed integer)
+    d:direction (8bit signed integer)
+    d:gtgId (string)
+    d:length (32bit float)
+    d:name (string)
+    d:nrLine (string)
+    d:pointFrom (32bit signed integer)
+    d:pointTo (32bit signed integer)
+    d:switchType (8bit signed integer)
+    d:trackType (8bit signed integer)
   }
+
   object LINES {
-    a:id
-    a:name
-    a:firstStation
-    a:lastStation
-    a:fromKilometer
-    a:toKilometer
+    d:id (32bit signed integer)
+    d:name (string)
+    d:firstStation (string)
+    d:lastStation (string)
+    d:fromKilometer (32bit float)
+    d:toKilometer (32bit float)
   }
 
   object SWITCHTRACKS {
-    a:gleisstrangId
-    a:gleisstrangBez
-    a:weicheId
-    a:ablenkRichtung
-    a:ablenkung
-    a:betriebspunkt
-    a:herzStueck
-    a:minRadius
-    a:nr
-    a:zusNr
-    a:schienenProfil
-    a:status
-    a:schienenProfil
-    a:schwellenArt
-    a:typenPlanNr
-    a:typNrZusatz
-    a:weichenArt
-    a:weichenTyp
-    a:weichenForm
-    a:weichenZunge
+    d:gleisstrangId (32bit signed integer)
+    d:gleisstrangBez (string)
+    d:weicheId (32bit signed integer)
+    d:ablenkRichtung (string)
+    d:ablenkung (string)
+    d:betriebspunkt (string)
+    d:herzStueck (string)
+    d:minRadius  (32bit float)
+    d:nr (32bit signed integer)
+    d:zusNr (string)
+    d:schienenProfil
+    d:status (string)
+    d:schienenProfil (string)
+    d:schwellenArt (string)
+    d:typenPlanNr (32bit signed integer)
+    d:typNrZusatz (string)
+    d:weichenArt (string)
+    d:weichenTyp (string)
+    d:weichenForm (string)
+    d:weichenZunge (string)
   }
 
   object TRACKOBJECTS {
-    a:trackId
-    a:type
-    a:positionStart
-    a:positionEnd
-    a:extraInfo
+    d:trackId (32bit signed integer)
+    d:type (32bit signed integer)
+    d:positionStart (32bit float)
+    d:positionEnd (32bit float)
+    d:extraInfo (string)
   }
 
   object TRACKPOINTS {
-    a:trackId
-    a:lineId
-    a:x
-    a:y
-    a:z
-    a:radius
-    a:kilometer
-    a:position
-    a:cant
-    a:inclination
+    d:trackId (32bit signed integer)
+    d:lineId (32bit signed integer)
+    d:x (32bit float)
+    d:y (32bit float)
+    d:z (32bit float)
+    d:radius (32bit float)
+    d:kilometer (32bit float)
+    d:position (32bit float)
+    d:cant (32bit float)
+    d:inclination (32bit float)
   }
 
   object PROPERTIES {
-    a:propertyId
-    a:name
-    a:description.ge
-    a:description.fr 
-    a:description.it
-    a:description.en
+    d:propertyId (32bit signed integer)
+    d:name (string)
+    d:description.ge (string)
+    d:description.fr (string)
+    d:description.it (string)
+    d:description.en (string)
   }
 
-  SESSION "1" o-- "1" TOPOLOGY
+  session_name "1" o-- "1" TOPOLOGY
 
   TOPOLOGY "1" o-- "1" TRACKS
   TOPOLOGY "1" o-- "1" LINES
@@ -263,22 +268,23 @@
 ' RCM-DX Platform Structure Overview
 @startuml RCM_DX_Platform_overview
 
-  object SESSION {
-    a:Element = "SESSION"
-    a:EndTime
-    a:StartTime
+  object "'session_name'" as session_name {
+    a:Element (string) = "SESSION"
+    a:EndTime (64bit integer, timestamp)
+    a:StartTime (64bit integer, timestamp)
   }
 
+
   object PLATFORM {
-    a:Name
-    a:VehicleNumber
+    a:Name (string)
+    a:VehicleNumber (string)
   }
 
   object CONFIGURATION
   object global #LightGray
   object network #LightGray
 
-  SESSION "1" o-- "1" PLATFORM
+  session_name "1" o-- "1" PLATFORM
   PLATFORM "1" o-- "1" CONFIGURATION
   CONFIGURATION "1" o-- "1" global
   CONFIGURATION "1" o-- "1" network
@@ -288,22 +294,37 @@
 ' RCM-DX Environment Structure Overview
 @startuml RCM_DX_Environment_overview
 
-  object SESSION {
-    a:Element = "SESSION"
-    a:EndTime
-    a:StartTime
+  object "'session_name'" as session_name {
+    a:Element (string) = "SESSION"
+    a:EndTime (64bit integer, timestamp)
+    a:StartTime (64bit integer, timestamp)
   }
 
   object ENVIRONMENT 
 
   object timestamp #LightGray
-  object VEHICLESPEED
-  object AMBIENTTEMPERATURE
-  object WINDSPEED
-  object WINDDIRECTION
-  object WEATHERCONDITIONS
 
-  SESSION "1" o-- "1" ENVIRONMENT
+  object VEHICLESPEED {
+    d:data (64bit integer)
+  }
+
+  object AMBIENTTEMPERATURE {
+    d:data (64bit integer)
+  }
+
+  object WINDSPEED {
+    d:data (64bit integer)
+  }
+
+  object WINDDIRECTION {
+    d:data (64bit integer)
+  }
+
+  object WEATHERCONDITIONS {
+    d:data (64bit integer)
+  }
+
+  session_name "1" o-- "1" ENVIRONMENT
   ENVIRONMENT "1" o-- "1" VEHICLESPEED
   ENVIRONMENT "1" o-- "1" AMBIENTTEMPERATURE
   ENVIRONMENT "1" o-- "1" WINDSPEED
@@ -316,31 +337,62 @@
 ' RCM-DX Logging Structure Overview
 @startuml RCM_DX_Logging_overview
 
-  object MEASURINGSYSTEM {
-    a:Element = "MEASURINGSYSTEM"
+  object "'measuringsystem_name'" as measuringsystem_name {
+    a:Element (string) = "MEASURINGSYSTEM"
   }
 
   object LOGGING
 
   object MESSAGES {
-      **dataset:**message
-      **dataset:**level
-      **dataset:**reference
-      **dataset:**timestamp
+    d:message (string)
+    d:level (string)
+    d:reference (string)
+    d:timestamp (64bit integer, timestamp)
   }
 
   object OUTAGES {
-      **dataset:**message
-      **dataset:**level
-      **dataset:**reference
-      **dataset:**timestamp
-      **dataset:**durations
+    d:message (string)
+    d:level (string)
+    d:reference (string)
+    d:timestamp (64bit integer, timestamp)
+    d:durations (64bit integer)
   }
 
-  MEASURINGSYSTEM "1" o-- "1" LOGGING
+  measuringsystem_name "1" o-- "1" LOGGING
 
   LOGGING "1" o-- "1" MESSAGES
   LOGGING "1" o-- "1" OUTAGES
+
+@enduml
+
+@startuml Limit_overview
+
+  object LIMIT
+
+  object "'channel_name'" as channel_name {
+    a:Element (string) = "CHANNEL"
+    a:ChannelBasis (string)
+    a:CommonTriggerDistance (32bit float)
+    a:CommonTriggerFrequency (32bit float)
+    a:ChannelType (string)
+    a:Neighbor (string)
+    a:PositionOffset (32bit float)
+    a:TriggerMode (string)
+  }
+
+  object "'limit_name'" as limit_name {
+    a:Element (string) = "LIMIT"
+  }
+
+  object data #LightGray
+  object timestamp #LightGray
+  object duration #LightGray
+
+  channel_name "1" o-- "0..n" data
+  channel_name "1" o-- "1" LIMIT
+  LIMIT "1" o-- "0..n" limit_name
+  limit_name "1" o-- "1" timestamp
+  limit_name "1" o-- "0..n" duration
 
 @enduml
 
