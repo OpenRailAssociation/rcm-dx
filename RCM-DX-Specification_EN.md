@@ -1408,10 +1408,10 @@ The following data sets are included in this group:
 
 **propertyId:** Unique ID of the characteristic  
 **name:** Name of the characteristic  
-**Description.ge:** Description of the characteristic in the language German  
-**Description.fr:** Description of the characteristic in French language  
-**Description.it:** Description of the characteristic in Italian language  
-**Description.en:** Description of the feature in English language  
+**description.ge:** Description of the characteristic in the language German  
+**description.fr:** Description of the characteristic in French language  
+**description.it:** Description of the characteristic in Italian language  
+**description.en:** Description of the feature in English language  
 
 ### Events Group  
 
