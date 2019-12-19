@@ -1,0 +1,270 @@
+@startuml RCM_DX_Structure
+
+  object RCM_DX
+
+  object "'session_name'" as session_name {
+    a:Element (string) = "SESSION"
+    a:EndTime (64bit integer, timestamp)
+    a:StartTime (64bit integer, timestamp)
+  }
+
+  object ENVIRONMENT
+
+  object VEHICLESPEED {
+    d:data (64bit integer)
+  }
+
+  object AMBIENTTEMPERATURE {
+    d:data (64bit integer)
+  }
+
+  object WINDSPEED {
+    d:data (64bit integer)
+  }
+
+  object WINDDIRECTION {
+    d:data (64bit integer)
+  }
+
+  object WEATHERCONDITIONS {
+    d:data (64bit integer)
+  }
+
+  object TOPOLOGY {
+    a:DfAExportTimestamp (64bit integer, timestamp)
+  }
+
+  object TRACKS {
+    d:id (32bit signed integer)
+    d:direction (8bit signed integer)
+    d:gtgId (string)
+    d:length (32bit float)
+    d:name (string)
+    d:nrLine (string)
+    d:pointFrom (32bit signed integer)
+    d:pointTo (32bit signed integer)
+    d:switchType (8bit signed integer)
+    d:trackType (8bit signed integer)
+  }
+
+  object LINES {
+    d:id (32bit signed integer)
+    d:name (string)
+    d:firstStation (string)
+    d:lastStation (string)
+    d:fromKilometer (32bit float)
+    d:toKilometer (32bit float)
+  }
+
+  object SWITCHTRACKS {
+    d:gleisstrangId (32bit signed integer)
+    d:gleisstrangBez (string)
+    d:weicheId (32bit signed integer)
+    d:ablenkRichtung (string)
+    d:ablenkung (string)
+    d:betriebspunkt (string)
+    d:herzStueck (string)
+    d:minRadius  (32bit float)
+    d:nr (32bit signed integer)
+    d:zusNr (string)
+    d:schienenProfil
+    d:status (string)
+    d:schienenProfil (string)
+    d:schwellenArt (string)
+    d:typenPlanNr (32bit signed integer)
+    d:typNrZusatz (string)
+    d:weichenArt (string)
+    d:weichenTyp (string)
+    d:weichenForm (string)
+    d:weichenZunge (string)
+  }
+
+  object TRACKOBJECTS {
+    d:trackId (32bit signed integer)
+    d:type (32bit signed integer)
+    d:positionStart (32bit float)
+    d:positionEnd (32bit float)
+    d:extraInfo (string)
+  }
+
+  object TRACKPOINTS {
+    d:trackId (32bit signed integer)
+    d:lineId (32bit signed integer)
+    d:x (32bit float)
+    d:y (32bit float)
+    d:z (32bit float)
+    d:radius (32bit float)
+    d:kilometer (32bit float)
+    d:position (32bit float)
+    d:cant (32bit float)
+    d:inclination (32bit float)
+  }
+
+  object PROPERTIES {
+    d:propertyId (32bit signed integer)
+    d:name (string)
+    d:description.ge (string)
+    d:description.fr (string)
+    d:description.it (string)
+    d:description.en (string)
+  }
+
+  object "'measuringsystem_name'" as measuringsystem_name {
+    a:Element (string) = "MEASURINGSYSTEM"
+  }
+
+  object "'datasource_name'" as datasource_name {
+    a:Element (string) = "DATASOURCE"
+  }
+
+  object "'channel_name'" as channel_name {
+    a:Element (string) = "CHANNEL"
+    a:ChannelBasis (string)
+    a:CommonTriggerDistance (32bit float)
+    a:CommonTriggerFrequency (32bit float)
+    a:ChannelType (string)
+    a:Neighbor (string)
+    a:PositionOffset (32bit float)
+    a:TriggerMode (string)
+  }
+
+  object VID {
+    a:ContentType (MIME-Type, string)
+    a:DataTyp (string)
+    a:ResolutionX (32bit signed integer)
+    a:ResolutionY (32bit signed integer)
+    a:FramesPerSecond (16bit signed integer)
+    a:PreambleDuration (64bit integer)
+    a:TrailerDuration (64bit integer)
+  }
+
+  object IMG {
+    a:ResolutionX (32bit signed integer)
+    a:ResolutionY (32bit signed integer)
+    a:ResolutionType (string)
+    a:ContentType (MIME-Type, string)
+    a:DataTyp (string)
+  }
+  
+  object PLATFORM {
+    a:Name (string)
+    a:VehicleNumber (string)
+  }
+
+ object LOGGING
+
+  object MESSAGES {
+    d:message (string)
+    d:level (string)
+    d:reference (string)
+    d:timestamp (64bit integer, timestamp)
+  }
+
+  object OUTAGES {
+    d:message (string)
+    d:level (string)
+    d:reference (string)
+    d:timestamp (64bit integer, timestamp)
+    d:durations (64bit integer)
+  }
+
+  object LIMIT
+
+  object "'limit_name'" as limit_name {
+    a:Element (string) = "LIMIT"
+  }
+
+  object CONFIGURATION
+  object "CONFIGURATION" as c1
+
+  object global #LightGray
+  object network #LightGray
+
+  object IMG.NNNNNNNNN #LightGray
+  object VID.NNNNNNNNN #LightGray
+  object "timestamp" as t1 #LightGray
+  object "timestamp" as t2 #LightGray
+  object "timestamp" as t3 #LightGray
+  object "timestamp" as t4 #LightGray
+  object timeindex #LightGray
+  object "duration" as d1 #LightGray
+  object "duration" as d2 #LightGray
+  object sampleindex #LightGray
+  
+  object coord.CN #LightGray {
+    a:Unit (string)
+  }
+
+  object setting_name {
+    a:Element (string) = "SETTING"
+  }
+  
+  object setting #LightGray
+  
+  object data #LightGray {
+    a:Unit
+  }
+
+  RCM_DX "1" o-- "1..n" session_name
+
+  channel_name "1" o-- "0..n" data
+  channel_name "1" o-- "1" LIMIT
+  LIMIT "1" o-- "0..n" limit_name
+  limit_name "1" o-- "1" t1
+  limit_name "1" o-- "0..n" d1
+  
+
+  session_name "1" o-- "1" PLATFORM
+  PLATFORM "1" o-- "1" CONFIGURATION
+  CONFIGURATION "1" o-- "1" global
+  CONFIGURATION "1" o-- "1" network
+
+
+  session_name "1" o-- "1..n" measuringsystem_name
+
+  measuringsystem_name "1" o-- "1..n" datasource_name
+  datasource_name "1" o-- "1" t2
+  datasource_name "1" o-- "0..1" timeindex
+  datasource_name "1" o-- "0..1" d2
+
+  datasource_name "1" o-- "1..n" channel_name
+
+  channel_name "1" o-- "0..1" sampleindex
+  channel_name "1" o-- "0..n" coord.CN
+
+  channel_name "1" o-- "0..1" VID
+  channel_name "1" o-- "0..1" IMG
+
+  IMG "1" o-- "1..n" IMG.NNNNNNNNN
+  VID "1" o-- "1..n" VID.NNNNNNNNN
+
+  session_name "1" o-- "1" TOPOLOGY
+
+  TOPOLOGY "1" o-- "1" TRACKS
+  TOPOLOGY "1" o-- "1" LINES
+  TOPOLOGY "1" o-- "1" SWITCHTRACKS
+  TOPOLOGY "1" o-- "1" TRACKOBJECTS
+  TOPOLOGY "1" o-- "1" TRACKPOINTS
+  TOPOLOGY "1" o-- "1" PROPERTIES
+
+
+  session_name "1" o-- "1" ENVIRONMENT
+  ENVIRONMENT "1" o-- "1" t3
+  ENVIRONMENT "1" o-- "1" VEHICLESPEED
+  ENVIRONMENT "1" o-- "1" AMBIENTTEMPERATURE
+  ENVIRONMENT "1" o-- "1" WINDSPEED
+  ENVIRONMENT "1" o-- "1" WINDDIRECTION
+  ENVIRONMENT "1" o-- "1" WEATHERCONDITIONS
+
+
+  measuringsystem_name "1" o-- "1" LOGGING
+
+  LOGGING "1" o-- "1" MESSAGES
+  LOGGING "1" o-- "1" OUTAGES
+
+  measuringsystem_name "1" o-- "1" c1
+  c1 "1" o-- "1..n" setting_name
+  setting_name "1" o-- "1" setting
+  setting_name "1" o-- "1" t4
+  
+@enduml

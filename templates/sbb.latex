@@ -743,7 +743,24 @@ $endif$
 %% end added
 %%
 
-%\hypersetup{draft}
+
+
+
+
+
+
+
+
+\hypersetup{draft} % ignore links inside document 
+
+
+
+
+
+
+
+
+
 
 \begin{document}
 
