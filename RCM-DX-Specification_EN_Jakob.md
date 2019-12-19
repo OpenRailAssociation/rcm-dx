@@ -115,8 +115,8 @@ Channels can hold data of various types including integer and float values, coor
 <!--- 
 COMMENTS ON THE ORIGINAL FIGURE:
 .) there is an underline in the root node's name in the image "RCM_DX" 
-.) "plattform" has two "t"
-.) "MEASURING SYSTEM"
+.) "plattform" has two "t" => fixed!
+.) "MEASURING SYSTEM" => Leerzeichen sind nicht möglich!
 .) "SESSION"
 .) multiplicity of SESSION is "1..n"
 -->

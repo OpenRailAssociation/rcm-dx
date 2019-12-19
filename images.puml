@@ -48,14 +48,14 @@
 
   object RCM_DX
 
-  object "'session_name'" as session_name
+  object "//SESSION_NAME//" as session_name
 
-  object "'measuringsystem_name'" as measuringsystem_name
+  object "//MEASURINGSYSTEM_NAME//" as measuringsystem_name
 
   object CLEARANCEINFORMATION
   object DATAPROCESSING
 
-  object PLATTFORM
+  object PLATFORM
 
   object POSITION
   object SECTION
@@ -71,10 +71,10 @@
   RCM_DX "1" o-- "0..1" CLEARANCEINFORMATION
   RCM_DX "1" o-- "0..1" DATAPROCESSING
   
-  session_name "1" o-- "1" PLATTFORM
+  session_name "1" o-- "1" PLATFORM
   session_name "1" o-- "1" POSITION
   session_name "1" o-- "0..1" ENVIRONMENT
-  session_name "1" o-- "1" measuringsystem_name
+  session_name "1" o-- "1..n" measuringsystem_name
   session_name "1" o-- "0..1" EVENTS
   session_name "1" o-- "0..1" RECORDS
   session_name "1" o-- "1" TOPOLOGY
@@ -85,21 +85,21 @@
 ' RCM-DX Measurement Structure Overview
 @startuml RCM_DX_MS_overview
 
-  object "'session_name'" as session_name {
+  object "//SESSION_NAME//" as session_name {
     a:Element (string) = "SESSION"
     a:EndTime (64bit integer, timestamp)
     a:StartTime (64bit integer, timestamp)
   }
 
-  object "'measuringsystem_name'" as measuringsystem_name {
+  object "//MEASURINGSYSTEM_NAME//" as measuringsystem_name {
     a:Element (string) = "MEASURINGSYSTEM"
   }
 
-  object "'datasource_name'" as datasource_name {
+  object "//DATASOURCE_NAME//" as datasource_name {
     a:Element (string) = "DATASOURCE"
   }
 
-  object "'channel_name'" as channel_name {
+  object "//CHANNEL_NAME//" as channel_name {
     a:Element (string) = "CHANNEL"
     a:ChannelBasis (string)
     a:CommonTriggerDistance (32bit float)
@@ -153,7 +153,7 @@
 
   datasource_name "1" o-- "1..n" channel_name
 
-  channel_name "1" o-- "0..n" data
+  channel_name "1" o-- "0..1" data
   channel_name "1" o-- "0..1" sampleindex
   channel_name "1" o-- "0..n" coord.CN
 
@@ -168,7 +168,7 @@
 ' RCM-DX Topology Structure Overview
 @startuml RCM_DX_Topology_overview
 
-  object "'session_name'" as session_name {
+  object "//SESSION_NAME//" as session_name {
     a:Element (string) = "SESSION"
     a:EndTime (64bit integer, timestamp)
     a:StartTime (64bit integer, timestamp)
@@ -179,7 +179,7 @@
     a:DfAVersion (string)
   }
 
-  object TRACKS {
+  object TRACK {
     d:id (32bit signed integer)
     d:direction (8bit signed integer)
     d:gtgId (string)
@@ -192,7 +192,7 @@
     d:trackType (8bit signed integer)
   }
 
-  object LINES {
+  object LINE {
     d:id (32bit signed integer)
     d:name (string)
     d:firstStation (string)
@@ -201,7 +201,7 @@
     d:toKilometer (32bit float)
   }
 
-  object SWITCHTRACKS {
+  object SWITCHTRACK {
     d:gleisstrangId (32bit signed integer)
     d:gleisstrangBez (string)
     d:weicheId (32bit signed integer)
@@ -224,7 +224,7 @@
     d:weichenZunge (string)
   }
 
-  object TRACKOBJECTS {
+  object TRACKOBJECT {
     d:trackId (32bit signed integer)
     d:type (32bit signed integer)
     d:positionStart (32bit float)
@@ -232,7 +232,7 @@
     d:extraInfo (string)
   }
 
-  object TRACKPOINTS {
+  object TRACKPOINT {
     d:trackId (32bit signed integer)
     d:lineId (32bit signed integer)
     d:x (32bit float)
@@ -245,7 +245,7 @@
     d:inclination (32bit float)
   }
 
-  object PROPERTIES {
+  object PROPERTIE {
     d:propertyId (32bit signed integer)
     d:name (string)
     d:description.ge (string)
@@ -256,19 +256,19 @@
 
   session_name "1" o-- "1" TOPOLOGY
 
-  TOPOLOGY "1" o-- "1" TRACKS
-  TOPOLOGY "1" o-- "1" LINES
-  TOPOLOGY "1" o-- "1" SWITCHTRACKS
-  TOPOLOGY "1" o-- "1" TRACKOBJECTS
-  TOPOLOGY "1" o-- "1" TRACKPOINTS
-  TOPOLOGY "1" o-- "1" PROPERTIES
+  TOPOLOGY "1" o-- "1" TRACK
+  TOPOLOGY "1" o-- "1" LINE
+  TOPOLOGY "1" o-- "1" SWITCHTRACK
+  TOPOLOGY "1" o-- "1" TRACKOBJECT
+  TOPOLOGY "1" o-- "1" TRACKPOINT
+  TOPOLOGY "1" o-- "1" PROPERTIE
 
 @enduml
 
 ' RCM-DX Platform Structure Overview
 @startuml RCM_DX_Platform_overview
 
-  object "'session_name'" as session_name {
+  object "//SESSION_NAME//" as session_name {
     a:Element (string) = "SESSION"
     a:EndTime (64bit integer, timestamp)
     a:StartTime (64bit integer, timestamp)
@@ -294,7 +294,7 @@
 ' RCM-DX Environment Structure Overview
 @startuml RCM_DX_Environment_overview
 
-  object "'session_name'" as session_name {
+  object "//SESSION_NAME//" as session_name {
     a:Element (string) = "SESSION"
     a:EndTime (64bit integer, timestamp)
     a:StartTime (64bit integer, timestamp)
@@ -337,7 +337,7 @@
 ' RCM-DX Logging Structure Overview
 @startuml RCM_DX_Logging_overview
 
-  object "'measuringsystem_name'" as measuringsystem_name {
+  object "//MEASURINGSYSTEM_NAME//" as measuringsystem_name {
     a:Element (string) = "MEASURINGSYSTEM"
   }
 
@@ -369,7 +369,7 @@
 
   object LIMIT
 
-  object "'channel_name'" as channel_name {
+  object "//CHANNEL_NAME//" as channel_name {
     a:Element (string) = "CHANNEL"
     a:ChannelBasis (string)
     a:CommonTriggerDistance (32bit float)
@@ -380,19 +380,19 @@
     a:TriggerMode (string)
   }
 
-  object "'limit_name'" as limit_name {
-    a:Element (string) = "LIMIT"
-  }
-
   object data #LightGray
   object timestamp #LightGray
   object duration #LightGray
 
-  channel_name "1" o-- "0..n" data
-  channel_name "1" o-- "1" LIMIT
-  LIMIT "1" o-- "0..n" limit_name
-  limit_name "1" o-- "1" timestamp
-  limit_name "1" o-- "0..n" duration
+  object limit_name #LightGray
+
+' Zu überlegen iwe das abgebildet werden soll mit dem "limit_name" 
+
+  channel_name "1" o-- "1" data
+  channel_name "1" o-- "0..1" LIMIT
+  LIMIT "1" o-- "1" timestamp
+  LIMIT "1" o-- "1..n" limit_name
+  LIMIT "1" o-- "1" duration
 
 @enduml
 
