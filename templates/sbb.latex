@@ -749,11 +749,7 @@ $endif$
 
 
 
-
-
-\hypersetup{draft} % ignore links inside document 
-
-
+%% \hypersetup{draft} % ignore links inside document 
 
 
 

@@ -170,7 +170,7 @@
 
   object LIMIT
 
-  object "'limit_name'" as limit_name {
+  object "//limit_name//" as limit_name {
     a:Element (string) = "LIMIT"
   }
 

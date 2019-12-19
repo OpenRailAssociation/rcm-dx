@@ -46,7 +46,7 @@
 ' RCM-DX Common Structure Overview
 @startuml RCM_DX_Structure
 
-  object RCM_DX
+  object RCMDX
 
   object "//SESSION_NAME//" as session_name
 
@@ -67,9 +67,9 @@
 
   object TOPOLOGY
 
-  RCM_DX "1" o-- "1..n" session_name
-  RCM_DX "1" o-- "0..1" CLEARANCEINFORMATION
-  RCM_DX "1" o-- "0..1" DATAPROCESSING
+  RCMDX "1" o-- "1..n" session_name
+  RCMDX "1" o-- "0..1" CLEARANCEINFORMATION
+  RCMDX "1" o-- "0..1" DATAPROCESSING
   
   session_name "1" o-- "1" PLATFORM
   session_name "1" o-- "1" POSITION
@@ -133,8 +133,8 @@
     a:Unit
   }
 
-  object IMG.NNNNNNNNN #LightGray
-  object VID.NNNNNNNNN #LightGray
+  object img.nnnnnnnnn #LightGray
+  object vid.nnnnnnnnn #LightGray
   object timestamp #LightGray
   object timeindex #LightGray
   object duration #LightGray
@@ -160,8 +160,8 @@
   channel_name "1" o-- "0..1" VID
   channel_name "1" o-- "0..1" IMG
 
-  IMG "1" o-- "1..n" IMG.NNNNNNNNN
-  VID "1" o-- "1..n" VID.NNNNNNNNN
+  IMG "1" o-- "1..n" img.nnnnnnnnn
+  VID "1" o-- "1..n" vid.nnnnnnnnn
 
 @enduml
 
@@ -245,7 +245,7 @@
     d:inclination (32bit float)
   }
 
-  object PROPERTIE {
+  object PROPERTY {
     d:propertyId (32bit signed integer)
     d:name (string)
     d:description.ge (string)
@@ -261,7 +261,7 @@
   TOPOLOGY "1" o-- "1" SWITCHTRACK
   TOPOLOGY "1" o-- "1" TRACKOBJECT
   TOPOLOGY "1" o-- "1" TRACKPOINT
-  TOPOLOGY "1" o-- "1" PROPERTIE
+  TOPOLOGY "1" o-- "1" PROPERTY
 
 @enduml
 
@@ -324,7 +324,7 @@
     d:data (64bit integer)
   }
 
-  session_name "1" o-- "1" ENVIRONMENT
+  session_name "1" o-- "0..1" ENVIRONMENT
   ENVIRONMENT "1" o-- "1" VEHICLESPEED
   ENVIRONMENT "1" o-- "1" AMBIENTTEMPERATURE
   ENVIRONMENT "1" o-- "1" WINDSPEED
@@ -358,7 +358,7 @@
     d:durations (64bit integer)
   }
 
-  measuringsystem_name "1" o-- "1" LOGGING
+  measuringsystem_name "1" o-- "0..1" LOGGING
 
   LOGGING "1" o-- "1" MESSAGES
   LOGGING "1" o-- "1" OUTAGES
@@ -384,7 +384,7 @@
   object timestamp #LightGray
   object duration #LightGray
 
-  object limit_name #LightGray
+  object "//limit_name//" as limit_name #LightGray
 
 ' Zu überlegen iwe das abgebildet werden soll mit dem "limit_name" 
 
