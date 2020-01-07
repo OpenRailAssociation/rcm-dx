@@ -18,14 +18,14 @@ mkdir %IMAGE_DIR%
 :: create images
 java -jar plantuml.jar images.puml -o images/generated
 
-:: Copy image folder to html folder
-xcopy images %IMAGE_DIR% /s /e /h
-
 :: Create each specification from markdown to PDF
 pandoc --from markdown --data-dir=%cd% --template sbb --listings --toc --number-sections --columns=5 --metadata-file=RCM-DX-Spec_Metadata_EN.yaml RCM-DX-Specification_EN.md -o %PDF_DIR%\RCM-DX-Specification_EN.pdf 
 
+:: Copy image folder to html folder
+xcopy images %IMAGE_DIR% /s /e /h
+
 :: Create HTML output
-:: pandoc -s -c css/sbbTheme.css -A footer.html --toc RCM-DX-Specification_EN.md -o %HTML_DIR%\RCM-DX-Specification_EN.html
+pandoc -s -c css/sbbTheme.css -A footer.html --toc RCM-DX-Specification_EN.md -o %HTML_DIR%\RCM-DX-Specification_EN.html
 
 :: Create CSS theme from LESS style file for HTML output
-:: lessc -s templates/sbbTheme.less %CSS_DIR%\sbbTheme.css
+lessc -s templates/sbbTheme.less %CSS_DIR%\sbbTheme.css

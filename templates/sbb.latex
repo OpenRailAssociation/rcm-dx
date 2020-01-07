@@ -723,15 +723,18 @@ $if(disable-header-and-footer)$
 $else$
 \usepackage{fancyhdr}
 \usepackage{lastpage}
+\newcommand{\changefont}{%
+    \fontsize{9}{11}\selectfont
+}
 
 \fancypagestyle{sbb-header-footer}{
   \fancyhead{} % clear all header fields
   \fancyhead[L]{$title$}
   \fancyhead[R]{$if(logo)$\noindent\includegraphics[width=$if(logo-width)$$logo-width$$else$100$endif$pt, right]{$logo$}$else$$date$$endif$}
   \fancyfoot{} % clear all footer fields
-  \fancyfoot[L]{\nouppercase{\leftmark}}
+  \fancyfoot[L]{\changefont \nouppercase{\leftmark}}
   \fancyfoot[C]{\thepage /\pageref{LastPage}}
-  \fancyfoot[R]{\nouppercase{\rightmark}}
+  \fancyfoot[R]{\changefont \nouppercase{\rightmark}}
   \renewcommand{\headrulewidth}{0.4pt}
   \renewcommand{\footrulewidth}{0.4pt}
 }

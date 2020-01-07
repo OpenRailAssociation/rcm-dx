@@ -27,10 +27,24 @@ body, p {
     color: @theme-on-surface;
     font-size: @typography-normal-font-size;
     font-family: @typography-font-family;
+
+    figcaption {
+        color: @theme-secondary;
+        font-size: @typography-normal-font-size - 2pt;
+        font-family: @typography-font-family;
+    }
+    
+    a {
+        color: @theme-primary;
+        font-size: @typography-normal-font-size;
+        font-weight: lighter;
+        line-height: 1.25em;
+    }
 }
 
+
 h1 {
-    color: @theme-primary;
+    color: @theme-secondary;
     font-size: @typography-max-font-size;
     font-weight: lighter;
     line-height: 1.25em;
@@ -108,10 +122,6 @@ ul {
     li {
         font-variant: normal;
         font-style: normal;
-        a {
-            color: @theme-secondary;
-            text-decoration: none;
-        }
     }
 }
 span {

@@ -23,7 +23,7 @@
   }
 
   object data #LightGray{
-    a:Unit
+    a:Unit (string)
   }
   note left
     Dataset's in
@@ -87,59 +87,95 @@
 
   object "//SESSION_NAME//" as session_name {
     a:Element (string) = "SESSION"
-    a:EndTime (64bit integer, timestamp)
+    a:MeasuringMode {OPERATIV | SIMULATION | TEST}
     a:StartTime (64bit integer, timestamp)
+    a:EndTime (64bit integer, timestamp)
   }
 
   object "//MEASURINGSYSTEM_NAME//" as measuringsystem_name {
     a:Element (string) = "MEASURINGSYSTEM"
+    a:Family (string)
+    a:Revision (string)
+    a:InstanceVersion (string)
+    a:MeasuringMode (string)
   }
 
   object "//DATASOURCE_NAME//" as datasource_name {
     a:Element (string) = "DATASOURCE"
   }
 
+  object LIMIT
+
+  object "//LIMIT_NAME//" as limit_name {
+    a:Priority (8bit integer)
+    a:LimitBound (string)
+  }
+
   object "//CHANNEL_NAME//" as channel_name {
     a:Element (string) = "CHANNEL"
-    a:ChannelBasis (string)
-    a:CommonTriggerDistance (32bit float)
-    a:CommonTriggerFrequency (32bit float)
     a:ChannelType (string)
-    a:Neighbor (string)
-    a:PositionOffset (32bit float)
     a:TriggerMode (string)
+    a:CommonTriggerFrequency (32bit float)
+    a:CommonTriggerDistance (32bit float)
+    a:ChannelBasis (string)
+    a:Neighbor (string)
+    a:MeasurementUncertinty (32bit float)
+    a:PositionOffset (32bit float)
   }
 
   object VID {
     a:ContentType (MIME-Type, string)
     a:DataTyp (string)
+    a:FramesPerSecond (16bit signed integer)
     a:ResolutionX (32bit signed integer)
     a:ResolutionY (32bit signed integer)
-    a:FramesPerSecond (16bit signed integer)
-    a:PreambleDuration (64bit integer)
-    a:TrailerDuration (64bit integer)
   }
 
   object IMG {
-    a:ResolutionX (32bit signed integer)
-    a:ResolutionY (32bit signed integer)
-    a:ResolutionType (string)
     a:ContentType (MIME-Type, string)
     a:DataTyp (string)
+    a:ResolutionType (string)
+    a:ResolutionX (32bit signed integer)
+    a:ResolutionY (32bit signed integer)
   }
-
 
   object data #LightGray {
-    a:Unit
+    a:Unit (string)
   }
 
-  object img.nnnnnnnnn #LightGray
-  object vid.nnnnnnnnn #LightGray
-  object timestamp #LightGray
-  object timeindex #LightGray
-  object duration #LightGray
-  object sampleindex #LightGray
+  object data.PRE.MIN.X #LightGray {
+    a:Unit (string)
+  }
+
+  object data.PRE.MAX.X #LightGray {
+    a:Unit (string)
+  }
+
+  object data.PRE.AVG.X #LightGray {
+    a:Unit (string)
+  }
+
+  object img.NNNNNNNNN #LightGray
+  object vid.NNNNNNNNN #LightGray
+
+  object timeindex #LightGray {
+    a:BlockSize (long)
+    a:Exponent (integer)
+    a:Depth (integer)
+  }
   
+  object timestamp #LightGray
+  object "timestamp" as ti #LightGray
+  object duration #LightGray
+  object "duration" as du #LightGray
+  
+  object sampleindex #LightGray {
+    a:Sorted (string)
+    **TBD:** Ist dieses Attribut notwendig?
+  }
+
+  object limitvalue #LightGray
+
   object coord.CN #LightGray {
     a:Unit (string)
   }
@@ -147,21 +183,31 @@
   session_name "1" o-- "1..n" measuringsystem_name
 
   measuringsystem_name "1" o-- "1..n" datasource_name
-  datasource_name "1" o-- "1" timestamp
+  datasource_name "1" o-- "1" ti
+  datasource_name "1" o-- "0..1" du
   datasource_name "1" o-- "0..1" timeindex
-  datasource_name "1" o-- "0..1" duration
-
   datasource_name "1" o-- "1..n" channel_name
 
   channel_name "1" o-- "0..1" data
   channel_name "1" o-- "0..1" sampleindex
   channel_name "1" o-- "0..n" coord.CN
+  channel_name "1" o-- "0..n" data.PRE.MIN.X
+  channel_name "1" o-- "0..n" data.PRE.MAX.X
+  channel_name "1" o-- "0..n" data.PRE.AVG.X
 
   channel_name "1" o-- "0..1" VID
   channel_name "1" o-- "0..1" IMG
 
-  IMG "1" o-- "1..n" img.nnnnnnnnn
-  VID "1" o-- "1..n" vid.nnnnnnnnn
+  channel_name "1" o-- "0..1" LIMIT
+
+  LIMIT "1" o-- "1" limit_name
+
+  limit_name "1" o-- "1" timestamp
+  limit_name "1" o-- "1" duration
+  limit_name "1" o-- "1" limitvalue
+
+  IMG "1" o-- "1..n" img.NNNNNNNNN
+  VID "1" o-- "1..n" vid.NNNNNNNNN
 
 @enduml
 
@@ -170,13 +216,13 @@
 
   object "//SESSION_NAME//" as session_name {
     a:Element (string) = "SESSION"
-    a:EndTime (64bit integer, timestamp)
+    a:MeasuringMode {OPERATIV | SIMULATION | TEST}
     a:StartTime (64bit integer, timestamp)
+    a:EndTime (64bit integer, timestamp)
   }
 
   object TOPOLOGY {
-    a:DfAExportTimestamp (64bit integer, timestamp)
-    a:DfAVersion (string)
+    a:Version (string)
   }
 
   object TRACK {
@@ -270,10 +316,10 @@
 
   object "//SESSION_NAME//" as session_name {
     a:Element (string) = "SESSION"
-    a:EndTime (64bit integer, timestamp)
+    a:MeasuringMode {OPERATIV | SIMULATION | TEST}
     a:StartTime (64bit integer, timestamp)
+    a:EndTime (64bit integer, timestamp)
   }
-
 
   object PLATFORM {
     a:Name (string)
@@ -296,8 +342,9 @@
 
   object "//SESSION_NAME//" as session_name {
     a:Element (string) = "SESSION"
-    a:EndTime (64bit integer, timestamp)
+    a:MeasuringMode {OPERATIV | SIMULATION | TEST}
     a:StartTime (64bit integer, timestamp)
+    a:EndTime (64bit integer, timestamp)
   }
 
   object ENVIRONMENT 
@@ -339,6 +386,10 @@
 
   object "//MEASURINGSYSTEM_NAME//" as measuringsystem_name {
     a:Element (string) = "MEASURINGSYSTEM"
+    a:Family (string)
+    a:Revision (string)
+    a:InstanceVersion (string)
+    a:MeasuringMode (string)
   }
 
   object LOGGING
@@ -346,14 +397,16 @@
   object MESSAGES {
     d:message (string)
     d:level (string)
-    d:reference (string)
+    d:systemReference (string)
+    d:channelReference (string)
     d:timestamp (64bit integer, timestamp)
   }
 
   object OUTAGES {
     d:message (string)
     d:level (string)
-    d:reference (string)
+    d:systemReference (string)
+    d:channelReference (string)
     d:timestamp (64bit integer, timestamp)
     d:durations (64bit integer)
   }
@@ -369,30 +422,24 @@
 
   object LIMIT
 
-  object "//CHANNEL_NAME//" as channel_name {
-    a:Element (string) = "CHANNEL"
-    a:ChannelBasis (string)
-    a:CommonTriggerDistance (32bit float)
-    a:CommonTriggerFrequency (32bit float)
-    a:ChannelType (string)
-    a:Neighbor (string)
-    a:PositionOffset (32bit float)
-    a:TriggerMode (string)
-  }
+  object "//CHANNEL_NAME//" as channel_name
 
   object data #LightGray
   object timestamp #LightGray
   object duration #LightGray
+  object limitvalue #LightGray
 
-  object "//limit_name//" as limit_name #LightGray
-
-' Zu überlegen iwe das abgebildet werden soll mit dem "limit_name" 
+  object "//LIMIT_NAME//" as limit_name {
+    a:Priority (8bit integer)
+    a:LimitBound (string)
+  }
 
   channel_name "1" o-- "1" data
   channel_name "1" o-- "0..1" LIMIT
-  LIMIT "1" o-- "1" timestamp
   LIMIT "1" o-- "1..n" limit_name
-  LIMIT "1" o-- "1" duration
+  limit_name "1" o-- "1" timestamp
+  limit_name "1" o-- "1" duration
+  limit_name "1" o-- "1..n" limitvalue
 
 @enduml
 

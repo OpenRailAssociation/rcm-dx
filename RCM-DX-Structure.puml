@@ -1,8 +1,31 @@
 @startuml RCM_DX_Structure
 
-  object RCM_DX
+  object RCMDX
 
-  object "'session_name'" as session_name {
+  object data.PRE.AVG.X
+  object data.PRE.MIN.X
+  object data.PRE.MAX.X
+
+  object LIMIT 
+
+  object "//LIMIT_NAME//" as session_name {
+    a:Element (string) = "SESSION"
+    a:EndTime (64bit integer, timestamp)
+    a:StartTime (64bit integer, timestamp)
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+  object "//SESSION_NAME//" as session_name {
     a:Element (string) = "SESSION"
     a:EndTime (64bit integer, timestamp)
     a:StartTime (64bit integer, timestamp)
@@ -109,15 +132,15 @@
     d:description.en (string)
   }
 
-  object "'measuringsystem_name'" as measuringsystem_name {
+  object "//MEASURINGSYSTEM_NAME//" as measuringsystem_name {
     a:Element (string) = "MEASURINGSYSTEM"
   }
 
-  object "'datasource_name'" as datasource_name {
+  object "//DATASOURCE_NAME//" as datasource_name {
     a:Element (string) = "DATASOURCE"
   }
 
-  object "'channel_name'" as channel_name {
+  object "//CHANNEL_NAME//" as channel_name {
     a:Element (string) = "CHANNEL"
     a:ChannelBasis (string)
     a:CommonTriggerDistance (32bit float)
@@ -170,7 +193,7 @@
 
   object LIMIT
 
-  object "//limit_name//" as limit_name {
+  object "//LIMIT_NAME//" as limit_name #LightGray {
     a:Element (string) = "LIMIT"
   }
 
@@ -180,8 +203,8 @@
   object global #LightGray
   object network #LightGray
 
-  object IMG.NNNNNNNNN #LightGray
-  object VID.NNNNNNNNN #LightGray
+  object img.NNNNNNNNN #LightGray
+  object vid.NNNNNNNNN #LightGray
   object "timestamp" as t1 #LightGray
   object "timestamp" as t2 #LightGray
   object "timestamp" as t3 #LightGray
@@ -192,10 +215,10 @@
   object sampleindex #LightGray
   
   object coord.CN #LightGray {
-    a:Unit (string)
+    a:Unit
   }
 
-  object setting_name {
+  object "//SETTING_NAME//" as setting_name {
     a:Element (string) = "SETTING"
   }
   
@@ -235,8 +258,8 @@
   channel_name "1" o-- "0..1" VID
   channel_name "1" o-- "0..1" IMG
 
-  IMG "1" o-- "1..n" IMG.NNNNNNNNN
-  VID "1" o-- "1..n" VID.NNNNNNNNN
+  IMG "1" o-- "1..n" img.NNNNNNNNN
+  VID "1" o-- "1..n" vid.NNNNNNNNN
 
   session_name "1" o-- "1" TOPOLOGY
 
