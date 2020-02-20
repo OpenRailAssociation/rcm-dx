@@ -9,7 +9,7 @@
 @theme-on-surface: #000;
 @theme-background: #fff;
 @theme-code: #555;
-@theme-math: #999;
+@theme-math: @theme-on-surface;
 
 // Font definitions
 @typography-normal-font-size: 12pt;
@@ -125,7 +125,6 @@ ul {
     }
 }
 span {
-    font-size: @typography-min-font-size;
     font-family: @typography-font-family;
 }
 
@@ -135,30 +134,32 @@ blockquote {
     margin: 1.5em 10px;
     padding: 0.5em 10px;
     font-weight: bold;
-  }
-  blockquote:before {
+}
+
+blockquote:before {
     color: #ccc;
     font-size: 3.5em;
     line-height: 0.1em;
     margin-right: 0.25em;
     vertical-align: -0.4em;
-  }
-  blockquote p {
-    display: inline;
-  }
+}
 
-  code {
+blockquote p {
+    display: inline;
+}
+
+code {
     font-size: @typography-normal-font-size;
     font-family: @typography-font-family-code;
     color: @theme-code;
-  }
+}
 
-  em {
+em {
     font-size: @typography-normal-font-size;
     font-family: @typography-font-family-math;
-  }
+}
 
-  .math {
+.math {
     font-size: @typography-normal-font-size;
     font-family: @typography-font-family-math;
     font-style: normal;
@@ -168,4 +169,4 @@ blockquote {
         font-style: italic;
         font-weight: bold;
     }
-  }
+}

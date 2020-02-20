@@ -25,7 +25,7 @@ pandoc --from markdown --data-dir=%cd% --template sbb --listings --toc --number-
 xcopy images %IMAGE_DIR% /s /e /h
 
 :: Create HTML output
-pandoc -s -c css/sbbTheme.css -A footer.html --toc RCM-DX-Specification_EN.md -o %HTML_DIR%\RCM-DX-Specification_EN.html
+pandoc -s -c css/sbbTheme.css -A footer.html --toc --mathjax RCM-DX-Specification_EN.md -o %HTML_DIR%\RCM-DX-Specification_EN.html
 
 :: Create CSS theme from LESS style file for HTML output
 lessc -s templates/sbbTheme.less %CSS_DIR%\sbbTheme.css

@@ -62,7 +62,7 @@
   
   object ENVIRONMENT
 
-  object EVENTS
+  object EVENT
   object RECORDS
 
   object TOPOLOGY
@@ -75,7 +75,7 @@
   session_name "1" o-- "1" POSITION
   session_name "1" o-- "0..1" ENVIRONMENT
   session_name "1" o-- "1..n" measuringsystem_name
-  session_name "1" o-- "0..1" EVENTS
+  session_name "1" o-- "0..1" EVENT
   session_name "1" o-- "0..1" RECORDS
   session_name "1" o-- "1" TOPOLOGY
   session_name "1" o-- "1" SECTION

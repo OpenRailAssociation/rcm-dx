@@ -251,7 +251,7 @@ This type of data storage allows several entries to be recorded per measurement 
 | Element | Description |
 |--|------|
 | coord | Simple character string for identifying data of type Coordinates |
-| . | Separators.
+| . | Separators
 | C | Additional character for identifying data of type Coordinates |
 | N | Index Number beginning with "0", increasing for each additional coordinate Datasets |
 
@@ -1549,11 +1549,11 @@ Within the group there are the following data fields:
 
 | Name | Data type | Parent object | Mandatory | Storage type |
 |----|---|----|---|----|
-| data | string | `RECORD` | yes | `array[n]` |
-| duration | 64 bit signed integer little endian | `RECORD` | yes | `array[n]` |
 | type | string | `RECORD` | yes | `array[n]` |
 | systemReference | string | `RECORD` | yes | `array[n]` |
 | channelReference | string | `RECORD` | no | `array[n]` |
+| data | string | `RECORD` | yes | `array[n]` |
+| duration | 64 bit signed integer little endian | `RECORD` | yes | `array[n]` |
 | timestamp | 64 bit signed integer little endian | `RECORD` | yes | `array[n]` |
 
 Each of these datasets contains a list with information about an entry at a specific time.
