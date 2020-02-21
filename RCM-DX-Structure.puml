@@ -2,33 +2,30 @@
 
   object RCMDX
 
-  object data.PRE.AVG.X
-  object data.PRE.MIN.X
-  object data.PRE.MAX.X
-
-  object LIMIT 
-
-  object "//LIMIT_NAME//" as session_name {
-    a:Element (string) = "SESSION"
-    a:EndTime (64bit integer, timestamp)
-    a:StartTime (64bit integer, timestamp)
+  object data.PRE.MIN.X #LightGray {
+    a:Unit (string)
   }
 
+  object data.PRE.MAX.X #LightGray {
+    a:Unit (string)
+  }
 
+  object data.PRE.AVG.X #LightGray {
+    a:Unit (string)
+  }
 
+  object LIMIT
 
-
-
-
-
-
-
-
+  object "//LIMIT_NAME//" as limit_name {
+    a:Priority (8bit integer)
+    a:LimitBound (string)
+  }
 
   object "//SESSION_NAME//" as session_name {
     a:Element (string) = "SESSION"
-    a:EndTime (64bit integer, timestamp)
+    a:MeasuringMode {OPERATIV | SIMULATION | TEST}
     a:StartTime (64bit integer, timestamp)
+    a:EndTime (64bit integer, timestamp)
   }
 
   object ENVIRONMENT
@@ -52,9 +49,9 @@
   object WEATHERCONDITIONS {
     d:data (64bit integer)
   }
-
+  
   object TOPOLOGY {
-    a:DfAExportTimestamp (64bit integer, timestamp)
+    a:Version (string)
   }
 
   object TRACKS {
@@ -134,6 +131,10 @@
 
   object "//MEASURINGSYSTEM_NAME//" as measuringsystem_name {
     a:Element (string) = "MEASURINGSYSTEM"
+    a:Family (string)
+    a:Revision (string)
+    a:InstanceVersion (string)
+    a:MeasuringMode (string)
   }
 
   object "//DATASOURCE_NAME//" as datasource_name {
@@ -142,31 +143,30 @@
 
   object "//CHANNEL_NAME//" as channel_name {
     a:Element (string) = "CHANNEL"
-    a:ChannelBasis (string)
-    a:CommonTriggerDistance (32bit float)
-    a:CommonTriggerFrequency (32bit float)
     a:ChannelType (string)
-    a:Neighbor (string)
-    a:PositionOffset (32bit float)
     a:TriggerMode (string)
+    a:CommonTriggerFrequency (32bit float)
+    a:CommonTriggerDistance (32bit float)
+    a:ChannelBasis (string)
+    a:Neighbor (string)
+    a:MeasurementUncertinty (32bit float)
+    a:PositionOffset (32bit float)
   }
 
   object VID {
     a:ContentType (MIME-Type, string)
     a:DataTyp (string)
+    a:FramesPerSecond (16bit signed integer)
     a:ResolutionX (32bit signed integer)
     a:ResolutionY (32bit signed integer)
-    a:FramesPerSecond (16bit signed integer)
-    a:PreambleDuration (64bit integer)
-    a:TrailerDuration (64bit integer)
   }
 
-  object IMG {
-    a:ResolutionX (32bit signed integer)
-    a:ResolutionY (32bit signed integer)
-    a:ResolutionType (string)
+ object IMG {
     a:ContentType (MIME-Type, string)
     a:DataTyp (string)
+    a:ResolutionType (string)
+    a:ResolutionX (32bit signed integer)
+    a:ResolutionY (32bit signed integer)
   }
   
   object PLATFORM {
@@ -174,24 +174,24 @@
     a:VehicleNumber (string)
   }
 
- object LOGGING
+  object LOGGING
 
   object MESSAGES {
     d:message (string)
     d:level (string)
-    d:reference (string)
+    d:systemReference (string)
+    d:channelReference (string)
     d:timestamp (64bit integer, timestamp)
   }
 
   object OUTAGES {
     d:message (string)
     d:level (string)
-    d:reference (string)
+    d:systemReference (string)
+    d:channelReference (string)
     d:timestamp (64bit integer, timestamp)
     d:durations (64bit integer)
   }
-
-  object LIMIT
 
   object "//LIMIT_NAME//" as limit_name #LightGray {
     a:Element (string) = "LIMIT"
@@ -205,14 +205,20 @@
 
   object img.NNNNNNNNN #LightGray
   object vid.NNNNNNNNN #LightGray
+
   object "timestamp" as t1 #LightGray
   object "timestamp" as t2 #LightGray
   object "timestamp" as t3 #LightGray
   object "timestamp" as t4 #LightGray
-  object timeindex #LightGray
   object "duration" as d1 #LightGray
   object "duration" as d2 #LightGray
-  object sampleindex #LightGray
+
+  object limitvalue #LightGray
+  
+  object sampleindex #LightGray {
+    a:Sorted (string)
+    **TBD:** Ist dieses Attribut notwendig?
+  }
   
   object coord.CN #LightGray {
     a:Unit
@@ -228,26 +234,24 @@
     a:Unit
   }
 
-  RCM_DX "1" o-- "1..n" session_name
+  RCMDX "1" o-- "1..n" session_name
 
   channel_name "1" o-- "0..n" data
   channel_name "1" o-- "1" LIMIT
-  LIMIT "1" o-- "0..n" limit_name
+  LIMIT "1" o-- "1..n" limit_name
   limit_name "1" o-- "1" t1
-  limit_name "1" o-- "0..n" d1
-  
+  limit_name "1" o-- "1" d1
+  limit_name "1" o-- "1" limitvalue
 
   session_name "1" o-- "1" PLATFORM
   PLATFORM "1" o-- "1" CONFIGURATION
   CONFIGURATION "1" o-- "1" global
   CONFIGURATION "1" o-- "1" network
 
-
   session_name "1" o-- "1..n" measuringsystem_name
 
   measuringsystem_name "1" o-- "1..n" datasource_name
   datasource_name "1" o-- "1" t2
-  datasource_name "1" o-- "0..1" timeindex
   datasource_name "1" o-- "0..1" d2
 
   datasource_name "1" o-- "1..n" channel_name
@@ -279,6 +283,9 @@
   ENVIRONMENT "1" o-- "1" WINDDIRECTION
   ENVIRONMENT "1" o-- "1" WEATHERCONDITIONS
 
+  channel_name "1" o-- "0..n" data.PRE.MIN.X
+  channel_name "1" o-- "0..n" data.PRE.MAX.X
+  channel_name "1" o-- "0..n" data.PRE.AVG.X
 
   measuringsystem_name "1" o-- "1" LOGGING
 

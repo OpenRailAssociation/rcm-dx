@@ -1,119 +1,48 @@
----
-title: "Schreiben von Spezifikationen mit Markdown"
-subtitle: "Version 0.10"
-keywords: [Spezifikationen, Markdown]
-logo: "images/SBB-Logo.png"
-logo-width: 150
-lang: "de-CH"
-titlepage: true
-titlepage-rule-color: "EB0000"
-author: "Ammann Michael, 24.10.2019"
-...
+# Rail condition monitoring data exchange format (RCM-DX format)
 
-# Schreiben von Spezifikationen mit Markdown
+## Motivation
 
-## Einleitung
+Railroad companies continuously gather data of their rail, overhead line, and telecommunications networks by means of mobile and stationary measuring systems. Data flows from these systems through processing units -- which enrich, evaluate and validate the data --, to systems that display the data to subject matter experts and also to systems that automatically analyse it.
 
-Die in diesem Verzeichnis geschriebenen Dokumentationen wurden in der Sprache **Markdown** geschrieben. Diese bietet die Möglichkeit den Inhalt vom Aussehen des Dokuments zu trennen. Auch dieses Dokument ist in der Markup-Sprache "Markdown" geschrieben.
-Damit dieses Dokument sowie die jeweiligen Spezifikationen in ein PDF und HTML umgewandelt werden können, müssen gewisse Vorgaben der Markdown-Sprache berücksichtigt werden.
-Wie eine Spezifikation geschrieben wird und welche Tools dazu verwendet werden müssen, wird in dieser Hilfe beschrieben. Zusätzlich wird beschrieben, wie die Spezifikationen von **Markdown** in ein PDF umgewandelt werden können.
+This specification defines the rail condition monitoring data exchange format (RCM-DX format) which is a data format optimised for data in the railroad context, i.e. for data points localised within a railroad network. The RCM-DX format is a file format based on the HDF5 specification and defines a structure of HDF5 groups, datasets, and attributes. The document at hands also describes the content of the elements defined. Although the format is open and can in principle be implemented right away by any railroad company, this specification contains a few non-generic elements and naming conventions that are specific to SBB (Swiss Federal Railways). The reason for this is that any file that adheres to this specification can be used with the RCM Viewer, an application available soon to the public via a website.
 
-Weiter wird beschrieben, wie Bilder aus einer textbasierten Beschreibung erstellt werden können. Dies im Kapitel [PlantUml](#plantuml-bilder-aus-text)
+The RCM-DX format is developed and maintained by the SBB company. An extension of the specification is permitted, yet, it must be taken into account that the resulting data file may no longer be read or processed by other systems supporting the RCM-DX format.
 
-## Markdown
+The RCM-DX format is a file format detailing the HDF5 format version 2.0. HDF5 was chosen for several reasons, including that it is an open format. HDF5 is a hierarchical data storage where the data in arranged in a tree structure. The HDF5 format is described on the webpage of the HDF5-group, in particular on the site HDF5 file format specification. The HDF5 group offers tools and libraries for various programming languages and operating systems that allow to read and write HDF5 files.
 
-Was ist **Markdown**? Diese Frage wird auf folgender Webseite super beantwortet: [Markdown cheat-sheat](https://www.markdownguide.org/cheat-sheet/)
-**Markdown** kann im einfachsten Text-Editor bearbeitet werden (Windows Editor, Notepad++, Visual Studio Code, usw.). Die Dateien haben immer eine Endung mit ".md", dies müsste aber nicht so sein, es ist aber Hilfreicher um auf einen Blick den Typ zu erkennen.
+## Who is the specification for
 
-Als Editor wird "Visual Studio Code" empfohlen, dieser ist kostenlos und ein Leichtgewicht. Zudem können Plugins für "Visual Studio Code" das Arbeiten mit **Markdown** erheblich vereinfachen. Für Software Entwickler bietet sich IntelliJ, Eclipse mit Plugins, Android Studio und/oder Visual Studio an.
+This specification is for railway companies looking for a uniform format to store their recorded measurement data in a uniform way and to process them with suitable, already existing open source software or own developments or to exchange them with others.  
+SBB is working on providing further open-source solutions, for example to read, write and display files in RCM-DX format.
 
-### Unterschiede zu 0815 Markdown
+## Readability
 
-Für die Umwandlung in ein PDF wird das Tool [Pandoc](https://pandoc.org/) verwendet. Dieses ist kostenlos und kann noch viele weitere Ausgabeformate als nur PDF.
-Pandoc versteht einige weitere Befehle im **Markdown**, diese werden in den Unterkapiteln genauer beschrieben!
+The RCM-DX specification was written in the markup language "Markup language" and optimized for the program "Pandoc". Thus the specification can be opened and read with any text program or with a Markdown-Viewer or it can be converted into a PDF with some additional software. A PDF creation guide is described in the chapter "Create PDF".
 
-Eine gute Übersicht bietet das Dokument unter Folgendem Link [pandoc2 Leseprobe](https://kofler.info/wp-content/uploads/pandoc2-leseprobe.pdf) von Michael Kofler.
+## Create a PDF from this specification
 
-#### Neue Zeile
+### Needed Software
 
-Eine neue Zeile kann durch zwei Leerschläge am Ende der Zeile erreicht werden oder durch eine separate leere Zeile.
+#### for Windows
 
-#### Bildgrösse
+The creation of a PDF requires the installation of [Pandoc](https://pandoc.org/installing.html) and [MiKTeX](https://miktex.org/). These two programs are free! Since the installation is already well described on their web pages, we will refrain from doing so here. It can happen that "MiKTeX" has to download and install additional packages and asks for permission, these are necessary for the PDF creation!
 
-Bilder werden immer in grösstmöglicher Grösse im PDF dargestellt. Ausschlaggebend ist die Breite der Seite, die die Bildgrösse definiert. Soll ein Bild kleiner dargestellt werden, so kann die Bildbreite, nach der Bildangabe, in Pixel angegeben werden. Das Beispiel soll dies aufzeigen:
+After the successful installation the file "createPdf.bat" can be executed. The finished PDF should then be in the subdirectory "generated-specs/pdf".
 
-\![Binärer Baum, Aufbau der Knotennummer](images/generated/binaryTree.png){ width=400px }
+#### for Linux/Ubuntu
 
-#### Fussnoten
+Some distributions come with Pandoc pre-installed. Otherwise, the installation is very well described on the [Pandoc Website](https://pandoc.org/installing.html#linux)!
 
-Fussnoten werden am Ende der Seite dargestellt, falls Platz vorhanden ist, ansonsten auf der Folgeseite.  
-Sie dienen zum Beispiel der genaueren Beschreibung eines Wortes. Eine Fussnote wird wie folgt erstellt:
+## Create the pictograms
 
-Fussnote\^[Fussnote: Fussnoten werden am Ende der Seite dargestellt.]
-**Ergibt:**
-Fussnote^[Fussnote: Fussnoten werden am Ende der Seite dargestellt.]
+The pictograms are converted from text into images using the open source software [PlantUML](https://plantuml.com/de/). The images are written in a defined language in files with the extension "*.puml" and then converted into images.
 
-#### Interne Links
+PlantUML already exists as a JAR file in the "bin" directory.
 
-Referenzen und Links auf Kapitelüberschriften im Dokument selber, können wie ein externer Link erstellt werden, jedoch ist die URL anders:
+Images can be created from the file "images.puml" as follows:
 
-\[Bezeichnung](#titel-der-überschrift)  
-**Ergibt:**  
-[Bezeichnung](#interne-links)  
+``` batch
+java -jar ./bin/plantuml.jar images.puml -o images/generated
+```
 
-Bei Verlinkungen intern muss darauf geachtet werden, dass Überschriften (beginnend mit #) nicht doppelt vorkommen. Dies kann bei der Erstellung des PDF's zu Problemen führen!
-
-#### Tabellengrösse
-
-Die Breite der Tabellen hängt von der Menge des Inhalts ab, sowie der Definition der Anzahl an Trennzeichen. Eine Tabelle besteht aus Header-Angaben sowie den Trennzeichen und den Inhaltlichen Tabellen. Nachfolgend eine Tabelle:
-
-| Name | Notwendig | Beschreibung |
-|-|--|----|
-| RCM-DX | ja | Die Bezeichnung eines definierten Datenformates |
-
-Anhand er Trennzeichen "-", kann die Breite der Spalte definiert werden. Die erste Spalte hat die Grösse ein, die zweite ist zweimal so gross wie die erste und die dritte ist viermal so gross wie die erste. Eine Angabe in Prozent oder in Pixel ist nicht möglich!
-
-#### Mathematische Formeln
-
-Soll eine mathematische Formel dargestellt werden kann dies wie folgt gelöst werden: Ein Dollar-Zeichen zu Beginn und am Ende der Formel ergibt die gewünschte Darstellung.
-
-**Beispiel:** \$a*b=ab\$
-**Ergibt:** $a*b=ab$
-
-#### Titelblatt
-
-Zu Beginn einer Seite können mithilfe von YAML^[YAML: Eine Auszeichnungssprache [YAML](https://de.wikipedia.org/wiki/YAML)] Angaben für die Titelseite definiert werden. Das Layout und die möglichen Felder sind für diese Spezifikationen definiert. Nachfolgend eine Auflistung und Beschreibung der möglichen Felder:
-
-| Feld | Beschreibung |
-|--|----|
-| title | der Titel auf dem Titelblatt |
-| subtitle | Untertitel oder in unserem Fall für die Versionsnummer |
-| keywords | Schlüsselwörter (diese werden vor allem für die HTML-Generierung verwendet)|
-| logo | definiert den Ort und Namen des Logos das in der Kopfzeile angezeigt wird |
-| logo-width | die Breite des Logos in der Kopfzeile |
-| lang | die Sprache in der das Dokument geschrieben ist |
-| titlepage | Titelseite erstellen, ja oder nein |
-| author | Name des Autors oder ein Subtitel |
-
-## Verwendete Tools und deren Installation
-
-### Pandoc
-
-Link zur Webseite von Pandoc: [https://pandoc.org](https://pandoc.org)
-
-Download Seite für Pandoc: [Pandoc Version 2.7.3](https://github.com/jgm/pandoc/releases/tag/2.7.3)
-Der Windows Installer ist am Ende der Seite zu finden. Nach der Ausführung muss [MiKTeX](#miktex) installiert werden, damit die Umwandlung von **Markdown** in ein PDF funktioniert.
-
-### MiKTeX
-
-MiKTeX wird für die Erstellung von PDF's benötigt. Das Tool kann auf folgender Seite heruntergeladen werden: [MiKTex Download](https://miktex.org/download)  
-Die Installation ist einfach und es benötigt keine Anpassungen an den Konfigurationen.  
-Es werden bei der ersten Erzeugung von PDF's Pakete heruntergeladen. Falls dies nicht gelingt und diese nicht heruntergeladen werden können, muss ein Proxy angegeben werden. Danach müsste der Download und die Updates funktionieren.
-
-## PlantUml, UML-Diagramme aus Text
-
-Link zur Webseite von PlantUml: [http://plantuml.com/de/](http://plantuml.com/de/)
-
-Mit PlantUml ist es möglich, Bilder aus Text zu erzeugen. Natürlich muss der Text in einer definierten weise geschrieben sein, damit dies funktioniert. Die Webseite von PlantUml beschreibt die verschiedenen UML-Diagramme und deren Syntax gut, die Beispiele auf der Seite helfen zum Starten.
-
-Für die Spezifikationen wurde ein Verzeichnis 'images' angelegt. In diesem Verzeichnis sind die von den Spezifikationen verwendeten Bilder abgelegt. Im Unterverzeichnis 'generated', sind die von PlantUml erzeugten Bilder enthalten. Die UML-Diagramme werden in der Datei "images.puml" beschrieben. PlantUml wurde mit Java geschrieben und die JAR-Datei kann für die Umwandlung verwendet werden. Weiter Informationen sind auf der Webseite zu finden!
+The images are then stored in the "images/generated" directory.
