@@ -27,11 +27,13 @@ The RCM-DX specification was written in the markup language "Markup language" an
 
 The creation of a PDF requires the installation of [Pandoc](https://pandoc.org/installing.html) and [MiKTeX](https://miktex.org/). These two programs are free! Since the installation is already well described on their web pages, we will refrain from doing so here. It can happen that "MiKTeX" has to download and install additional packages and asks for permission, these are necessary for the PDF creation!
 
-After the successful installation the file "createPdf.bat" can be executed. The finished PDF should then be in the subdirectory "generated-specs/pdf".
+For generating the images, we use [PlantUML](https://plantuml.com/de/) which comes as a JAR-File. PlantUML uses the free software [Graphviz](https://www.graphviz.org/) which must be installed on the host system. Please follow the instructions on the Graphviz website to instal it correctly.
 
-#### for Linux/Ubuntu
+After the successful installation, the file "createPdf.bat" can be executed. The finished PDF should then be in the subdirectory "generated-specs/pdf".
 
-Some distributions come with Pandoc pre-installed. Otherwise, the installation is very well described on the [Pandoc Website](https://pandoc.org/installing.html#linux)!
+#### for Linux and MacOs
+
+Please let us now if you install all the needed software which are described under "for Windows" and successfully created the PDF.
 
 ## Create the pictograms
 
