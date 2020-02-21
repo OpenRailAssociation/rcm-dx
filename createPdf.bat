@@ -16,4 +16,4 @@ java -jar ./bin/plantuml.jar images.puml -o images/generated
 java -jar ./bin/plantuml.jar RCM-DX-Structure.puml -o images/generated
 
 :: Create each specification from markdown to PDF
-pandoc --from markdown --data-dir=%cd% --template sbb --listings --toc --number-sections --columns=5 --metadata-file=RCM-DX-Spec_Metadata_EN.yaml RCM-DX-Specification_EN.md -o %PDF_DIR%\RCM-DX-Specification_EN_V2.0.pdf
+pandoc --from markdown --data-dir=%cd% --template rcm-dx --listings --toc --number-sections --columns=5 --metadata-file=RCM-DX-Spec_Metadata_EN.yaml RCM-DX-Specification_EN.md -o %PDF_DIR%\RCM-DX-Specification_EN_V2.0.pdf

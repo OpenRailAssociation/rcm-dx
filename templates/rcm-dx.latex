@@ -34,7 +34,7 @@
 %%
 
 %%
-% This is the SBB pandoc LaTeX template.
+% This is the RCM-DX pandoc LaTeX template.
 %
 % For usage information and examples visit the official GitHub page:
 % https://github.com/Wandmalfarbe/pandoc-latex-template
@@ -751,11 +751,22 @@ $endif$
 
 
 
-
+%% if you have problems with spacing an arangement:
 %% \hypersetup{draft} % ignore links inside document 
 
 
 
+
+
+%%
+%% watermark options
+%%
+$if(draft)$
+\usepackage{draftwatermark}
+\SetWatermarkText{DRAFT}
+\SetWatermarkScale{2}
+\SetWatermarkColor[rgb]{0.7,0.7,0.7}
+$endif$
 
 
 

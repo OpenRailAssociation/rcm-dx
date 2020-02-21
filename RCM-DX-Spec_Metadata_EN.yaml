@@ -12,4 +12,5 @@ author: "Swiss federal railways SBB, Schweizerische Bundesbahnen SBB, Chemins de
 numbersections: true
 colorlinks: true
 toc-own-page: true
+draft: true
 ...
