@@ -36,8 +36,8 @@ By `version` is meant the version number, which can be seen in the file name and
 If "draft" is given as the second argument, the word "DRAFT" appears on the background of the PDF over the entire page as a hint.
 
 **For example**
-`createPdf.bat 0.3 draft` Creates a specification in version 0.3 as a draft.
-`createPdf.bat 1.0` Creates a specification in version 1.0 as a final release version.
+`createPdf.bat 0.3 draft` Creates a specification in version 0.3 as a draft.  
+`createPdf.bat 1.0` Creates a specification in version 1.0 as a final release version.  
 
 #### for Linux and MacOs
 
