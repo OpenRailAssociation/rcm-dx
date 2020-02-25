@@ -29,7 +29,15 @@ The creation of a PDF requires the installation of [Pandoc](https://pandoc.org/i
 
 For generating the images, we use [PlantUML](https://plantuml.com/de/) which comes as a JAR-File. PlantUML uses the free software [Graphviz](https://www.graphviz.org/) which must be installed on the host system. Please follow the instructions on the Graphviz website to instal it correctly.
 
-After the successful installation, the file "createPdf.bat" can be executed. The finished PDF should then be in the subdirectory "generated-specs/pdf".
+After the successful installation, the file `createPdf.bat 'version' 'draft'` can be executed. The finished PDF should then be in the subdirectory "generated-specs/*".
+
+By `version` is meant the version number, which can be seen in the file name and in the specification.
+
+If "draft" is given as the second argument, the word "DRAFT" appears on the background of the PDF over the entire page as a hint.
+
+**For example**
+`createPdf.bat 0.3 draft` Creates a specification in version 0.3 as a draft.
+`createPdf.bat 1.0` Creates a specification in version 1.0 as a final release version.
 
 #### for Linux and MacOs
 
