@@ -442,39 +442,3 @@
   limit_name "1" o-- "1..n" limitvalue
 
 @enduml
-
-' RCM-DX binary tree
-@startuml binaryTree
-
-  storage 64 #Red
-  storage 32
-  storage 16
-  storage 8
-  storage 24
-  storage 48
-  storage 96
-  storage 80
-  storage 112
-  storage 72
-  storage 88
-  storage 104
-  storage 120
-  storage 40
-  storage 56
-
-  64 -- 32
-  64 -- 96
-  96 -- 80
-  96 -- 112
-  80 -- 72
-  80 -- 88
-  112 -- 104
-  112 -- 120
-  32 -- 16
-  32 -- 48
-  16 -- 8
-  16 -- 24
-  48 -- 40
-  48 -- 56
-
-@enduml

@@ -108,7 +108,6 @@ Below is a list of ossible ways in which data can be stored in the RCM-DX:
 | Type of storage | Description |
 |---|------|
 | Array | Data array of arbitrary length |
-| Indexed single values | Simple array of dimension 1D. Beside a dataset `timestamp` a dataset `timeindex` is created, which contains an indexing of the data and simplifies the reading of the data. The dataset `timeindex` is described in more detail in the chapter [\ref{time-indices} Time Indices](#time-indices) |
 | Image | An image taken at a defined time |
 | Video | A video that has been streamed into several individual blocks of defined size, split and saved |
 
@@ -353,122 +352,6 @@ The time stamps are always stored in ascending order and must not contain any ju
 HDF5 chunking is allowed and HDF5 compression is recommended.
 
 These time stamps are recorded either by a defined distance travelled or by a frequency, this is described in more detail in the chapter [\ref{common-trigger-distance-or-frequence} Common Trigger Distance or Frequence](#common-trigger-distance-or-frequence). In addition to the time stamps, the measuring devices follow this specification and also record measurement data at the same time. A central system serves as a clock generator for the data acquisition of all systems (measurement data and time stamps).
-
-### Time Indices
-
-For a quick finding of timestamps this dataset is created in addition to the dataset `timestamp`. The time index dataset stores an offset value of a position of timestamp groups and is located in the `Datasource Group`, at the same level as the `timestamp` dataset. A detailed description of the contents can be found in the following chapter [\ref{dataset-content-time-indices} Dataset content Time Indices](#dataset-content-time-indices). This dataset does not contain as many entries as the dataset `timestamp`.
-
-| Name | Datatype | Parent object | Mandatory | Storage type |
-|----|---|----|---|----|
-| timeindex | 64 bit integer | *DATASOURCE_NAME* | yes | ``array[n]`` |
-
-HDF5 chunking is allowed and HDF5 compression is recommended.
-
-The following attributes are assigned to the `timeindex` dataset:
-
-| Name | Data Type | Parent object | Mandatory | Description |
-|---|---|---|---|-----|
-| BlockSize | long | Dataset `timeindex` | yes | Duration in nanoseconds of a time block. Time stamps within the same time block are indexed with the same value |
-| LogTimeBlocks | integer | Dataset `timeindex` | yes | $2^{LogTimeBlocks}$ is equal to the number of blocks used to generate the binary tree. There may be time shifts greater than $2^{LogTimeBlocks}*BlockSize$ in the timestamp dataset, but these will not be indexed. |
-| Depth | integer | Dataset `timeindex` | yes | Height of the binary tree |
-
-#### Dataset content Time Indices
-
-In order to understand the content in the dataset `timeindex`, it must first be explained how it was created. The following example describes the process that leads to the result and back again.
-
-In the example we want to save and index timestamps between $10s$ and $155s$. These timestamps are contained in the `timestamp` dataset. The distances between the individual timestamps do not follow a uniform pattern.  
-
-First we define a $Offset$, which results from the first entry in the dataset `timestamp`. In our example the first entry is $10s$, so $Offset=10s$.
-With the $Offset$ of $10*10^9ns$ we have a value range from $0ns$ to $145*10^9ns$ which we index.  
-
-If we now use a block size of $BlockSize=2x10^9ns$, we get $72$ blocks, which we index, because $10s+72*2x10^9ns$ covers the values up to $156s$ and is therefore sufficient for our range of values.
-To index all $72$ blocks, we now need a sufficiently large value for LogTimeBlocks, we take a value of $LogTimeBlocks=7$, because $2^7=128$ is larger than $72$.
-
-> Note: Possible would be a LogTimeBlocks value of $LogTimeBlocks=6 => 2^6=64$. All values between $64$ and $72$ would then not be covered in the indexing!
-
-If we now define a depth of $Depth=4$, we get the following node numbers:
-
-| node number | height |
-|:--:|:--:|
-| 64 | 1 |
-| 32 | 2 |
-| 96 | 2 |
-| 16 | 3 |
-| 48 | 3 |
-| 80 | 3 |
-| 112 | 3 |
-| 8 | 4 |
-| 24 | 4 |
-| 40 | 4 |
-| 56 | 4 |
-| 72 | 4 |
-| 88 | 4 |
-| 104 | 4 |
-| 120 | 4 |
-
-These numbers and heights result from the binary tree, which we generate from the defined depth. To create the table, the tree is run through in "level-order". The following picture shows this tree:
-
-![Binary tree, structure of node number](images/generated/binaryTree.png){ width=400px }
-
-The first entry in the table has the value $2^{LogTimeBlocks-1}$, in our case $2^{7-1}=64$, this entry has a height of one.
-Next, for each timestamp, we calculate the matching number of the corresponding block:
-
-$BlockNumber=\frac{timestamp - Offset}{BlockSize}$
-
-Each $BlockNumber$ gets an index number in ascending order, starting from zero to 40. This number is used later to determine the offset position written to the `timeindex` dataset.
-Below the calculated $BlockNumber$ and the corresponding timestamp, as an overview in a table:
-
-![Table overview 1: $BlockNumber$ for each time stamp](images/TimeIndicesExampleTable1.png)
-
-![Table overview 2: $BlockNumber$ for each timestamp](images/TimeIndicesExampleTable2.png)
-
-In the next step we use the previously created table of the binary tree and write for each entry, the corresponding $BlockNumber$ in the dataset `timeindex`.
-The first number of the binary tree is $64$. So we look in the created table for the largest possible $BlockNumber$, which is smaller or equal to the value $64$. Thus we find the number $63$ in the table with the index $35$. So we write the number $35$ into the dataset `timeindex`. The second of the table with the binary tree has the value $32$. In the table with the $BlockNumber$ we find the number $32$, so the number $32$ is written into the dataset `timeindex`. Now follows the number $96$, for this there is no entry in the table with the $BlockNumber$, so we write the one $-1$ into the dataset `timeindex`. If we continue this way, we get the following table, which represents the dataset `timeindex`:
-
-| NodeNumber | Contents `timeindex` |
-|:--:|:--:|
-| 64 | 35 |
-| 32 | 18 |
-| 96 | -1 |
-| 16 | 8 |
-| 48 | 27 |
-| 80 | -1 |
-| 112 | -1 |
-| 8 | 4 |
-| 24 | 13 |
-| 40 | 23 |
-| 56 | 32 |
-| 72 | 40 |
-| 88 | -1 |
-| 104 | -1 |
-| 120 | -1 |
-
-#### Localization of the time stamp from dataset Time Indices
-
-This chapter describes how to calculate the position of a timestamp using the dataset `timeindex`. Relevant are the defined values from the attributes $BlockSize$, $LogTimeBlocks$ and $Depth$. With these values we can rebuild the binary tree.  
-
-Assuming we search for the position in the `timestamp` dataset for the timestamp $86s$, we first calculate the node number with the following formula:  
-
-$NodeNumber=(\frac{timestamp - Offset}{BlockSize})-(\frac{timestamp - Offset}{BlockSize} \bmod 8)$  
-
-The calculation for a timestamp with the value $86s$ would look like this:  
-
-$NodeNumber=(\frac{86s - 10s}{2s})-(\frac{86s - 10s}{2s} \bmod 8) = 38 - 6 = 32$
-
-With the calculated $NodeNumber$ we can now find out the position using the `timeindex` dataset. Additionally we need the table of the binary tree. There we look for the index of the calculated $NodeNumber$, this would be the index $1$. Now we find in the dataset `timeindex` at the same index, the position of the block by searching our timestamp, so we search from position $18$.  
-
-| $NodeNumber$ | Dataset `timeindex` |
-|:---:|:---:|
-| 64 | 35 |
-| **32** | **18** |
-| 96 | -1 |
-|**...**|**...**|
-
-Now the search for the timestamp starts at the position $18$ and searches via the values $74, 75, 80, 81$ to $86$ at position $22$.
-
-![Timestamp search in table](images/TimeIndicesTableSearchExample.png){width=400px}
-
-The calculation above is always rounded down and not the next larger value (here $40$) is used. This is because the position at the value $40$ could be higher (end of the block) than the position in the block itself. So the timestamp would not be found!
 
 ### Durations
 
