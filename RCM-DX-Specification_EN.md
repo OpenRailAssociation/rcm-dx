@@ -4,41 +4,9 @@
 
 | Document Version | RCM-DX version | Datum | Autor | Beschreibung |
 |--|--|--|---|------|
-| V0.1 |-| 06.03.2015 | Martin Frey (SCS) | Initial version |
-| V0.2 |-| 20.03.2015 | Martin Frey (SCS) | Extensions |
-| V0.3 |-| 15.04.2015 | Patrik Wernli (SCS) | Review |
-| V0.4 |-| 20.04.2015 | Martin Frey (SCS) | Extensions and revised |
-| V0.5 |-| 03.05.2015 | Patrik Wernli (SCS) | Formal Adaptions |
-| V0.6 |-| 12.05.2015 | Martin Frey (SCS) | PDR Feedback: Storing of Booleans, comments allowed on all levels, format independent of video codec, flags (including simulation) on session level. Schemas for exceedances, comments and drawings added |
-| V0.7 |-| 13.07.2015 | Patrik Wernli (SCS) | Finalized for CDR |
-| V0.8 |-| 02.10.2015 | Martin Frey (SCS) | Event model added, reference to specification event schema added. |
-| V0.9 |-| 30.11.2015 | Patrik Wernli (SCS) | Adaptions for Infotrans position model. Version concept removed. Event model updated. |
-| V0.10 |-| 21.12.2015 | Martin Frey (SCS) | Review |
-| V0.11 |-| 21.12.2015 | Patrik Wernli (SCS) | Revised after review |
-| V0.12 |-| 16.02.2016 | Pascal Brem (SCS) | Topology model in configuration. |
-| V0.13 |-| 17.02.2016 | Martin Frey (SCS) | Review topology model |
-| V0.14 |-| 19.02.2016 | Pascal Brem (SCS) | Sections added to file format. |
-| V0.15 |-| 23.02.2016 | Martin Frey (SCS) | Global configuration and settings updated |
-| V0.16 |-| 11.07.2016 | Pascal Brem (SCS) | New Hash code attribute for the topology. |
-| V0.17 |-| 15.07.2016 | Pascal Brem (SCS) | New units and data types for positions |
-| V0.18 |-| 03.01.2018 | Pascal Brem (SCS) | New GTG Track Id in the Topology. |
-| V0.19 |-| 03.01.2018 | Pascal Brem (SCS) | Events are stored on session level. |
-| V0.20 |-| 09.01.2018 | Pascal Brem (SCS) | Events and Sections in a group. |
-| V0.21 |-| 09.01.2018 | Patrik Wernli (SCS) | Added chapter “HDF5 File Format Versions” |
-| V0.22 |-| 11.04.2018 | Patrik Wernli (SCS) | Changed document template to official publishing template |
-| V0.23 |-| 16.08.2018 | Pascal Brem (SCS) | Changes in the channel basis definition. |
-| V0.24 |-| 16.08.2018 | Pascal Brem (SCS) | New attributes on the picture block channel. |
-| V0.25 |-| 04.09.2018 | Pascal Brem (SCS) | New minor version. |
-| V0.26 |-| 28.11.2018 | Pascal Brem (SCS) | New minor version for the topology attributes. |
-| V0.27 |-| 08.01.2019 | Pascal Brem (SCS) | New availability group. |
-| V0.28 |-| 05.06.2019 | Pascal Brem (SCS) | New switchtracks in the DfA |
-| V0.29 | 2.0 | 29.10.2019 | Michael Ammann (SBB) | Major changes to the format as well as the documentation. New major version for RCM-DX format.  |
-
-## Approval
-
-| Date | Name | Function |
-|---|---|------|
-| - | - | - |
+| < V0.29 | 0.1 | < 29.10.2019 | Jakob Grilj (SBB) | Adoption of the existing specification. Start of the new RCM-DX format with version number 0.1  |
+| V0.29 | 0.2 | 29.10.2019 | Michael Ammann (SBB), Jakob Grilj (SBB) | Adaptation to the new RCM-DX structure. |
+| V0.30 | 0.2 | 20.02.2020 | Michael Ammann (SBB) | Adjustments for the publication (open-source). |
 
 ## Introduction  
 
@@ -1720,6 +1688,10 @@ The group `CLEARANCEINFORMATION` contains one datasets:
 **keyValue:** This record contains a unique key as a reference to a clearance step, followed by a value about what was done in that step or what the result was. Key- and value are separated by a colon charakter: `key:value`  
 **timestamp:** Contains the time of the acquisition of the entry in the `keyValue` dataset.  
 
+## Changes to the previous version
+
+> TODO: Hier die Änderungen zur Version 0.1 vermerken!
+
 ## XML Schema Definitions
 
 ### Events Comment
@@ -1996,3 +1968,12 @@ The group `CLEARANCEINFORMATION` contains one datasets:
   </xs:simpleType>
 </xs:schema>
 ```
+
+## License and copyright
+
+> TODO: Lizenzhinweise notieren für RCM-DX
+> TODO: Lizenzhinweise oder Copyright notieren für HDF5
+
+## Contribution
+
+> TODO: Vermerk auf die Zusammenarbeit und die Weiterentwicklung des RCM-DX sowie Hinweis auf die Webseite!
