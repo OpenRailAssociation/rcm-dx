@@ -1,15 +1,20 @@
-:: Collect arguments
+:: collect arguments
 set SPEC_VERSION=%1
 set SPEC_TYPE=%2
-set IS_DRAFT=false
-set YAML_FILE_NAME=RCM-DX-Spec_Metadata_EN.yaml
 
 IF ""=="%1" (
     set SPEC_VERSION=_UNKNOWN!
 )
 IF "draft"=="%2" (
     set IS_DRAFT=true
+    set DRAFT=_draft
 )
+
+:: set defaut variables
+set SPEC_LANGUAGE=EN
+set SPEC_NAME=RCM-DX-Specification
+set IS_DRAFT=false
+set YAML_FILE_NAME=RCM-DX-Spec_Metadata_EN.yaml
 
 :: write yaml-spec-file for pandoc
 (
@@ -47,6 +52,6 @@ java -jar ./bin/plantuml.jar images.puml -o images/generated
 java -jar ./bin/plantuml.jar RCM-DX-Structure.puml -o images/generated
 
 :: Create each specification from markdown to PDF
-pandoc --from markdown --data-dir=%cd% --template rcm-dx --listings --toc --number-sections --columns=5 --metadata-file=RCM-DX-Spec_Metadata_EN.yaml RCM-DX-Specification_EN.md -o %SPEC_DIR%\RCM-DX-Specification_EN_V%SPEC_VERSION%.pdf
+pandoc --from markdown --data-dir=%cd% --template rcm-dx --listings --toc --number-sections --columns=5 --metadata-file=%YAML_FILE_NAME% %SPEC_NAME%_%SPEC_LANGUAGE%.md -o %SPEC_DIR%\%SPEC_NAME%_%SPEC_LANGUAGE%_V%SPEC_VERSION%%DRAFT%.pdf
 
 del %YAML_FILE_NAME%
