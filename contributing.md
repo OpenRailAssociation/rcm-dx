@@ -13,7 +13,7 @@ Major changes to this specification will result in major changes in the software
 
 ## How can I contribute
 
-### Any bugs found?
+### Any bugs found
 
 In the specification, these can be spelling mistakes, grammar errors, errors in the pictograms, errors in the links (or broken links) and so on. Mistakes happen and we would be grateful if you could let us know. Just create an entry in our error list and we will take care of it as soon as possible!  
 
@@ -23,12 +23,14 @@ Improvements are desired and drive success. To suggest an improvement, you can e
 
 ### Suggest own customizations (Pull requests)
 
+#### Branching model
+
 #### Checklist
 
 > TODO: Description of what has to be done to allow a Pull Request.
 
 ### Participate and decide
 
-If you want to participate actively yourself, here are some conditions:
+If you want to participate yourself or as a company in the further development of the specification, then we have a checklist for you here:
 
-> TODO: Beschreiben was gemacht werden muss, damit jemand Fehler korrigiert, auf Fragen antwortet generell aktiv mitwirkt ohne der zusätzlichen kontrolle durch die SBB. Hier als Beispiel SCS. => Lizenzen, Verträge die unterzeichnet werden müssen für eine aktive Teilnahme, usw...
+> TODO: Beschreiben was gemacht werden muss, damit jemand Fehler korrigiert, auf Fragen antworten darf oder generell aktiv mitwirkt dar, ohne der zusätzlichen kontrolle durch die SBB oder das Gremium. Hier als Beispiel SCS. => Lizenzen, Verträge die unterzeichnet werden müssen für eine aktive Teilnahme, usw...
