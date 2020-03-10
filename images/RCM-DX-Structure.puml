@@ -161,7 +161,7 @@
     a:ResolutionY (32bit signed integer)
   }
 
- object IMG {
+  object IMG {
     a:ContentType (MIME-Type, string)
     a:DataTyp (string)
     a:ResolutionType (string)
@@ -234,7 +234,7 @@
     a:Unit
   }
 
-  RCMDX "1" o-- "1..n" session_name
+  RCMDX "1" o-- "1" PLATFORM
 
   channel_name "1" o-- "0..n" data
   channel_name "1" o-- "1" LIMIT
@@ -243,7 +243,15 @@
   limit_name "1" o-- "1" d1
   limit_name "1" o-- "1" limitvalue
 
-  session_name "1" o-- "1" PLATFORM
+  session_name "1" o-- "1" ENVIRONMENT
+  ENVIRONMENT "1" o-- "1" t3
+  ENVIRONMENT "1" o-- "1" VEHICLESPEED
+  ENVIRONMENT "1" o-- "1" AMBIENTTEMPERATURE
+  ENVIRONMENT "1" o-- "1" WINDSPEED
+  ENVIRONMENT "1" o-- "1" WINDDIRECTION
+  ENVIRONMENT "1" o-- "1" WEATHERCONDITIONS
+  
+  PLATFORM "1" o-- "1" session_name
   PLATFORM "1" o-- "1" CONFIGURATION
   CONFIGURATION "1" o-- "1" global
   CONFIGURATION "1" o-- "1" network
@@ -273,15 +281,6 @@
   TOPOLOGY "1" o-- "1" TRACKOBJECTS
   TOPOLOGY "1" o-- "1" TRACKPOINTS
   TOPOLOGY "1" o-- "1" PROPERTIES
-
-
-  session_name "1" o-- "1" ENVIRONMENT
-  ENVIRONMENT "1" o-- "1" t3
-  ENVIRONMENT "1" o-- "1" VEHICLESPEED
-  ENVIRONMENT "1" o-- "1" AMBIENTTEMPERATURE
-  ENVIRONMENT "1" o-- "1" WINDSPEED
-  ENVIRONMENT "1" o-- "1" WINDDIRECTION
-  ENVIRONMENT "1" o-- "1" WEATHERCONDITIONS
 
   channel_name "1" o-- "0..n" data.PRE.MIN.X
   channel_name "1" o-- "0..n" data.PRE.MAX.X
