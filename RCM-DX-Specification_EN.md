@@ -16,7 +16,7 @@ Railroad companies continuously gather data of their rail, overhead line, and te
 
 This specification defines the rail condition monitoring data exchange format (RCM-DX format) which is a data format optimised for data in the railroad context, i.e. for data points localised within a railroad network. The RCM-DX format is a file format based on the HDF5 specification and defines a structure of HDF5 groups, datasets, and attributes. The document at hands also describes the content of the elements defined. Although the format is open and can in principle be implemented right away by any railroad company, this specification contains a few non-generic elements and naming conventions that are specific to SBB. The reason for this is that any file that adheres to this specification can be used with the _RCM Viewer_, an application available soon to the public via a website.
 
-<!-- TODO: Link zur Webseite des RCM-DX Viewer -->
+<!-- TODO: Linklink to RCM-DX Viewer website, if existing -->
 
 The RCM-DX format is developed and maintained by the SBB company. An extension of the specification is permitted, yet, it must be taken into account that the resulting data file may no longer be read or processed by other systems supporting the RCM-DX format.
 
@@ -33,8 +33,8 @@ The extension of the specification is permitted. However, it must be taken into 
 
 The RCM-DX data format is subject to changes, these are indicated by the version number in the document, see chapter [\ref{root-group} Root Group](#root-group). The version number consists of three numbers separated by dots and is composed as follows: **[Major].[Minor]**. Example: **1.0**  
 
-**Major:** Indicates large change in data format that are not backward compatible. Examples are the modification of structures or the naming of existing groups.  
-**Minor:** Minor changes that represent an extension and are still backward compatible. Examples include defining new groups for datasets or new datatypes, etc.  
+**Major:** Defines the main version and indicates when major changes have been made. These are, for example, that changing the basic structure or renaming groups, datasets or attributes (major, minor attribute as an example), which are mandatory.  
+**Minor:** Indicates minor changes, such as changing the name of an attribute that is not mandatory or defining new groups, attributes, or datasets. These changes do not affect anything that cannot be read with an existing RCM-DX read-write library.  
 
 #### Diagrams
 
@@ -60,8 +60,8 @@ Data types that are used in this specification and require a more detailed descr
 
 | Name | Description | Example |
 |--|-----|---|
-| UUID | Universally Unique Identifier as Unique ID as defined in [wikipedia.org/wiki/Universally_Unique_Identifier](https://en.wikipedia.org/wiki/Universally_Unique_Identifier) | `550e8400-e29b-11d4-a716-4466554400` |
-| Timestamp | Unique and worldwide defined format of a time, since January 1, 1970 00:00 UTC without leap seconds, defined under [wikipedia.org/wiki/Timestamp](https://en.wikipedia.org/wiki/Timestamp) | `1553237099000000000` |
+| UUID | Universally Unique Identifier as Unique ID as defined in [wikipedia.org/wiki/Universally_Unique_Identifier](https://en.wikipedia.org/wiki/Universally_Unique_Identifier). Datatype is: `string` | `550e8400-e29b-11d4-a716-4466554400` |
+| Timestamp | Unique and worldwide defined format of a time, since January 1, 1970 00:00 UTC without leap seconds, defined under [wikipedia.org/wiki/Timestamp](https://en.wikipedia.org/wiki/Timestamp). Datatype is `64 bit unsigned integer` | `1553237099000000000` |
 
 ### (HDF5) Group
 
@@ -101,7 +101,8 @@ Attributes are described in this specification as follows:
 
 ### (HDF5) Datasets
 
-A channel and its dataset can hold different types and types of data. The HDF5 group defines the way of storage, but not the names.  
+A channel as a group always has one data set. A channel defines a type of sensor data that is stored in its data set. Several channels form a data source. Further information on the structure is described further down in this specification.
+
 A dataset is always of the HDF5 type `HDF5 Dataset`.  
 Below is a list of ossible ways in which data can be stored in the RCM-DX:
 
@@ -115,27 +116,25 @@ The datasets are described in the lowerCamelCase-Notation^2^. Datasets are descr
 
 | Name | Data type | Parent object | Mandatory | Storage type |
 |--|---|----|---|-----|
-| timestamp | 64 bit integer | *DATASOURCE_NAME* | yes | `array[n]` |
+| timestamp | 64 bit integer | *DATASOURCE_NAME* | yes | `Array` |
 
 **Name:** The name of the dataset.  
 **Data Type:** Primitive data type of the content in the dataset, thus the data type of the contained data.  
 **Parent object:** A dataset is always assigned to a group, here the name of this group is mentioned.  
 **Mandatory:** If the dataset is absolutely necessary and must be present, `yes` is written here, otherwise `no`.  
-**Storage type:** One of the storage types described in this chapter  
+**Storage type:** One of the storage types described in this chapter.  
 
 Descriptions of the dataset are added outside the table.  
 
 **^2^lower-Camel-Case-Notation**: The lower camel case notation defines the way a composite name is written. Further information can be found under the following link: [www.wikipedia.org/wiki/Camel_case](https://en.wikipedia.org/wiki/Camel_case)
 
-#### HDF5 Compression
-
-To save space, compression filters can be applied to datasets. Below you can see for all datasets whether this is recommended or not. The compression and which functions the HDF5 group offers is described in more detail on its website under the link: [www.support.hdfgroup.org/HDF5/faq/compression.html](https://support.hdfgroup.org/HDF5/faq/compression.html). For a dataset, for example, it says that "HDF5 compression" is allowed or not.
-
 #### HDF5 Chunking
 
-Besides the "HDF5 Compression" there is the "HDF5 Chunking" for data within a dataset. This means that the data is divided into blocks, which in turn can be processed independently. This also allows faster access to parts of the data. Whether a splitting is allowed and recommended can be seen with each dataset, for example: "HDF5 Chunking" is allowed and recommended. The HDF5 chunking is described in more detail on the website of the HDF5 group: [www.support.hdfgroup.org/HDF5/doc/H5.user/Chunking.html](https://support.hdfgroup.org/HDF5/doc/H5.user/Chunking.html)
+The "HDF5 Chunking" is for data within a dataset. This means that the data is divided into blocks, which in turn can be processed independently. This also allows faster access to parts of the data. Whether a splitting is allowed and recommended can be seen with each dataset, for example: "HDF5 Chunking" is allowed and recommended. The HDF5 chunking is described in more detail on the website of the HDF5 group: [www.support.hdfgroup.org/HDF5/doc/H5.user/Chunking.html](https://support.hdfgroup.org/HDF5/doc/H5.user/Chunking.html)
 
 ## Data structures
+
+Within a channel group, one of the following structures can be contained: Array, Limits, Coordinates, Pictures or Videos. These structures are described in more detail in this chapter.  
 
 ### Array
 
@@ -145,68 +144,48 @@ The possible data types are defined by the HDF5 Group, and can be read on the we
 
 Boolean values (`true`/`false`) are represented as `8 bit integer, little endian`, zero means `false`, all values greater than zero mean `true`.
 
-If measurement data are recorded in 3D space, three different channels must be created.
+Multidimensional measured values are given their own channel group per dimension and thus their own data set called `data`.
+
+| Name | Data type | Parent object | Mandatory | Storage type |
+|----|---|----|---|----|
+| data | 8, 32 or 64 bit signed integer or 64 or 32 bit floating point; (little endian in each case) | *CHANEL_NAME* | yes | `Array` |
 
 The following attributes are assigned to this type of dataset:
 
 | Name | Data Type | Parent object | Mandatory | Description |
 |---|---|---|---|-----|
-| `Unit` | string | a dataset | yes | A physical unit or empty if the data does not correspond to a physical unit |
+| `Unit` | string | dataset `data` | yes | A physical unit or empty if the data does not correspond to a physical unit |
 
-### Preview data
+#### Limits
 
-In addition to integer and floating-point datasets, special datasets with preview data can be created. For a preview value, a defined set of entries (data block) from a dataset is calculated together to give, for example, an average value. This type of dataset provides a quick overview of the recorded data.  
-The unit within this preview dataset is the same as in the channel dataset.  
-Three datasets with unique names are defined as follows to include preview values:
-
-| Name | Contents |
-|----|----|
-| data.PRE.AVG.X | Calculated average of data block |
-| data.PRE.MIN.X | Smallest value in data block |
-| data.PRE.MAX.X | Largest value in data block |
-
-The `X` is replaced by the block size. For example, if the block size of ten entries is defined and the average of the values is calculated, the dataset would be named as follows: `data.PRE.AVG.10`.  
-By specifying the block size, it is not necessary to create a dataset that contains the start time stamp of the data block.  
-If a dataset contains $600$ entries, the dataset `timestamp` contains the same number of entries but the dataset `data.PRE.AVG.10` contains only $60$ entries.  
-Further dind the two datasets `timestamp` and `duration` within the group contain.
-
-| Name | Data type | Parent object | Mandatory | Storage type |
-|--|---|----|--|------|
-| timestamp | 64 bit integer | *LIMIT_NAME* | yes | `array[n]` |
-| duration | 64 bit integer | *LIMIT_NAME* | no | `array[n]` |
-
-### Limits
-
-<!-- TODO: Dieses Kapitel muss diskutiert werden. Hier ist die Frage, was dieses Limit genau aussagt. Die Gültigkeit oder die Überschreitung eines Limits? -->
-
-A channel group can contain one or more limit groups. Each limit group contains its own `timestamp` dataset and can also contain a `duration` dataset. If a defined limit value of a measured value of the channel is exceeded, an entry in the `timestamp` dataset follows. Using the optional dataset `duration`, the duration of a limit value exceedance can be specified per entry in the dataset `timestamp`. If both datasets exist, they contain the same number of entries!  
+A channel group can contain one or more limit groups. Each limit group contains its own `timestamp` dataset and contains a `duration` dataset. If a defined limit value of a measured value of the channel is exceeded, an entry in the `timestamp` dataset follows. Using the optional dataset `duration`, the duration of a limit value exceedance can be specified per entry in the dataset `timestamp`. If both datasets exist, they contain the same number of entries!  
 
 The group of limit values is defined as follows:
 
 | Name | Parent object | Mandatory |
 |--|--|--|
-| `LIMIT` | *CHANNEL_NAME* | no |
+| `LIMIT` | *CHANNEL_NAME* | yes |
 
 The group `LIMIT` now contains further groups, each with the name of the limit exceeding, e.g. `TEMP`:
 
 | Name | Parent object | Mandatory |
 |--|--|--|
-| *LIMIT_NAME* | `LIMIT` | no |
+| *LIMIT_NAME* | `LIMIT` | yes |
 
 The following attributes are assigned to this group:
 
 | Name | Data Type | Parent object | Mandatory | Description |
 |---|---|---|---|-----|
 | Priority | 8 bit integer | *LIMIT_NAME* | yes | Priority of defined limit, lower values are priories |
-| LimitBound | string | *LIMIT_NAME* | yes | Defines the type of limit, whether it is a maximum or minimum limit. |
+| LimitBound | string | *LIMIT_NAME* | yes | Defines the type of limit, possible values are `MAX` or `MIN`. |
 
 It contains the following datasets:
 
 | Name | Data type | Parent object | Mandatory | Storage type |
 |----|---|----|---|----|
-| limitvalue | integer or float | *LIMIT_NAME* | yes | `array[n]` |
-| timestamp | 64 bit integer | *LIMIT_NAME* | yes | `array[n]` |
-| duration | 64 bit integer | *LIMIT_NAME* | no | `array[n]` |
+| limitvalue | 8, 32 or 64 bit signed integer or 64 or 32 bit floating point; (little endian in each case) | *LIMIT_NAME* | yes | `Array` |
+| timestamp | 64 bit integer | *LIMIT_NAME* | yes | `Array` |
+| duration | 64 bit integer | *LIMIT_NAME* | yes | `Array` |
 
 ![Structure for the recording of limit exceedances](images/generated/Limit_overview.png){width=230px}
 
@@ -220,7 +199,7 @@ This type of data storage allows several entries to be recorded per measurement 
 | coord | Simple character string for identifying data of type Coordinates |
 | . | Separators
 | C | Additional character for identifying data of type Coordinates |
-| N | Index Number beginning with "0", increasing for each additional coordinate Datasets |
+| N | Index number beginning with "0", increasing for each additional coordinate datasets |
 
 The dataset is defined as follows:
 
@@ -228,13 +207,34 @@ The dataset is defined as follows:
 |--|------|--|--|--|
 | coord.CN | 8, 32 or 64 bit signed integer or 64 or 32 bit floating point; (little endian in each case) | *CHANNEL_NAME* | yes | Single |
 
-HDF5 chunking is allowed and recommended, HDF5 compression is allowed.  
-
-The following attributes are assigned to this type of dataset:
+The following attributes are assigned to this type of dataset `coord.CN`:
 
 | Name | Data Type | Parent object | Mandatory | Description |
 |---|---|---|---|-----|
 | `Unit` | string | Dataset `coord.CN` | yes | One physical unit or empty if the data does not correspond to any physical unit |
+
+#### Coordinate related measured values
+
+Further measured values can be recorded for each coordinate measuring point. These are stored in individual data sets. In the following the definition of these data sets:
+
+| Element | Description |
+|--|------|
+| value | Simple character string for identifying data of type Coordinates |
+| . | Separators
+| V | Additional character for identifying data of type value |
+| N | Index number beginning with "0", increasing for each additional value set |
+
+The dataset is defined as follows:
+
+| Name | Data type | Parent object | Mandatory | Storage type |
+|--|------|--|--|--|
+| value.VN | 8, 32 or 64 bit signed integer or 64 or 32 bit floating point; (little endian in each case) | *CHANNEL_NAME* | no | Single |
+
+The following attributes are assigned to this type of dataset `value.VN`:
+
+| Name | Data Type | Parent object | Mandatory | Description |
+|---|---|---|---|-----|
+| `Type` | string | Dataset `value.VN` | yes | Describes the content and type of the data it contains. |
 
 #### Sample Index
 
@@ -267,14 +267,22 @@ The group `IMG` gets the following attributes for the more detailed description 
 |---|---|---|---|-----|
 | ContentType | string | `IMG` | yes | Data type of images specified as MIME^3^ type, for example `Content-Type: <image/jpeg>`|
 | DataType | string | `IMG` | no | Description of data type, if no standard image, see [\ref{contenttype-without-image-mime-type} ContentType without Image MIME type](#contenttype-without-image-mime-type) |
-| ResolutionType | string | `IMG` | yes | Information about the point density of the images, defined in specification of the measuring system. |
-| ResolutionX | 32 bit integer | `IMG` | yes | Resolution in X direction |
-| ResolutionY | 32 bit integer | `IMG` | yes | Resolution in Y-direction |
+| ResolutionType | string | `IMG` | yes | Description in chapter [\ref{image-resolution-types} Image resolution types](#image-resolution-types) |
+| ResolutionInfoX | 32 bit float | `IMG` | yes | Resolution in X direction |
+| ResolutionInfoY | 32 bit float | `IMG` | yes | Resolution in Y-direction |
 
 Images can have different resolutions in X and Y direction, this must be considered for a correct representation and evaluation of the images.
-HDF5 chunking is recommended and HDF5 compression is allowed.  
 
 **^3^MIME:** A list of possible MIME types can be found at the link [www.iana.org/assignments/media-types/media-types.xhtml](https://www.iana.org/assignments/media-types/media-types.xhtml). This is maintained by the [www.iana.org/](https://www.iana.org/).
+
+#### Image resolution types
+
+The 'ResolutionType' attribute contains information about the values of the 'ResolutionInfoX' and 'ResolutionInfoY' attributes.  
+ResolutionType' can contain the following values: 'mmPerPixel' or 'dimension
+
+**`none`**: No information available.
+**`mmPerPixel`**: Defines the pixel size in mm. The values in 'ResolutionInfoX' and 'ResolutionInfoY' give information about the real size of a pixel in millimeters.  
+**`dimension`**: Defines the resolution of the image. The values in `ResolutionInfoX` and `ResolutionInfoY` give information about the image size in pixels.  
 
 #### ContentType without Image MIME Type
 
@@ -314,11 +322,21 @@ Below is a list of the attributes assigned to the data group `VID`:
 |----|---|---|---|-----|
 | ContentType | string | `VID` | yes | Data type of the video stream specified as MIME^4^ type, for example `Content-Type: <video/h264>`|
 | DataType | string | `VID` | no | Description of data type if no standard video format, see [\ref{contenttype-without-video-mime-type} ContentType without video MIME type](#contenttype-without-video-mime-type) |
+| ResolutionType | string | `VID` | yes | Description in chapter [\ref{video-resolution-types} Video resolution types](#video-resolution-types) |
 | ResolutionX | 32 bit integer | `VID` | yes | Resolution in X direction in pixels |
 | ResolutionY | 32 bit integer | `VID` | yes | Resolution in Y direction in pixels |
 | FramesPerSecond | 16 bit integer | `VID` | yes | Number of frames per second (fps) in which the video was recorded |
 
 **^4^MIME**: A list of possible MIME types can be found at the link [www.iana.org/assignments/media-types/media-types.xhtml](https://www.iana.org/assignments/media-types/media-types.xhtml). This is maintained by the [www.iana.org](https://www.iana.org/).
+
+#### Video resolution types
+
+The 'ResolutionType' attribute contains information about the values of the 'ResolutionInfoX' and 'ResolutionInfoY' attributes.  
+ResolutionType' can contain the following values: 'mmPerPixel' or 'dimension
+
+**`none`**: No information available.
+**`mmPerPixel`**: Defines the pixel size in mm. The values in 'ResolutionInfoX' and 'ResolutionInfoY' give information about the real size of a pixel in millimeters.  
+**`dimension`**: Defines the resolution of the video in pixel. The values in `ResolutionInfoX` and `ResolutionInfoY` give information about the video size in pixels.  
 
 #### ContentType without Video MIME Type
 
@@ -335,33 +353,31 @@ A video data block is named according to the following pattern: `vid.NNNNNNNNN`,
 | . | Separator |
 | NNNNNNNNN | Video number, starting with 000000000 (nine characters), ascending +1|
 
-HDF5 Chunking and HDF5 Compression is not recommended.
-
 ## Time-based data structures
 
 ### Timestamp
 
 Each entry in a dataset of a channel has a reference to an entry in a dataset with the name `timestamp`, which lies within the data source group. In this `timestamp` dataset, there are as many entries as there are entries in a dataset of a channel. A timestamp is entered in nanoseconds since 01.01.1970 at 00:00 UTC.  
 
-The time stamps are always stored in ascending order and must not contain any jumps.  
+The time stamps are always stored in ascending order.  
 
 | Name | Data type | Parent object | Mandatory | Storage type |
 |----|---|----|---|----|
-| timestamp | 64 bit integer | *DATASOURCE_NAME* | yes | `array[n]` |
+| timestamp | 64 bit integer | *DATASOURCE_NAME* | yes | `Array` |
 
-HDF5 chunking is allowed and HDF5 compression is recommended.
-
-These time stamps are recorded either by a defined distance travelled or by a frequency, this is described in more detail in the chapter [\ref{common-trigger-distance-or-frequence} Common Trigger Distance or Frequence](#common-trigger-distance-or-frequence). In addition to the time stamps, the measuring devices follow this specification and also record measurement data at the same time. A central system serves as a clock generator for the data acquisition of all systems (measurement data and time stamps).
+These time stamps are recorded either by a defined distance travelled or by a frequency, this is described in more detail in the chapter [\ref{common-trigger-distance-or-frequence} Common Trigger Distance or Frequence](#common-trigger-distance-or-frequence).
 
 ### Durations
 
 If data is recorded that is valid for a certain period of time, the dataset with the name `duration` is added to the dataset `timestamp`. The timestamp recorded in the `timestamp` dataset specifies the time at which the value was recorded and the `duration` dataset specifies how long this value is valid in nanoseconds. The dataset `duration` is `timestamp` within a data source group next to the dataset.  
 
+The differentiation between discrete (data for discrete `timestamp`) and continuous (data for `timestamp` with `duration`) data is done on data source level. The existence or absence of a `duration` array (see 8.4) defines if the data source is "Discrete" (no `duration` array) or "Continuous" (with `duration` array).
+
+Example: Assuming there is a data source with a temperature value every second and a calculated average temperature for every minute. Such an average temperature would be stored in a continuous data source, within a array, with duration of 60 sec.
+
 | Name | Data type | Parent object | Mandatory | Storage type |
 |--|---|-----|--|--|
-| duration | 32 bit integer | *DATASOURCE_NAME* | yes | ``array[n]`` |
-
-HDF5 chunking is allowed and HDF5 compression is recommended.
+| duration | 64 bit integer | *DATASOURCE_NAME* | **Yes** for continuous values, otherwise **no** | `Array` |
 
 ## RCM-DX file format  
 
@@ -397,174 +413,8 @@ The following attributes are assigned to the group `RCMDX`:
 
 | Name | Data Type | Parent object | Mandatory | Description |
 |---|---|---|---|-----|
-| clearance | 8 bit integer (as boolean) | `RCMDX` | yes | **Null (0)** for `false`, **one (1)** for `true`. With `true` the data in the whole file were released, otherwise the data are to be regarded as test data or are of lower quality. |
 | Major | 16-bit integer | `RCMDX` | yes | Major Version of the RCM-DX specification that corresponds to the structure of the created file |
 | Minor | 16-bit integer | `RCMDX` | yes | Minor Version of the RCM-DX specification that corresponds to the structure of the created file |
-
-### Session Group  
-
-The session group contains data that was collected during the same period. A session group contains data from different sources. A RCM-DX file can contain several of these session groups and these in turn can overlap in time. Data of one source can only be in one session group at a time, so they cannot overlap, so at any time this source is only one session that records this data.
-
-#### Naming
-
-Since several session groups can be contained in one RCM-DX file, they must be given a unique name. To achieve this goal, the names are assigned according to the following pattern:
-
-| Name | Parent object | Mandatory |
-|--|--|--|
-| YYYYMMDD_hhmmss.SSS | `RCMDX` | yes |
-
-Example: 20190212_231255.592
-
-The individual elements and their meaning are described below:
-
-| Pattern | Content |
-|---|-------|
-| YYYY | The year in four digit representation |
-| MM | The month in the year (01 for January) |
-| DD | The day in the month |
-| hh | The hour in the day (0-23) |
-| mm | The minute in the hour |
-| ss | The seconds in the minute |
-| SSS | The milliseconds in the seconds
-| "_" or "." | Characters as separator
-
-A session group contains the data of the measuring equipment. Only one session can exist for a given millisecond, this must be implemented and ensured by the creator.
-
-#### Attributes  
-
-| Name | Data Type | Parent object | Mandatory | Description |
-|---|---|---|---|-----|
-| StartTime | long | *SESSION_NAME* | yes | Time stamp in nanoseconds since January 1, 1970 UTC as start time of the session |
-| EndTime | long | *SESSION_NAME* | no | Time stamp in nanoseconds since 1.1.1970 UTC as end time of the session. If the session has not yet been closed, this attribute is missing |
-| Element | string | *SESSION_NAME* | yes | Contains the type of the group, this is fix "SESSION" |
-
-### Section Group
-
-The group `SECTION`, contains information about a session.
-
-| Name | Parent object | Mandatory |
-|--|--|--|
-| `SECTION` | *SESSION_NAME* | yes |
-
-#### Section info
-
-This group contains the information regarding the section itself.
-
-| Name | Parent object | Mandatory |
-|--|--|--|
-| `SECTIONINFO` | `SECTION` | yes |
-
-##### Data fields
-
-The following data fields are contained in the group "SECTIONINFO":
-
-| Name | Data type | Parent object | Mandatory | Storage type |
-|---|----|---|--|--|
-| coachOrientation | 8 bit integer | `SECTIONINFO` | yes | `array[n]` |
-| firstTrackOffset | 64 bit float | `SECTIONINFO` | yes | `array[n]` |
-| lastTrackOffset | 64 bit float | `SECTIONINFO` | yes | `array[n]` |
-| startTimestamp | 64 bit integer | `SECTIONINFO` | yes | `array[n]` |
-| trackListOffset | 64 bit float | `SECTIONINFO` | yes | `array[n]` |
-
-HDF5 chunking is allowed and recommended for all.  
-HDF5 compression is allowed.  
-
-###### coachOrientation
-
-Defines the orientation of travel of the measuring vehicle per section. This array contains only as many entries as there are sections.
-
-| Number | Orientation of travel |
-|:--:|:---:|
-| 0 | forward |
-| 1 | Reverse |
-
-###### firstTrackOffset
-
-Indicates the distance in meters between the start of the track and the position at the beginning of the measurement. This array contains only as many entries as there are sections.
-
-###### lastTrackOffset
-
-Indicates the distance in meters between the position at the end of the measurement and the end of the rail. This array contains only as many entries as there are sections.
-
-###### startTimestamp
-
-Start time of the section as time stamp since 1.1.1970 at 00:00 UTC.
-
-###### trackInfoOffset
-
-This dataset defines how many entries in the datasets of the "Track list group" belong to a section. One entry is created per section in a session and the number of entries is defined. A group size can be determined by calculating the specified offset value at the $x$ position minus the offset value at the $x-1$ position.
-
-#### Track list
-
-This group contains the information regarding the section itself.
-
-| Name | Parent object | Mandatory |
-|--|--|--|
-| `TRACKLIST` | `SECTION` | yes |
-
-##### Data fields
-
-| Name | Data type | Parent object | Mandatory | Storage type |
-|------|-----|----|---|---|
-| id | 32 bit signed integer | `TRACKLIST` | yes | `array[n]` |
-| startTimestamp | 64 bit signed integer | `TRACKLIST` | yes | `array[n]` |
-| endTimestamp | 64 bit signed integer | `TRACKLIST` | yes | `array[n]` |
-| orientation | 8 bit signed integer | `TRACKLIST` | yes | `array[n]` |
-| startCoveredDistance | 64 bit float | `TRACKLIST` | yes | `array[n]` |
-| endCoveredDistance | 64 bit float | `TRACKLIST` | yes | `array[n]` |
-
-### Position Group
-
-This group contains general information on the position.  
-
-| Name | Parent object | Mandatory |
-|--|--|--|
-| `POSITION` | `SECTION` | yes |
-
-#### Data fields
-
-| Name | Data type | Parent object | Mandatory | Storage type |
-|------|-----|----|---|---|
-| coveredDistance | 64 bit float | `POSITION` | yes | `array[n]` |
-| coachOrientation | 8 bit integer | `POSITION` | yes | `array[n]` |
-| vehicleSpeed | 64 bit float | `POSITION` | yes | `array[n]` |
-| trackOrientation | 8 bit integer | `POSITION` | yes | `array[n]` |
-| trackId | 32 bit integer | `POSITION` | yes | `array[n]` |
-| trackOffset | 64 bit float | `POSITION` | yes | `array[n]` |
-| lineKilometer | 64 bit float | `POSITION` | yes | `array[n]` |
-| positionAccuracy | 8 bit integer | `POSITION` | yes | `array[n]` |
-| positionQuality | 8 bit integer | `POSITION` | yes | `array[n]` |
-
-**coveredDistance:** Total length of a session
-**vehicleSpeed:** Speed of the vehicle at the time  
-**trackId:** Defined track ID on which the vehicle is located at the time of recording  
-**trackOffset:** Distance between starting point of track and current position  
-**lineKilometer:** Absolute position on the line travelled at the time of recording  
-**positionQuality:** Quality of the position measurement between zero (0) very good to 15 very bad  
-**positionAccuracy:** The position accuracy  
-
-Unit's are defined in the attribute `Unit` of each data field.
-
-#### Coach Orientation
-
-The dataset `coachOrientation` contains the coach direction of the vehicle. This information influences the position of the measuring systems.  
-This dataset can contain the following values:  
-
-| Value | Description |
-|--|-----|
-| 0 | Vehicle moving forward |
-| 1 | Vehicle reversing |
-
-#### Track Orientation
-
-The dataset `trackOrientation` contains the alignment of the track. This information serves the correct evaluation of the kilometre data of the line, see dataset `trackOffset`.
-
-This dataset can contain the following values:  
-
-| Value | Description |
-|--|-----|
-| 0 | The kilometre indications of the line are **ascending**, based on the indicated vehicle orientation |
-| 1 | The kilometre indications of the line are **decreasing**, based on the indicated vehicle orientation |
 
 ### Platform Group
 
@@ -573,7 +423,7 @@ The naming of the group is defined according to which platform produced the data
 
 | Name | Parent object | Mandatory |
 |--|--|--|
-| Platform | *SESSION_NAME* | yes |
+| Platform | `RCMDX` | yes |
 
 ![Overview of the platform structure](images/generated/RCM_DX_Platform_overview.png){ width=190px }
 
@@ -598,7 +448,7 @@ Below is a list of the defined unique names of the platforms and their names.
 
 #### Configuration
 
-Configurations of various systems can be stored in the datasets of this group. The datasets are designed so that global and network specific configurations can be stored.
+Configurations of various systems can be stored in the datasets of this group. The datasets are designed so that global and network specific configurations can be stored. The Configuration can change and have not to be the same in each session.
 
 | Name | Parent object | Mandatory |
 |--|--|--|
@@ -611,8 +461,203 @@ Subsequent datasets are subordinate to this group:
 | global | string | `CONFIGURATION` | yes | Single values |
 | network | string | `CONFIGURATION` | yes | Single values |
 
-HDF5 chunking is allowed and recommended for all.  
-HDF5 compression is allowed.
+### Session Group  
+
+The session group contains data that was collected during the same period. A session group contains data from different sources. A RCM-DX file can contain one session group. One file is created per session.
+
+#### Naming
+
+Since several session groups can be contained in one RCM-DX file, they must be given a unique name. To achieve this goal, the names are assigned according to the following pattern:
+
+| Name | Parent object | Mandatory |
+|--|--|--|
+| YYYYMMDD_hhmmss.SSS | `PLATFORM` | yes |
+
+Example: 20190212_231255.592
+
+The individual elements and their meaning are described below:
+
+| Pattern | Content |
+|---|-------|
+| YYYY | The year in four digit representation |
+| MM | The month in the year (01 for January) |
+| DD | The day in the month |
+| hh | The hour in the day (0-23) |
+| mm | The minute in the hour |
+| ss | The seconds in the minute |
+| SSS | The milliseconds in the seconds
+| "_" or "." | Characters as separator
+
+A session contains the data of one or more measuring devices (one or more data sources). For a certain period of time, only one session can exist in a file, this must be ensured by the creator of the file.
+
+#### Attributes  
+
+| Name | Data Type | Parent object | Mandatory | Description |
+|---|---|---|---|-----|
+| Element | string | *SESSION_NAME* | yes | Contains the type of the group, this is fix "SESSION" |
+| StartTime | long | *SESSION_NAME* | yes | Time stamp in nanoseconds since January 1, 1970 UTC as start time of the session |
+| EndTime | long | *SESSION_NAME* | no | Time stamp in nanoseconds since 1.1.1970 UTC as end time of the session. If the session has not yet been closed, this attribute is missing |
+| PositionSource | string | *SESSION_NAME* | yes | Contains the name of the source (group) of the positioning. |
+
+### Section Group
+
+The group `SECTION`, contains information about a session.
+
+| Name | Parent object | Mandatory |
+|--|--|--|
+| `SECTION` | *SESSION_NAME* | yes |
+
+#### Section info
+
+This group contains the information regarding the section itself.
+
+| Name | Parent object | Mandatory |
+|--|--|--|
+| `SECTIONINFO` | `SECTION` | yes |
+
+##### Data fields
+
+The following data fields are contained in the group "SECTIONINFO":
+
+| Name | Data type | Parent object | Mandatory | Storage type |
+|---|----|---|--|--|
+| firstTrackOffset | 64 bit float | `SECTIONINFO` | yes | `Array` |
+| lastTrackOffset | 64 bit float | `SECTIONINFO` | yes | `Array` |
+| startTimestamp | 64 bit integer | `SECTIONINFO` | yes | `Array` |
+| endTimestamp | 64 bit signed integer | `TRACKLIST` | yes | `Array` |
+| coachOrientation | 8 bit integer | `SECTIONINFO` | yes | `Array` |
+| trackInfoOffset | 64 bit float | `SECTIONINFO` | yes | `Array` |
+
+###### **coachOrientation**
+
+Defines the orientation of travel of the measuring vehicle per section. This array contains only as many entries as there are sections.
+
+| Number | Orientation of travel |
+|:--:|:---:|
+| 0 | forward |
+| 1 | Reverse |
+
+###### **firstTrackOffset**
+
+Indicates the distance in meters between the start of the track and the position at the beginning of the measurement. This array contains only as many entries as there are sections.
+
+###### **lastTrackOffset**
+
+Indicates the distance in meters between the position at the end of the measurement and the end of the rail. This array contains only as many entries as there are sections.
+
+###### **startTimestamp**
+
+Start time of the section as time stamp since 1.1.1970 at 00:00 UTC.
+
+###### **endTimestamp**
+
+End time of the section as time stamp since 1.1.1970 at 00:00 UTC. `endTimestamp` must be greater than `startTimestamp`.
+
+###### **trackInfoOffset**
+
+This dataset defines how many entries in the datasets of the "Track list group" belong to a section. One entry is created per section in a session and the number of entries is defined. A group size can be determined by calculating the specified offset value at the $x$ position minus the offset value at the $x-1$ position.
+
+### Track list group
+
+This group contains the information regarding the section itself.
+
+| Name | Parent object | Mandatory |
+|--|--|--|
+| `TRACKLIST` | `SECTION` | yes |
+
+#### Data fields
+
+| Name | Data type | Parent object | Mandatory | Storage type |
+|------|-----|----|---|---|
+| id | 32 bit signed integer | `TRACKLIST` | yes | `Array` |
+| startTimestamp | 64 bit signed integer | `TRACKLIST` | yes | `Array` |
+| endTimestamp | 64 bit signed integer | `TRACKLIST` | yes | `Array` |
+| orientation | 8 bit signed integer | `TRACKLIST` | yes | `Array` |
+| startCoveredDistance | 64 bit float | `TRACKLIST` | yes | `Array` |
+| endCoveredDistance | 64 bit float | `TRACKLIST` | yes | `Array` |
+
+##### Id
+
+ID of the tracks that are part of the section.
+
+##### Start timestamp
+
+Time since beginning of the session at which the measurement on a track started.
+
+##### End timestamp
+
+Time since the beginning of the session at which the measurement on a track ended. `endTimestamp` must be greater than `startTimestamp`.
+
+##### Orientation
+
+Orientation of the track with respect to the section’s driving direction. 0 (false) means that the track kilometrage increases with the driving direction. 1 (true) means that the track kilometrage decreases with the driving direction.
+
+##### Start covered distance
+
+Start covered distance of the track in the section.
+
+##### End covered distance
+
+End covered distance of the track in the section.
+
+### Position group
+
+This group contains general information on the position.  
+
+| Name | Parent object | Mandatory |
+|--|--|--|
+| `POSITION` | `SECTION` | yes |
+
+#### Data fields
+
+| Name | Data type | Parent object | Mandatory | Storage type |
+|------|-----|----|---|---|
+| coveredDistance | 64 bit float | `POSITION` | yes | `Array` |
+| coachOrientation | 8 bit integer | `POSITION` | yes | `Array` |
+| vehicleSpeed | 64 bit float | `POSITION` | yes | `Array` | <!-- TODO! -->
+| trackOrientation | 8 bit integer | `POSITION` | yes | `Array` |
+| trackId | 32 bit integer | `POSITION` | yes | `Array` |
+| lineId | 32 bit integer | `POSITION` | yes | `Array` |
+| trackOffset | 64 bit float | `POSITION` | yes | `Array` |
+| lineKilometer | 64 bit float | `POSITION` | yes | `Array` |
+| positionAccuracy | 8 bit integer | `POSITION` | yes | `Array` |
+| positionQuality | 8 bit integer | `POSITION` | yes | `Array` |
+| timestamp | 64 bit integer | `POSITION` | yes | `Array` |
+
+**coveredDistance:** Total length of a session  
+**vehicleSpeed:** Speed of the vehicle at the time  <!-- TODO! -->
+**trackId:** Defined track ID on which the vehicle is located at the time of recording  
+**lineId:** Defined line ID on which the vehicle is located at the time of recording  
+**trackOffset:** Distance between starting point of track and current position  
+**lineKilometer:** Absolute position on the line travelled at the time of recording  
+**positionQuality:** Quality of the position measurement between zero (0) very good to 15 very bad  
+**positionAccuracy:** The position accuracy
+**positionAccuracy:** The timestamps according to the number of values in each dataset
+
+Unit's are defined in the attribute `Unit` of each data field. <!-- TODO! -->
+
+#### Coach Orientation
+
+The dataset `coachOrientation` contains the coach direction of the vehicle. This information influences the position of the measuring systems.  
+This dataset can contain the following values:  
+
+| Value | Description |
+|--|-----|
+| 0 | Vehicle moving forward | <!-- TODO! -->
+| 1 | Vehicle reversing |
+
+#### Track Orientation
+
+<!-- TODO! Namen überlegen-->
+
+The dataset `trackOrientation` contains the alignment of the track. This information serves the correct evaluation of the kilometer data of the line, see dataset `trackOffset`.
+
+This dataset can contain the following values:  
+
+| Value | Description |
+|--|-----|
+| 0 | The rail was crossed in **ascending** mileage. |
+| 1 | The rail was crossed in **degreasing** mileage. |
 
 ### Environment Group
 
@@ -630,13 +675,13 @@ As always with a data source, the dataset `timestamp` must not be forgotten.
 
 | Name | Parent object | Mandatory |
 |--|--|--|
-| `VEHICLESPEED` | `ENVIRONMENT` | yes |
+| `VEHICLESPEED` | `ENVIRONMENT` | no |
 
 The dataset contains a measured vehicle speed for each time stamp.
 
 | Name | Data type | Parent object | Mandatory | Storage type |
 |--|---|-----|---|----|
-| data | 64 bit integer | `VEHICLESPEED` | yes | `array[n]` |
+| data | 64 bit integer | `VEHICLESPEED` | no | `Array` |
 
 This data source also has a common dataset `timestamp`.
 
@@ -646,13 +691,13 @@ This group contains a dataset containing the ambient temperatures. One temperatu
 
 | Name | Parent object | Mandatory |
 |--|--|--|
-| `AMBIENTTEMPERATURE` | `ENVIRONMENT` | yes |
+| `AMBIENTTEMPERATURE` | `ENVIRONMENT` | no |
 
 For each time stamp, the ambient temperature is entered in the dataset.
 
 | Name | Data type | Parent object | Mandatory | Storage type |
 |--|---|-----|---|----|
-| data | 64 bit integer | `AMBIENTTEMPERATURE` | yes | `array[n]` |
+| data | 64 bit integer | `AMBIENTTEMPERATURE` | no | `Array` |
 
 #### Wind Speed Group
 
@@ -660,13 +705,13 @@ The wind speed can be stored in the dataset of the group `WINDSPEED`.
 
 | Name | Parent object | Mandatory |
 |--|--|--|
-| `WINDSPEED` | `ENVIRONMENT` | yes |
+| `WINDSPEED` | `ENVIRONMENT` | no |
 
 For each time stamp, the wind speed is entered in the dataset.
 
 | Name | Data type | Parent object | Mandatory | Storage type |
 |----|---|----|---|----|
-| data | 64 bit integer | `WINDSPEED` | yes | `array[n]` |
+| data | 64 bit integer | `WINDSPEED` | no | `Array` |
 
 #### Wind Direction Group
 
@@ -674,13 +719,13 @@ In addition to the wind speed, the wind direction is also saved, this is done in
 
 | Name | Parent object | Mandatory |
 |--|--|--|
-| `WINDDIRECTION` | `ENVIRONMENT` | yes |
+| `WINDDIRECTION` | `ENVIRONMENT` | no |
 
 For each time stamp, the wind direction is entered in the dataset.
 
 | Name | Data type | Parent object | Mandatory | Storage type |
 |----|---|----|---|----|
-| data | 64 bit integer | `WINDIRECTION` | yes | `array[n]` |
+| data | 64 bit integer | `WINDIRECTION` | no | `Array` |
 
 #### Weather Conditions Group
 
@@ -688,13 +733,13 @@ The weather has an influence on the measurements. How the weather was at the tim
 
 | Name | Parent object | Mandatory |
 |--|--|--|
-| `WEATHERCONDITIONS` | `ENVIRONMENT` | yes |
+| `WEATHERCONDITIONS` | `ENVIRONMENT` | no |
 
 For each time stamp, the weather conditions are entered in the dataset. This could be for example "rain, fog, snowfall".
 
 | Name | Data type | Parent object | Mandatory | Storage type |
 |--|---|-----|---|----|
-| data | 64 bit integer | `WEATHERCONDITIONS` | yes | `array[n]` |
+| data | 64 bit integer | `WEATHERCONDITIONS` | no | `Array` |
 
 ### Measuring System Group
 
@@ -747,8 +792,7 @@ The following attribute is assigned to the group:
 
 #### Example
 
-In our example the name of the data source group is assigned, which should contain our environmental measurement data, which we call `ENVIRONMENT`.  
-This group now also contains the dataset `timestamp`.  
+In our example the name of the data source group is assigned, which should contain our environmental measurement data, which we call `ENVIRONMENT`.
 
 #### Timestamp dataset
 
@@ -763,16 +807,35 @@ A channel group contains metadata for the actual measurement data and thus for t
 The following attributes are contained in this group:  
 
 | Name | Data Type | Parent object | Mandatory | Description |
-|-----|---|---|---|-----|
-| Element | string | *CHANNEL_NAME* | yes | Contains the type of the group, this is fix `CHANNEL` |
+|------|---|----|---|----|
 | TriggerMode | string | *CHANNEL_NAME* | yes | See chapter [\ref{trigger-mode} Trigger Mode](#trigger-mode) |
+| TriggerValue | 64 bit float | *CHANNEL_NAME* | yes | See chapter ["\ref{trigger-value} Trigger value"](#trigger-value) |
 | ChannelBasis | string | *CHANNEL_NAME* | yes | See chapter [\ref{channel-base} Channel Base](#channel-base) |
-| CommonTriggerDistance | 32 bit float | *CHANNEL_NAME* | yes | See chapter ["\ref{common-trigger-distance-or-frequence} Common Trigger Distance or Frequence"](#common-trigger-distance-or-frequence) |
-| CommonTriggerFrequence | 32 bit float | *CHANNEL_NAME* | yes | See chapter ["\ref{common-trigger-distance-or-frequence} Common Trigger Distance or Frequence"](#common-trigger-distance-or-frequence) |
 | ChannelType | string | *CHANNEL_NAME* | yes | See chapter [\ref{channel-type} Channel Type](#channel-type) |
 | Neighbor | string | *CHANNEL_NAME* | yes | See chapter [\ref{neighbor} Neighbor](#neighbor) |
-| MeasurementUncertainty | 32 bit float | *CHANNEL_NAME* | yes | This attribute contains the measurement accuracy of the channel according to the specifications of the measurement system. |
-| PositionOffset | 32 bit float | *CHANNEL_NAME* | yes | See chapter [\ref{position-offset} Position Offset](#position-offset) |
+| MeasurementUncertainty | 32 bit float | *CHANNEL_NAME* | yes | This attribute contains the measurement accuracy of the channel according to the specifications of the measurement system. | <!-- TODO -->
+| PositionOffset | 32 bit signed float | *CHANNEL_NAME* | yes | See chapter [\ref{position-offset} Position Offset](#position-offset) |
+| Element | string | *CHANNEL_NAME* | yes | Contains the type of the group, this is fix `CHANNEL` |
+
+#### Trigger Mode
+
+This attribute defines how the data was recorded.
+
+Possible values are:
+
+| Value | Description | `TriggerValue` Unit |
+|---|----------|---|
+| TIME | Time-based measurement data recording | Nanoseconds |
+| FREQUENCY | Frequency-based measurement data recording | Hz |
+| DISTANCE | Distance-based measurement data acquisition | Milimeter |
+| EVENT | Event based recording | none |
+
+#### Trigger value
+
+The trigger value defines when a value is measured based on the trigger mode.  
+
+> In a data source group there is always only one common trigger mode! A mixture within the group is not permitted!
+> The attribute has the value "0.0" if `TriggerMode` contains the value `EVENT`.
 
 #### Channel base
 
@@ -784,20 +847,9 @@ Possible values are:
 |---|-----|
 | COACH_LEFT | Sensor is installed on the left hand side of the measuring platform. The data has not been corrected for direction of travel |
 | COACH_RIGHT |Sensor is installed on the right hand side of the measuring platform. The data has not been corrected for direction of travel |
-| RAIL_LEFT | Channel contains data of the left rail in terms of track direction. The data has  been corrected for direction of travel |
-| RAIL_RIGHT | Channel contains data of the right rail in terms of track direction. The data has  been corrected for direction of travel |
+| RAIL_LEFT | Channel contains data of the left rail in terms of travel direction. The data has been corrected for direction of travel |
+| RAIL_RIGHT | Channel contains data of the right rail in terms of travel direction. The data has been corrected for direction of travel |
 | ABSOLUTE | Channel is not associated with a single rail |
-
-#### Common Trigger Distance or Frequence
-
-The two attributes `CommonTriggerFreq` and `CommonTriggerDistance` define the type of measurement data recording and the distance at which these measurement data were recorded.
-
-If the measurement data are recorded at a certain distance, for example every 20 millimeters, the attribute `CommonTriggerDistance` is specified and the value "0.0" is specified for `CommonTriggerFreq`. At the attribute `TriggerMode` the value `DISTANCE` is noted.
-
-If the data is recorded at a certain frequency, the frequency is given in Herz for the attribute `CommonTriggerFreq`, for example 40000.0 for 40kHz. With `CommonTriggerDistance` the value remains "0.0". At the attribute `TriggerMode` the value `TIME` is noted.
-
-> In a data source group there is always only one common trigger frequency or one trigger distance. A mixture within the group is not permitted!
-> Both attributes have the value "0.0" if `TriggerMode` contains the value `EVENT`.
 
 #### Channel Type
 
@@ -819,42 +871,7 @@ Thus the attribute `neighbor` of the channel "TEMP_RAIL_**L**" would contain the
 
 #### Position Offset
 
-Describes the distance between a defined zero point (position) on the measuring vehicle and a measuring system. This specification is used to convert the exact time at which the measurement was taken to a defined zero point using the speed driven and the position taken at the time.  
-
-#### Trigger Mode
-
-This attribute defines how the data was recorded.
-
-Possible values are:
-
-| Value | Description |
-|---|----------|
-| TIME | Time-based measurement data recording |
-| DISTANCE | Distance-based measurement data acquisition |
-| EVENT | Event based recording |
-
-#### Example
-
-All types of data that are recorded at the same time follow as the channel here. The names of the channels are freely selectable, here as an example:
-
-| Name | Mandatory | Description |
-|----|---|--------|
-| TEMP | no | Temperature |
-| WIND_DIR | no | Wind direction |
-| WIND_SPEED | no | Wind speed |
-| HUM | no | moisture |
-
-Furthermore, all channels receive the following attributes and values:
-
-| Attribute Name | Value (as example) |
-|---|---------|
-| ChannelBasis | ABSOLUTE |
-| CommonTriggerDistance | 0.0 |
-| CommonTriggerFreq | 1.0 |
-| MeasurementType | MEASURED_VALUE |
-| Neighbor | "" |
-| PositioOffset | 0.0 |
-| TriggerMode | TIME |
+Describes the distance between a defined zero point (position) on the measuring vehicle and a the measuring sensor. This specification is used to convert the exact time at which the measurement was taken to a defined zero point. The value can be positive or negative and has the unit millimeter.  
 
 ##### Data object
 
@@ -870,7 +887,7 @@ The dataset needs more information, this is given as attributes:
 
 | Name | Data type | Parent object | Mandatory | Storage type |
 |----|---|----|---|----|
-| Unit | string | *CHANNEL_NAME* | yes | `array[n]` |
+| Unit | string | *CHANNEL_NAME* | yes | `Array` |
 
 **Unit:** The physical unit of the measurement data, such as "millimeter". If no physical unit can be assigned to the data, this attribute remains empty.
 
@@ -905,12 +922,10 @@ The following datasets are included in this group:
 
 | Name | Data type | Parent object | Mandatory | Storage type |
 |----|---|----|---|----|
-| message | string | `LOGGING` | yes | `array[n]` |
-| systemReference | string | `LOGGING` | yes | `array[n]` |
-| channelReference | string | `LOGGING` | yes | `array[n]` |
-| level | string | `LOGGING` | yes | `array[n]` |
-
-HDF5 chunking is allowed and HDF5 compression is allowed.
+| message | string | `LOGGING` | yes | `Array` |
+| systemReference | string | `LOGGING` | yes | `Array` |
+| channelReference | string | `LOGGING` | yes | `Array` |
+| level | string | `LOGGING` | yes | `Array` |
 
 This group receives a `timestamp` dataset as well as a `duration` dataset to indicate the time of the measurement failure.
 
@@ -927,13 +942,11 @@ The following datasets are contained in this group:
 
 | Name | Data type | Parent object | Mandatory | Storage type |
 |----|---|----|---|----|
-| message | string | `LOGGING` | yes | `array[n]` |
-| systemReference | string | `LOGGING` | yes | `array[n]` |
-| channelReference | string | `LOGGING` | yes | `array[n]` |
-| level | string | `LOGGING` | yes | `array[n]` |
-| timestamp | 64 bit integer | `LOGGING` | yes | `array[n]` |
-
-HDF5 chunking is recommended and HDF5 compression is allowed.
+| message | string | `LOGGING` | yes | `Array` |
+| systemReference | string | `LOGGING` | yes | `Array` |
+| channelReference | string | `LOGGING` | yes | `Array` |
+| level | string | `LOGGING` | yes | `Array` |
+| timestamp | 64 bit integer | `LOGGING` | yes | `Array` |
 
 **systemReference:** Fully qualified name of the measuring system that sent the message.  
 **channelReference:** Fully qualified name of the channel that the message refers to. empty if the message is measuring system wide.
@@ -960,7 +973,7 @@ The group `TOPOLOGY` contains the following attributes:
 
 | Name | Data type | Parent object | Mandatory | Storage type |
 |---|--|---|--|--|
-| Version | string | `TOPOLOGY` | yes | `array[n]` |
+| Version | string | `TOPOLOGY` | yes | `Array` |
 
 **Version:** Version number of topology, included to check validity.
 
@@ -978,16 +991,16 @@ The following datasets are included in this group, some of which are described i
 
 | Name | Data type | Parent object | Mandatory | Storage type |
 |--|---|--|--|---|
-| direction | 8 bit signed integer, little endian | TRACK | yes | `array[n]` |
-| id | 32 bit integer, little endian | TRACK | yes | `array[n]` |
-| gtgId | string | TRACK | yes | `array[n]` |
-| length | string | TRACK | yes | `array[n]` |
-| name | string | TRACK | yes | `array[n]` |
-| nrLine | string | TRACK | yes | `array[n]` |
-| pointFrom | 32 bit integer, little endian | TRACK | yes | `array[n]` |
-| pointTo | 32 bit integer, little endian | TRACK | yes | `array[n]` |
-| switchType | 8 bit signed integer, little endian | TRACK | yes | `array[n]` |
-| trackType | 8 bit signed integer, little endian | TRACK | yes | `array[n]` |
+| direction | 8 bit signed integer, little endian | TRACK | yes | `Array` |
+| id | 32 bit integer, little endian | TRACK | yes | `Array` |
+| gtgId | string | TRACK | yes | `Array` |
+| length | string | TRACK | yes | `Array` |
+| name | string | TRACK | yes | `Array` |
+| nrLine | string | TRACK | yes | `Array` |
+| pointFrom | 32 bit integer, little endian | TRACK | yes | `Array` |
+| pointTo | 32 bit integer, little endian | TRACK | yes | `Array` |
+| switchType | 8 bit signed integer, little endian | TRACK | yes | `Array` |
+| trackType | 8 bit signed integer, little endian | TRACK | yes | `Array` |
 
 **direction:** Will be decided in a separate chapter: [\ref{direction} direction](#direction)  
 **id:** ID of the track section  
@@ -1047,12 +1060,12 @@ The following datasets are included in this group:
 
 | Name | Data type | Parent object | Mandatory | Storage type |
 |----|---|----|---|----|
-| id | 32 bit signed integer | `LINE` | yes | `array[n]` |
-| name | string | `LINE` | yes | `array[n]` |
-| firstStation | string | `LINE` | yes | `array[n]` |
-| lastStation | string | `LINE` | yes | `array[n]` |
-| fromKilometer | string | `LINE` | yes | `array[n]` |
-| toKilometer | string | `LINE` | yes | `array[n]` |
+| id | 32 bit signed integer | `LINE` | yes | `Array` |
+| name | string | `LINE` | yes | `Array` |
+| firstStation | string | `LINE` | yes | `Array` |
+| lastStation | string | `LINE` | yes | `Array` |
+| fromKilometer | string | `LINE` | yes | `Array` |
+| toKilometer | string | `LINE` | yes | `Array` |
 
 **id:** Defines the ID of the line, this is unique  
 **name:** The name of the line  
@@ -1073,26 +1086,26 @@ The following datasets are included in this group:
 
 | Name | Data type | Parent object | Mandatory | Storage type |
 |----|---|----|---|----|
-| track strand | 32 bit signed integer | `SWITCHTRACK` | yes | `array[n]` |
-| gleisstrangBez | string | `SWITCHTRACK` | yes | `array[n]` |
-| soft | 32 bit signed integer | `SWITCHTRACK` | yes | `array[n]` |
-| deflecting direction | string | `SWITCHTRACK` | yes | `array[n]` |
-| distraction | string | `SWITCHTRACK` | yes | `array[n]` |
-| operating point | string | `SWITCHTRACK` | yes | `array[n]` |
-| herzStueck | string | `SWITCHTRACK` | yes | `array[n]` |
-| minRadius | 32 bit signed integer | `SWITCHTRACK` | yes | `array[n]` |
-| nr | 32 bit signed integer | `SWITCHTRACK` | yes | `array[n]` |
-| zusNr | string | `SWITCHTRACK` | yes | `array[n]` |
-| rail profile | string | `SWITCHTRACK` | yes | `array[n]` |
-| status | string | `SWITCHTRACK` | yes | `array[n]` |
-| rail profile | string | `SWITCHTRACK` | yes | `array[n]` |
-| thresholdArt | string | `SWITCHTRACK` | yes | `array[n]` |
-| typesPlanNr | 32 bit signed integer | `SWITCHTRACK` | yes | `array[n]` |
-| typeNraddition | string | `SWITCHTRACK` | yes | `array[n]` |
-| softArt | string | `SWITCHTRACK` | yes | `array[n]` |
-| softType | string | `SWITCHTRACK` | yes | `array[n]` |
-| softForm | string | `SWITCHTRACK` | yes | `array[n]` |
-| soft tongue | string | `SWITCHTRACK` | yes | `array[n]` |
+| track strand | 32 bit signed integer | `SWITCHTRACK` | yes | `Array` |
+| gleisstrangBez | string | `SWITCHTRACK` | yes | `Array` |
+| soft | 32 bit signed integer | `SWITCHTRACK` | yes | `Array` |
+| deflecting direction | string | `SWITCHTRACK` | yes | `Array` |
+| distraction | string | `SWITCHTRACK` | yes | `Array` |
+| operating point | string | `SWITCHTRACK` | yes | `Array` |
+| herzStueck | string | `SWITCHTRACK` | yes | `Array` |
+| minRadius | 32 bit signed integer | `SWITCHTRACK` | yes | `Array` |
+| nr | 32 bit signed integer | `SWITCHTRACK` | yes | `Array` |
+| zusNr | string | `SWITCHTRACK` | yes | `Array` |
+| rail profile | string | `SWITCHTRACK` | yes | `Array` |
+| status | string | `SWITCHTRACK` | yes | `Array` |
+| rail profile | string | `SWITCHTRACK` | yes | `Array` |
+| thresholdArt | string | `SWITCHTRACK` | yes | `Array` |
+| typesPlanNr | 32 bit signed integer | `SWITCHTRACK` | yes | `Array` |
+| typeNraddition | string | `SWITCHTRACK` | yes | `Array` |
+| softArt | string | `SWITCHTRACK` | yes | `Array` |
+| softType | string | `SWITCHTRACK` | yes | `Array` |
+| softForm | string | `SWITCHTRACK` | yes | `Array` |
+| soft tongue | string | `SWITCHTRACK` | yes | `Array` |
 
 **trackId:** a reference to the GTG-ID  
 **trackBez:** Contains a description of the track section  
@@ -1129,11 +1142,11 @@ The following datasets are included in this group:
 
 | Name | Data type | Parent object | Mandatory | Storage type |
 |----|---|----|---|----|
-| trackId | 32 bit signed integer | `TRACKOBJECT` | yes | `array[n]` |
-| type | 32 bit signed integer | `TRACKOBJECT` | yes | `array[n]` |
-| positionStart | 32 bit signed integer | `TRACKOBJECT` | yes | `array[n]` |
-| positionEnd | 32 bit signed integer | `TRACKOBJECT` | yes | `array[n]` |
-| extraInfo | string | `TRACKOBJECT` | yes | `array[n]` |
+| trackId | 32 bit signed integer | `TRACKOBJECT` | yes | `Array` |
+| type | 32 bit signed integer | `TRACKOBJECT` | yes | `Array` |
+| positionStart | 32 bit signed integer | `TRACKOBJECT` | yes | `Array` |
+| positionEnd | 32 bit signed integer | `TRACKOBJECT` | yes | `Array` |
+| extraInfo | string | `TRACKOBJECT` | yes | `Array` |
 
 **trackId:** Contains the ID of the track to which the track is connected.  
 **type:** Type of the object  
@@ -1153,16 +1166,16 @@ The following datasets are included in this group:
 
 | Name | Data type | Parent object | Mandatory | Storage type |
 |----|---|----|---|----|
-| trackId | 32 bit signed integer | `TRACKPOINT` | yes | `array[n]` |
-| lineId | 32 bit signed integer | `TRACKPOINT` | yes | `array[n]` |
-| x | 32 bit float | `TRACKPOINT` | yes | `array[n]` |
-| y | 32 bit float | `TRACKPOINT` | yes | `array[n]` |
-| z | 32 bit float | `TRACKPOINT` | yes | `array[n]` |
-| radius | 32 bit float | `TRACKPOINT` | yes | `array[n]` |
-| kilometers | 32 bit float | `TRACKPOINT` | yes | `array[n]` |
-| position | 32 bit float | `TRACKPOINT` | yes | `array[n]` |
-| cant | 32 bit float | `TRACKPOINT` | yes | `array[n]` |
-| inclination | 32 bit float | `TRACKPOINT` | yes | `array[n]` |
+| trackId | 32 bit signed integer | `TRACKPOINT` | yes | `Array` |
+| lineId | 32 bit signed integer | `TRACKPOINT` | yes | `Array` |
+| x | 32 bit float | `TRACKPOINT` | yes | `Array` |
+| y | 32 bit float | `TRACKPOINT` | yes | `Array` |
+| z | 32 bit float | `TRACKPOINT` | yes | `Array` |
+| radius | 32 bit float | `TRACKPOINT` | yes | `Array` |
+| kilometers | 32 bit float | `TRACKPOINT` | yes | `Array` |
+| position | 32 bit float | `TRACKPOINT` | yes | `Array` |
+| cant | 32 bit float | `TRACKPOINT` | yes | `Array` |
+| inclination | 32 bit float | `TRACKPOINT` | yes | `Array` |
 
 **trackId:** Reference to the ID of the track section  
 **lineId:** Reference to the ID of the line  
@@ -1187,12 +1200,12 @@ The following datasets are included in this group:
 
 | Name | Data type | Parent object | Mandatory | Description |
 |----|---|----|---|----|
-| propertyId | 32 bit signed integer | `PROPERTY` | yes | `array[n]` |
-| name | string | `PROPERTY` | yes | `array[n]` |
-| description.ge | string | `PROPERTY` | yes | `array[n]` |
-| description.fr | string | `PROPERTY` | yes | `array[n]` |
-| description.it | string | `PROPERTY` | yes | `array[n]` |
-| description.en | string | `PROPERTY` | yes | `array[n]` |
+| propertyId | 32 bit signed integer | `PROPERTY` | yes | `Array` |
+| name | string | `PROPERTY` | yes | `Array` |
+| description.ge | string | `PROPERTY` | yes | `Array` |
+| description.fr | string | `PROPERTY` | yes | `Array` |
+| description.it | string | `PROPERTY` | yes | `Array` |
+| description.en | string | `PROPERTY` | yes | `Array` |
 
 **propertyId:** Unique ID of the characteristic  
 **name:** Name of the characteristic  
@@ -1214,14 +1227,12 @@ Within the group there are the following data fields:
 
 | Name | Data type | Parent object | Mandatory | Storage type |
 |----|---|----|---|----|
-| systemReference | string | `EVENT` | yes | `array[n]` |
-| channelReference | string | `EVENT` | no | `array[n]` |
-| data | string | `EVENT` | yes | `array[n]` |
-| type | string | `EVENT` | yes | `array[n]` |
-| duration | 64 bit signed integer little endian | `EVENT` | yes | `array[n]` |
-| timestamp | 64 bit signed integer little endian | `EVENT` | yes | `array[n]` |
-
-For all datasets, HDF5 chunking is recommended and HDF5 compression is allowed.
+| systemReference | string | `EVENT` | yes | `Array` |
+| channelReference | string | `EVENT` | no | `Array` |
+| data | string | `EVENT` | yes | `Array` |
+| type | string | `EVENT` | yes | `Array` |
+| duration | 64 bit signed integer little endian | `EVENT` | yes | `Array` |
+| timestamp | 64 bit signed integer little endian | `EVENT` | yes | `Array` |
 
 Each of these datasets contains a list with information about an entry, at a certain time.
 Each dataset is described in more detail in the following subchapters.
@@ -1232,9 +1243,7 @@ Contains a list of entries containing the name of the system that triggered the 
 
 | Name | Data Type | Parent Object | Mandatory | Storage Type |
 |----|---|----|---|----|
-| systemReference | string | `EVENT` | yes | `array[n]` |
-
-HDF5 chunking is allowed and recommended, HDF5 compression is allowed.  
+| systemReference | string | `EVENT` | yes | `Array` |
 
 #### Channel reference "channelReference"
 
@@ -1242,9 +1251,7 @@ Contains a list of entries that refers to a channel to which the event applies.
 
 | Name | Data Type | Parent Object | Mandatory | Storage Type |
 |----|---|----|---|----|
-| channelReference | string | `EVENT` | yes | `array[n]` |
-
-HDF5 chunking is allowed and recommended, HDF5 compression is allowed.
+| channelReference | string | `EVENT` | yes | `Array` |
 
 #### Event Data
 
@@ -1253,9 +1260,7 @@ The events are stored in this dataset as a list. A type can be stored for each e
 
 | Name | Data type | Parent object | Mandatory | Storage type |
 |----|---|----|---|----|
-| data | string | `EVENT` | yes | `array[n]` |
-
-HDF5 chunking is allowed and recommended, HDF5 compression is allowed.  
+| data | string | `EVENT` | yes | `Array` |
 
 #### Duration
 
@@ -1263,9 +1268,7 @@ Defines for each event the duration of the event itself. This value can also be 
 
 | Name | Data type | Parent object | Mandatory | Storage type |
 |----|---|----|---|----|
-| duration | 64 bit integer | `EVENT` | yes | `array[n]` |
-
-HDF5 chunking is allowed and recommended, HDF5 compression is allowed.  
+| duration | 64 bit integer | `EVENT` | yes | `Array` |
 
 #### Event Types
 
@@ -1273,10 +1276,7 @@ Contains the type of an event.
 
 | Name | Data type | Parent object | Mandatory | Storage type |
 |----|---|----|---|----|
-| type | string | `EVENT` | yes | `array[n]` |
-
-HDF5 chunking is allowed and recommended for all.  
-HDF5 compression is allowed.  
+| type | string | `EVENT` | yes | `Array` |
 
 In the list "type" the type of the recorded event is shown. The different types contain different information which is shown in the following subchapters. There are corresponding XML schemas for all types that define the technical specifications.
 
@@ -1400,12 +1400,12 @@ Within the group there are the following data fields:
 
 | Name | Data type | Parent object | Mandatory | Storage type |
 |----|---|----|---|----|
-| type | string | `RECORD` | yes | `array[n]` |
-| systemReference | string | `RECORD` | yes | `array[n]` |
-| channelReference | string | `RECORD` | no | `array[n]` |
-| data | string | `RECORD` | yes | `array[n]` |
-| duration | 64 bit signed integer little endian | `RECORD` | yes | `array[n]` |
-| timestamp | 64 bit signed integer little endian | `RECORD` | yes | `array[n]` |
+| type | string | `RECORD` | yes | `Array` |
+| systemReference | string | `RECORD` | yes | `Array` |
+| channelReference | string | `RECORD` | no | `Array` |
+| data | string | `RECORD` | yes | `Array` |
+| duration | 64 bit signed integer little endian | `RECORD` | yes | `Array` |
+| timestamp | 64 bit signed integer little endian | `RECORD` | yes | `Array` |
 
 Each of these datasets contains a list with information about an entry at a specific time.
 Each dataset is described in more detail in the following subchapters.  
@@ -1417,9 +1417,7 @@ The protocol entries are stored in this dataset as a list. A type can be stored 
 
 | Name | Data type | Parent object | Mandatory | Storage type |
 |----|---|----|---|----|
-| data | string | `RECORD` | yes | `array[n]` |
-
-HDF5 chunking is allowed and recommended, HDF5 compression is allowed.  
+| data | string | `RECORD` | yes | `Array` |
 
 #### Duration
 
@@ -1427,9 +1425,7 @@ Defines for each entry the duration of the log entry itself. This value can also
 
 | Name | Data type | Parent object | Mandatory | Storage type |
 |----|---|----|---|----|
-| duration | 64 bit integer | `RECORD` | yes | `array[n]` |
-
-HDF5 chunking is allowed and recommended, HDF5 compression is allowed.  
+| duration | 64 bit integer | `RECORD` | yes | `Array` |
 
 #### System reference systemReference
 
@@ -1437,9 +1433,7 @@ Contains a list of entries containing the name of the system that triggered the 
 
 | Name | Data Type | Parent Object | Mandatory | Storage Type |
 |----|---|----|---|----|
-| systemReference | `RECORD` | string | yes | `array[n]` |
-
-HDF5 chunking is allowed and recommended, HDF5 compression is allowed.  
+| systemReference | `RECORD` | string | yes | `Array` |
 
 #### Channel reference channelReference
 
@@ -1447,9 +1441,7 @@ Contains a list of entries that refers to a channel to which the record applies.
 
 | Name | Data Type | Parent Object | Mandatory | Storage Type |
 |----|---|----|---|----|
-| channelReference | `RECORD` | string | yes | `array[n]` |
-
-HDF5 chunking is allowed and recommended, HDF5 compression is allowed.  
+| channelReference | `RECORD` | string | yes | `Array` |
 
 #### Record Types
 
@@ -1457,9 +1449,7 @@ Contains the type of a log entry.
 
 | Name | Data type | Parent object | Mandatory | Storage type |
 |----|---|----|---|----|
-| recordtype | string | `RECORD` | yes | `array[n]` |
-
-HDF5 chunking is allowed and recommended, HDF5 compression is allowed.  
+| recordtype | string | `RECORD` | yes | `Array` |
 
 In the list "recordtype" the type of the recorded protocol entry is shown. The different types contain different information, which is shown in the following subchapters. Corresponding XML schemas are available for all types, which define the technical specifications.
 
@@ -1521,8 +1511,8 @@ This group contains two datasets:
 
 | Name | Data type | Parent object | Mandatory | Storage type |
 |----|---|----|---|----|
-| setting | string | *SETTING_NAME* | yes | `array[n]` |
-| timestamp | 64 bit integer | *SETTING_NAME* | yes | `array[n]` |
+| setting | string | *SETTING_NAME* | yes | `Array` |
+| timestamp | 64 bit integer | *SETTING_NAME* | yes | `Array` |
 
 **setting:** Contains the actual configuration.  
 **timestamp:** Contains the time from when this configuration is valid and was used.  
@@ -1547,8 +1537,8 @@ The group `DATAPROCESSING` contains one datasets:
 
 | Name | Data type | Parent object | Mandatory | Storage type |
 |---|---|-----|---|----|
-| keyValue | string | `DATAPROCESSING` | yes | `array[n]` |
-| timestamp | 64 bit integer | `DATAPROCESSING` | yes | `array[n]` |
+| keyValue | string | `DATAPROCESSING` | yes | `Array` |
+| timestamp | 64 bit integer | `DATAPROCESSING` | yes | `Array` |
 
 **keyValue:** This record contains a unique key as a reference to a data processing step, followed by a value about what was done in that step or what the result was. Key- and value are separated by a colon charakter: `key:value`  
 **timestamp:** Contains the time of the acquisition of the entry in the `keyValue` dataset.  
@@ -1565,8 +1555,8 @@ The group `CLEARANCEINFORMATION` contains one datasets:
 
 | Name | Data type | Parent object | Mandatory | Storage type |
 |---|---|------|---|---|
-| keyValue | string | `CLEARANCEINFORMATION` | yes | `array[n]` |
-| timestamp | 64 bit integer | `CLEARANCEINFORMATION` | yes | `array[n]` |
+| keyValue | string | `CLEARANCEINFORMATION` | yes | `Array` |
+| timestamp | 64 bit integer | `CLEARANCEINFORMATION` | yes | `Array` |
 
 **keyValue:** This record contains a unique key as a reference to a clearance step, followed by a value about what was done in that step or what the result was. Key- and value are separated by a colon charakter: `key:value`  
 **timestamp:** Contains the time of the acquisition of the entry in the `keyValue` dataset.  
