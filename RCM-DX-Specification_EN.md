@@ -54,14 +54,26 @@ Example of a file name: `20201228_081522_TGMS.rcmdx`.
 
 ### Primitive and extended data types
 
-Possible data types for channels should be taken from the HDF5 specification.  
+#### Primitive data types
 
-Data types that are used in this specification and require a more detailed description are described below.  
+Below are the supported data types used in this specification including a short description.
+Not all data types possible with HDF5 are described. The read and write library specifies which data types can be used for data sets and attributes.
+
+| Data type | Description | Example |
+|---|----|----|
+| boolean | Two values are possible, `true` or `false`, `0` or `1` | `true` |
+| byte | One byte or an unlimited number of bytes are possible | - |
+| signed integer | Positive and negative values are allowed. Possible bit depths are: 8, 16, 32 or 64 | `1256442`, `-62334` |
+| unsigned integer | Only positive values are allowed. Possible bit depths are: 8, 16, 32 or 64 | `1256442`, `-62334` |
+| float | Positive and negative values are allowed. Possible bit depths are: 32 or 64 | `12.53`, `-3212.546` |
+| sring | Multiple characters of undefined length | "RCM-DX is great!" |
+
+#### Extended data types
 
 | Name | Description | Example |
 |--|-----|---|
-| UUID | Universally Unique Identifier as Unique ID as defined in [wikipedia.org/wiki/Universally_Unique_Identifier](https://en.wikipedia.org/wiki/Universally_Unique_Identifier). Datatype is: `string` | `550e8400-e29b-11d4-a716-4466554400` |
 | Timestamp | Unique and worldwide defined format of a time, since January 1, 1970 00:00 UTC without leap seconds, defined under [wikipedia.org/wiki/Timestamp](https://en.wikipedia.org/wiki/Timestamp). Datatype is `64 bit unsigned integer` | `1553237099000000000` |
+| Enum | Enumerations are predefined (and always capitalized) strings defined in this specification. Datatype is `string` | `MAX`, `MIN`, `RIGHT`, `LEFT` |
 
 ### (HDF5) Group
 
@@ -87,12 +99,12 @@ In the RCM-DX, attributes, groups and datasets can be assigned. The names of the
 
 Attributes are described in this specification as follows:
 
-| Name | Data Type | Parent object | Mandatory | Description |
+| Name | Data type | Parent object | Mandatory | Description |
 |---|---|---|---|-----|
 | StartTime | 64 bit integer | *SESSION_NAME* | yes | Start time in miliseconds, for example: `1553237099000000000` |
 
 **Name:** The name of the attribute  
-**Data Type:** Primitive data type of the attribute, this describes the type of the content in the attribute itself.  
+**Data type:** Primitive data type of the attribute, this describes the type of the content in the attribute itself.  
 **Parent object:** An attribute is always assigned to a group or a dataset, here the name of this group or dataset is mentioned.  
 **Mandatory:** If the attribute is absolutely necessary and must exist as well as contain a value, `yes` is written here, otherwise `no`.  
 **Description:** Description and or examples of the attribute  
@@ -119,7 +131,7 @@ The datasets are described in the lowerCamelCase-Notation^2^. Datasets are descr
 | timestamp | 64 bit integer | *DATASOURCE_NAME* | yes | `Array` |
 
 **Name:** The name of the dataset.  
-**Data Type:** Primitive data type of the content in the dataset, thus the data type of the contained data.  
+**Data type:** Primitive data type of the content in the dataset, thus the data type of the contained data.  
 **Parent object:** A dataset is always assigned to a group, here the name of this group is mentioned.  
 **Mandatory:** If the dataset is absolutely necessary and must be present, `yes` is written here, otherwise `no`.  
 **Storage type:** One of the storage types described in this chapter.  
@@ -140,19 +152,17 @@ Within a channel group, one of the following structures can be contained: Array,
 
 Channels which record individual measured values contain a dataset with the name `data`, this dataset is mandatory. Single values are stored in this dataset as a 1D array, the length of this array (or list) is not limited.
 
-The possible data types are defined by the HDF5 Group, and can be read on the website of the HDF5 Group.
-
-Boolean values (`true`/`false`) are represented as `8 bit integer, little endian`, zero means `false`, all values greater than zero mean `true`.
+The possible data types are defined in chapter [\ref{primitive-and-extended-data-types} Primitiv and extended data types](#primitive-and-extended-data-types)
 
 Multidimensional measured values are given their own channel group per dimension and thus their own data set called `data`.
 
 | Name | Data type | Parent object | Mandatory | Storage type |
 |----|---|----|---|----|
-| data | 8, 32 or 64 bit signed integer or 64 or 32 bit floating point; (little endian in each case) | *CHANEL_NAME* | yes | `Array` |
+| data | A primitive or extended data type | *CHANEL_NAME* | yes | `Array` |
 
 The following attributes are assigned to this type of dataset:
 
-| Name | Data Type | Parent object | Mandatory | Description |
+| Name | Data type | Parent object | Mandatory | Description |
 |---|---|---|---|-----|
 | `Unit` | string | dataset `data` | yes | A physical unit or empty if the data does not correspond to a physical unit |
 
@@ -174,16 +184,16 @@ The group `LIMIT` now contains further groups, each with the name of the limit e
 
 The following attributes are assigned to this group:
 
-| Name | Data Type | Parent object | Mandatory | Description |
+| Name | Data type | Parent object | Mandatory | Description |
 |---|---|---|---|-----|
 | Priority | 8 bit integer | *LIMIT_NAME* | yes | Priority of defined limit, lower values are priories |
-| LimitBound | string | *LIMIT_NAME* | yes | Defines the type of limit, possible values are `MAX` or `MIN`. |
+| LimitBound | Enum | *LIMIT_NAME* | yes | Defines the type of limit, possible values are `MAX` or `MIN`. |
 
 It contains the following datasets:
 
 | Name | Data type | Parent object | Mandatory | Storage type |
 |----|---|----|---|----|
-| limitvalue | 8, 32 or 64 bit signed integer or 64 or 32 bit floating point; (little endian in each case) | *LIMIT_NAME* | yes | `Array` |
+| limitvalue | A primitive or extended data type | *LIMIT_NAME* | yes | `Array` |
 | timestamp | 64 bit integer | *LIMIT_NAME* | yes | `Array` |
 | duration | 64 bit integer | *LIMIT_NAME* | yes | `Array` |
 
@@ -205,11 +215,11 @@ The dataset is defined as follows:
 
 | Name | Data type | Parent object | Mandatory | Storage type |
 |--|------|--|--|--|
-| coord.CN | 8, 32 or 64 bit signed integer or 64 or 32 bit floating point; (little endian in each case) | *CHANNEL_NAME* | yes | Single |
+| coord.CN | A primitive or extended data type | *CHANNEL_NAME* | yes | Single |
 
 The following attributes are assigned to this type of dataset `coord.CN`:
 
-| Name | Data Type | Parent object | Mandatory | Description |
+| Name | Data type | Parent object | Mandatory | Description |
 |---|---|---|---|-----|
 | `Unit` | string | Dataset `coord.CN` | yes | One physical unit or empty if the data does not correspond to any physical unit |
 
@@ -228,11 +238,11 @@ The dataset is defined as follows:
 
 | Name | Data type | Parent object | Mandatory | Storage type |
 |--|------|--|--|--|
-| value.VN | 8, 32 or 64 bit signed integer or 64 or 32 bit floating point; (little endian in each case) | *CHANNEL_NAME* | no | Single |
+| value.VN | A primitive or extended data type | *CHANNEL_NAME* | no | Single |
 
 The following attributes are assigned to this type of dataset `value.VN`:
 
-| Name | Data Type | Parent object | Mandatory | Description |
+| Name | Data type | Parent object | Mandatory | Description |
 |---|---|---|---|-----|
 | `Type` | string | Dataset `value.VN` | yes | Describes the content and type of the data it contains. |
 
@@ -263,7 +273,7 @@ All images are stored in a group called `IMG`. All images in this group have the
 
 The group `IMG` gets the following attributes for the more detailed description of the images contained therein:
 
-| Name | Data Type | Parent object | Mandatory | Description |
+| Name | Data type | Parent object | Mandatory | Description |
 |---|---|---|---|-----|
 | ContentType | string | `IMG` | yes | Data type of images specified as MIME^3^ type, for example `Content-Type: <image/jpeg>`|
 | DataType | string | `IMG` | no | Description of data type, if no standard image, see [\ref{contenttype-without-image-mime-type} ContentType without Image MIME type](#contenttype-without-image-mime-type) |
@@ -318,7 +328,7 @@ Videos are stored as streams in individual blocks. The blocks are single dataset
 
 Below is a list of the attributes assigned to the data group `VID`:
 
-| Name | Data Type | Parent object | Mandatory | Description |
+| Name | Data type | Parent object | Mandatory | Description |
 |----|---|---|---|-----|
 | ContentType | string | `VID` | yes | Data type of the video stream specified as MIME^4^ type, for example `Content-Type: <video/h264>`|
 | DataType | string | `VID` | no | Description of data type if no standard video format, see [\ref{contenttype-without-video-mime-type} ContentType without video MIME type](#contenttype-without-video-mime-type) |
@@ -411,15 +421,15 @@ The root group contains all other subgroups. This group defines the RCM-DX and b
 
 The following attributes are assigned to the group `RCMDX`:
 
-| Name | Data Type | Parent object | Mandatory | Description |
+| Name | Data type | Parent object | Mandatory | Description |
 |---|---|---|---|-----|
-| Major | 16-bit integer | `RCMDX` | yes | Major Version of the RCM-DX specification that corresponds to the structure of the created file |
-| Minor | 16-bit integer | `RCMDX` | yes | Minor Version of the RCM-DX specification that corresponds to the structure of the created file |
+| Major | 16 bit integer | `RCMDX` | yes | Major Version of the RCM-DX specification that corresponds to the structure of the created file |
+| Minor | 16 bit integer | `RCMDX` | yes | Minor Version of the RCM-DX specification that corresponds to the structure of the created file |
 
 ### Platform Group
 
 A platform group contains information about a measuring vehicle that collects the data.  
-The naming of the group is defined according to which platform produced the data. An overview of all names and the corresponding platform is specified in the chapter [\ref{platforms-at-the-sbb} Platforms at SBB](#platforms-at-the-sbb).
+The naming of the group is defined according to which platform produced the data. An overview of all names and the corresponding platform is specified in the chapter [\ref{platforms-at-the-sbb} Platforms at the SBB](#platforms-at-the-sbb).
 
 | Name | Parent object | Mandatory |
 |--|--|--|
@@ -431,9 +441,9 @@ The naming of the group is defined according to which platform produced the data
 
 The platform group contains the following attributes:
 
-| Name | Data Type | Mandatory | Description |
+| Name | Data type | Mandatory | Description |
 |---|--|:--:|------|
-| Name | string | yes | Unique name of the vehicle |
+| Name | Enum | yes | Unique platform name of the vehicle, [\ref{platforms-at-the-sbb} Platforms at the SBB](#platforms-at-the-sbb) |
 | VehicleNumber | string | yes | Unique number of the vehicle |
 
 #### Platforms at the SBB
@@ -492,7 +502,7 @@ A session contains the data of one or more measuring devices (one or more data s
 
 #### Attributes  
 
-| Name | Data Type | Parent object | Mandatory | Description |
+| Name | Data type | Parent object | Mandatory | Description |
 |---|---|---|---|-----|
 | Element | string | *SESSION_NAME* | yes | Contains the type of the group, this is fix "SESSION" |
 | StartTime | long | *SESSION_NAME* | yes | Time stamp in nanoseconds since January 1, 1970 UTC as start time of the session |
@@ -667,7 +677,7 @@ This dataset can contain the following values:
 
 Information about the environment can be stored in the subgroups and their datasets. Since such information applies to all measurement systems, this is the right place for it.  
 
-As always with a data source, the dataset `timestamp` must not be forgotten.
+As always with a data source, the dataset `timestamp` must **not** be forgotten.
 
 ![Overview of the Environment Structure](images/generated/RCM_DX_Environment_overview.png)
 
@@ -681,9 +691,9 @@ The dataset contains a measured vehicle speed for each time stamp.
 
 | Name | Data type | Parent object | Mandatory | Storage type |
 |--|---|-----|---|----|
-| data | 64 bit integer | `VEHICLESPEED` | no | `Array` |
+| data | 16 bit float | `VEHICLESPEED` | no | `Array` |
 
-This data source also has a common dataset `timestamp`.
+**Unit: meters per second [m/s]**
 
 #### Ambient Temperature Group
 
@@ -697,7 +707,9 @@ For each time stamp, the ambient temperature is entered in the dataset.
 
 | Name | Data type | Parent object | Mandatory | Storage type |
 |--|---|-----|---|----|
-| data | 64 bit integer | `AMBIENTTEMPERATURE` | no | `Array` |
+| data | 16 bit float | `AMBIENTTEMPERATURE` | no | `Array` |
+
+**Unit: degrees celsius [°C]**
 
 #### Wind Speed Group
 
@@ -711,7 +723,9 @@ For each time stamp, the wind speed is entered in the dataset.
 
 | Name | Data type | Parent object | Mandatory | Storage type |
 |----|---|----|---|----|
-| data | 64 bit integer | `WINDSPEED` | no | `Array` |
+| data | 16 bit float | `WINDSPEED` | no | `Array` |
+
+**Unit: meters per second [m/s]**
 
 #### Wind Direction Group
 
@@ -725,7 +739,9 @@ For each time stamp, the wind direction is entered in the dataset.
 
 | Name | Data type | Parent object | Mandatory | Storage type |
 |----|---|----|---|----|
-| data | 64 bit integer | `WINDIRECTION` | no | `Array` |
+| data | 16 bit float | `WINDIRECTION` | no | `Array` |
+
+**Unit: degree [°]**
 
 #### Weather Conditions Group
 
@@ -757,13 +773,13 @@ As an example, a measuring system that records environmental data is described h
 
 The following attributes are contained in the group of the measuring system:
 
-| Name | Data Type | Parent object | Mandatory | Description |
+| Name | Data type | Parent object | Mandatory | Description |
 |---|---|-----|---|-----|
 | Family | string | *MEASURINGSYSTEM_NAME* | yes | General name of the measuring system |
 | Revision | string | *MEASURINGSYSTEM_NAME* | yes | Version of the software on the measuring system, issued by the owner of the platform |
 | InstanceVersion | string | *MEASURINGSYSTEM_NAME* | yes | Version of the data format created by the measuring instrument. This version can be different within different gauges of the same family |
 | Element | string | *MEASURINGSYSTEM_NAME* | yes | Contains the type of the group, this is fixed `MEASURINGSYSTEM` |
-| MeasuringMode | string | *MEASURINGSYSTEM_NAME* | yes | Indicates the measuring mode. |
+| MeasuringMode | Enum | *MEASURINGSYSTEM_NAME* | yes | Indicates the measuring mode, defined in chapter [/ref{measurement-mode} Measuring mode](#measurement-mode) |
 
 ##### Measurement mode
 
@@ -786,7 +802,7 @@ The way the measurement data was recorded is shown in two attributes for each ch
 
 The following attribute is assigned to the group:
 
-| Name | Data Type | Parent object | Mandatory | Description |
+| Name | Data type | Parent object | Mandatory | Description |
 |---|---|-----|---|-----|
 | Element | string | *DATASOURCE_NAME* | yes | Contains the type of the group, this is fix `DATASOURCE` |
 
@@ -806,12 +822,12 @@ A channel group contains metadata for the actual measurement data and thus for t
 
 The following attributes are contained in this group:  
 
-| Name | Data Type | Parent object | Mandatory | Description |
+| Name | Data type | Parent object | Mandatory | Description |
 |------|---|----|---|----|
-| TriggerMode | string | *CHANNEL_NAME* | yes | See chapter [\ref{trigger-mode} Trigger Mode](#trigger-mode) |
+| TriggerMode | Enum | *CHANNEL_NAME* | yes | See chapter [\ref{trigger-mode} Trigger Mode](#trigger-mode) |
 | TriggerValue | 64 bit float | *CHANNEL_NAME* | yes | See chapter ["\ref{trigger-value} Trigger value"](#trigger-value) |
-| ChannelBasis | string | *CHANNEL_NAME* | yes | See chapter [\ref{channel-base} Channel Base](#channel-base) |
-| ChannelType | string | *CHANNEL_NAME* | yes | See chapter [\ref{channel-type} Channel Type](#channel-type) |
+| ChannelBasis | Enum | *CHANNEL_NAME* | yes | See chapter [\ref{channel-base} Channel Base](#channel-base) |
+| ChannelType | Enum | *CHANNEL_NAME* | yes | See chapter [\ref{channel-type} Channel Type](#channel-type) |
 | Neighbor | string | *CHANNEL_NAME* | yes | See chapter [\ref{neighbor} Neighbor](#neighbor) |
 | MeasurementUncertainty | 32 bit float | *CHANNEL_NAME* | yes | This attribute contains the measurement accuracy of the channel according to the specifications of the measurement system. | <!-- TODO -->
 | PositionOffset | 32 bit signed float | *CHANNEL_NAME* | yes | See chapter [\ref{position-offset} Position Offset](#position-offset) |
@@ -991,16 +1007,16 @@ The following datasets are included in this group, some of which are described i
 
 | Name | Data type | Parent object | Mandatory | Storage type |
 |--|---|--|--|---|
-| direction | 8 bit signed integer, little endian | TRACK | yes | `Array` |
-| id | 32 bit integer, little endian | TRACK | yes | `Array` |
+| direction | 8 bit signed integer | TRACK | yes | `Array` |
+| id | 32 bit integer | TRACK | yes | `Array` |
 | gtgId | string | TRACK | yes | `Array` |
 | length | string | TRACK | yes | `Array` |
 | name | string | TRACK | yes | `Array` |
 | nrLine | string | TRACK | yes | `Array` |
-| pointFrom | 32 bit integer, little endian | TRACK | yes | `Array` |
-| pointTo | 32 bit integer, little endian | TRACK | yes | `Array` |
-| switchType | 8 bit signed integer, little endian | TRACK | yes | `Array` |
-| trackType | 8 bit signed integer, little endian | TRACK | yes | `Array` |
+| pointFrom | 32 bit integer | TRACK | yes | `Array` |
+| pointTo | 32 bit integer | TRACK | yes | `Array` |
+| switchType | 8 bit signed integer | TRACK | yes | `Array` |
+| trackType | 8 bit signed integer | TRACK | yes | `Array` |
 
 **direction:** Will be decided in a separate chapter: [\ref{direction} direction](#direction)  
 **id:** ID of the track section  
@@ -1231,8 +1247,8 @@ Within the group there are the following data fields:
 | channelReference | string | `EVENT` | no | `Array` |
 | data | string | `EVENT` | yes | `Array` |
 | type | string | `EVENT` | yes | `Array` |
-| duration | 64 bit signed integer little endian | `EVENT` | yes | `Array` |
-| timestamp | 64 bit signed integer little endian | `EVENT` | yes | `Array` |
+| duration | 64 bit signed integer | `EVENT` | yes | `Array` |
+| timestamp | 64 bit signed integer | `EVENT` | yes | `Array` |
 
 Each of these datasets contains a list with information about an entry, at a certain time.
 Each dataset is described in more detail in the following subchapters.
@@ -1241,7 +1257,7 @@ Each dataset is described in more detail in the following subchapters.
 
 Contains a list of entries containing the name of the system that triggered the event.
 
-| Name | Data Type | Parent Object | Mandatory | Storage Type |
+| Name | Data type | Parent Object | Mandatory | Storage Type |
 |----|---|----|---|----|
 | systemReference | string | `EVENT` | yes | `Array` |
 
@@ -1249,7 +1265,7 @@ Contains a list of entries containing the name of the system that triggered the 
 
 Contains a list of entries that refers to a channel to which the event applies.
 
-| Name | Data Type | Parent Object | Mandatory | Storage Type |
+| Name | Data type | Parent Object | Mandatory | Storage Type |
 |----|---|----|---|----|
 | channelReference | string | `EVENT` | yes | `Array` |
 
@@ -1404,8 +1420,8 @@ Within the group there are the following data fields:
 | systemReference | string | `RECORD` | yes | `Array` |
 | channelReference | string | `RECORD` | no | `Array` |
 | data | string | `RECORD` | yes | `Array` |
-| duration | 64 bit signed integer little endian | `RECORD` | yes | `Array` |
-| timestamp | 64 bit signed integer little endian | `RECORD` | yes | `Array` |
+| duration | 64 bit signed integer | `RECORD` | yes | `Array` |
+| timestamp | 64 bit signed integer | `RECORD` | yes | `Array` |
 
 Each of these datasets contains a list with information about an entry at a specific time.
 Each dataset is described in more detail in the following subchapters.  
@@ -1431,7 +1447,7 @@ Defines for each entry the duration of the log entry itself. This value can also
 
 Contains a list of entries containing the name of the system that triggered the record.
 
-| Name | Data Type | Parent Object | Mandatory | Storage Type |
+| Name | Data type | Parent Object | Mandatory | Storage Type |
 |----|---|----|---|----|
 | systemReference | `RECORD` | string | yes | `Array` |
 
@@ -1439,7 +1455,7 @@ Contains a list of entries containing the name of the system that triggered the 
 
 Contains a list of entries that refers to a channel to which the record applies.
 
-| Name | Data Type | Parent Object | Mandatory | Storage Type |
+| Name | Data type | Parent Object | Mandatory | Storage Type |
 |----|---|----|---|----|
 | channelReference | `RECORD` | string | yes | `Array` |
 
@@ -1519,7 +1535,7 @@ This group contains two datasets:
 
 The following attributes are contained in this group:  
 
-| Name | Data Type | Parent object | Mandatory | Description |
+| Name | Data type | Parent object | Mandatory | Description |
 |---|---|---|---|-----|
 | DataType | string | `setting` | yes | Defines the datatype of the configuration within the dataset `setting`. Data type specified as MIME^3^ type, for example `Content-Type: <text/strings>` |
 
@@ -1713,7 +1729,7 @@ The group `CLEARANCEINFORMATION` contains one datasets:
 </xs:schema>
 ```
 
-### RCM-DX Data Types
+### RCM-DX Data types
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
