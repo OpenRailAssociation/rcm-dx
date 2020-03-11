@@ -130,7 +130,7 @@ The datasets are described in the lowerCamelCase-Notation^2^. Datasets are descr
 
 | Name | Data type | Parent object | Mandatory | Storage type |
 |--|---|----|---|-----|
-| timestamp | 64 bit integer | *DATASOURCE_NAME* | yes | `Array` |
+| timestamp | Timestamp | *DATASOURCE_NAME* | yes | `Array` |
 
 **Name:** The name of the dataset.  
 **Data type:** Primitive data type of the content in the dataset, thus the data type of the contained data.  
@@ -196,8 +196,8 @@ It contains the following datasets:
 | Name | Data type | Parent object | Mandatory | Storage type |
 |----|---|----|---|----|
 | limitvalue | A primitive or extended data type | *LIMIT_NAME* | yes | `Array` |
-| timestamp | 64 bit integer | *LIMIT_NAME* | yes | `Array` |
-| duration | 64 bit integer | *LIMIT_NAME* | yes | `Array` |
+| timestamp | Timestamp | *LIMIT_NAME* | yes | `Array` |
+| duration | Timestamp | *LIMIT_NAME* | yes | `Array` |
 
 ![Structure for the recording of limit exceedances](images/generated/Limit_overview.png){width=230px}
 
@@ -369,15 +369,15 @@ A video data block is named according to the following pattern: `vid.NNNNNNNNN`,
 
 ### Timestamp
 
-Each entry in a dataset of a channel has a reference to an entry in a dataset with the name `timestamp`, which lies within the data source group. In this `timestamp` dataset, there are as many entries as there are entries in a dataset of a channel. A timestamp is entered in nanoseconds since 01.01.1970 at 00:00 UTC.  
+Each entry in a dataset of a channel has a reference to an entry in a dataset with the name `timestamp`, which lies within the data source group. In this `timestamp` dataset, there are as many entries as there are entries in a dataset of a channel.  
 
 The time stamps are always stored in ascending order.  
 
 | Name | Data type | Parent object | Mandatory | Storage type |
 |----|---|----|---|----|
-| timestamp | 64 bit integer | *DATASOURCE_NAME* | yes | `Array` |
+| timestamp | Timestamp | *DATASOURCE_NAME* | yes | `Array` |
 
-These time stamps are recorded either by a defined distance travelled or by a frequency, this is described in more detail in the chapter [\ref{common-trigger-distance-or-frequence} Common Trigger Distance or Frequence](#common-trigger-distance-or-frequence).
+These time stamps are recorded either by a defined distance travelled or by a frequency, this is described in more detail in the chapter [\ref{trigger-mode} Trigger mode](#trigger-mode).
 
 ### Durations
 
@@ -798,7 +798,7 @@ There are three different measurement modes, which are explained individually be
 A data source group can contain several channels and thus several data sources. This group combines these channels. The naming can be freely selected, but must be unique.
 
 A time stamp is available for each individual measuring point within a data source group. There are two types of data acquisition for a data source group. One is always after a defined distance (e.g. every 250 millimeters) and the other is the recording of measurement data at a certain frequency (e.g. 4000 Hz).
-The way the measurement data was recorded is shown in two attributes for each channel group. For a description see [\ref{common-trigger-distance-or-frequence} Common Trigger Distance or Frequence](#common-trigger-distance-or-frequence).
+The way the measurement data was recorded is shown in two attributes for each channel group. For a description see [\ref{trigger-mode} Trigger mode](#trigger-mode).
 
 #### Attributes
 
