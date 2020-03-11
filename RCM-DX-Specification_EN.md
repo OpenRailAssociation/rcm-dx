@@ -70,6 +70,8 @@ Not all data types possible with HDF5 are described. The read and write library 
 
 #### Extended data types
 
+Extended data types use the primitive data types, but have a more specialized format or meaning. The following is a list of the extended data types used.
+
 | Name | Description | Example |
 |--|-----|---|
 | Timestamp | Unique and worldwide defined format of a time, since January 1, 1970 00:00 UTC without leap seconds, defined under [wikipedia.org/wiki/Timestamp](https://en.wikipedia.org/wiki/Timestamp). Datatype is `64 bit unsigned integer` | `1553237099000000000` |
