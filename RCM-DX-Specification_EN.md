@@ -1,12 +1,38 @@
 # Specification of the RCM-DX Format version 2.0
 
-## History
+## Change history
 
-| Document Version | RCM-DX version | Datum | Autor | Beschreibung |
-|--|--|--|---|------|
-| < V0.29 | 0.1 | < 29.10.2019 | Jakob Grilj (SBB) | Adoption of the existing specification. Start of the new RCM-DX format with version number 0.1  |
-| V0.29 | 0.2 | 29.10.2019 | Michael Ammann (SBB), Jakob Grilj (SBB) | Adaptation to the new RCM-DX structure. |
-| V0.30 | 0.2 | 20.02.2020 | Michael Ammann (SBB) | Adjustments for the publication (open-source). |
+| Document version | RCM-DX version | Date | Autor | Change |
+|-|-|--|----|
+| 0.1.0 | 0.1 | 06.03.2015 | Martin Frey (SCS) | Initial version |
+| 0.2.0 | 0.2 | 20.03.2015 | Martin Frey (SCS) | Extensions |
+| 0.3.0 | 0.3 | 15.04.2015 | Patrik Wernli (SCS) | Review |
+| 0.4.0 | 0.4 | 20.04.2015 | Martin Frey (SCS) | Extensions and revised |
+| 0.5.0 | 0.5 | 03.05.2015 | Patrik Wernli (SCS) | Formal Adaptions |
+| 0.6.0 | 0.6 | 12.05.2015 | Martin Frey (SCS) | PDR Feedback: Storing of Booleans, comments allowed on all levels, format independent of video codec, flags (including simulation) on session level. Schemas for exceedances, comments and drawings added |
+| 0.7.0 | 0.7 | 13.07.2015 | Patrik Wernli (SCS) | Finalized for CDR |
+| 0.8.0 | 0.8 | 02.10.2015 | Martin Frey (SCS) | Event model added, reference to specification event schema added. |
+| 0.9.0 | 0.9 | 30.11.2015 | Patrik Wernli (SCS) | Adaptions for Infotrans position model. Version concept removed. Event model updated. |
+| 0.10.0 | 0.10 | 21.12.2015 | Martin Frey (SCS) | Review |
+| 0.11.0 | 0.11 | 21.12.2015 | Patrik Wernli (SCS) | Revised after review |
+| 0.12.0 | 0.12 | 16.02.2016 | Pascal Brem (SCS) | Topology model in configuration. |
+| 0.13.0 | 0.13 | 17.02.2016 | Martin Frey (SCS) | Review topology model |
+| 0.14.0 | 0.14 | 19.02.2016 | Pascal Brem (SCS) | Sections added to file format. |
+| 0.15.0 | 0.15 | 23.02.2016 | Martin Frey (SCS) | Global configuration and settings updated |
+| 0.16.0 | 0.16 | 11.07.2016 | Pascal Brem (SCS) | New Hash code attribute for the topology. |
+| 0.17.0 | 0.17 | 15.07.2016 | Pascal Brem (SCS) | New units and data types for positions |
+| 0.18.0 | 0.18 | 03.01.2018 | Pascal Brem (SCS) | New GTG Track Id in the Topology. |
+| 0.19.0 | 0.19 | 03.01.2018 | Pascal Brem (SCS) | Events are stored on session level. |
+| 0.20.0 | 0.20 | 09.01.2018 | Pascal Brem (SCS) | Events and Sections in a group. |
+| 0.21.0 | 0.21 | 09.01.2018 | Patrik Wernli (SCS) | Added chapter “HDF5 File Format Versions” |
+| 0.22.0 | 0.22 | 11.04.2018 | Patrik Wernli (SCS) | Changed document template to official publishing template |
+| 0.23.0 | 0.23 | 16.08.2018 | Pascal Brem (SCS) | Changes in the channel basis definition. |
+| 0.24.0 | 0.24 | 16.08.2018 | Pascal Brem (SCS) | New attributes on the picture block channel. |
+| 0.25.0 | 0.25 | 04.09.2018 | Pascal Brem (SCS) | New minor version. |
+| 0.26.0 | 0.26 | 28.11.2018 | Pascal Brem (SCS) | New minor version for the topology attributes. |
+| 0.27.0 | 0.27 | 08.01.2019 | Pascal Brem (SCS) | New availability group. |
+| 0.28.0 | 0.28 | 05.06.2019 | Pascal Brem (SCS) | New switchtracks in the DfA |
+| 2.0.0 | 2.0 | 28.04.2020 | Michael Ammann (SBB), Jakob Grilj (SBB) | Adaptation of the structure to new requirements. New major release with version number 2.0, due to major changes in the structure and goal for publication of the specification. |
 
 ## Introduction  
 
@@ -16,7 +42,7 @@ Railroad companies continuously gather data of their rail, overhead line, and te
 
 This specification defines the rail condition monitoring data exchange format (RCM-DX format) which is a data format optimised for data in the railroad context, i.e. for data points localised within a railroad network. The RCM-DX format is a file format based on the HDF5 specification and defines a structure of HDF5 groups, datasets, and attributes. The document at hands also describes the content of the elements defined. Although the format is open and can in principle be implemented right away by any railroad company, this specification contains a few non-generic elements and naming conventions that are specific to SBB. The reason for this is that any file that adheres to this specification can be used with the _RCM Viewer_, an application available soon to the public via a website.
 
-<!-- TODO: Linklink to RCM-DX Viewer website, if existing -->
+<!-- TODO: link to RCM-DX Viewer website, if existing -->
 
 The RCM-DX format is developed and maintained by the SBB company. An extension of the specification is permitted, yet, it must be taken into account that the resulting data file may no longer be read or processed by other systems supporting the RCM-DX format.
 
@@ -31,10 +57,14 @@ The extension of the specification is permitted. However, it must be taken into 
 
 #### Versioning
 
-The RCM-DX data format is subject to changes, these are indicated by the version number in the document, see chapter [\ref{root-group} Root Group](#root-group). The version number consists of three numbers separated by dots and is composed as follows: **[Major].[Minor]**. Example: **1.0**  
+The RCM-DX data format is subject to changes, these are indicated by the version number in the document, see chapter [\ref{root-group} Root Group](#root-group). The version number consists of two numbers, separated by dots and is composed as follows: **[Major].[Minor]**. Example: **1.0**  
 
 **Major:** Defines the main version and indicates when major changes have been made. These are, for example, that changing the basic structure or renaming groups, datasets or attributes (major, minor attribute as an example), which are mandatory.  
 **Minor:** Indicates minor changes, such as changing the name of an attribute that is not mandatory or defining new groups, attributes, or datasets. These changes do not affect anything that cannot be read with an existing RCM-DX read-write library.  
+
+To version this specification, a third digit is introduced with the abbreviation **[Rev]** for revision. This, however, is only valid for this document as a help and not for the overview of changes to the structure itself. This third version number is not visible in the RCM-DX files. If the major and/or minor version number is increased, the revision number is reset to zero '0'.
+
+See chapter [/ref{change-history} Change history](#change-history).
 
 #### Diagrams
 
