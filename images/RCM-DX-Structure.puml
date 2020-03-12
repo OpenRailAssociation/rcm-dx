@@ -2,18 +2,6 @@
 
   object RCMDX
 
-  object data.PRE.MIN.X #LightGray {
-    a:Unit (string)
-  }
-
-  object data.PRE.MAX.X #LightGray {
-    a:Unit (string)
-  }
-
-  object data.PRE.AVG.X #LightGray {
-    a:Unit (string)
-  }
-
   object LIMIT
 
   object "//LIMIT_NAME//" as limit_name {
@@ -53,7 +41,7 @@
   object TOPOLOGY {
     a:Version (string)
   }
-
+/'
   object TRACKS {
     d:id (32bit signed integer)
     d:direction (8bit signed integer)
@@ -128,7 +116,7 @@
     d:description.it (string)
     d:description.en (string)
   }
-
+'/
   object "//MEASURINGSYSTEM_NAME//" as measuringsystem_name {
     a:Element (string) = "MEASURINGSYSTEM"
     a:Family (string)
@@ -275,16 +263,12 @@
 
   session_name "1" o-- "1" TOPOLOGY
 
-  TOPOLOGY "1" o-- "1" TRACKS
-  TOPOLOGY "1" o-- "1" LINES
-  TOPOLOGY "1" o-- "1" SWITCHTRACKS
-  TOPOLOGY "1" o-- "1" TRACKOBJECTS
-  TOPOLOGY "1" o-- "1" TRACKPOINTS
-  TOPOLOGY "1" o-- "1" PROPERTIES
-
-  channel_name "1" o-- "0..n" data.PRE.MIN.X
-  channel_name "1" o-- "0..n" data.PRE.MAX.X
-  channel_name "1" o-- "0..n" data.PRE.AVG.X
+  'TOPOLOGY "1" o-- "1" TRACKS
+  'TOPOLOGY "1" o-- "1" LINES
+  'TOPOLOGY "1" o-- "1" SWITCHTRACKS
+  'TOPOLOGY "1" o-- "1" TRACKOBJECTS
+  'TOPOLOGY "1" o-- "1" TRACKPOINTS
+  'TOPOLOGY "1" o-- "1" PROPERTIES
 
   measuringsystem_name "1" o-- "1" LOGGING
 
@@ -295,5 +279,38 @@
   c1 "1" o-- "1..n" setting_name
   setting_name "1" o-- "1" setting
   setting_name "1" o-- "1" t4
+
+    object "//SESSION_NAME//" as session_name {
+    a:Element (string) = "SESSION"
+    a:MeasuringMode {OPERATIV | SIMULATION | TEST}
+    a:StartTime (Timestamp)
+    a:EndTime (Timestamp)
+    a:PositionSource (string)
+  }
+
+  object SECTION 
+
+  object SECTIONINFO {
+    d:firstTrackOffset (64 bit float)
+    d:lastTrackOffset (64 bit float)
+    d:startTimestamp (Timestamp)
+    d:endTimestamp (Timestamp)
+    d:coachOrientation (8 bit integer)
+    d:trackListOffset (64 bit float)
+  }
+
+  object TRACKLIST {
+    d:id (32 bit signed integer)
+    d:startTimestamp (Timestamp)
+    d:endTimestamp (Timestamp)
+    d:orientation (8 bit signed integer)
+    d:startCoveredDistance (64 bit float)
+    d:endCoveredDistance (64 bit float)
+
+  }
+
+  session_name "1" o-- "1" SECTION
+  SECTION "1" o-- "1" SECTIONINFO
+  SECTION "1" o-- "1" TRACKLIST
   
 @enduml

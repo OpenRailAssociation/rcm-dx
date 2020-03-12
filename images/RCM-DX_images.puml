@@ -3,8 +3,8 @@
 ' RCM-DX diagramm example and explanation at the start of specification
 @startuml RCM_DX_diagram_example
 
-  object DATASOURCE {
-    a:Element = "DATASOURCE"
+  object "//DATASOURCE_NAME//" as DATASOURCE {
+    a:Element (string) = "DATASOURCE"
   }
   note left
     - Group's in
@@ -12,11 +12,14 @@
     
     - Attibutes with "a:"
       at the beginning
+
+    - Datasets with "d:"
+      at the beginning
   end note
 
   object timestamp #LightGray
 
-  object CHANNEL {
+  object "//CHANNEL_NAME//" as channel {
     a:Element = "CHANNEL"
     a:ChannelBasis
     a:----
@@ -26,31 +29,32 @@
     a:Unit (string)
   }
   note left
-    Dataset's in
-    color gray
-  end note
-
-  note as HINT
-    <size:30><&warning>
-    Datasets can be described
-    inside a group with "d:"
-     at the beginning!
+    Data sets can also
+    be individually in 
+    the color gray.
   end note
 
   DATASOURCE "1" o-- "1" timestamp
-  DATASOURCE "1" o-- "1..n" CHANNEL
-  CHANNEL "1" o-- "0..n" data
+  DATASOURCE "1" o-- "1..n" channel
+  channel "1" o-- "0" data
 
 @enduml
 
 ' RCM-DX Common Structure Overview
 @startuml RCM_DX_Structure
 
-  object RCMDX
+  object RCMDX {
+    a: Major (16 bit intger)
+    a: Minor (16 bit intger)
+  }
 
-  object "//SESSION_NAME//" as session_name
+  object "//SESSION_NAME//" as session_name {
+    a:Element (string) = "SESSION"
+  }
 
-  object "//MEASURINGSYSTEM_NAME//" as measuringsystem_name
+  object "//MEASURINGSYSTEM_NAME//" as measuringsystem_name {
+    a:Element (string) = "MEASURINGSYSTEM"
+  }
 
   object CLEARANCEINFORMATION
   object DATAPROCESSING
@@ -88,8 +92,9 @@
   object "//SESSION_NAME//" as session_name {
     a:Element (string) = "SESSION"
     a:MeasuringMode {OPERATIV | SIMULATION | TEST}
-    a:StartTime (64bit integer, timestamp)
-    a:EndTime (64bit integer, timestamp)
+    a:StartTime (Timestamp)
+    a:EndTime (Timestamp)
+    a:PositionSource (string)
   }
 
   object "//MEASURINGSYSTEM_NAME//" as measuringsystem_name {
@@ -107,36 +112,36 @@
   object LIMIT
 
   object "//LIMIT_NAME//" as limit_name {
-    a:Priority (8bit integer)
+    a:Priority (8 bit integer)
     a:LimitBound (string)
   }
 
   object "//CHANNEL_NAME//" as channel_name {
     a:Element (string) = "CHANNEL"
+    a:TriggerMode (Enum)
+    a:TriggerValue (64 bit float)
+    a:ChannelBasis (Enum)
     a:ChannelType (string)
-    a:TriggerMode (string)
-    a:CommonTriggerFrequency (32bit float)
-    a:CommonTriggerDistance (32bit float)
-    a:ChannelBasis (string)
+    a:ChannelType (Enum)
     a:Neighbor (string)
-    a:MeasurementUncertinty (32bit float)
-    a:PositionOffset (32bit float)
+    a:MeasurementUncertinty (32 bit float)
+    a:PositionOffset (32 bit float)
   }
 
   object VID {
     a:ContentType (MIME-Type, string)
     a:DataTyp (string)
-    a:FramesPerSecond (16bit signed integer)
-    a:ResolutionX (32bit signed integer)
-    a:ResolutionY (32bit signed integer)
+    a:FramesPerSecond (16 bit signed integer)
+    a:ResolutionX (32 bit signed integer)
+    a:ResolutionY (32 bit signed integer)
   }
 
   object IMG {
     a:ContentType (MIME-Type, string)
     a:DataTyp (string)
     a:ResolutionType (string)
-    a:ResolutionX (32bit signed integer)
-    a:ResolutionY (32bit signed integer)
+    a:ResolutionX (32 bit signed integer)
+    a:ResolutionY (32 bit signed integer)
   }
 
   object data #LightGray {
@@ -217,8 +222,9 @@
   object "//SESSION_NAME//" as session_name {
     a:Element (string) = "SESSION"
     a:MeasuringMode {OPERATIV | SIMULATION | TEST}
-    a:StartTime (64bit integer, timestamp)
-    a:EndTime (64bit integer, timestamp)
+    a:StartTime (Timestamp)
+    a:EndTime (Timestamp)
+    a:PositionSource (string)
   }
 
   object TOPOLOGY {
@@ -226,43 +232,43 @@
   }
 
   object TRACK {
-    d:id (32bit signed integer)
-    d:direction (8bit signed integer)
+    d:id (32 bit signed integer)
+    d:direction (8 bit signed integer)
     d:gtgId (string)
-    d:length (32bit float)
+    d:length (32 bit float)
     d:name (string)
     d:nrLine (string)
-    d:pointFrom (32bit signed integer)
-    d:pointTo (32bit signed integer)
-    d:switchType (8bit signed integer)
-    d:trackType (8bit signed integer)
+    d:pointFrom (32 bit signed integer)
+    d:pointTo (32 bit signed integer)
+    d:switchType (8 bit signed integer)
+    d:trackType (8 bit signed integer)
   }
 
   object LINE {
-    d:id (32bit signed integer)
+    d:id (32 bit signed integer)
     d:name (string)
     d:firstStation (string)
     d:lastStation (string)
-    d:fromKilometer (32bit float)
-    d:toKilometer (32bit float)
+    d:fromKilometer (32 bit float)
+    d:toKilometer (32 bit float)
   }
 
   object SWITCHTRACK {
-    d:gleisstrangId (32bit signed integer)
+    d:gleisstrangId (32 bit signed integer)
     d:gleisstrangBez (string)
-    d:weicheId (32bit signed integer)
+    d:weicheId (32 bit signed integer)
     d:ablenkRichtung (string)
     d:ablenkung (string)
     d:betriebspunkt (string)
     d:herzStueck (string)
-    d:minRadius  (32bit float)
-    d:nr (32bit signed integer)
+    d:minRadius  (32 bit float)
+    d:nr (32 bit signed integer)
     d:zusNr (string)
     d:schienenProfil
     d:status (string)
     d:schienenProfil (string)
     d:schwellenArt (string)
-    d:typenPlanNr (32bit signed integer)
+    d:typenPlanNr (32 bit signed integer)
     d:typNrZusatz (string)
     d:weichenArt (string)
     d:weichenTyp (string)
@@ -271,28 +277,28 @@
   }
 
   object TRACKOBJECT {
-    d:trackId (32bit signed integer)
-    d:type (32bit signed integer)
-    d:positionStart (32bit float)
-    d:positionEnd (32bit float)
+    d:trackId (32 bit signed integer)
+    d:type (32 bit signed integer)
+    d:positionStart (32 bit float)
+    d:positionEnd (32 bit float)
     d:extraInfo (string)
   }
 
   object TRACKPOINT {
-    d:trackId (32bit signed integer)
-    d:lineId (32bit signed integer)
-    d:x (32bit float)
-    d:y (32bit float)
-    d:z (32bit float)
-    d:radius (32bit float)
-    d:kilometer (32bit float)
-    d:position (32bit float)
-    d:cant (32bit float)
-    d:inclination (32bit float)
+    d:trackId (32 bit signed integer)
+    d:lineId (32 bit signed integer)
+    d:x (32 bit float)
+    d:y (32 bit float)
+    d:z (32 bit float)
+    d:radius (32 bit float)
+    d:kilometer (32 bit float)
+    d:position (32 bit float)
+    d:cant (32 bit float)
+    d:inclination (32 bit float)
   }
 
   object PROPERTY {
-    d:propertyId (32bit signed integer)
+    d:propertyId (32 bit signed integer)
     d:name (string)
     d:description.ge (string)
     d:description.fr (string)
@@ -317,8 +323,9 @@
   object "//SESSION_NAME//" as session_name {
     a:Element (string) = "SESSION"
     a:MeasuringMode {OPERATIV | SIMULATION | TEST}
-    a:StartTime (64bit integer, timestamp)
-    a:EndTime (64bit integer, timestamp)
+    a:StartTime (Timestamp)
+    a:EndTime (Timestamp)
+    a:PositionSource (string)
   }
 
   object PLATFORM {
@@ -343,8 +350,9 @@
   object "//SESSION_NAME//" as session_name {
     a:Element (string) = "SESSION"
     a:MeasuringMode {OPERATIV | SIMULATION | TEST}
-    a:StartTime (64bit integer, timestamp)
-    a:EndTime (64bit integer, timestamp)
+    a:StartTime (Timestamp)
+    a:EndTime (Timestamp)
+    a:PositionSource (string)
   }
 
   object ENVIRONMENT 
@@ -352,23 +360,23 @@
   object timestamp #LightGray
 
   object VEHICLESPEED {
-    d:data (64bit integer)
+    d:data (64 bit integer)
   }
 
   object AMBIENTTEMPERATURE {
-    d:data (64bit integer)
+    d:data (64 bit integer)
   }
 
   object WINDSPEED {
-    d:data (64bit integer)
+    d:data (64 bit integer)
   }
 
   object WINDDIRECTION {
-    d:data (64bit integer)
+    d:data (64 bit integer)
   }
 
   object WEATHERCONDITIONS {
-    d:data (64bit integer)
+    d:data (64 bit integer)
   }
 
   session_name "1" o-- "0..1" ENVIRONMENT
@@ -378,6 +386,44 @@
   ENVIRONMENT "1" o-- "1" WINDDIRECTION
   ENVIRONMENT "1" o-- "1" WEATHERCONDITIONS
   ENVIRONMENT "1" o-- "1" timestamp
+
+@enduml
+
+' RCM-DX Section Structure Overview
+@startuml RCM_DX_Section_overview
+
+  object "//SESSION_NAME//" as session_name {
+    a:Element (string) = "SESSION"
+    a:MeasuringMode {OPERATIV | SIMULATION | TEST}
+    a:StartTime (Timestamp)
+    a:EndTime (Timestamp)
+    a:PositionSource (string)
+  }
+
+  object SECTION 
+
+  object SECTIONINFO {
+    d:firstTrackOffset (64 bit float)
+    d:lastTrackOffset (64 bit float)
+    d:startTimestamp (Timestamp)
+    d:endTimestamp (Timestamp)
+    d:coachOrientation (8 bit integer)
+    d:trackListOffset (64 bit float)
+  }
+
+  object TRACKLIST {
+    d:id (32 bit signed integer)
+    d:startTimestamp (Timestamp)
+    d:endTimestamp (Timestamp)
+    d:orientation (8 bit signed integer)
+    d:startCoveredDistance (64 bit float)
+    d:endCoveredDistance (64 bit float)
+
+  }
+
+  session_name "1" o-- "1" SECTION
+  SECTION "1" o-- "1" SECTIONINFO
+  SECTION "1" o-- "1" TRACKLIST
 
 @enduml
 
@@ -396,19 +442,19 @@
 
   object MESSAGES {
     d:message (string)
-    d:level (string)
     d:systemReference (string)
     d:channelReference (string)
-    d:timestamp (64bit integer, timestamp)
+    d:level (string)
+    d:timestamp (Timestamp)
   }
 
   object OUTAGES {
     d:message (string)
-    d:level (string)
     d:systemReference (string)
     d:channelReference (string)
-    d:timestamp (64bit integer, timestamp)
-    d:durations (64bit integer)
+    d:level (string)
+    d:timestamp (Timestamp)
+    d:durations (64 bit integer)
   }
 
   measuringsystem_name "1" o-- "0..1" LOGGING
@@ -430,7 +476,7 @@
   object limitvalue #LightGray
 
   object "//LIMIT_NAME//" as limit_name {
-    a:Priority (8bit integer)
+    a:Priority (8 bit integer)
     a:LimitBound (string)
   }
 
