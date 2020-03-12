@@ -3,7 +3,7 @@
 ## Change history
 
 | Document version | RCM-DX version | Date | Autor | Change |
-|-|-|--|----|
+|-|-|-|--|-----|
 | 0.1.0 | 0.1 | 06.03.2015 | Martin Frey (SCS) | Initial version |
 | 0.2.0 | 0.2 | 20.03.2015 | Martin Frey (SCS) | Extensions |
 | 0.3.0 | 0.3 | 15.04.2015 | Patrik Wernli (SCS) | Review |
@@ -59,18 +59,22 @@ The extension of the specification is permitted. However, it must be taken into 
 
 The RCM-DX data format is subject to changes, these are indicated by the version number in the document, see chapter [\ref{root-group} Root Group](#root-group). The version number consists of two numbers, separated by dots and is composed as follows: **[Major].[Minor]**. Example: **1.0**  
 
-**Major:** Defines the main version and indicates when major changes have been made. These are, for example, that changing the basic structure or renaming groups, datasets or attributes (major, minor attribute as an example), which are mandatory.  
-**Minor:** Indicates minor changes, such as changing the name of an attribute that is not mandatory or defining new groups, attributes, or datasets. These changes do not affect anything that cannot be read with an existing RCM-DX read-write library.  
+**Major**  
+Defines the main version and indicates when major changes have been made. These are, for example, that changing the basic structure or renaming groups, datasets or attributes (major, minor attribute as an example), which are mandatory.
 
+**Minor**  
+Indicates minor changes, such as changing the name of an attribute that is not mandatory or defining new groups, attributes, or datasets. These changes do not affect anything that cannot be read with an existing RCM-DX read-write library.
+
+**Revision**  
 To version this specification, a third digit is introduced with the abbreviation **[Rev]** for revision. This, however, is only valid for this document as a help and not for the overview of changes to the structure itself. This third version number is not visible in the RCM-DX files. If the major and/or minor version number is increased, the revision number is reset to zero '0'.
 
-See chapter [/ref{change-history} Change history](#change-history).
+See chapter [\ref{change-history} Change history](#change-history).
 
 #### Diagrams
 
 The following figure shows the color coding used in diagrams:
 
-![RCM-DX Diagram Overview](images/generated/RCM_DX_diagram_example.png)
+![RCM-DX Diagram Overview](images/generated/RCM_DX_diagram_example.png){width=270px}
 
 ## Definitions
 
@@ -119,9 +123,14 @@ Groups are described in this specification as follows:
 |--|--|--|
 | `SESSION` | `RCMDX` | yes |
 
-**Name:** The name of the group.  
-**Parent object:** A group can be a subgroup of a group, here the name of this group is mentioned. If the name is written in quotation marks, it can be freely chosen by the creator of the file. Without quotation marks, the name of the group is meant.  
-**Mandatory:** If the group is absolutely necessary and must exist, `yes` is written here, otherwise `no`.  
+**Name**  
+The name of the group.
+
+**Parent object**  
+A group can be a subgroup of a group, here the name of this group is mentioned. If the name is written in quotation marks, it can be freely chosen by the creator of the file. Without quotation marks, the name of the group is meant.
+
+**Mandatory**  
+If the group is absolutely necessary and must exist, `yes` is written here, otherwise `no`.
 
 > Group names whose ending is "_NAME" are wildcard names and are replaced as described in the corresponding paragraph. Example: *SESSION_NAME*
 
@@ -135,11 +144,20 @@ Attributes are described in this specification as follows:
 |---|---|---|---|-----|
 | StartTime | 64 bit integer | *SESSION_NAME* | yes | Start time in miliseconds, for example: `1553237099000000000` |
 
-**Name:** The name of the attribute  
-**Data type:** Primitive data type of the attribute, this describes the type of the content in the attribute itself.  
-**Parent object:** An attribute is always assigned to a group or a dataset, here the name of this group or dataset is mentioned.  
-**Mandatory:** If the attribute is absolutely necessary and must exist as well as contain a value, `yes` is written here, otherwise `no`.  
-**Description:** Description and or examples of the attribute  
+**Name**  
+The name of the attribute.
+
+**Data type**  
+Primitive data type of the attribute, this describes the type of the content in the attribute itself.
+
+**Parent object**  
+An attribute is always assigned to a group or a dataset, here the name of this group or dataset is mentioned.
+
+**Mandatory**  
+If the attribute is absolutely necessary and must exist as well as contain a value, `yes` is written here, otherwise `no`.
+
+**Description**  
+Description and or examples of the attribute.
 
 ^1^Upper-Camel-Case-Notation: The Upper Camel Case Notation defines the way a composite name is written. Further information can be found at the following link: [Upper Camel Case](https://en.wikipedia.org/wiki/Camel_case)
 
@@ -162,11 +180,20 @@ The datasets are described in the lowerCamelCase-Notation^2^. Datasets are descr
 |--|---|----|---|-----|
 | timestamp | Timestamp | *DATASOURCE_NAME* | yes | `Array` |
 
-**Name:** The name of the dataset.  
-**Data type:** Primitive data type of the content in the dataset, thus the data type of the contained data.  
-**Parent object:** A dataset is always assigned to a group, here the name of this group is mentioned.  
-**Mandatory:** If the dataset is absolutely necessary and must be present, `yes` is written here, otherwise `no`.  
-**Storage type:** One of the storage types described in this chapter.  
+**Name**  
+The name of the dataset.
+
+**Data type**  
+Primitive data type of the content in the dataset, thus the data type of the contained data.
+
+**Parent object**  
+A dataset is always assigned to a group, here the name of this group is mentioned.
+
+**Mandatory**  
+If the dataset is absolutely necessary and must be present, `yes` is written here, otherwise `no`.
+
+**Storage type**  
+One of the storage types described in this chapter.
 
 Descriptions of the dataset are added outside the table.  
 
@@ -320,11 +347,16 @@ Images can have different resolutions in X and Y direction, this must be conside
 #### Image resolution types
 
 The 'ResolutionType' attribute contains information about the values of the 'ResolutionInfoX' and 'ResolutionInfoY' attributes.  
-ResolutionType' can contain the following values: 'mmPerPixel' or 'dimension
+ResolutionType' can contain the following values: 'none', 'mmPerPixel' or 'dimension
 
-**`none`**: No information available.
-**`mmPerPixel`**: Defines the pixel size in mm. The values in 'ResolutionInfoX' and 'ResolutionInfoY' give information about the real size of a pixel in millimeters.  
-**`dimension`**: Defines the resolution of the image. The values in `ResolutionInfoX` and `ResolutionInfoY` give information about the image size in pixels.  
+**`none`**  
+No information available.  
+
+**`mmPerPixel`**  
+Defines the pixel size in mm. The values in 'ResolutionInfoX' and 'ResolutionInfoY' give information about the real size of a pixel in millimeters.  
+
+**`dimension`**  
+Defines the resolution of the image. The values in `ResolutionInfoX` and `ResolutionInfoY` give information about the image size in pixels.  
 
 #### ContentType without Image MIME Type
 
@@ -376,9 +408,14 @@ Below is a list of the attributes assigned to the data group `VID`:
 The 'ResolutionType' attribute contains information about the values of the 'ResolutionInfoX' and 'ResolutionInfoY' attributes.  
 ResolutionType' can contain the following values: 'mmPerPixel' or 'dimension
 
-**`none`**: No information available.
-**`mmPerPixel`**: Defines the pixel size in mm. The values in 'ResolutionInfoX' and 'ResolutionInfoY' give information about the real size of a pixel in millimeters.  
-**`dimension`**: Defines the resolution of the video in pixel. The values in `ResolutionInfoX` and `ResolutionInfoY` give information about the video size in pixels.  
+**`none`**  
+No information available.
+
+**`mmPerPixel`**  
+Defines the pixel size in mm. The values in 'ResolutionInfoX' and 'ResolutionInfoY' give information about the real size of a pixel in millimeters. 
+
+**`dimension`**  
+Defines the resolution of the video in pixel. The values in `ResolutionInfoX` and `ResolutionInfoY` give information about the video size in pixels.  
 
 #### ContentType without Video MIME Type
 
@@ -407,7 +444,7 @@ The time stamps are always stored in ascending order.
 |----|---|----|---|----|
 | timestamp | Timestamp | *DATASOURCE_NAME* | yes | `Array` |
 
-These time stamps are recorded either by a defined distance travelled or by a frequency, this is described in more detail in the chapter [\ref{trigger-mode} Trigger mode](#trigger-mode).
+These time stamps are recorded either by a defined distance travelled or by a frequency, this is described in more detail in the chapter [\ref{triggermode} Trigger mode](#triggermode).
 
 ### Durations
 
@@ -549,7 +586,7 @@ The group `SECTION`, contains information about a session.
 |--|--|--|
 | `SECTION` | *SESSION_NAME* | yes |
 
-![Section overview](images/generated/RCM_DX_Section_overview.png){ width=190px }
+![Section overview](images/generated/RCM_DX_Section_overview.png){ width=300px }
 
 #### Section info
 
@@ -572,8 +609,7 @@ The following data fields are contained in the group "SECTIONINFO":
 | coachOrientation | 8 bit integer | `SECTIONINFO` | yes | `Array` |
 | trackInfoOffset | 64 bit float | `SECTIONINFO` | yes | `Array` |
 
-###### **coachOrientation**
-
+**coachOrientation**  
 Defines the orientation of travel of the measuring vehicle per section. This array contains only as many entries as there are sections.
 
 | Number | Orientation of travel |
@@ -581,24 +617,19 @@ Defines the orientation of travel of the measuring vehicle per section. This arr
 | 0 | forward |
 | 1 | Reverse |
 
-###### **firstTrackOffset**
-
+**firstTrackOffset**  
 Indicates the distance in meters between the start of the track and the position at the beginning of the measurement. This array contains only as many entries as there are sections.
 
-###### **lastTrackOffset**
-
+**lastTrackOffset**  
 Indicates the distance in meters between the position at the end of the measurement and the end of the rail. This array contains only as many entries as there are sections.
 
-###### **startTimestamp**
-
+**startTimestamp**  
 Start time of the section as time stamp since 1.1.1970 at 00:00 UTC.
 
-###### **endTimestamp**
-
+**endTimestamp**  
 End time of the section as time stamp since 1.1.1970 at 00:00 UTC. `endTimestamp` must be greater than `startTimestamp`.
 
-###### **trackInfoOffset**
-
+**trackInfoOffset**  
 This dataset defines how many entries in the datasets of the "Track list group" belong to a section. One entry is created per section in a session and the number of entries is defined. A group size can be determined by calculating the specified offset value at the $x$ position minus the offset value at the $x-1$ position.
 
 ### Track list group
@@ -620,28 +651,22 @@ This group contains the information regarding the section itself.
 | startCoveredDistance | 64 bit float | `TRACKLIST` | yes | `Array` |
 | endCoveredDistance | 64 bit float | `TRACKLIST` | yes | `Array` |
 
-##### Id
-
+**id**  
 ID of the tracks that are part of the section.
 
-##### Start timestamp
-
+**startTimestamp**  
 Time since beginning of the session at which the measurement on a track started.
 
-##### End timestamp
-
+**endTimestamp**  
 Time since the beginning of the session at which the measurement on a track ended. `endTimestamp` must be greater than `startTimestamp`.
 
-##### Orientation
-
+**orientation**  
 Orientation of the track with respect to the section’s driving direction. 0 (false) means that the track kilometrage increases with the driving direction. 1 (true) means that the track kilometrage decreases with the driving direction.
 
-##### Start covered distance
-
+**startCoveredDistance**  
 Start covered distance of the track in the section.
 
-##### End covered distance
-
+**endCoveredDistance**  
 End covered distance of the track in the section.
 
 ### Position group
@@ -668,15 +693,32 @@ This group contains general information on the position.
 | positionQuality | 8 bit integer | `POSITION` | yes | `Array` |
 | timestamp | 64 bit integer | `POSITION` | yes | `Array` |
 
-**coveredDistance:** Total length of a session  
-**vehicleSpeed:** Speed of the vehicle at the time  <!-- TODO! -->
-**trackId:** Defined track ID on which the vehicle is located at the time of recording  
-**lineId:** Defined line ID on which the vehicle is located at the time of recording  
-**trackOffset:** Distance between starting point of track and current position  
-**lineKilometer:** Absolute position on the line travelled at the time of recording  
-**positionQuality:** Quality of the position measurement between zero (0) very good to 15 very bad  
-**positionAccuracy:** The position accuracy
-**positionAccuracy:** The timestamps according to the number of values in each dataset
+**coveredDistance**  
+Total length of a session.
+
+**vehicleSpeed**  
+Speed of the vehicle at the time.  <!-- TODO! -->
+
+**trackId**  
+Defined track ID on which the vehicle is located at the time of recording.
+
+**lineId**  
+Defined line ID on which the vehicle is located at the time of recording.
+
+**trackOffset**  
+Distance between starting point of track and current position.
+
+**lineKilometer**  
+Absolute position on the line travelled at the time of recording.
+
+**positionQuality**  
+Quality of the position measurement between zero (0) very good to 15 very bad.
+
+**positionAccuracy**  
+The position accuracy.
+
+**positionAccuracy**  
+The timestamps according to the number of values in each dataset.
 
 Unit's are defined in the attribute `Unit` of each data field. <!-- TODO! -->
 
@@ -809,7 +851,7 @@ The following attributes are contained in the group of the measuring system:
 | Revision | string | *MEASURINGSYSTEM_NAME* | yes | Version of the software on the measuring system, issued by the owner of the platform |
 | InstanceVersion | string | *MEASURINGSYSTEM_NAME* | yes | Version of the data format created by the measuring instrument. This version can be different within different gauges of the same family |
 | Element | string | *MEASURINGSYSTEM_NAME* | yes | Contains the type of the group, this is fixed `MEASURINGSYSTEM` |
-| MeasuringMode | Enum | *MEASURINGSYSTEM_NAME* | yes | Indicates the measuring mode, defined in chapter [/ref{measurement-mode} Measuring mode](#measurement-mode) |
+| MeasuringMode | Enum | *MEASURINGSYSTEM_NAME* | yes | Indicates the measuring mode, defined in chapter [\ref{measurement-mode} Measuring mode](#measurement-mode) |
 
 ##### Measurement mode
 
@@ -826,7 +868,7 @@ There are three different measurement modes, which are explained individually be
 A data source group can contain several channels and thus several data sources. This group combines these channels. The naming can be freely selected, but must be unique.
 
 A time stamp is available for each individual measuring point within a data source group. There are two types of data acquisition for a data source group. One is always after a defined distance (e.g. every 250 millimeters) and the other is the recording of measurement data at a certain frequency (e.g. 4000 Hz).
-The way the measurement data was recorded is shown in two attributes for each channel group. For a description see [\ref{trigger-mode} Trigger mode](#trigger-mode).
+The way the measurement data was recorded is shown in two attributes for each channel group. For a description see [\ref{triggermode} Trigger mode](#triggermode).
 
 #### Attributes
 
@@ -854,37 +896,22 @@ The following attributes are contained in this group:
 
 | Name | Data type | Parent object | Mandatory | Description |
 |------|---|----|---|----|
-| TriggerMode | Enum | *CHANNEL_NAME* | yes | See chapter [\ref{trigger-mode} Trigger Mode](#trigger-mode) |
-| TriggerValue | 64 bit float | *CHANNEL_NAME* | yes | See chapter ["\ref{trigger-value} Trigger value"](#trigger-value) |
-| ChannelBasis | Enum | *CHANNEL_NAME* | yes | See chapter [\ref{channel-base} Channel Base](#channel-base) |
-| ChannelType | Enum | *CHANNEL_NAME* | yes | See chapter [\ref{channel-type} Channel Type](#channel-type) |
-| Neighbor | string | *CHANNEL_NAME* | yes | See chapter [\ref{neighbor} Neighbor](#neighbor) |
+| TriggerMode | Enum | *CHANNEL_NAME* | yes | See chapter [\ref{triggermode} Trigger Mode](#triggermode) |
+| TriggerValue | 64 bit float | *CHANNEL_NAME* | yes | See below |
+| ChannelBasis | Enum | *CHANNEL_NAME* | yes | See below |
+| ChannelType | Enum | *CHANNEL_NAME* | yes | See below |
+| Neighbor | string | *CHANNEL_NAME* | yes | See below |
 | MeasurementUncertainty | 32 bit float | *CHANNEL_NAME* | yes | This attribute contains the measurement accuracy of the channel according to the specifications of the measurement system. | <!-- TODO -->
-| PositionOffset | 32 bit signed float | *CHANNEL_NAME* | yes | See chapter [\ref{position-offset} Position Offset](#position-offset) |
+| PositionOffset | 32 bit signed float | *CHANNEL_NAME* | yes | See below |
 | Element | string | *CHANNEL_NAME* | yes | Contains the type of the group, this is fix `CHANNEL` |
 
-#### Trigger Mode
-
-This attribute defines how the data was recorded.
-
-Possible values are:
-
-| Value | Description | `TriggerValue` Unit |
-|---|----------|---|
-| TIME | Time-based measurement data recording | Nanoseconds |
-| FREQUENCY | Frequency-based measurement data recording | Hz |
-| DISTANCE | Distance-based measurement data acquisition | Milimeter |
-| EVENT | Event based recording | none |
-
-#### Trigger value
-
+**TriggerValue**  
 The trigger value defines when a value is measured based on the trigger mode.  
 
 > In a data source group there is always only one common trigger mode! A mixture within the group is not permitted!
 > The attribute has the value "0.0" if `TriggerMode` contains the value `EVENT`.
 
-#### Channel base
-
+**ChannelBasis**  
 Description of the channel, what was measured and in which direction. Since a measuring vehicle can move on a rail in two directions and the sensor could therefore be on the other side, it should be possible to indicate this. Here is the place for it.
 
 Possible values are:
@@ -897,8 +924,7 @@ Possible values are:
 | RAIL_RIGHT | Channel contains data of the right rail in terms of travel direction. The data has been corrected for direction of travel |
 | ABSOLUTE | Channel is not associated with a single rail |
 
-#### Channel Type
-
+**ChannelType**  
 Defines how a value was created. This can be measured, calculated or taken from a previously defined data source that was read from there and inserted into the file.
 
 The following values are possible:
@@ -910,16 +936,27 @@ The following values are possible:
 
 An example for reference values are defined target values which flow in from another source (file, database etc.) and are to be used for comparisons.
 
-#### Neighbor
-
+**Neighbor**  
 Refers to the name of an adjacent channel. This can be the right rail, for example, when measuring the track temperature of the left rail.
 Thus the attribute `neighbor` of the channel "TEMP_RAIL_**L**" would contain the name "TEMP_RAIL_**R**" and vice versa.
 
-#### Position Offset
-
+**PositionOffset**  
 Describes the distance between a defined zero point (position) on the measuring vehicle and a the measuring sensor. This specification is used to convert the exact time at which the measurement was taken to a defined zero point. The value can be positive or negative and has the unit millimeter.  
 
-##### Data object
+#### TriggerMode
+
+This attribute defines how the data was recorded.
+
+Possible values are:
+
+| Value | Description | `TriggerValue` Unit |
+|---|----------|---|
+| TIME | Time-based measurement data recording | Nanoseconds |
+| FREQUENCY | Frequency-based measurement data recording | Hz |
+| DISTANCE | Distance-based measurement data acquisition | Milimeter |
+| EVENT | Event based recording | none |
+
+#### Data object
 
 Each channel group receives a dataset with the actual measurement data:
 
@@ -938,17 +975,6 @@ The dataset needs more information, this is given as attributes:
 **Unit:** The physical unit of the measurement data, such as "millimeter". If no physical unit can be assigned to the data, this attribute remains empty.
 
 The dataset and the possible data that can be stored are described in more detail in the chapter [\ref{hdf5-datasets} Dataset](#hdf5-datasets).
-
-###### Example
-
-The units are now added to our defined channels. Each dataset now gets an attribute for this unit:
-
-| Channel Name | Attribute Name | Unit |
-|--|--|----|
-| TEMP | "Unit" | DegreeCelsius |
-| WIND_DIR | "Unit" | Degree |
-| WIND_SPEED | "Unit" | MeterPerSecond |
-| HUM | "Unit" | RelativeHumidity |
 
 ### Logging Group
 
@@ -976,11 +1002,20 @@ The following datasets are included in this group:
 
 This group receives a `timestamp` dataset as well as a `duration` dataset to indicate the time of the measurement failure.
 
-**systemReference:** A reference to the measurement system.  
-**channelReference:** A reference to a channel.  
-**datasourceReference:** A reference to a data source.  
-**level:** See chapter [/ref{level} Level](#level).  
-**message:** This dataset contains one message per entry about a failure of a measuring instrument.  
+**message**  
+This dataset contains one message per entry about a failure of a measuring instrument.
+
+**systemReference**  
+A reference to the measurement system.
+
+**channelReference**  
+A reference to a channel.
+
+**datasourceReference**  
+A reference to a data source.
+
+**level**  
+See chapter [\ref{level} Level](#level)
 
 ##### Level
 
@@ -1012,7 +1047,8 @@ The group `TOPOLOGY` contains the following attributes:
 |---|--|---|--|--|
 | Version | string | `TOPOLOGY` | yes | `Array` |
 
-**Version:** Version number of topology, included to check validity.
+**Version**  
+Version number of topology, included to check validity.
 
 The DfA (Database of fixed assets) is a SBB construct and reflects the SBB route network. The data comes from a database and is distributed as a file to the SBB measuring vehicles. They can read the information contained therein and also add it to the RCM-DX. This DfA is used for positioning and it is therefore possible to assign the measured data to an object from the route network.
 
@@ -1038,18 +1074,7 @@ The following datasets are included in this group, some of which are described i
 | switchType | 8 bit signed integer | TRACK | yes | `Array` |
 | trackType | 8 bit signed integer | TRACK | yes | `Array` |
 
-**direction:** Will be decided in a separate chapter: [\ref{direction} direction](#direction)  
-**id:** ID of the track  
-**gtgId:** Unique GTG ID of a GTG string, this ID is stored as UUID  
-**length:** The length of the track section  
-**name:** name of the track section  
-**pointFrom:** ID of the starting point of the track section  
-**pointTo:** ID of the end point of the track section  
-**switchType:** Will be reviewed in a separate chapter: [\ref{switchtype} switchType](#switchtype)  
-**trackType:** Will be published in a separate chapter: [\ref{tracktype} trackType](#tracktype)
-
-#### direction
-
+**direction**  
 The direction of a switch is specified in this dataset.  
 If the track is of the type "switch", a value greater than zero must be selected here. Which number means what is shown in the following table:  
 
@@ -1060,18 +1085,25 @@ If the track is of the type "switch", a value greater than zero must be selected
 | 2 | Left-handed switch |
 | 3 | switch running to the right |
 
-#### trackType
+**id**  
+ID of the track.
 
-The number in the *trackType* dataset defines the type of track that belongs to it. Which number means what is shown in the following table:
+**gtgId**  
+Unique GTG ID of a GTG string, this ID is stored as UUID.
 
-| Value | Description |
-|--|---|
-| 0 | Station track |
-| 1 | Track |
-| 2 | Switch |
+**length**  
+The length of the track section.
 
-##### switchType
+**name**  
+Name of the track section.
 
+**pointFrom**  
+ID of the starting point of the track section.
+
+**pointTo**  
+ID of the end point of the track section.
+
+**switchType**  
 If the track is of the type "Switch", a value greater than zero must be selected here. Which number means what is shown in the following table:
 
 | Value | Description |
@@ -1082,6 +1114,15 @@ If the track is of the type "Switch", a value greater than zero must be selected
 | 3 | Simple crossovers |
 | 4 | Double track connection |
 | 5 | Double crossover |
+
+**trackType**  
+The number in the *trackType* dataset defines the type of track that belongs to it. Which number means what is shown in the following table:
+
+| Value | Description |
+|--|---|
+| 0 | Station track |
+| 1 | Track |
+| 2 | Switch |
 
 ### Line Group
 
@@ -1102,12 +1143,23 @@ The following datasets are included in this group:
 | fromKilometer | string | `LINE` | yes | `Array` |
 | toKilometer | string | `LINE` | yes | `Array` |
 
-**id:** Defines the ID of the line, this is unique  
-**name:** The name of the line  
-**firstStation:** The name of the first station of this line  
-**LastStation:** The name of the last station of this line.  
-**km:** Start kilometre of the line, expressed in kilometres  
-**toKilometer:** Final kilometer of the line, in kilometers  
+**id**  
+Defines the ID of the line, this is unique.
+
+**name**  
+The name of the line.
+
+**firstStation**  
+The name of the first station of this line.
+
+**LastStation**  
+The name of the last station of this line.
+
+**km**  
+Start kilometre of the line, expressed in kilometres.
+
+**toKilometer**  
+Final kilometer of the line, in kilometers.
 
 ### Switch Track Group
 
@@ -1142,27 +1194,33 @@ The following datasets are included in this group:
 | softForm | string | `SWITCHTRACK` | yes | `Array` |
 | soft tongue | string | `SWITCHTRACK` | yes | `Array` |
 
-**gleisstrangId:** a reference to the GTG-ID  
-**trackBez:** Contains a description of the track section  
-**softId:** Contains the ID's of the switches as a reference  
+**gleisstrangId**  
+A reference to the GTG-ID.
+
+**trackBez**  
+Contains a description of the track section.
+
+**softId**  
+Contains the ID's of the switches as a reference.
+
 <!-- For subsequent datasets the descriptions are still missing. These would have to be supplemented once! 29.10.2019 Ammann Michael
-**Distracting riccation:**  
+**Distracting riccation**   
 **Deflection.  
-**Operating point:**  
-**heartPiece:**  
-**minRadius:**  
-**nr:**  
-**toNr:**  
-**rail profile:**  
-**status:**  
-**rail profile:**  
-**ThresholdsType:**  
-**TypesPlanNr:**  
-**typeNradditional:**  
-**SwitchType:**  
-**pointsType:**  
-**pointsForm:**  
-**soft tongue:**  
+**Operating point**   
+**heartPiece**   
+**minRadius**   
+**nr**   
+**toNr**   
+**rail profile**   
+**status**   
+**rail profile**   
+**ThresholdsType**   
+**TypesPlanNr**   
+**typeNradditional**   
+**SwitchType**   
+**pointsType**   
+**pointsForm**   
+**soft tongue**   
  -->
 
 ### Track Object Group
@@ -1183,11 +1241,20 @@ The following datasets are included in this group:
 | positionEnd | 32 bit signed integer | `TRACKOBJECT` | yes | `Array` |
 | extraInfo | string | `TRACKOBJECT` | yes | `Array` |
 
-**trackId:** Contains the ID of the track to which the track is connected.  
-**type:** Type of the object  
-**positionStart:** Start position of the object in meters  
-**positionEnd:** End position of the object in meters  
-**ExtraInfo:** Additional information about the object, for example, the ID of a balise.  
+**trackId**  
+Contains the ID of the track to which the track is connected.
+
+**type**  
+Type of the object.
+
+**positionStart**  
+Start position of the object in meters.
+
+**positionEnd**  
+End position of the object in meters.
+
+**ExtraInfo**  
+Additional information about the object, for example, the ID of a balise.
 
 ### Track Point Group
 
@@ -1212,16 +1279,35 @@ The following datasets are included in this group:
 | cant | 32 bit float | `TRACKPOINT` | yes | `Array` |
 | inclination | 32 bit float | `TRACKPOINT` | yes | `Array` |
 
-**trackId:** Reference to the ID of the track section  
-**lineId:** Reference to the ID of the line  
-**x:** X-Koordiante of the point  
-**y:** Y-Koordiante of the point  
-**z:** Z-Koordiante of the point  
-**radius:** The radius of a point, given in meters.  
-**Kilometres:** Contains the line kilometre of the point in the route network, expressed in kilometres.  
-**Position:** Position of the point, in meters  
-**cant:** The inclination at this point, expressed in millimetres.  
-**Inclination:** Gradient at this point, expressed in parts per thousand
+**trackId**  
+Reference to the ID of the track section.
+
+**lineId**  
+Reference to the ID of the line.
+
+**x**  
+X-Koordiante of the point.
+
+**y**  
+Y-Koordiante of the point.
+
+**z**  
+Z-Koordiante of the point.
+
+**radius**  
+The radius of a point, given in meters.
+
+**kilometers**  
+Contains the line kilometre of the point in the route network, expressed in kilometres.
+
+**position**  
+Position of the point, in meters.
+
+**cant**  
+The inclination at this point, expressed in millimetres.
+
+**inclination**  
+Gradient at this point, expressed in parts per thousand.
 
 ### Property Group
 
@@ -1242,12 +1328,23 @@ The following datasets are included in this group:
 | description.it | string | `PROPERTY` | yes | `Array` |
 | description.en | string | `PROPERTY` | yes | `Array` |
 
-**propertyId:** Unique ID of the characteristic  
-**name:** Name of the characteristic  
-**description.ge:** Description of the characteristic in the language German  
-**description.fr:** Description of the characteristic in French language  
-**description.it:** Description of the characteristic in Italian language  
-**description.en:** Description of the feature in English language  
+**propertyId**  
+Unique ID of the characteristic.
+
+**name**  
+Name of the characteristic.
+
+**description.ge**  
+Description of the characteristic in the language German.
+
+**description.fr**  
+Description of the characteristic in French language.
+
+**description.it**  
+Description of the characteristic in Italian language.
+
+**description.en**  
+Description of the feature in English language.
 
 ### Event Group  
 
@@ -1272,41 +1369,36 @@ Within the group there are the following data fields:
 Each of these datasets contains a list with information about an entry, at a certain time.
 Each dataset is described in more detail in the following subchapters.
 
-#### System reference "systemReference"
-
+**systemReference**
 Contains a list of entries containing the name of the system that triggered the event.
 
 | Name | Data type | Parent Object | Mandatory | Storage Type |
 |----|---|----|---|----|
 | systemReference | string | `EVENT` | yes | `Array` |
 
-#### Channel reference "channelReference"
-
+**channelReference**
 Contains a list of entries that refers to a channel to which the event applies.
 
 | Name | Data type | Parent Object | Mandatory | Storage Type |
 |----|---|----|---|----|
 | channelReference | string | `EVENT` | no | `Array` |
 
-#### Event Data
-
+**data**
 This dataset contains the actual information about an event, this in the XML notation which is described in more detail in each chapter of the event types.  
-A type can be stored for each event. These are explained in more detail in the chapter [\ref{event-types} Event Types](#event-types).
+A type can be stored for each event. These are explained in more detail below.
 
 | Name | Data type | Parent object | Mandatory | Storage type |
 |----|---|----|---|----|
 | data | string | `EVENT` | yes | `Array` |
 
-#### Duration
-
+**duration**
 Defines for each event the duration of the event itself. This value can also be zero.
 
 | Name | Data type | Parent object | Mandatory | Storage type |
 |----|---|----|---|----|
 | duration | 64 bit integer | `EVENT` | yes | `Array` |
 
-#### Event Types
-
+**type**
 Contains the type of an event.
 
 | Name | Data type | Parent object | Mandatory | Storage type |
@@ -1315,7 +1407,7 @@ Contains the type of an event.
 
 In the list "type" the type of the recorded event is shown. The different types contain different information which is shown in the following subchapters. There are corresponding XML schemas for all types that define the technical specifications.
 
-##### Defect
+#### Defect
 
 A defect can be, for example, an image of a rail showing a damage of the surface. This defect is recorded by a system. However, it may happen that this error is not one (incorrectly detected), this information can be specified afterwards (attribute "PossibleValidationResults").
 Defects are always channel bound and recorded or evaluated by a system.
@@ -1323,7 +1415,7 @@ In the following, the elements and attributes that occur in a *Defect* as XML ar
 
 The XML Schema can be found in the chapter [\ref{events-defect} EventsDefect](#events-defect).
 
-###### **XML elements**
+##### **XML elements**
 
 Not all of these elements must be present, details can be taken from the XML Schema.  
 
@@ -1334,7 +1426,7 @@ Not all of these elements must be present, details can be taken from the XML Sch
 | PossibleClassifications | Classification of a possible defect | Defect |
 | PossibleValidationResults | Possible confirmations of the defect | Defect |
 
-###### **XML attributes**
+##### **XML attributes**
 
 Below are the attributes of the root element "Defect":
 
@@ -1351,13 +1443,13 @@ Below are the attributes of the root element "Defect":
 | Parameter3Value | Value of parameter 3 | Defect |
 | ID | Unique number for identification of the error | Defect |
 
-##### Detected Object
+#### Detected Object
 
 These events indicate an object found during a diagrose ride. These can be, for example, detected balises or tunnels. What exactly counts as a found object is not defined in this specification, only the information for a recorded event.
 
 The XML Schema can be found in the chapter [\ref{events-generic} EventsGeneric](#events-generic).
 
-###### **XML elements**
+##### **XML elements**
 
 Not all of these elements must be present, details can be taken from the XML schema.
 
@@ -1368,7 +1460,7 @@ Not all of these elements must be present, details can be taken from the XML sch
 | Reference | Reference to a list of known and uniquely assignable objects of the railway company | DetectedObject |
 | ObjectAttribute | Further information about the object, the information is contained in the attributes | DetectedObject |
 
-###### **XML attributes**
+##### **XML attributes**
 
 | Name | Description | Parent object |
 |---|-----|--|
@@ -1379,18 +1471,18 @@ Not all of these elements must be present, details can be taken from the XML sch
 | ReferenceSystem | Reference to the name of the system from which the data originates | Reference |
 | Key | Information about the data contained in the "ObjectAttribute" element | ObjectAttribute |
 
-##### Limit Violation
+#### Limit Violation
 
 Limit value exceedances of measured values of a channel can also be recorded as events.  
 The XML schema can be found in chapter [\ref{events-generic} EventsGeneric](#events-generic).  
 
-###### **XML elements**
+##### **XML elements**
 
 | Name | Description | Parent object |
 |---|-----|--|
 | LimitViolation | Root Element | none |
 
-###### **XML attributes**
+##### **XML attributes**
 
 | Name | Description | Parent object |
 |---|-----|--|
@@ -1398,19 +1490,19 @@ The XML schema can be found in chapter [\ref{events-generic} EventsGeneric](#eve
 | ViolatedLimit | Name of the defined limit | LimitViolation |
 | ID | Unique ID of the event | LimitViolation |
 
-##### Consistency
+#### Consistency
 
 The message about the consistency of the data is triggered by a system that checks all data according to certain criteria. For example, this could be a check for black images in a video. If all frames in the video are black, something is wrong and the video is unusable. Messages are only created if a finding is present.
 
 The XML Schema can be found in the chapter [\ref{events-generic} EventsGeneric](#events-generic).  
 
-###### **XML element**
+##### **XML element**
 
 | Name | Description | Parent object |
 |---|-----|--|
 | Consistency | Root Element | none |
 
-###### **XML attributes**
+##### **XML attributes**
 
 | Name | Description | Parent object |
 |---|-----|--|
@@ -1419,7 +1511,8 @@ The XML Schema can be found in the chapter [\ref{events-generic} EventsGeneric](
 | Result | Result of the consistency check. | Consistency |
 | ID | Unique ID of the event (UUID) | Consistency |
 
-**Result:** The actual result of the consistency check. Each system that performs a consistency check has different results, which in turn must be described in more detail in its specification.
+**Result**  
+The actual result of the consistency check. Each system that performs a consistency check has different results, which in turn must be described in more detail in its specification.
 
 ### Record Group
 
@@ -1445,41 +1538,36 @@ Within the group there are the following data fields:
 Each of these datasets contains a list with information about an entry at a specific time.
 Each dataset is described in more detail in the following subchapters.  
 
-#### Record Data
-
+**data**  
 This dataset contains the actual information for a protocol entry, this in the XML notation which is described in more detail in each chapter of the protocol types.  
-The protocol entries are stored in this dataset as a list. A type can be stored for each entry. These are explained in more detail in the chapter [\ref{record-types} Record Types](#record-types).
+The protocol entries are stored in this dataset as a list. A type can be stored for each entry. These are explained in more detail below.
 
 | Name | Data type | Parent object | Mandatory | Storage type |
 |----|---|----|---|----|
 | data | string | `RECORD` | yes | `Array` |
 
-#### Duration
-
+**duration**  
 Defines for each entry the duration of the log entry itself. This value can also be zero.
 
 | Name | Data type | Parent object | Mandatory | Storage type |
 |----|---|----|---|----|
 | duration | 64 bit integer | `RECORD` | yes | `Array` |
 
-#### System reference systemReference
-
+**systemReference**  
 Contains a list of entries containing the name of the system that triggered the record.
 
 | Name | Data type | Parent Object | Mandatory | Storage Type |
 |----|---|----|---|----|
 | systemReference | `RECORD` | string | yes | `Array` |
 
-#### Channel reference channelReference
-
+**channelReference**  
 Contains a list of entries that refers to a channel to which the record applies.
 
 | Name | Data type | Parent Object | Mandatory | Storage Type |
 |----|---|----|---|----|
 | channelReference | `RECORD` | string | yes | `Array` |
 
-#### Record Types
-
+**type**  
 Contains the type of a log entry.
 
 | Name | Data type | Parent object | Mandatory | Storage type |
@@ -1488,36 +1576,36 @@ Contains the type of a log entry.
 
 In the list "recordtype" the type of the recorded protocol entry is shown. The different types contain different information, which is shown in the following subchapters. Corresponding XML schemas are available for all types, which define the technical specifications.
 
-##### Comment
+#### Comment
 
 Comments recorded during a diagnostic drive by the user. The content is not specified, only the XML structure.
 The XML schema can be found in chapter [\ref{events-comment} EventsComment](#events-comment).  
 
-###### XML elements
+##### XML elements
 
 | Name | Description | Parent object |
 |---|-----|--|
 | Comment | Root element and message, recorded by the user | none |
 
-###### XML attributes
+##### XML attributes
 
 | Name | Description | Parent object |
 |---|-----|--|
 | Username | Name of the user who recorded the message | Comment |
 | ID | Unique ID of this message | Comment |
 
-##### Corrupt
+#### Corrupt
 
 Messages of the type "damaged" or "unusable" do not receive a content specification, only the XML structure is predefined and described here.
 The XML schema can be found in chapter [\ref{events-generic} EventsGeneric](#events-generic).  
 
-###### XML elements
+##### XML elements
 
 | Name | Description | Parent object |
 |---|-----|--|
 | Corrupt | Root element and message, recorded by the user | none |
 
-###### XML attributes
+##### XML attributes
 
 | Name | Description | Parent object |
 |---|-----|--|
@@ -1549,8 +1637,11 @@ This group contains two datasets:
 | setting | string | *SETTING_NAME* | yes | `Array` |
 | timestamp | 64 bit integer | *SETTING_NAME* | yes | `Array` |
 
-**setting:** Contains the actual configuration.  
-**timestamp:** Contains the time from when this configuration is valid and was used.  
+**setting**  
+Contains the actual configuration.
+
+**timestamp**  
+Contains the time from when this configuration is valid and was used.
 
 The following attributes are contained in this group:  
 
@@ -1575,8 +1666,11 @@ The group `DATAPROCESSING` contains one datasets:
 | keyValue | string | `DATAPROCESSING` | yes | `Array` |
 | timestamp | 64 bit integer | `DATAPROCESSING` | yes | `Array` |
 
-**keyValue:** This record contains a unique key as a reference to a data processing step, followed by a value about what was done in that step or what the result was. Key- and value are separated by a colon charakter: `key:value`  
-**timestamp:** Contains the time of the acquisition of the entry in the `keyValue` dataset.  
+**keyValue**  
+This record contains a unique key as a reference to a data processing step, followed by a value about what was done in that step or what the result was. Key- and value are separated by a colon charakter: `key:value`
+
+**timestamp**  
+Contains the time of the acquisition of the entry in the `keyValue` dataset.
 
 ### Clearance Information Group
 
@@ -1593,8 +1687,11 @@ The group `CLEARANCEINFORMATION` contains one datasets:
 | keyValue | string | `CLEARANCEINFORMATION` | yes | `Array` |
 | timestamp | 64 bit integer | `CLEARANCEINFORMATION` | yes | `Array` |
 
-**keyValue:** This record contains a unique key as a reference to a clearance step, followed by a value about what was done in that step or what the result was. Key- and value are separated by a colon charakter: `key:value`  
-**timestamp:** Contains the time of the acquisition of the entry in the `keyValue` dataset.  
+**keyValue**  
+This record contains a unique key as a reference to a clearance step, followed by a value about what was done in that step or what the result was. Key- and value are separated by a colon charakter: `key:value`
+
+**timestamp**  
+Contains the time of the acquisition of the entry in the `keyValue` dataset.
 
 ## Changes to the previous version
 

@@ -337,8 +337,8 @@
   object global #LightGray
   object network #LightGray
 
-  session_name "1" o-- "1" PLATFORM
-  PLATFORM "1" o-- "1" CONFIGURATION
+  PLATFORM "1" o-- "1" session_name
+  session_name "1" o-- "1" CONFIGURATION
   CONFIGURATION "1" o-- "1" global
   CONFIGURATION "1" o-- "1" network
 
