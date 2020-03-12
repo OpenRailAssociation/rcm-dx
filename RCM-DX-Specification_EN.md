@@ -519,6 +519,8 @@ The group `SECTION`, contains information about a session.
 |--|--|--|
 | `SECTION` | *SESSION_NAME* | yes |
 
+![Section overview](images/generated/RCM_DX_Section_overview.png){ width=190px }
+
 #### Section info
 
 This group contains the information regarding the section itself.
@@ -535,8 +537,8 @@ The following data fields are contained in the group "SECTIONINFO":
 |---|----|---|--|--|
 | firstTrackOffset | 64 bit float | `SECTIONINFO` | yes | `Array` |
 | lastTrackOffset | 64 bit float | `SECTIONINFO` | yes | `Array` |
-| startTimestamp | 64 bit integer | `SECTIONINFO` | yes | `Array` |
-| endTimestamp | 64 bit signed integer | `TRACKLIST` | yes | `Array` |
+| startTimestamp | Timestamp | `SECTIONINFO` | yes | `Array` |
+| endTimestamp | Timestamp | `SECTIONINFO` | yes | `Array` |
 | coachOrientation | 8 bit integer | `SECTIONINFO` | yes | `Array` |
 | trackInfoOffset | 64 bit float | `SECTIONINFO` | yes | `Array` |
 
@@ -582,8 +584,8 @@ This group contains the information regarding the section itself.
 | Name | Data type | Parent object | Mandatory | Storage type |
 |------|-----|----|---|---|
 | id | 32 bit signed integer | `TRACKLIST` | yes | `Array` |
-| startTimestamp | 64 bit signed integer | `TRACKLIST` | yes | `Array` |
-| endTimestamp | 64 bit signed integer | `TRACKLIST` | yes | `Array` |
+| startTimestamp | Timestamp | `TRACKLIST` | yes | `Array` |
+| endTimestamp | Timestamp | `TRACKLIST` | yes | `Array` |
 | orientation | 8 bit signed integer | `TRACKLIST` | yes | `Array` |
 | startCoveredDistance | 64 bit float | `TRACKLIST` | yes | `Array` |
 | endCoveredDistance | 64 bit float | `TRACKLIST` | yes | `Array` |
@@ -767,10 +769,6 @@ A group is created for each system that collects data. The name of the group is 
 
 ![Overview of the measuring system structure](images/generated/RCM_DX_MS_overview.png)
 
-#### Example
-
-As an example, a measuring system that records environmental data is described here. This measuring system can acquire several types of data, but belongs to the measuring system group "ADDITIONAL_DATA". The data are stored in individual data source groups, this is described in the chapter [\ref{datasource-group} Datasource Group](#datasource-group).
-
 #### Attributes  
 
 The following attributes are contained in the group of the measuring system:
@@ -943,36 +941,27 @@ The following datasets are included in this group:
 | message | string | `LOGGING` | yes | `Array` |
 | systemReference | string | `LOGGING` | yes | `Array` |
 | channelReference | string | `LOGGING` | yes | `Array` |
-| level | string | `LOGGING` | yes | `Array` |
+| datasourceReference | string | `LOGGING` | yes | `Array` |
+| level | Enum | `LOGGING` | yes | `Array` |
 
 This group receives a `timestamp` dataset as well as a `duration` dataset to indicate the time of the measurement failure.
 
 **systemReference:** A reference to the measurement system.  
 **channelReference:** A reference to a channel.  
-**level:** Defines the severity of the failure or interruption of a measurement system.  
+**datasourceReference:** A reference to a data source.  
+**level:** See chapter [/ref{level} Level](#level).  
 **message:** This dataset contains one message per entry about a failure of a measuring instrument.  
 
-#### Message Group
+##### Level
 
-Status messages for a system or data source are stored in this group. If no messages exist, this group remains empty.
+Defines the severity of the failure or interruption of a measurement system. Following values are possible:
 
-The following datasets are contained in this group:
-
-| Name | Data type | Parent object | Mandatory | Storage type |
-|----|---|----|---|----|
-| message | string | `LOGGING` | yes | `Array` |
-| systemReference | string | `LOGGING` | yes | `Array` |
-| channelReference | string | `LOGGING` | yes | `Array` |
-| level | string | `LOGGING` | yes | `Array` |
-| timestamp | 64 bit integer | `LOGGING` | yes | `Array` |
-
-**systemReference:** Fully qualified name of the measuring system that sent the message.  
-**channelReference:** Fully qualified name of the channel that the message refers to. empty if the message is measuring system wide.
-
-<!-- TODO: Zu definieren, Kritischer Fehler oder nicht, was stimmt hier?! -->
-> **level:** **TODO:** Not yet defined....  
-
-**message:** The actual message to be recorded for a measurement system.  
+| level | description |
+|----|----|
+| CORRECTLY | The measuring system or the sensor functioned without problems and the measured values can be reused. |
+| TOTAL_FAILURE | The measuring system or sensor has completely failed and has not recorded any measured values during the session. |
+| PARTIAL_FAILURE | The measuring system or the sensor has partially failed and has only recorded measured values for a certain time during the session. |
+| MALFUNCTION | The measuring system or the sensor had a malfunction and the measured values cannot be used because they may not be correct. |
 
 ### Topology Group
 
@@ -1014,18 +1003,16 @@ The following datasets are included in this group, some of which are described i
 | gtgId | string | TRACK | yes | `Array` |
 | length | string | TRACK | yes | `Array` |
 | name | string | TRACK | yes | `Array` |
-| nrLine | string | TRACK | yes | `Array` |
 | pointFrom | 32 bit integer | TRACK | yes | `Array` |
 | pointTo | 32 bit integer | TRACK | yes | `Array` |
 | switchType | 8 bit signed integer | TRACK | yes | `Array` |
 | trackType | 8 bit signed integer | TRACK | yes | `Array` |
 
 **direction:** Will be decided in a separate chapter: [\ref{direction} direction](#direction)  
-**id:** ID of the track section  
+**id:** ID of the track  
 **gtgId:** Unique GTG ID of a GTG string, this ID is stored as UUID  
 **length:** The length of the track section  
 **name:** name of the track section  
-**nrLine:** Number of the line for the track section  
 **pointFrom:** ID of the starting point of the track section  
 **pointTo:** ID of the end point of the track section  
 **switchType:** Will be reviewed in a separate chapter: [\ref{switchtype} switchType](#switchtype)  
@@ -1104,7 +1091,7 @@ The following datasets are included in this group:
 
 | Name | Data type | Parent object | Mandatory | Storage type |
 |----|---|----|---|----|
-| track strand | 32 bit signed integer | `SWITCHTRACK` | yes | `Array` |
+| gleisstrangId | 32 bit signed integer | `SWITCHTRACK` | yes | `Array` |
 | gleisstrangBez | string | `SWITCHTRACK` | yes | `Array` |
 | soft | 32 bit signed integer | `SWITCHTRACK` | yes | `Array` |
 | deflecting direction | string | `SWITCHTRACK` | yes | `Array` |
@@ -1125,7 +1112,7 @@ The following datasets are included in this group:
 | softForm | string | `SWITCHTRACK` | yes | `Array` |
 | soft tongue | string | `SWITCHTRACK` | yes | `Array` |
 
-**trackId:** a reference to the GTG-ID  
+**gleisstrangId:** a reference to the GTG-ID  
 **trackBez:** Contains a description of the track section  
 **softId:** Contains the ID's of the switches as a reference  
 <!-- For subsequent datasets the descriptions are still missing. These would have to be supplemented once! 29.10.2019 Ammann Michael
@@ -1269,12 +1256,12 @@ Contains a list of entries that refers to a channel to which the event applies.
 
 | Name | Data type | Parent Object | Mandatory | Storage Type |
 |----|---|----|---|----|
-| channelReference | string | `EVENT` | yes | `Array` |
+| channelReference | string | `EVENT` | no | `Array` |
 
 #### Event Data
 
 This dataset contains the actual information about an event, this in the XML notation which is described in more detail in each chapter of the event types.  
-The events are stored in this dataset as a list. A type can be stored for each event. These are explained in more detail in the chapter [\ref{event-types} Event Types](#event-types).
+A type can be stored for each event. These are explained in more detail in the chapter [\ref{event-types} Event Types](#event-types).
 
 | Name | Data type | Parent object | Mandatory | Storage type |
 |----|---|----|---|----|
@@ -1306,7 +1293,7 @@ In the following, the elements and attributes that occur in a *Defect* as XML ar
 
 The XML Schema can be found in the chapter [\ref{events-defect} EventsDefect](#events-defect).
 
-###### XML elements
+###### **XML elements**
 
 Not all of these elements must be present, details can be taken from the XML Schema.  
 
@@ -1317,7 +1304,7 @@ Not all of these elements must be present, details can be taken from the XML Sch
 | PossibleClassifications | Classification of a possible defect | Defect |
 | PossibleValidationResults | Possible confirmations of the defect | Defect |
 
-###### XML attributes
+###### **XML attributes**
 
 Below are the attributes of the root element "Defect":
 
@@ -1340,7 +1327,7 @@ These events indicate an object found during a diagrose ride. These can be, for 
 
 The XML Schema can be found in the chapter [\ref{events-generic} EventsGeneric](#events-generic).
 
-###### XML elements
+###### **XML elements**
 
 Not all of these elements must be present, details can be taken from the XML schema.
 
@@ -1351,7 +1338,7 @@ Not all of these elements must be present, details can be taken from the XML sch
 | Reference | Reference to a list of known and uniquely assignable objects of the railway company | DetectedObject |
 | ObjectAttribute | Further information about the object, the information is contained in the attributes | DetectedObject |
 
-###### XML attributes
+###### **XML attributes**
 
 | Name | Description | Parent object |
 |---|-----|--|
@@ -1367,13 +1354,13 @@ Not all of these elements must be present, details can be taken from the XML sch
 Limit value exceedances of measured values of a channel can also be recorded as events.  
 The XML schema can be found in chapter [\ref{events-generic} EventsGeneric](#events-generic).  
 
-###### XML elements
+###### **XML elements**
 
 | Name | Description | Parent object |
 |---|-----|--|
 | LimitViolation | Root Element | none |
 
-###### XML attributes
+###### **XML attributes**
 
 | Name | Description | Parent object |
 |---|-----|--|
@@ -1387,13 +1374,13 @@ The message about the consistency of the data is triggered by a system that chec
 
 The XML Schema can be found in the chapter [\ref{events-generic} EventsGeneric](#events-generic).  
 
-###### XML element
+###### **XML element**
 
 | Name | Description | Parent object |
 |---|-----|--|
 | Consistency | Root Element | none |
 
-###### XML attributes
+###### **XML attributes**
 
 | Name | Description | Parent object |
 |---|-----|--|
