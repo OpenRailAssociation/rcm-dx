@@ -307,9 +307,9 @@ The following attributes are assigned to this type of dataset `value.VN`:
 
 #### Sample Index
 
-If datasets are created for coordinates, a dataset on the same level and with the name `sampleindex` must be available. The index number of an entry in `coord.CN`, `timestamp`, is entered as the start of the next group. If the dataset `sampleindex` has a value of $21$ at index zero, the first $20$ entries from the dataset `coord.CN` belong together.
+If datasets are created for coordinates, a dataset on the same level and with the name `sampleindex` must be available. The index number of an entry in `coord.CN`, is entered as the start of the next group. If the dataset `sampleindex` has a value of $21$ at index zero, the first $20$ entries from the dataset `coord.CN` belong together, the next data group start at with index number $21}. The number of entries in `sampleindex` corresponds to those in the data set `timestamp`.
 
-The resulting group size in the dataset `sampleIndex` may differ.
+The group sizes can vary among themselves, this can be seen from the index positions in `sampleIndex`.
 
 *Example*  
 The rail cross profile serves as an example here. At one point, several points of a rail profile are measured and stored. A channel with the name `coord.C0` for the X-axis and `coord.C1` is created for the Y-axis.
@@ -336,7 +336,7 @@ The group `IMG` gets the following attributes for the more detailed description 
 |---|---|---|---|-----|
 | ContentType | string | `IMG` | yes | Data type of images specified as MIME^3^ type, for example `Content-Type: <image/jpeg>`|
 | DataType | string | `IMG` | no | Description of data type, if no standard image, see [\ref{contenttype-without-image-mime-type} ContentType without Image MIME type](#contenttype-without-image-mime-type) |
-| ResolutionType | string | `IMG` | yes | Description in chapter [\ref{image-resolution-types} Image resolution types](#image-resolution-types) |
+| ResolutionType | Enum | `IMG` | yes | Description in chapter [\ref{image-resolution-types} Image resolution types](#image-resolution-types) |
 | ResolutionInfoX | 32 bit float | `IMG` | yes | Resolution in X direction |
 | ResolutionInfoY | 32 bit float | `IMG` | yes | Resolution in Y-direction |
 
@@ -396,7 +396,7 @@ Below is a list of the attributes assigned to the data group `VID`:
 |----|---|---|---|-----|
 | ContentType | string | `VID` | yes | Data type of the video stream specified as MIME^4^ type, for example `Content-Type: <video/h264>`|
 | DataType | string | `VID` | no | Description of data type if no standard video format, see [\ref{contenttype-without-video-mime-type} ContentType without video MIME type](#contenttype-without-video-mime-type) |
-| ResolutionType | string | `VID` | yes | Description in chapter [\ref{video-resolution-types} Video resolution types](#video-resolution-types) |
+| ResolutionType | Enum | `VID` | yes | Description in chapter [\ref{video-resolution-types} Video resolution types](#video-resolution-types) |
 | ResolutionX | 32 bit integer | `VID` | yes | Resolution in X direction in pixels |
 | ResolutionY | 32 bit integer | `VID` | yes | Resolution in Y direction in pixels |
 | FramesPerSecond | 16 bit integer | `VID` | yes | Number of frames per second (fps) in which the video was recorded |
