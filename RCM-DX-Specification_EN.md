@@ -1663,14 +1663,18 @@ The group `DATAPROCESSING` contains one datasets:
 
 | Name | Data type | Parent object | Mandatory | Storage type |
 |---|---|-----|---|----|
-| keyValue | string | `DATAPROCESSING` | yes | `Array` |
+| key | string | `DATAPROCESSING` | yes | `Array` |
+| value | string | `DATAPROCESSING` | yes | `Array` |
 | timestamp | 64 bit integer | `DATAPROCESSING` | yes | `Array` |
 
-**keyValue**  
-This record contains a unique key as a reference to a data processing step, followed by a value about what was done in that step or what the result was. Key- and value are separated by a colon charakter: `key:value`
+**key**  
+This record contains a unique key as a reference to a data processing step. The number of values in this dataset corresponds to the number in dataset `value`. The key value in index no. $0$ of `key` belongs to the value in the dataset `value` at index no. $0$ and so on.
+
+**value**
+This data set contains the value about what was done in that step or what the result was.
 
 **timestamp**  
-Contains the time of the acquisition of the entry in the `keyValue` dataset.
+Contains the time of the acquisition of the entry in the `key` and `value` data set.
 
 ### Clearance Information Group
 
@@ -1684,14 +1688,18 @@ The group `CLEARANCEINFORMATION` contains one datasets:
 
 | Name | Data type | Parent object | Mandatory | Storage type |
 |---|---|------|---|---|
-| keyValue | string | `CLEARANCEINFORMATION` | yes | `Array` |
+| key | string | `CLEARANCEINFORMATION` | yes | `Array` |
+| value | string | `CLEARANCEINFORMATION` | yes | `Array` |
 | timestamp | 64 bit integer | `CLEARANCEINFORMATION` | yes | `Array` |
 
-**keyValue**  
-This record contains a unique key as a reference to a clearance step, followed by a value about what was done in that step or what the result was. Key- and value are separated by a colon charakter: `key:value`
+**key**  
+This record contains a unique key as a reference to a clearance step. The number of values in this dataset corresponds to the number in dataset `value`. The key value in index no. $0$ of `key` belongs to the value in the dataset `value` at index no. $0$ and so on.
+
+**value**
+This data set contains the value about what was done in that step or what the result was.
 
 **timestamp**  
-Contains the time of the acquisition of the entry in the `keyValue` dataset.
+Contains the time of the acquisition of the entry in the `key` and `value` data set.
 
 ## Changes to the previous version
 
