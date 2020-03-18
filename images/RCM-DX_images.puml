@@ -121,7 +121,6 @@
     a:TriggerMode (Enum)
     a:TriggerValue (64 bit float)
     a:ChannelBasis (Enum)
-    a:ChannelType (string)
     a:ChannelType (Enum)
     a:Neighbor (string)
     a:MeasurementUncertinty (32 bit float)
@@ -132,16 +131,17 @@
     a:ContentType (MIME-Type, string)
     a:DataTyp (string)
     a:FramesPerSecond (16 bit signed integer)
-    a:ResolutionX (32 bit signed integer)
-    a:ResolutionY (32 bit signed integer)
+    a:ResolutionType (Enum)
+    a:ResolutionInfoX (32 bit signed integer)
+    a:ResolutionInfoY (32 bit signed integer)
   }
 
   object IMG {
     a:ContentType (MIME-Type, string)
     a:DataTyp (string)
     a:ResolutionType (string)
-    a:ResolutionX (32 bit signed integer)
-    a:ResolutionY (32 bit signed integer)
+    a:ResolutionvX (32 bit signed integer)
+    a:ResolutionInfoY (32 bit signed integer)
   }
 
   object data #LightGray {
