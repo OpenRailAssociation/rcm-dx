@@ -697,7 +697,7 @@ This group contains general information on the position.
 | coveredDistance | 64 bit float | `POSITION` | yes | `Array` |
 | coachOrientation | Enum | `POSITION` | yes | `Array` |
 | vehicleSpeed | 64 bit float | `POSITION` | yes | `Array` | <!-- TODO! -->
-| trackOrientation | 8 bit integer | `POSITION` | yes | `Array` |
+| trackOrientation | Enum | `POSITION` | yes | `Array` |
 | trackId | 32 bit integer | `POSITION` | yes | `Array` |
 | lineId | 32 bit integer | `POSITION` | yes | `Array` |
 | trackOffset | 64 bit float | `POSITION` | yes | `Array` |
