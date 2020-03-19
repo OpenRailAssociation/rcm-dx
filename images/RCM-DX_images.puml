@@ -1,7 +1,7 @@
 ' Visit http://plantuml.com/de/ for more information!
 
 ' RCM-DX diagramm example and explanation at the start of specification
-@startuml RCM_DX_diagram_example
+@startuml rcmdx_diagram_example
 
   object "//DATASOURCE_NAME//" as DATASOURCE {
     a:Element (string) = "DATASOURCE"
@@ -40,451 +40,356 @@
 
 @enduml
 
-' RCM-DX Common Structure Overview
-@startuml RCM_DX_Structure
+@startuml rcmdx_root_group
 
   object RCMDX {
-    a: Major (16 bit intger)
-    a: Minor (16 bit intger)
+    a:Major (16 bit integer)
+    a:Minor (16 bit integer)
+  }
+  
+  object PLATFORM {
+    a:Name (Enum)
+    a:VehicleNumber (string)
   }
 
-  object "//SESSION_NAME//" as session_name {
-    a:Element (string) = "SESSION"
+  RCMDX "1" o-- "1" PLATFORM
+
+  object DATAPROCESSING {
+    d:key (string)
+    d:value (string)
   }
+  RCMDX "1" o-- "1" DATAPROCESSING
 
-  object "//MEASURINGSYSTEM_NAME//" as measuringsystem_name {
-    a:Element (string) = "MEASURINGSYSTEM"
+  object CLEARANCEINFORMATION {
+    d:key (string)
+    d:value (string)
   }
+  RCMDX "1" o-- "1" CLEARANCEINFORMATION
 
-  object CLEARANCEINFORMATION
-  object DATAPROCESSING
-
-  object PLATFORM
-
-  object POSITION
-  object SECTION
-  
-  object ENVIRONMENT
-
-  object EVENT
-  object RECORDS
-
-  object TOPOLOGY
-
-  RCMDX "1" o-- "1..n" PLATFORM
-  RCMDX "1" o-- "0..1" CLEARANCEINFORMATION
-  RCMDX "1" o-- "0..1" DATAPROCESSING
-  
-  PLATFORM "1" o-- "1" session_name
-  session_name "1" o-- "1" POSITION
-  session_name "1" o-- "0..1" ENVIRONMENT
-  session_name "1" o-- "1..n" measuringsystem_name
-  session_name "1" o-- "0..1" EVENT
-  session_name "1" o-- "0..1" RECORDS
-  session_name "1" o-- "1" TOPOLOGY
-  session_name "1" o-- "1" SECTION
-  
 @enduml
 
-' RCM-DX Measurement Structure Overview
-@startuml RCM_DX_MS_overview
+@startuml rcmdx_platform_group
+
+  object PLATFORM {
+    a:Name (Enum)
+    a:VehicleNumber (string)
+  }
+
+  object "CONFIGURATION" as platform_config {
+    d:global (string)
+    d:network (string)
+  }
+
+  PLATFORM "1" o-- "1" platform_config
 
   object "//SESSION_NAME//" as session_name {
     a:Element (string) = "SESSION"
-    a:MeasuringMode {OPERATIV | SIMULATION | TEST}
     a:StartTime (Timestamp)
     a:EndTime (Timestamp)
     a:PositionSource (string)
   }
 
-  object "//MEASURINGSYSTEM_NAME//" as measuringsystem_name {
+  PLATFORM "1" o-- "1" session_name
+
+@enduml
+
+@startuml rcmdx_session_group
+
+  object "//SESSION_NAME//" as session_name {
+    a:Element (string) = "SESSION"
+    a:StartTime (Timestamp)
+    a:EndTime (Timestamp)
+    a:PositionSource (string)
+  } 
+  note left: Naming pattern: YYYYMMDD_hhmmss.SSS
+
+  object RECORD {
+    ...
+  }
+  session_name "1" o-- "0..1" RECORD
+
+  object EVENT {
+    ...
+  }
+  session_name "1" o-- "0..1" EVENT
+
+  object TOPOLOGY {
+    ...
+  }
+  session_name "1" o-- "1" TOPOLOGY
+
+  object "//MEASURINGSYSTEM_NAME//" as MEASURINGSYSTEM {
+    ...
+  }
+  session_name "1" o-- "1..n" MEASURINGSYSTEM
+
+  object ENVIRONMENT {
+    ...
+  }
+  session_name "1" o-- "0..1" ENVIRONMENT
+
+  object POSITION {
+    ...
+  }
+  session_name "1" o-- "1" POSITION
+
+  object SECTION {
+    ...
+  }
+  session_name "1" o-- "1" SECTION
+@enduml
+
+@startuml rcmdx_section_group
+
+  object SECTION
+
+    object SECTIONINFO {
+    d:firstTrackOffset (64 bit float)
+    d:lastTrackOffset (64 bit float)
+    d:startTimestamp (Timestamp)
+    d:endTimestamp (Timestamp)
+    d:coachOrientation (Enum)
+    d:trackInfoOffset (64 bit float)
+  }
+  SECTION "1" o-- "1" SECTIONINFO
+
+  object TRACKLIST {
+    d:id (32 bit signed integer)
+    d:startTimestamp (Timestamp)
+    d:endTimestamp (Timestamp)
+    d:orientation (Enum)
+    d:startCoveredDistance (64 bit float)
+    d:endCoveredDistance (64 bit float)
+  }
+  SECTION "1" o-- "1" TRACKLIST
+
+@enduml
+
+@startuml rcmdx_environment_group
+
+  object ENVIRONMENT
+
+  object "timestamp" as env_timestamp #LightGray {
+    data type: Timestamp
+  }
+  ENVIRONMENT "1" o-- "1" env_timestamp
+
+  object VEHICLESPEED {
+    a:Unit (meters per second [m/s])
+    d:data (16 bit float)
+  }
+  ENVIRONMENT "1" o-- "0..1" VEHICLESPEED
+
+  object AMBIENTTEMPERATURE {
+    a:Unit (degrees celsius [°C])
+    d:data (16 bit float)
+  }
+  ENVIRONMENT "1" o-- "0..1" AMBIENTTEMPERATURE
+
+  object WINDSPEED {
+    a:Unit (meters per second [m/s])
+    d:data (16 bit float)
+  }
+  ENVIRONMENT "1" o-- "0..1" WINDSPEED
+
+  object WINDDIRECTION {
+    a:Unit (degree [°])
+    d:data (16 bit float)
+  }
+  ENVIRONMENT "1" o-- "0..1" WINDDIRECTION
+
+  object WEATHERCONDITIONS {
+    a:Unit (string)
+    d:data (64 bit integer)
+  }
+  ENVIRONMENT "1" o-- "0..1" WEATHERCONDITIONS
+
+@enduml
+
+@startuml rcmdx_topology_group
+  object TOPOLOGY {
+    a:Version (string)
+  }
+
+  object TRACKS {
+    ...
+  }
+  TOPOLOGY "1" o-- "1" TRACKS
+
+  object SWITCHTRACKS {
+    ...
+  }
+  TOPOLOGY "1" o-- "1" SWITCHTRACKS
+
+  object TRACKOBJECTS {
+    ...
+  }
+  TOPOLOGY "1" o-- "1" TRACKOBJECTS
+
+  object TRACKPOINTS {
+    ...
+  }
+  TOPOLOGY "1" o-- "1" TRACKPOINTS
+
+  object PROPERTIES {
+    ...
+  }
+  TOPOLOGY "1" o-- "1" PROPERTIES
+
+  object LINES {
+    ...
+  }
+  TOPOLOGY "1" o-- "1" LINES
+@enduml
+
+@startuml rcmdx_measuringsystem_group
+  object "//MEASURINGSYSTEM_NAME//" as MEASURINGSYSTEM {
     a:Element (string) = "MEASURINGSYSTEM"
     a:Family (string)
     a:Revision (string)
     a:InstanceVersion (string)
-    a:MeasuringMode (string)
+    a:MeasuringMode (Enum) 
   }
 
-  object "//DATASOURCE_NAME//" as datasource_name {
+  object "//DATASOURCE_NAME//" as DATASOURCE {
+    a:Element (string) = "DATASOURCE"
+  }
+  MEASURINGSYSTEM "1" o-- "1..n" DATASOURCE
+
+  object LOGGING
+  MEASURINGSYSTEM "1" o-- "0..1" LOGGING
+
+  object "CONFIGURATION" as ms_config
+  MEASURINGSYSTEM "1" o-- "1" ms_config
+@enduml
+
+@startuml rcmdx_logging_group
+  object LOGGING
+
+  object OUTAGES {
+    d:message (string)
+    d:systemReference (string)
+    d:channelReference (string)
+    d:datasourceReference (string)
+    d:level (Enum)
+  }
+  LOGGING "1" o-- "1" OUTAGES
+  object "timestamp" as out_timestamp #LightGray {
+    data type: Timestamp
+  }
+  object "duration" as out_duration #LightGray {
+    data type: 64 bit integer
+  }
+  OUTAGES "1" o-- "1" out_timestamp
+  OUTAGES "1" o-- "1" out_duration
+
+  object MESSAGES {
+    d:message (string)
+    d:systemReference (string)
+    d:channelReference (string)
+    d:level (Enum)
+  }
+  LOGGING "1" o-- "1" MESSAGES
+
+  object "timestamp" as msg_timestamp #LightGray {
+    data type: Timestamp
+  }
+  MESSAGES "1" o-- "1" msg_timestamp
+@enduml
+
+@startuml rcmdx_datasource_group
+  object "//DATASOURCE_NAME//" as DATASOURCE {
     a:Element (string) = "DATASOURCE"
   }
 
-  object LIMIT
-
-  object "//LIMIT_NAME//" as limit_name {
-    a:Priority (8 bit integer)
-    a:LimitBound (string)
+  object "timestamp" as ds_timestamp #LightGray {
+    data type: Timestamp
   }
+  DATASOURCE "1" o-- "1" ds_timestamp
 
-  object "//CHANNEL_NAME//" as channel_name {
+  object "//CHANNEL_NAME//" as CHANNEL {
+    a:Element (string) = "CHANNEL"
+    ...
+  }
+  DATASOURCE "1" o-- "1..n" CHANNEL
+
+@enduml
+
+@startuml rcmdx_channel_group
+  object "//CHANNEL_NAME//" as CHANNEL {
     a:Element (string) = "CHANNEL"
     a:TriggerMode (Enum)
     a:TriggerValue (64 bit float)
     a:ChannelBasis (Enum)
     a:ChannelType (Enum)
     a:Neighbor (string)
-    a:MeasurementUncertinty (32 bit float)
+    a:MeasurementUncertainty (32 bit float)
     a:PositionOffset (32 bit float)
   }
 
+  object "data" as channel_data #LightGray
+  CHANNEL "1" o-- "0..1" channel_data
+
+  object LIMIT
+  CHANNEL "1" o-- "0..1" LIMIT
+
   object VID {
-    a:ContentType (MIME-Type, string)
-    a:DataTyp (string)
-    a:FramesPerSecond (16 bit signed integer)
-    a:ResolutionType (Enum)
-    a:ResolutionInfoX (32 bit signed integer)
-    a:ResolutionInfoY (32 bit signed integer)
+    ...
   }
-
+  CHANNEL "1" o-- "0..1" VID
+  
   object IMG {
-    a:ContentType (MIME-Type, string)
-    a:DataTyp (string)
-    a:ResolutionType (string)
-    a:ResolutionvX (32 bit signed integer)
-    a:ResolutionInfoY (32 bit signed integer)
+    ...
   }
-
-  object data #LightGray {
+  CHANNEL "1" o-- "0..1" IMG
+  
+  object sampleindex #LightGray
+  CHANNEL "1" o-- "0..1" sampleindex
+  
+  object coord.CN #LightGray {
     a:Unit (string)
   }
+  CHANNEL "1" o-- "0..n" coord.CN
 
   object data.PRE.MIN.X #LightGray {
     a:Unit (string)
   }
+  CHANNEL "1" o-- "0..n" data.PRE.MIN.X
 
   object data.PRE.MAX.X #LightGray {
     a:Unit (string)
   }
+  CHANNEL "1" o-- "0..n" data.PRE.MAX.X
 
   object data.PRE.AVG.X #LightGray {
     a:Unit (string)
   }
-
-  object img.NNNNNNNNN #LightGray
-  object vid.NNNNNNNNN #LightGray
-
-  object timeindex #LightGray {
-    a:BlockSize (long)
-    a:Exponent (integer)
-    a:Depth (integer)
-  }
-  
-  object timestamp #LightGray
-  object "timestamp" as ti #LightGray
-  object duration #LightGray
-  object "duration" as du #LightGray
-  
-  object sampleindex #LightGray {
-    a:Sorted (string)
-    **TBD:** Ist dieses Attribut notwendig?
-  }
-
-  object limitvalue #LightGray
-
-  object coord.CN #LightGray {
-    a:Unit (string)
-  }
-
-  session_name "1" o-- "1..n" measuringsystem_name
-
-  measuringsystem_name "1" o-- "1..n" datasource_name
-  datasource_name "1" o-- "1" ti
-  datasource_name "1" o-- "0..1" du
-  datasource_name "1" o-- "0..1" timeindex
-  datasource_name "1" o-- "1..n" channel_name
-
-  channel_name "1" o-- "0..1" data
-  channel_name "1" o-- "0..1" sampleindex
-  channel_name "1" o-- "0..n" coord.CN
-  channel_name "1" o-- "0..n" data.PRE.MIN.X
-  channel_name "1" o-- "0..n" data.PRE.MAX.X
-  channel_name "1" o-- "0..n" data.PRE.AVG.X
-
-  channel_name "1" o-- "0..1" VID
-  channel_name "1" o-- "0..1" IMG
-
-  channel_name "1" o-- "0..1" LIMIT
-
-  LIMIT "1" o-- "1" limit_name
-
-  limit_name "1" o-- "1" timestamp
-  limit_name "1" o-- "1" duration
-  limit_name "1" o-- "1" limitvalue
-
-  IMG "1" o-- "1..n" img.NNNNNNNNN
-  VID "1" o-- "1..n" vid.NNNNNNNNN
+  CHANNEL "1" o-- "0..n" data.PRE.AVG.X
 
 @enduml
 
-' RCM-DX Topology Structure Overview
-@startuml RCM_DX_Topology_overview
-
-  object "//SESSION_NAME//" as session_name {
-    a:Element (string) = "SESSION"
-    a:MeasuringMode {OPERATIV | SIMULATION | TEST}
-    a:StartTime (Timestamp)
-    a:EndTime (Timestamp)
-    a:PositionSource (string)
-  }
-
-  object TOPOLOGY {
-    a:Version (string)
-  }
-
-  object TRACK {
-    d:id (32 bit signed integer)
-    d:direction (8 bit signed integer)
-    d:gtgId (string)
-    d:length (32 bit float)
-    d:name (string)
-    d:nrLine (string)
-    d:pointFrom (32 bit signed integer)
-    d:pointTo (32 bit signed integer)
-    d:switchType (8 bit signed integer)
-    d:trackType (8 bit signed integer)
-  }
-
-  object LINE {
-    d:id (32 bit signed integer)
-    d:name (string)
-    d:firstStation (string)
-    d:lastStation (string)
-    d:fromKilometer (32 bit float)
-    d:toKilometer (32 bit float)
-  }
-
-  object SWITCHTRACK {
-    d:gleisstrangId (32 bit signed integer)
-    d:gleisstrangBez (string)
-    d:weicheId (32 bit signed integer)
-    d:ablenkRichtung (string)
-    d:ablenkung (string)
-    d:betriebspunkt (string)
-    d:herzStueck (string)
-    d:minRadius  (32 bit float)
-    d:nr (32 bit signed integer)
-    d:zusNr (string)
-    d:schienenProfil
-    d:status (string)
-    d:schienenProfil (string)
-    d:schwellenArt (string)
-    d:typenPlanNr (32 bit signed integer)
-    d:typNrZusatz (string)
-    d:weichenArt (string)
-    d:weichenTyp (string)
-    d:weichenForm (string)
-    d:weichenZunge (string)
-  }
-
-  object TRACKOBJECT {
-    d:trackId (32 bit signed integer)
-    d:type (32 bit signed integer)
-    d:positionStart (32 bit float)
-    d:positionEnd (32 bit float)
-    d:extraInfo (string)
-  }
-
-  object TRACKPOINT {
-    d:trackId (32 bit signed integer)
-    d:lineId (32 bit signed integer)
-    d:x (32 bit float)
-    d:y (32 bit float)
-    d:z (32 bit float)
-    d:radius (32 bit float)
-    d:kilometer (32 bit float)
-    d:position (32 bit float)
-    d:cant (32 bit float)
-    d:inclination (32 bit float)
-  }
-
-  object PROPERTY {
-    d:propertyId (32 bit signed integer)
-    d:name (string)
-    d:description.ge (string)
-    d:description.fr (string)
-    d:description.it (string)
-    d:description.en (string)
-  }
-
-  session_name "1" o-- "1" TOPOLOGY
-
-  TOPOLOGY "1" o-- "1" TRACK
-  TOPOLOGY "1" o-- "1" LINE
-  TOPOLOGY "1" o-- "1" SWITCHTRACK
-  TOPOLOGY "1" o-- "1" TRACKOBJECT
-  TOPOLOGY "1" o-- "1" TRACKPOINT
-  TOPOLOGY "1" o-- "1" PROPERTY
-
-@enduml
-
-' RCM-DX Platform Structure Overview
-@startuml RCM_DX_Platform_overview
-
-  object "//SESSION_NAME//" as session_name {
-    a:Element (string) = "SESSION"
-    a:MeasuringMode {OPERATIV | SIMULATION | TEST}
-    a:StartTime (Timestamp)
-    a:EndTime (Timestamp)
-    a:PositionSource (string)
-  }
-
-  object PLATFORM {
-    a:Name (string)
-    a:VehicleNumber (string)
-  }
-
-  object CONFIGURATION
-  object global #LightGray
-  object network #LightGray
-
-  PLATFORM "1" o-- "1" session_name
-  session_name "1" o-- "1" CONFIGURATION
-  CONFIGURATION "1" o-- "1" global
-  CONFIGURATION "1" o-- "1" network
-
-@enduml
-
-' RCM-DX Environment Structure Overview
-@startuml RCM_DX_Environment_overview
-
-  object "//SESSION_NAME//" as session_name {
-    a:Element (string) = "SESSION"
-    a:MeasuringMode {OPERATIV | SIMULATION | TEST}
-    a:StartTime (Timestamp)
-    a:EndTime (Timestamp)
-    a:PositionSource (string)
-  }
-
-  object ENVIRONMENT 
-
-  object timestamp #LightGray
-
-  object VEHICLESPEED {
-    d:data (64 bit integer)
-  }
-
-  object AMBIENTTEMPERATURE {
-    d:data (64 bit integer)
-  }
-
-  object WINDSPEED {
-    d:data (64 bit integer)
-  }
-
-  object WINDDIRECTION {
-    d:data (64 bit integer)
-  }
-
-  object WEATHERCONDITIONS {
-    d:data (64 bit integer)
-  }
-
-  session_name "1" o-- "0..1" ENVIRONMENT
-  ENVIRONMENT "1" o-- "1" VEHICLESPEED
-  ENVIRONMENT "1" o-- "1" AMBIENTTEMPERATURE
-  ENVIRONMENT "1" o-- "1" WINDSPEED
-  ENVIRONMENT "1" o-- "1" WINDDIRECTION
-  ENVIRONMENT "1" o-- "1" WEATHERCONDITIONS
-  ENVIRONMENT "1" o-- "1" timestamp
-
-@enduml
-
-' RCM-DX Section Structure Overview
-@startuml RCM_DX_Section_overview
-
-  object "//SESSION_NAME//" as session_name {
-    a:Element (string) = "SESSION"
-    a:MeasuringMode {OPERATIV | SIMULATION | TEST}
-    a:StartTime (Timestamp)
-    a:EndTime (Timestamp)
-    a:PositionSource (string)
-  }
-
-  object SECTION 
-
-  object SECTIONINFO {
-    d:firstTrackOffset (64 bit float)
-    d:lastTrackOffset (64 bit float)
-    d:startTimestamp (Timestamp)
-    d:endTimestamp (Timestamp)
-    d:coachOrientation (8 bit integer)
-    d:trackListOffset (64 bit float)
-  }
-
-  object TRACKLIST {
-    d:id (32 bit signed integer)
-    d:startTimestamp (Timestamp)
-    d:endTimestamp (Timestamp)
-    d:orientation (8 bit signed integer)
-    d:startCoveredDistance (64 bit float)
-    d:endCoveredDistance (64 bit float)
-
-  }
-
-  session_name "1" o-- "1" SECTION
-  SECTION "1" o-- "1" SECTIONINFO
-  SECTION "1" o-- "1" TRACKLIST
-
-@enduml
-
-' RCM-DX Logging Structure Overview
-@startuml RCM_DX_Logging_overview
-
-  object "//MEASURINGSYSTEM_NAME//" as measuringsystem_name {
-    a:Element (string) = "MEASURINGSYSTEM"
-    a:Family (string)
-    a:Revision (string)
-    a:InstanceVersion (string)
-    a:MeasuringMode (string)
-  }
-
-  object LOGGING
-
-  object MESSAGES {
-    d:message (string)
-    d:systemReference (string)
-    d:channelReference (string)
-    d:level (string)
-    d:timestamp (Timestamp)
-  }
-
-  object OUTAGES {
-    d:message (string)
-    d:systemReference (string)
-    d:channelReference (string)
-    d:level (string)
-    d:timestamp (Timestamp)
-    d:durations (64 bit integer)
-  }
-
-  measuringsystem_name "1" o-- "0..1" LOGGING
-
-  LOGGING "1" o-- "1" MESSAGES
-  LOGGING "1" o-- "1" OUTAGES
-
-@enduml
-
-@startuml Limit_overview
-
+@startuml rcmdx_limit_group
   object LIMIT
 
-  object "//CHANNEL_NAME//" as channel_name
-
-  object data #LightGray
-  object timestamp #LightGray
-  object duration #LightGray
-  object limitvalue #LightGray
-
   object "//LIMIT_NAME//" as limit_name {
+    a:Element (string) = "LIMIT"
     a:Priority (8 bit integer)
     a:LimitBound (string)
   }
+  
+  object limitvalue #LightGray
+  limit_name "1" o-- "1" limitvalue
 
-  channel_name "1" o-- "1" data
-  channel_name "1" o-- "0..1" LIMIT
   LIMIT "1" o-- "1..n" limit_name
-  limit_name "1" o-- "1" timestamp
-  limit_name "1" o-- "1" duration
-  limit_name "1" o-- "1..n" limitvalue
+
+  object "timestamp" as limit_timestamp #LightGray {
+    data type: Timestamp
+  }
+  limit_name "1" o-- "1" limit_timestamp
+
+  object "duration" as limit_duration #LightGray {
+    data type: 64 bit integer
+  }
+  limit_name "1" o-- "1" limit_duration
 
 @enduml
