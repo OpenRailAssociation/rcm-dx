@@ -513,7 +513,7 @@ The naming of the group is defined according to which platform produced the data
 The platform group contains the following attributes:
 
 | Name | Data type | Mandatory | Description |
-|---|--|:--:|------|
+|---|---|---|------|
 | Name | Enum | yes | Unique platform name of the vehicle, [\ref{platforms-at-the-sbb} Platforms at the SBB](#platforms-at-the-sbb) |
 | VehicleNumber | string | yes | Unique number of the vehicle |
 
@@ -757,7 +757,7 @@ This data set can contain the following values:
 The following values are allowed:
 
 | Value | Meaning |
-|:--:|:---:|
+|---|----|
 | ASCENDING | The rail was crossed in **ascending** mileage |
 | DESCENDING | The rail was crossed in **degreasing** mileage |
 
@@ -1053,7 +1053,7 @@ A reference to a channel.
 A reference to a data source.
 
 **level**  
-See chapter [\ref{level} Outage level](#outage-level)
+See chapter [\ref{outage-level} Outage level](#outage-level)
 
 ##### Outage level
 
@@ -1094,7 +1094,7 @@ A reference to the measurement system.
 A reference to a channel.
 
 **level**  
-See chapter [\ref{level} Message level](#message-level)
+See chapter [\ref{message-level} Message level](#message-level)
 
 ##### Message level
 
