@@ -1,5 +1,7 @@
 # Rail condition monitoring data exchange format (RCM-DX format)
 
+[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg)](code_of_conduct.md) ![RCM-DX](https://img.shields.io/badge/RCM--DX-V2.0-green) ![RCM-DX](https://img.shields.io/badge/specification-V2.0.2-blue) ![RCM-DX](https://img.shields.io/badge/specification--DRAFT-V2.1.5-red)
+
 ## Motivation
 
 Railroad companies continuously gather data of their rail, overhead line, and telecommunications networks by means of mobile and stationary measuring systems. Data flows from these systems through processing units -- which enrich, evaluate and validate the data --, to systems that display the data to subject matter experts and also to systems that automatically analyse it.
