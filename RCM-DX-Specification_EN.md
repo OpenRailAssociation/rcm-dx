@@ -296,7 +296,7 @@ Further measured values can be recorded for each coordinate measuring point. The
 The data set is defined as follows:
 
 | Name | Data type | Parent object | Mandatory | Storage type |
-|--|------|--|--|--|
+|--|---|---|--|--|
 | value.VN | A primitive or extended data type | *CHANNEL_NAME* | no | Single |
 
 The following attributes are assigned to this type of data set `value.VN`:
@@ -511,7 +511,7 @@ The naming of the group is defined according to which platform produced the data
 #### Attributes
 
 The platform group contains the following attributes:
-
+ 
 | Name | Data type | Mandatory | Description |
 |---|---|---|------|
 | Name | Enum | yes | Unique platform name of the vehicle, [\ref{platforms-at-the-sbb} Platforms at the SBB](#platforms-at-the-sbb) |
