@@ -1,6 +1,12 @@
 # Rail condition monitoring data exchange format (RCM-DX format)
 
-[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg)](code_of_conduct.md) ![RCM-DX](https://img.shields.io/badge/RCM--DX-V2.0-green) ![RCM-DX](https://img.shields.io/badge/specification-V2.0.2-blue) ![RCM-DX](https://img.shields.io/badge/specification--DRAFT-V2.1.5-red)
+[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg)](code_of_conduct.md) ![RCM-DX](https://img.shields.io/badge/RCM--DX-V2.0-green) ![RCM-DX](https://img.shields.io/badge/specification-V2.0.2-blue) ![RCM-DX](https://img.shields.io/badge/specification--DRAFT-V2.1.5-red) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
+
+## RCM-DX specification
+
+The specification was written in the Markdown markup language and can be accessed via the following link: [RCM-DX specification](RCM-DX-Specification_EN.md)  
+In addition, the specification can be available as a PDF, this can be found in the directory "last_release".  
+Furthermore, the specification can be viewed as a web page under the following link: [RCM-DX specification website](SchweizerischeBundesbahnen.github.io/rcm-dx)  
 
 ## Motivation
 

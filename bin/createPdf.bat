@@ -21,7 +21,7 @@ IF "draft"=="%2" (
 echo ---
 echo title: "RCM-DX Specification"
 echo lang: EN
-echo subtitle: "Version %SPEC_VERSION%"
+echo subtitle: "Document Version %SPEC_VERSION%"
 echo keywords: [RCM-DX, Specification]
 echo logo: "logo/rgb/RCM-DX-rgb.png"
 echo logo-width: 100
