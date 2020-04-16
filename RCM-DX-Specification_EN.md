@@ -1,5 +1,14 @@
 # Specification of the RCM-DX Format version 2.0
 
+## License
+
+> TODO: Lizenzhinweise notieren für RCM-DX
+> TODO: Lizenzhinweise oder Copyright notieren für HDF5
+
+## Contribution
+
+The RCM-DX specification is open source and freely accessible and usable by all with respect to the license. Any person who wants to improve this specification can do so. How exactly this works can be read on the Github website. The repository can be found at [RCM-DX repository](https://github.com/SchweizerischeBundesbahnen/rcm-dx) and the website at [RCM-DX specification website](https://schweizerischebundesbahnen.github.io/rcm-dx/).
+
 ## Change history
 
 | Document version | RCM-DX version | Date | Autor | Change |
@@ -40,11 +49,9 @@
 
 Railroad companies continuously gather data of their rail, overhead line, and telecommunications networks by means of mobile and stationary measuring systems. Data flows from these systems through processing units -- which enrich, evaluate and validate the data --, to systems that display the data to subject matter experts and also to systems that automatically analyse it.
 
-This specification defines the rail condition monitoring data exchange format (RCM-DX format) which is a data format optimised for data in the railroad context, i.e. for data points localised within a railroad network. The RCM-DX format is a file format based on the HDF5 specification and defines a structure of HDF5 groups, datasets, and attributes. The document at hands also describes the content of the elements defined. Although the format is open and can in principle be implemented right away by any railroad company, this specification contains a few non-generic elements and naming conventions that are specific to SBB. The reason for this is that any file that adheres to this specification can be used with the _RCM Viewer_, an application available soon to the public via a website.
+This specification defines the rail condition monitoring data exchange format (RCM-DX format) which is a data format optimised for data in the railroad context, i.e. for data points localised within a railroad network. The RCM-DX format is a file format based on the HDF5 specification and defines a structure of HDF5 groups, datasets, and attributes. The document at hands also describes the content of the elements defined. Although the format is open and can in principle be implemented right away by any railroad company, this specification contains a few non-generic elements and naming conventions that are specific to SBB. The reason for this is that any file that adheres to this specification can be used with the _RCM Viewer_, an application available soon to the public.
 
 <!-- TODO: link to RCM-DX Viewer website, if existing -->
-
-The RCM-DX format is developed and maintained by the SBB company. An extension of the specification is permitted, yet, it must be taken into account that the resulting data file may no longer be read or processed by other systems supporting the RCM-DX format.
 
 The RCM-DX format is a file format detailing the HDF5 format version 2.0. HDF5 was chosen for several reasons, including that it is an open format. HDF5 is a hierarchical data storage where the data in arranged in a tree structure. The HDF5 format is described on the webpage of the [HDF5-group](http://www.hdfgroup.org/HDF5/), in particular on the site [HDF5 file format specification](https://portal.hdfgroup.org/display/HDF5/Introduction+to+HDF5). The HDF5 group offers tools and libraries for various programming languages and operating systems that allow to read and write HDF5 files.
 
@@ -93,13 +100,13 @@ Example of a file name: `20201228_081522_TGMS.rcmdx`.
 Below are the supported data types used in this specification including a short description.
 Not all data types possible with HDF5 are described. The read and write library specifies which data types can be used for data sets and attributes.
 
-| Data type | Description | Example |
+| Data type | Description | Examples |
 |---|----|----|
 | boolean | Two values are possible, `true` or `false`, `0` or `1` | `true` |
 | byte | One byte or an unlimited number of bytes are possible | - |
-| signed integer | Positive and negative values are allowed. Possible bit depths are: 8, 16, 32 or 64 | `1256442`, `-62334` |
-| unsigned integer | Only positive values are allowed. Possible bit depths are: 8, 16, 32 or 64 | `1256442`, `-62334` |
-| float | Positive and negative values are allowed. Possible bit depths are: 32 or 64 | `12.53`, `-3212.546` |
+| signed integer | Positive and negative values are allowed. Possible bit depths are: 8, 16, 32 or 64 | `1256442`; `-62334` |
+| unsigned integer | Only positive values are allowed. Possible bit depths are: 8, 16, 32 or 64 | `1256442`; `-62334` |
+| float | Positive and negative values are allowed. Possible bit depths are: 32 or 64 | `12.53`; `-3212.546` |
 | sring | Multiple characters of undefined length | "RCM-DX is great!" |
 
 #### Extended data types
@@ -227,7 +234,7 @@ The following attributes are assigned to this type of data set:
 
 #### Limits
 
-A channel group can contain one or more limit groups. Each limit group contains its own `timestamp` data set and contains a `duration` data set. If a defined limit value of a measured value of the channel is exceeded, an entry in the `timestamp` data set follows. Using the optional data set `duration`, the duration of a limit value exceedance can be specified per entry in the data set `timestamp`. If both datasets exist, they contain the same number of entries!  
+A channel group can contain zero or one limit groups. Each limit sub-group *`LIMIT_NAME`* contains its own `timestamp` data set and contains a `duration` data set. The data set `limitvalue` contains the limit values. When which limit value is valid is defined in the dataset `timestamp` and how long it is valid is defined in the dataset `duration`. Values at the same index position of all three data resources belong together.
 
 ![Limit group overview](images/generated/rcmdx_limit_group.png){width=320px}
 
@@ -237,7 +244,7 @@ The group of limit values is defined as follows:
 |--|--|--|
 | `LIMIT` | *CHANNEL_NAME* | yes |
 
-The group `LIMIT` now contains further groups, each with the name of the limit exceeding, e.g. `TEMP`:
+The group `LIMIT` now contains further groups, each with the name of the limit exceeding:
 
 | Name | Parent object | Mandatory |
 |--|--|--|
@@ -247,7 +254,7 @@ The following attributes are assigned to this group:
 
 | Name | Data type | Parent object | Mandatory | Description |
 |---|---|---|---|-----|
-| Priority | 8 bit integer | *LIMIT_NAME* | yes | Priority of defined limit, lower values are priories |
+| Priority | 8 bit integer | *LIMIT_NAME* | yes | Priority of defined limit, lower values are priories. |
 | LimitBound | Enum | *LIMIT_NAME* | yes | Defines the type of limit, possible values are `MAX` or `MIN`. |
 
 It contains the following datasets:
@@ -261,7 +268,7 @@ It contains the following datasets:
 ### Coordinates
 
 Measurement data that can be assigned to a coordinate system are given a defined name according to the following pattern: `coord.CN`.  
-This type of data storage allows several entries to be recorded per measurement time. Thus there are more entries in these datasets than in the data set `timestamp`. How many entries per timestamp belong to each other (as a group) is stored in another data set with the name `sampleindex`. The data set `sampleindex` is describes in chapter [\ref{sample-index} Sample index](#sample-index).
+This type of data storage allows several entries to be recorded per measurement timestamp. Thus there are more entries in these datasets than in the data set `timestamp`. How many entries per timestamp belong to each other (as a group) is stored in another data set with the name `sampleindex`. The data set `sampleindex` is describes in chapter [\ref{sample-index} Sample index](#sample-index).
 
 | Element | Description |
 |--|------|
@@ -280,7 +287,7 @@ The following attributes are assigned to this type of data set `coord.CN`:
 
 | Name | Data type | Parent object | Mandatory | Description |
 |---|---|---|---|-----|
-| `Unit` | string | Dataset `coord.CN` | yes | One physical unit or empty if the data does not correspond to any physical unit |
+| `Unit` | string | Dataset `coord.CN` | yes | One physical unit or empty if the data does not have any physical unit |
 
 #### Coordinate related measured values
 
@@ -450,7 +457,7 @@ These time stamps are recorded either by a defined distance travelled or by a fr
 
 If data is recorded that is valid for a certain period of time, the data set with the name `duration` is added to the data set `timestamp`. The timestamp recorded in the `timestamp` data set specifies the time at which the value was recorded and the `duration` data set specifies how long this value is valid in nanoseconds. The data set `duration` is `timestamp` within a data source group next to the data set.  
 
-The differentiation between discrete (data for discrete `timestamp`) and continuous (data for `timestamp` with `duration`) data is done on data source level. The existence or absence of a `duration` array (see 8.4) defines if the data source is "Discrete" (no `duration` array) or "Continuous" (with `duration` array).
+The differentiation between discrete (data for discrete `timestamp`) and continuous (data for `timestamp` with `duration`) data is done on data source level. The existence or absence of a `duration` array defines if the data source is **"Discrete"** (no `duration` array) or **"Continuous"** (with `duration` array).
 
 Example: Assuming there is a data source with a temperature value every second and a calculated average temperature for every minute. Such an average temperature would be stored in a continuous data source, within a array, with duration of 60 sec.
 
@@ -474,7 +481,7 @@ In the RCM-DX, the individual groups and datasets as well as their names are def
 
 ![RCM-DX structure overview](images/generated/RCM_DX_Structure.png)
 
-Separate and more detailed specifications have been written for individual structure groups. Several measuring instruments can be installed on one measuring and inspection vehicle. Each of these measuring devices generates new channels of data, which flow into the RCM-DX. Since these channels can be different for each measuring device, the specifications were separated. Another reason for this is the fact that other railway operators use different measuring and inspection equipment.
+Separate and more detailed specifications have been written for individual structure groups. Several measuring instruments can be installed on one measuring platform. Each of these measuring devices generates new channels of data, which flow into the RCM-DX. Since these channels can be different for each measuring device, the specifications were separated. Another reason for this is the fact that other railway operators use different measuring and inspection equipment.
 
 The individual groups are specified in more detail below in the subcategories.
 
@@ -544,13 +551,13 @@ Subsequent datasets are subordinate to this group:
 
 ### Session Group  
 
-The session group contains data that was collected during the same period. A session group contains data from different sources. A RCM-DX file can contain one session group. One file is created per session.
+The session group contains data that was collected during the same period. A session group contains data from different sources. A RCM-DX file contains exactly one session group.
 
 ![Session group overview](images/generated/rcmdx_session_group.png)
 
 #### Naming
 
-Since several session groups can be contained in one RCM-DX file, they must be given a unique name. To achieve this goal, the names are assigned according to the following pattern:
+The name of a session group is assigned according to the following pattern:
 
 | Name | Parent object | Mandatory |
 |--|--|--|
@@ -571,15 +578,15 @@ The individual elements and their meaning are described below:
 | SSS | The milliseconds in the seconds
 | "_" or "." | Characters as separator
 
-A session contains the data of one or more measuring devices (one or more data sources). For a certain period of time, only one session can exist in a file, this must be ensured by the creator of the file.
+For a certain period of time, only one session can exist in a file, this must be ensured by the creator of the file.
 
 #### Attributes  
 
 | Name | Data type | Parent object | Mandatory | Description |
 |---|---|---|---|-----|
-| Element | string | *SESSION_NAME* | yes | Contains the type of the group, this is fix "SESSION" |
-| StartTime | long | *SESSION_NAME* | yes | Time stamp in nanoseconds since January 1, 1970 UTC as start time of the session |
-| EndTime | long | *SESSION_NAME* | no | Time stamp in nanoseconds since 1.1.1970 UTC as end time of the session. If the session has not yet been closed, this attribute is missing |
+| Element | string | *SESSION_NAME* | yes | Names the type of the group, this is fix "SESSION" |
+| StartTime | Timestamp | *SESSION_NAME* | yes | Timestamp in nanoseconds as start time of the session |
+| EndTime | Timestamp | *SESSION_NAME* | no | Timestamp in nanoseconds as end time of the session. If the session has not yet been closed, this attribute is missing |
 | PositionSource | string | *SESSION_NAME* | yes | Contains the name of the source (group) of the positioning. |
 
 ### Section Group
@@ -594,7 +601,7 @@ The group `SECTION`, contains information about a session.
 
 #### Section info
 
-This group contains the information regarding the section itself.
+This group contains the information regarding the sections itself.
 
 | Name | Parent object | Mandatory |
 |--|--|--|
@@ -614,17 +621,17 @@ The following data fields are contained in the group "SECTIONINFO":
 | trackInfoOffset | 64 bit float | `SECTIONINFO` | yes | `Array` |
 
 **coachOrientation**  
-Defines the orientation of travel of the measuring vehicle per section. This array contains only as many entries as there are sections.
+Indicates the orientation of travel of the measuring vehicle in the given section. This array contains only as many entries as there are sections.
 
 Possible values of this enumeration are:
 
 | Value | Orientation of travel |
 |--|---|
 | FORWARD | forward |
-| REVERCE | reverse |
+| REVERSE | reverse |
 
 **firstTrackOffset**  
-Indicates the distance in meters between the start of the track and the position at the beginning of the measurement. This array contains only as many entries as there are sections.
+Indicates the distance in meters between the start of the track and the position at the beginning of the section. This array contains only as many entries as there are sections.
 
 **lastTrackOffset**  
 Indicates the distance in meters between the position at the end of the measurement and the end of the rail. This array contains only as many entries as there are sections.
@@ -636,11 +643,11 @@ Start time of the section as time stamp since 1.1.1970 at 00:00 UTC.
 End time of the section as time stamp since 1.1.1970 at 00:00 UTC. `endTimestamp` must be greater than `startTimestamp`.
 
 **trackInfoOffset**  
-This data set defines how many entries in the datasets of the "Track list group" belong to a section. One entry is created per section in a session and the number of entries is defined. A group size can be determined by calculating the specified offset value at the $x$ position minus the offset value at the $x-1$ position.
+This data set lists how many entries in the datasets of the "Track list group" belong to section. One entry is created per section in a session and the number of entries is defined. The number of tracks belonging to each section can be determined by calculating the specified offset value at the $x$ position minus the offset value at the $x-1$ position.
 
 ### Track list group
 
-This group contains the information regarding the section itself.
+This group lists all tracks that were covered in the session. The order reflects the order of measurement.
 
 | Name | Parent object | Mandatory |
 |--|--|--|
@@ -704,7 +711,7 @@ This group contains general information on the position.
 | lineKilometer | 64 bit float | `POSITION` | yes | `Array` |
 | positionAccuracy | 8 bit integer | `POSITION` | yes | `Array` |
 | positionQuality | 8 bit integer | `POSITION` | yes | `Array` |
-| timestamp | 64 bit integer | `POSITION` | yes | `Array` |
+| timestamp | Timestamp | `POSITION` | yes | `Array` |
 
 **coveredDistance**  
 Total length of a session.
@@ -722,16 +729,16 @@ Defined line ID on which the vehicle is located at the time of recording.
 Distance between starting point of track and current position.
 
 **lineKilometer**  
-Absolute position on the line travelled at the time of recording.
+Kilometrage of the current position.
 
 **positionQuality**  
-Quality of the position measurement between zero (0) very good to 15 very bad.
+Marker for the quality of the position determination ranging from 0 meaning "very good" to 15 for "very poor".
 
 **positionAccuracy**  
-The position accuracy.
+The position accuracy in meters.
 
-**positionAccuracy**  
-The timestamps according to the number of values in each data set.
+**timestamp**  
+The timestamp  for each position. Serves as primary key.
 
 Unit's are defined in the attribute `Unit` of each data field. <!-- TODO! -->
 
@@ -758,8 +765,8 @@ The following values are allowed:
 
 | Value | Meaning |
 |---|----|
-| ASCENDING | The rail was crossed in **ascending** mileage |
-| DESCENDING | The rail was crossed in **degreasing** mileage |
+| ASCENDING | The rail was crossed in **ascending** |
+| DESCENDING | The rail was crossed in **degreasing** |
 
 ### Environment Group
 
@@ -789,19 +796,19 @@ The data set contains a measured vehicle speed for each time stamp.
 
 #### Ambient Temperature Group
 
-This group contains a data set containing the ambient temperatures. One temperature measurement is performed per time stamp.
+This group contains a data set containing the ambient temperatures.
 
 | Name | Parent object | Mandatory |
 |--|--|--|
 | `AMBIENTTEMPERATURE` | `ENVIRONMENT` | no |
 
-For each time stamp, the ambient temperature is entered in the data set.
+Data set:
 
 | Name | Data type | Parent object | Mandatory | Storage type |
 |--|---|-----|---|----|
 | data | 16 bit float | `AMBIENTTEMPERATURE` | no | `Array` |
 
-**Unit: degrees celsius [°C]**
+**Unit: degrees [°C]**
 
 #### Wind Speed Group
 
@@ -833,7 +840,7 @@ For each time stamp, the wind direction is entered in the data set.
 |----|---|----|---|----|
 | data | 16 bit float | `WINDIRECTION` | no | `Array` |
 
-**Unit: degree [°]**
+**Unit: degree [°] (where zero $0°$ is North)**
 
 #### Weather Conditions Group
 
@@ -843,17 +850,20 @@ The weather has an influence on the measurements. How the weather was at the tim
 |--|--|--|
 | `WEATHERCONDITIONS` | `ENVIRONMENT` | no |
 
-For each time stamp, the weather conditions are entered in the data set. This could be for example "rain, fog, snowfall".
+For each time stamp, the weather conditions are entered in the data set.
 
 | Name | Data type | Parent object | Mandatory | Storage type |
 |--|---|-----|---|----|
-| data | 64 bit integer | `WEATHERCONDITIONS` | no | `Array` |
+| data | Enum | `WEATHERCONDITIONS` | no | `Array` |
+
+The following values are valid:  
+`SUNNY`, `OVERCAST`, `RAIN`, `STORM`, `FOG`, `CHANCE_OF_SNOW`, `RAIN_AND_SNOW`, `SNOW`, `ICY`, `ICE_SNOW`
 
 ### Measuring System Group
 
-Each measuring system has its own data sources, which have their own names, as well as their own channels, which in turn have their own names. Common features are described in this specification, everything else is defined in a separate specification. Since this part differs greatly from railway companies and measuring equipment, a rigid specification has been dispensed with, but a certain framework is still given.
+Each measuring system has its own data sources, which have their own names, as well as their own channels, which in turn have their own names. Common features are described in this specification, everything else is defined in a separate specification. Since this part differs greatly among railway companies and with measuring equipment, a rigid specification has been dispensed with, but a certain framework is still given.
 
-A group is created for each system that collects data. The name of the group is unique for each system. The composition of this name is not predefined. Each system contains further subgroups, each of which contains a data source at the end.
+A group is created for each system that collects data. The name of the group is unique for each system. The composition of this name is not predefined.
 
 | Name | Parent object | Mandatory |
 |--|--|--|
@@ -868,9 +878,9 @@ The following attributes are contained in the group of the measuring system:
 | Name | Data type | Parent object | Mandatory | Description |
 |---|---|-----|---|-----|
 | Family | string | *MEASURINGSYSTEM_NAME* | yes | General name of the measuring system |
-| Revision | string | *MEASURINGSYSTEM_NAME* | yes | Version of the software on the measuring system, issued by the owner of the platform |
+| Revision | string | *MEASURINGSYSTEM_NAME* | yes | Version of the hardare and software on the measuring system, issued by the owner of the platform |
 | InstanceVersion | string | *MEASURINGSYSTEM_NAME* | yes | Version of the data format created by the measuring instrument. This version can be different within different gauges of the same family |
-| Element | string | *MEASURINGSYSTEM_NAME* | yes | Contains the type of the group, this is fixed `MEASURINGSYSTEM` |
+| Element | string | *MEASURINGSYSTEM_NAME* | yes | Indicates the type of the group, this is fixed `MEASURINGSYSTEM` |
 | MeasuringMode | Enum | *MEASURINGSYSTEM_NAME* | yes | Indicates the measuring mode, defined in chapter [\ref{measurement-mode} Measuring mode](#measurement-mode) |
 
 ##### Measurement mode
@@ -878,8 +888,8 @@ The following attributes are contained in the group of the measuring system:
 There are three different measurement modes, which are explained individually below.
 
 | Name | Description |
-|---|------|
-| OPERATIV | Productive data that will be further used. |
+|----|------|
+| OPERATIVE | Productive data that will be further used. |
 | TEST | Test data recorded during a diagnostic run with the aim of checking and testing the measuring equipment. |
 | SIMULATION | Simulated values that the measuring systems produce themselves and are no longer used. |
 
@@ -2060,12 +2070,3 @@ Contains the time of the acquisition of the entry in the `key` and `value` data 
   </xs:simpleType>
 </xs:schema>
 ```
-
-## License and copyright
-
-> TODO: Lizenzhinweise notieren für RCM-DX
-> TODO: Lizenzhinweise oder Copyright notieren für HDF5
-
-## Contribution
-
-> TODO: Vermerk auf die Zusammenarbeit und die Weiterentwicklung des RCM-DX sowie Hinweis auf die Webseite!

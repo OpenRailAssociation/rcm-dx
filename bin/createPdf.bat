@@ -23,7 +23,7 @@ echo title: "RCM-DX Specification"
 echo lang: EN
 echo subtitle: "Document Version %SPEC_VERSION%"
 echo keywords: [RCM-DX, Specification]
-echo logo: "logo/rgb/RCM-DX-rgb.png"
+echo logo: "logo/RCM-DX.png"
 echo logo-width: 100
 echo secnumdepth: 5
 echo titlepage: true

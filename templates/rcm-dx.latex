@@ -455,7 +455,7 @@ $if(titlegraphic)$
 \titlegraphic{\includegraphics{$titlegraphic$}}
 $endif$
 $if(logo)$
-\logo{\includegraphics{$logo$}}
+%\logo{\includegraphics{$logo$}}
 $endif$
 $endif$
 
@@ -730,7 +730,7 @@ $else$
 \fancypagestyle{sbb-header-footer}{
   \fancyhead{} % clear all header fields
   \fancyhead[L]{$title$}
-  \fancyhead[R]{$if(logo)$\noindent\includegraphics[width=$if(logo-width)$$logo-width$$else$100$endif$pt, right]{$logo$}$else$$date$$endif$}
+  %\fancyhead[R]{$if(logo)$\noindent\includegraphics[width=$if(logo-width)$$logo-width$$else$100$endif$pt, right]{$logo$}$else$$date$$endif$}
   \fancyfoot{} % clear all footer fields
   \fancyfoot[L]{\changefont \nouppercase{\leftmark}}
   \fancyfoot[C]{\thepage /\pageref{LastPage}}
@@ -810,7 +810,7 @@ $endif$
 
 $if(logo)$
 \noindent
-\includegraphics[width=$if(logo-width)$$logo-width$$else$100$endif$pt, left]{$logo$}
+\includegraphics[width=250pt, left]{$logo$}
 $endif$
 
 \textsf{$date$}}
