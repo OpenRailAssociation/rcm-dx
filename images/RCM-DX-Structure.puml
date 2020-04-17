@@ -1,3 +1,5 @@
+' Visit http://plantuml.com/ for more information!
+
 @startuml RCM_DX_Structure
 
   object RCMDX {
@@ -9,14 +11,29 @@
     a:Name (Enum)
     a:VehicleNumber (string)
   }
-
   RCMDX "1" o-- "1" PLATFORM
+
+  object DATAPROCESSING {
+    a:Clearance (boolean)
+  }
+  RCMDX "1" o-- "1" DATAPROCESSING
+
+  object PROCESSINGLOG {
+    d:key (string)
+    d:value (string)
+  }
+  DATAPROCESSING "1" o-- "0..1" PROCESSINGLOG
+
+  object CLEARANCEINFORMATION {
+    d:key (string)
+    d:value (string)
+  }
+  DATAPROCESSING "1" o-- "0..1" CLEARANCEINFORMATION
 
   object "CONFIGURATION" as platform_config {
     d:global (string)
     d:network (string)
   }
-
   PLATFORM "1" o-- "1" platform_config
 
   object "//SESSION_NAME//" as session_name {
@@ -326,18 +343,6 @@
   }
 
   setting_name "1" o-- "1" setting
-
-  object DATAPROCESSING {
-    d:key (string)
-    d:value (string)
-  }
-  RCMDX "1" o-- "1" DATAPROCESSING
-
-  object CLEARANCEINFORMATION {
-    d:key (string)
-    d:value (string)
-  }
-  RCMDX "1" o-- "1" CLEARANCEINFORMATION
 
   object LIMIT
 
