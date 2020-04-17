@@ -991,7 +991,7 @@ This attribute defines how the data was recorded.
 
 Possible values are:
 
-| Value | Description | `TriggerValue` Unit |
+| Value | Description | Unit |
 |---|----------|---|
 | TIME | Time-based measurement data recording | Nanoseconds |
 | FREQUENCY | Frequency-based measurement data recording | Hz |
@@ -1014,7 +1014,8 @@ The data set needs more information, this is given as attributes:
 |----|---|----|---|----|
 | Unit | string | *CHANNEL_NAME* | no | `Array` |
 
-**Unit:** The physical unit of the measurement data, such as "millimeter". If no physical unit can be assigned to the data, this attribute remains empty.
+**Unit:**  
+The physical unit of the measurement data, such as "millimeter". If no physical unit can be assigned to the data, this attribute remains empty.
 
 The data set and the possible data that can be stored are described in more detail in the chapter [\ref{hdf5-datasets} Dataset](#hdf5-datasets).
 

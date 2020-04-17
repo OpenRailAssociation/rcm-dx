@@ -4,9 +4,9 @@ set SPEC_TYPE=%2
 
 :: set defaut variables
 set SPEC_LANGUAGE=EN
-set SPEC_NAME=RCM-DX-Specification
+set SPEC_NAME=rcm-dx-specification
 set IS_DRAFT=false
-set YAML_FILE_NAME=RCM-DX-Spec_Metadata_EN.yaml
+set YAML_FILE_NAME=rcm-dx-spec_metadata_en.yaml
 
 IF ""=="%1" (
     set SPEC_VERSION=_UNKNOWN!
@@ -19,7 +19,7 @@ IF "draft"=="%2" (
 :: write yaml-spec-file for pandoc
 (
 echo ---
-echo title: "RCM-DX Specification"
+echo title: "RCM-DX specification"
 echo lang: EN
 echo subtitle: "Document Version %SPEC_VERSION%"
 echo keywords: [RCM-DX, Specification]
@@ -47,8 +47,8 @@ mkdir %SPEC_DIR%
 mkdir %GENERATED_IMAGE_DIR%
 
 :: create images
-java -jar ../bin/plantuml.jar ../images/RCM-DX_images.puml -o %GENERATED_IMAGE_DIR%
-java -jar ../bin/plantuml.jar ../images/RCM-DX-Structure.puml -o %GENERATED_IMAGE_DIR%
+java -jar ../bin/plantuml.jar ../images/rcm-dx-images.puml -o %GENERATED_IMAGE_DIR%
+java -jar ../bin/plantuml.jar ../images/rcm-dx-structure.puml -o %GENERATED_IMAGE_DIR%
 
 cd ..
 
