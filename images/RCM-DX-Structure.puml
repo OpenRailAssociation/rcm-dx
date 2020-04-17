@@ -1,6 +1,6 @@
 ' Visit http://plantuml.com/ for more information!
 
-@startuml RCM_DX_Structure
+@startuml rcm_dx_Structure
 
   object RCMDX {
     a:Major (16 bit integer)

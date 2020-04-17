@@ -6,7 +6,7 @@
 
 The specification was written in the Markdown markup language and can be accessed via the following link: [RCM-DX specification](RCM-DX-Specification_EN.md)  
 In addition, the specification can be available as a PDF, this can be found in the directory "last_release".  
-Furthermore, the specification can be viewed as a web page under the following link: [RCM-DX specification website](SchweizerischeBundesbahnen.github.io/rcm-dx)  
+Furthermore, the specification can be viewed as a web page under the following link: [RCM-DX specification website](https://schweizerischebundesbahnen.github.io/rcm-dx/)
 
 ## Motivation
 
