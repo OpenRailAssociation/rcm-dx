@@ -1,4 +1,4 @@
-# Specification of the RCM-DX Format version 2.0
+# Specification of the RCM-DX Format
 
 ## License
 
@@ -11,37 +11,37 @@ The RCM-DX specification is open source and freely accessible and usable by all 
 
 ## Change history
 
-| Document version | RCM-DX version | Date | Autor | Change |
+| RCM-DX version | Document version | Date | Autor | Change |
 |-|-|-|--|-----|
-| 0.1.0 | 0.1 | 06.03.2015 | Martin Frey (SCS) | Initial version |
-| 0.2.0 | 0.2 | 20.03.2015 | Martin Frey (SCS) | Extensions |
-| 0.3.0 | 0.3 | 15.04.2015 | Patrik Wernli (SCS) | Review |
-| 0.4.0 | 0.4 | 20.04.2015 | Martin Frey (SCS) | Extensions and revised |
-| 0.5.0 | 0.5 | 03.05.2015 | Patrik Wernli (SCS) | Formal Adaptions |
-| 0.6.0 | 0.6 | 12.05.2015 | Martin Frey (SCS) | PDR Feedback: Storing of Booleans, comments allowed on all levels, format independent of video codec, flags (including simulation) on session level. Schemas for exceedances, comments and drawings added |
-| 0.7.0 | 0.7 | 13.07.2015 | Patrik Wernli (SCS) | Finalized for CDR |
-| 0.8.0 | 0.8 | 02.10.2015 | Martin Frey (SCS) | Event model added, reference to specification event schema added. |
-| 0.9.0 | 0.9 | 30.11.2015 | Patrik Wernli (SCS) | Adaptions for Infotrans position model. Version concept removed. Event model updated. |
-| 0.10.0 | 0.10 | 21.12.2015 | Martin Frey (SCS) | Review |
-| 0.11.0 | 0.11 | 21.12.2015 | Patrik Wernli (SCS) | Revised after review |
-| 0.12.0 | 0.12 | 16.02.2016 | Pascal Brem (SCS) | Topology model in configuration. |
-| 0.13.0 | 0.13 | 17.02.2016 | Martin Frey (SCS) | Review topology model |
-| 0.14.0 | 0.14 | 19.02.2016 | Pascal Brem (SCS) | Sections added to file format. |
-| 0.15.0 | 0.15 | 23.02.2016 | Martin Frey (SCS) | Global configuration and settings updated |
-| 0.16.0 | 0.16 | 11.07.2016 | Pascal Brem (SCS) | New Hash code attribute for the topology. |
-| 0.17.0 | 0.17 | 15.07.2016 | Pascal Brem (SCS) | New units and data types for positions |
-| 0.18.0 | 0.18 | 03.01.2018 | Pascal Brem (SCS) | New GTG Track Id in the Topology. |
-| 0.19.0 | 0.19 | 03.01.2018 | Pascal Brem (SCS) | Events are stored on session level. |
-| 0.20.0 | 0.20 | 09.01.2018 | Pascal Brem (SCS) | Events and Sections in a group. |
-| 0.21.0 | 0.21 | 09.01.2018 | Patrik Wernli (SCS) | Added chapter “HDF5 File Format Versions” |
-| 0.22.0 | 0.22 | 11.04.2018 | Patrik Wernli (SCS) | Changed document template to official publishing template |
-| 0.23.0 | 0.23 | 16.08.2018 | Pascal Brem (SCS) | Changes in the channel basis definition. |
-| 0.24.0 | 0.24 | 16.08.2018 | Pascal Brem (SCS) | New attributes on the picture block channel. |
-| 0.25.0 | 0.25 | 04.09.2018 | Pascal Brem (SCS) | New minor version. |
-| 0.26.0 | 0.26 | 28.11.2018 | Pascal Brem (SCS) | New minor version for the topology attributes. |
-| 0.27.0 | 0.27 | 08.01.2019 | Pascal Brem (SCS) | New availability group. |
-| 0.28.0 | 0.28 | 05.06.2019 | Pascal Brem (SCS) | New switchtracks in the DfA |
-| 2.0.0 | 2.0 | 28.04.2020 | Michael Ammann (SBB), Jakob Grilj (SBB) | Adaptation of the structure to new requirements. New major release with version number 2.0, due to major changes in the structure and goal for publication of the specification. |
+| 1.0.0 | 0.1 | 06.03.2015 | Martin Frey (SCS) | Initial version |
+| 1.0.0 | 0.2 | 20.03.2015 | Martin Frey (SCS) | Extensions |
+| 1.0.0 | 0.3 | 15.04.2015 | Patrik Wernli (SCS) | Review |
+| 1.0.0 | 0.4 | 20.04.2015 | Martin Frey (SCS) | Extensions and revised |
+| 1.0.0 | 0.5 | 03.05.2015 | Patrik Wernli (SCS) | Formal Adaptions |
+| 1.0.0 | 0.6 | 12.05.2015 | Martin Frey (SCS) | PDR Feedback: Storing of Booleans, comments allowed on all levels, format independent of video codec, flags (including simulation) on session level. Schemas for exceedances, comments and drawings added |
+| 1.0.0 | 0.7 | 13.07.2015 | Patrik Wernli (SCS) | Finalized for CDR |
+| 1.0.0 | 0.8 | 02.10.2015 | Martin Frey (SCS) | Event model added, reference to specification event schema added. |
+| 1.0.0 | 0.9 | 30.11.2015 | Patrik Wernli (SCS) | Adaptions for Infotrans position model. Version concept removed. Event model updated. |
+| 1.0.0 | 0.10 | 21.12.2015 | Martin Frey (SCS) | Review |
+| 1.0.0 | 0.11 | 21.12.2015 | Patrik Wernli (SCS) | Revised after review |
+| 1.0.0 | 0.12 | 16.02.2016 | Pascal Brem (SCS) | Topology model in configuration. |
+| 1.0.0 | 0.13 | 17.02.2016 | Martin Frey (SCS) | Review topology model |
+| 1.0.0 | 0.14 | 19.02.2016 | Pascal Brem (SCS) | Sections added to file format. |
+| 1.0.0 | 0.15 | 23.02.2016 | Martin Frey (SCS) | Global configuration and settings updated |
+| 1.0.0 | 0.16 | 11.07.2016 | Pascal Brem (SCS) | New Hash code attribute for the topology. |
+| 1.0.0 | 0.17 | 15.07.2016 | Pascal Brem (SCS) | New units and data types for positions |
+| 1.0.0 | 0.18 | 03.01.2018 | Pascal Brem (SCS) | New GTG Track Id in the Topology. |
+| 1.0.0 | 0.19 | 03.01.2018 | Pascal Brem (SCS) | Events are stored on session level. |
+| 1.1.0 | 0.20 | 09.01.2018 | Pascal Brem (SCS) | Events and Sections in a group. |
+| 1.1.0 | 0.21 | 09.01.2018 | Patrik Wernli (SCS) | Added chapter “HDF5 File Format Versions” |
+| 1.1.0 | 0.22 | 11.04.2018 | Patrik Wernli (SCS) | Changed document template to official publishing template |
+| 1.1.0 | 0.23 | 16.08.2018 | Pascal Brem (SCS) | Changes in the channel basis definition. |
+| 1.1.0 | 0.24 | 16.08.2018 | Pascal Brem (SCS) | New attributes on the picture block channel. |
+| 1.2.0 | 0.25 | 04.09.2018 | Pascal Brem (SCS) | New minor version. |
+| 1.3.0 | 0.26 | 28.11.2018 | Pascal Brem (SCS) | New minor version for the topology attributes. |
+| 1.4.0 | 0.27 | 08.01.2019 | Pascal Brem (SCS) | New availability group. |
+| 1.4.1 | 0.28 | 05.06.2019 | Pascal Brem (SCS) | New switchtracks in the DfA |
+| 2.0.0 | 0.29 | 21.04.2020 | Michael Ammann (SBB), Jakob Grilj (SBB) | Adaptation of the structure to new requirements. New major release with version number 2.0, due to major changes in the structure and goal for publication of the specification (open source). |
 
 ## Introduction  
 
@@ -50,8 +50,6 @@ The RCM-DX specification is open source and freely accessible and usable by all 
 Railroad companies continuously gather data of their rail, overhead line, and telecommunications networks by means of mobile and stationary measuring systems. Data flows from these systems through processing units -- which enrich, evaluate and validate the data --, to systems that display the data to subject matter experts and also to systems that automatically analyse it.
 
 This specification defines the rail condition monitoring data exchange format (RCM-DX format) which is a data format optimised for data in the railroad context, i.e. for data points localised within a railroad network. The RCM-DX format is a file format based on the HDF5 specification and defines a structure of HDF5 groups, datasets, and attributes. The document at hands also describes the content of the elements defined. Although the format is open and can in principle be implemented right away by any railroad company, this specification contains a few non-generic elements and naming conventions that are specific to SBB. The reason for this is that any file that adheres to this specification can be used with the _RCM Viewer_, an application available soon to the public.
-
-<!-- TODO: link to RCM-DX Viewer website, if existing -->
 
 The RCM-DX format is a file format detailing the HDF5 format version 2.0. HDF5 was chosen for several reasons, including that it is an open format. HDF5 is a hierarchical data storage where the data in arranged in a tree structure. The HDF5 format is described on the webpage of the [HDF5-group](http://www.hdfgroup.org/HDF5/), in particular on the site [HDF5 file format specification](https://portal.hdfgroup.org/display/HDF5/Introduction+to+HDF5). The HDF5 group offers tools and libraries for various programming languages and operating systems that allow to read and write HDF5 files.
 
@@ -71,11 +69,6 @@ Defines the main version and indicates when major changes have been made. These 
 
 **Minor**  
 Indicates minor changes, such as changing the name of an attribute that is not mandatory or defining new groups, attributes, or datasets. These changes do not affect anything that cannot be read with an existing RCM-DX read-write library.
-
-**Revision**  
-To version this specification, a third digit is introduced with the abbreviation **[Rev]** for revision. This, however, is only valid for this document as a help and not for the overview of changes to the structure itself. This third version number is not visible in the RCM-DX files. If the major and/or minor version number is increased, the revision number is reset to zero '0'.
-
-See chapter [\ref{change-history} Change history](#change-history).
 
 #### Diagrams
 
@@ -493,7 +486,7 @@ The root group contains all other subgroups. This group defines the RCM-DX and b
 |--|--|--|
 | `RCMDX` | this is the root node | no |
 
-![Root group overview](images/generated/rcmdx_root_group.png){width=360px}
+![Root group overview](images/generated/rcmdx_root_group.png){width=400px}
 
 #### Attributes  
 
@@ -534,20 +527,41 @@ Below is a list of the defined unique names of the platforms and their names.
 | DFZ01 | gDFZ | - |
 | DFZ02 | SPZ | - |
 
-#### Platform Configuration Group
+### Platform configuration Group
 
-Configurations of various systems can be stored in the datasets of this group. The datasets are designed so that global and network specific configurations can be stored. The Configuration can change and have not to be the same in each session.
+Configurations of various systems can be stored in the datasets of this group. The datasets are designed so that global and network specific configurations can be stored. The configuration can change and have not to be the same in each session.
 
 | Name | Parent object | Optional |
 |--|--|--|
-| CONFIGURATION | `PLATFORM` | yes |
+| `CONFIGURATION` | `PLATFORM` | no |
 
-Subsequent datasets are subordinate to this group:
+#### Setting Group
+
+Within this group there are further groups whose names correspond to those of a measuring system to which the configuration contained therein belongs.  
+In the following *SETTING_NAME* is used as placeholder of the actual name of the measuring system.
+
+| Name | Parent object | Optional |
+|--|--|--|
+| *SETTING_NAME* | `CONFIGURATION` | no |
+
+This group contains two datasets:
 
 | Name | Data type | Parent object | Optional | Storage type |
 |----|---|----|---|----|
-| global | string | `CONFIGURATION` | no | Single values |
-| network | string | `CONFIGURATION` | no | Single values |
+| setting | string | *SETTING_NAME* | no | `Array` |
+| timestamp | 64 bit integer | *SETTING_NAME* | no | `Array` |
+
+**setting**  
+Contains the actual configuration.
+
+**timestamp**  
+Contains the time from when this configuration is valid and was used.
+
+The following attributes are contained in this group:  
+
+| Name | Data type | Parent object | Optional | Description |
+|---|---|---|---|-----|
+| DataType | string | `setting` | no | Defines the datatype of the configuration within the data set `setting`. Data type specified as MIME^3^ type, for example `Content-Type: <text/strings>` |
 
 ### Session Group  
 
@@ -599,7 +613,7 @@ The group `SECTION`, contains information about a session.
 
 ![Section group overview](images/generated/rcmdx_section_group.png){ width=300px }
 
-#### Section info
+### Section info
 
 This group contains the information regarding the sections itself.
 
@@ -607,7 +621,7 @@ This group contains the information regarding the sections itself.
 |--|--|--|
 | `SECTIONINFO` | `SECTION` | no |
 
-##### Data fields
+#### Data fields
 
 The following data fields are contained in the group "SECTIONINFO":
 
@@ -703,7 +717,6 @@ This group contains general information on the position.
 |------|-----|----|---|---|
 | coveredDistance | 64 bit float | `POSITION` | no | `Array` |
 | coachOrientation | Enum | `POSITION` | no | `Array` |
-| vehicleSpeed | 64 bit float | `POSITION` | no | `Array` | <!-- TODO! -->
 | trackOrientation | Enum | `POSITION` | no | `Array` |
 | trackId | 32 bit integer | `POSITION` | no | `Array` |
 | lineId | 32 bit integer | `POSITION` | no | `Array` |
@@ -715,9 +728,6 @@ This group contains general information on the position.
 
 **coveredDistance**  
 Total length of a session.
-
-**vehicleSpeed**  
-Speed of the vehicle at the time.  <!-- TODO! -->
 
 **trackId**  
 Defined track ID on which the vehicle is located at the time of recording.
@@ -738,9 +748,7 @@ Marker for the quality of the position determination ranging from 0 meaning "ver
 The position accuracy in meters.
 
 **timestamp**  
-The timestamp  for each position. Serves as primary key.
-
-Unit's are defined in the attribute `Unit` of each data field. <!-- TODO! -->
+The timestamp for each position. Serves as primary key.
 
 #### Coach Orientation
 
@@ -776,7 +784,7 @@ The following values are allowed:
 
 Information about the environment can be stored in the subgroups and their datasets. Since such information applies to all measurement systems, this is the right place for it.  
 
-As always with a data source, the data set `timestamp` must **not** be forgotten.
+As always with a data source, the data set `timestamp` must **not** be forgotten, this data set is not optional!
 
 ![Environment group overview](images/generated/rcmdx_environment_group.png)
 
@@ -943,7 +951,7 @@ The following attributes are contained in this group:
 | ChannelBasis | Enum | *CHANNEL_NAME* | no | See below |
 | ChannelType | Enum | *CHANNEL_NAME* | no | See below |
 | Neighbor | string | *CHANNEL_NAME* | no | See below |
-| MeasurementUncertainty | 32 bit float | *CHANNEL_NAME* | no | This attribute contains the measurement accuracy of the channel according to the specifications of the measurement system. | <!-- TODO -->
+| MeasurementUncertainty | 32 bit float | *CHANNEL_NAME* | no | This attribute contains the measurement accuracy of the channel according to the specifications of the measurement system. Note: A better solution is being sought! A variant would be with XML, so also dependencies etc. could be mapped. |
 | PositionOffset | 32 bit signed float | *CHANNEL_NAME* | no | See below |
 | Element | string | *CHANNEL_NAME* | no | Contains the type of the group, this is fix `CHANNEL` |
 
@@ -951,6 +959,7 @@ The following attributes are contained in this group:
 The trigger value defines when a value is measured based on the trigger mode.  
 
 > In a data source group there is always only one common trigger mode! A mixture within the group is not permitted!
+
 > The attribute has the value "0.0" if `TriggerMode` contains the value `EVENT`.
 
 **ChannelBasis**  
@@ -958,13 +967,14 @@ Description of the channel, what was measured and in which direction. Since a me
 
 Possible values are:
 
-| Value | Description |
-|---|-----|
-| COACH_LEFT | Sensor is installed on the left hand side of the measuring platform. The data has not been corrected for direction of travel |
-| COACH_RIGHT |Sensor is installed on the right hand side of the measuring platform. The data has not been corrected for direction of travel |
-| RAIL_LEFT | Channel contains data of the left rail in terms of travel direction. The data has been corrected for direction of travel |
-| RAIL_RIGHT | Channel contains data of the right rail in terms of travel direction. The data has been corrected for direction of travel |
-| ABSOLUTE | Channel is not associated with a single rail |
+| Value | Description |
+| SENSOR_VERTICAL_LEFT | <!-- TODO:  Description  --> |
+| SENSOR_VERTICAL_RIGHT | <!-- TODO:  Description  --> |
+| MOVE_DIRECTION_VERTICAL_LEFT | <!-- TODO:  Description  --> |
+| MOVE_DIRECTION_VERTICAL_RIGHT | <!-- TODO:  Description  --> |
+| SENSOR_VERTICAL_TOTAL | <!-- TODO:  Description  --> |
+| MOVE_DIRECTION_VERTICAL_TOTAL | <!-- TODO:  Description  --> |
+| TOTAL | <!-- TODO:  Description  --> |
 
 **ChannelType**  
 Defines how a value was created. This can be measured, calculated or taken from a previously defined data source that was read from there and inserted into the file.
@@ -1035,7 +1045,7 @@ In this group, failures and interruptions of measurement systems are recorded in
 
 | Name | Parent object | Optional |
 |--|---|--|
-| `OUTAGES` | `LOGGING` | no |
+| `OUTAGES` | `LOGGING` | yes |
 
 The following datasets are included in this group:
 
@@ -1083,7 +1093,7 @@ This group contains messages, generated from a measurement system or a person, s
 
 | Name | Parent object | Optional |
 |--|---|--|
-| `MESSAGES` | `LOGGING` | no |
+| `MESSAGES` | `LOGGING` | yes |
 
 The following datasets are included in this group:
 
@@ -1293,7 +1303,7 @@ Contains a description of the track section.
 **softId**  
 Contains the ID's of the switches as a reference.
 
-<!-- For subsequent datasets the descriptions are still missing. These would have to be supplemented once! 29.10.2019 Ammann Michael
+<!-- For subsequent datasets the descriptions are still missing. These would have to be supplemented once! 21.04.2019 Ammann Michael (SBB)
 **Distracting riccation**   
 **Deflection.  
 **Operating point**   
@@ -1443,7 +1453,7 @@ Systems can, for example, trigger an event when a limit value is exceeded. Event
 
 | Name | HDF5 Type | Parent object | Optional |
 |--|--|---|--|
-| `EVENT` | HDF5 Group | *SESSION_NAME* | no |
+| `EVENT` | HDF5 Group | *SESSION_NAME* | yes |
 
 Within the group there are the following data fields:
 
@@ -1612,7 +1622,7 @@ Protocol entries can have references to systems, sessions, and channels.
 
 | Name | HDF5 Type | Optional |
 |---|-----|--|
-| `RECORD` | HDF5 Group | no |
+| `RECORD` | HDF5 Group | yes |
 
 Within the group there are the following data fields:
 
@@ -1702,42 +1712,11 @@ The XML schema can be found in chapter [\ref{events-generic} EventsGeneric](#eve
 | Username | Name of the user who recorded the message | Corrupt |
 | ID | Unique ID of this message | Corrupt |
 
-### Configuration Group
+### Measurement system configuration Group
 
-In the configuration group, data can be stored in any format that was used for the configuration of one or more measuring systems. Each subgroup defines a measurement system.  
-This group is below that of a measurement system and thus within the group [\ref{measuring-system-group} Measuring System Group](#measuring-system-group).  
+The structure of this group is the __same__ as for the configuration group below the group `PLATFORM`: [\ref{platform-configuration-group} Platform configuration group](#platform-configuration-group), but __the parent group__ is `*MEASURINGSYSTEM_NAME*`: [\ref{measuring-system-group} Measuring system group](#measuring-system-group).
 
-| Name | Parent object | Optional |
-|--|--|--|
-| `CONFIGURATION` | *MEASURINGSYSTEM_NAME* | yes |
-
-#### Configuration Group datasets
-
-Within this group there are further groups whose names correspond to those of a measuring system to which the configuration contained therein belongs.  
-In the following *SETTING_NAME* is used as placeholder of the actual name of the measuring system.
-
-| Name | Parent object | Optional |
-|--|--|--|
-| *SETTING_NAME* | `CONFIGURATION` | yes |
-
-This group contains two datasets:
-
-| Name | Data type | Parent object | Optional | Storage type |
-|----|---|----|---|----|
-| setting | string | *SETTING_NAME* | no | `Array` |
-| timestamp | 64 bit integer | *SETTING_NAME* | no | `Array` |
-
-**setting**  
-Contains the actual configuration.
-
-**timestamp**  
-Contains the time from when this configuration is valid and was used.
-
-The following attributes are contained in this group:  
-
-| Name | Data type | Parent object | Optional | Description |
-|---|---|---|---|-----|
-| DataType | string | `setting` | no | Defines the datatype of the configuration within the data set `setting`. Data type specified as MIME^3^ type, for example `Content-Type: <text/strings>` |
+![Measurement configuration group overview](images/generated/rcmdx_measuringsystem_config_group.png){width=230px}
 
 ### Data Processing Group
 
@@ -1745,7 +1724,7 @@ The data source group `DATAPROCESSING` contains information abou the data in thi
 
 | Name | Parent object | Optional |
 |--|--|--|
-| `DATAPROCESSING` | `RCMDX` | no |
+| `DATAPROCESSING` | `RCMDX` | yes |
 
 #### Data Processing Group datasets
 
@@ -1764,7 +1743,7 @@ The data source group `PROCESSINGLOG` contains information on data processing. T
 
 | Name | Parent object | Optional |
 |--|--|--|
-| `PROCESSINGLOG` | `DATAPROCESSING` | no |
+| `PROCESSINGLOG` | `DATAPROCESSING` | yes |
 
 #### Processing log Group datasets
 
@@ -1809,10 +1788,6 @@ This data set contains the value about what was done in that step or what the re
 
 **timestamp**  
 Contains the time of the acquisition of the entry in the `key` and `value` data set.
-
-## Changes to the previous version
-
-> TODO: Hier die Änderungen zur Version 0.1 vermerken!
 
 ## XML Schema Definitions
 

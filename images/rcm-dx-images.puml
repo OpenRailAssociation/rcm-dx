@@ -55,16 +55,32 @@
   RCMDX "1" o-- "1" PLATFORM
 
   object DATAPROCESSING {
+    a:Clearance (boolean)
+  }
+  RCMDX "1" o-- "0..1" DATAPROCESSING
+
+ object PROCESSINGLOG {
     d:key (string)
     d:value (string)
   }
-  RCMDX "1" o-- "1" DATAPROCESSING
+  DATAPROCESSING "1" o-- "0..1" PROCESSINGLOG
 
   object CLEARANCEINFORMATION {
     d:key (string)
     d:value (string)
   }
-  RCMDX "1" o-- "1" CLEARANCEINFORMATION
+  DATAPROCESSING "1" o-- "0..1" CLEARANCEINFORMATION
+
+  object "CONFIGURATION" as platform_config
+  PLATFORM "1" o-- "1" platform_config
+
+  object "//SESSION_NAME//" as session_name {
+    a:Element (string) = "SESSION"
+    a:StartTime (Timestamp)
+    a:EndTime (Timestamp)
+    a:PositionSource (string)
+  } 
+  PLATFORM "1" o-- "1" session_name
 
 @enduml
 
@@ -75,12 +91,23 @@
     a:VehicleNumber (string)
   }
 
-  object "CONFIGURATION" as platform_config {
-    d:global (string)
-    d:network (string)
-  }
-
+  object "CONFIGURATION" as platform_config
   PLATFORM "1" o-- "1" platform_config
+
+  object "//SETTING_NAME//" as platform_setting_name {
+    a:DataType (string)
+  }
+  platform_config "1" o-- "1..n" platform_setting_name
+
+  object "timestamp" as platform_setting_timestamp #LightGray {
+    data type: Timestamp
+  }
+  platform_setting_name "1" o-- "1" platform_setting_timestamp
+
+  object "setting" as platform_setting #LightGray {
+    data type: string
+  }
+  platform_setting_name "1" o-- "1" platform_setting
 
   object "//SESSION_NAME//" as session_name {
     a:Element (string) = "SESSION"
@@ -263,6 +290,35 @@
   MEASURINGSYSTEM "1" o-- "1" ms_config
 @enduml
 
+@startuml rcmdx_measuringsystem_config_group
+  object "//MEASURINGSYSTEM_NAME//" as MEASURINGSYSTEM {
+    a:Element (string) = "MEASURINGSYSTEM"
+    a:Family (string)
+    a:Revision (string)
+    a:InstanceVersion (string)
+    a:MeasuringMode (Enum) 
+  }
+  
+  object "CONFIGURATION" as ms_config
+  MEASURINGSYSTEM "1" o-- "1" ms_config
+
+  object "//SETTING_NAME//" as setting_name {
+    a:DataType (string)
+  }
+  ms_config "1" o-- "1..n" setting_name
+
+  object "timestamp" as setting_timestamp #LightGray {
+    data type: Timestamp
+  }
+  setting_name "1" o-- "1" setting_timestamp
+
+  object "setting" as setting #LightGray {
+    data type: string
+  }
+  setting_name "1" o-- "1" setting
+@enduml
+
+
 @startuml rcmdx_logging_group
   object LOGGING
 
@@ -273,7 +329,7 @@
     d:datasourceReference (string)
     d:level (Enum)
   }
-  LOGGING "1" o-- "1" OUTAGES
+  LOGGING "1" o-- "0..1" OUTAGES
   object "timestamp" as out_timestamp #LightGray {
     data type: Timestamp
   }
@@ -289,7 +345,7 @@
     d:channelReference (string)
     d:level (Enum)
   }
-  LOGGING "1" o-- "1" MESSAGES
+  LOGGING "1" o-- "0..1" MESSAGES
 
   object "timestamp" as msg_timestamp #LightGray {
     data type: Timestamp
