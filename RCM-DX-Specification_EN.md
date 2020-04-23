@@ -3,6 +3,7 @@
 ## License
 
 > TODO: Lizenzhinweise notieren für RCM-DX
+> TODO: Copyright hier vermerken
 > TODO: Lizenzhinweise oder Copyright notieren für HDF5
 
 ## Contribution
@@ -758,12 +759,10 @@ This data set can contain the following values:
 
 | Value | Description |
 |--|-----|
-| FORWARD | Vehicle moving forward | <!-- TODO! -->
+| FORWARD | Vehicle moving forward |
 | REVERSE | Vehicle moving reversing |
 
 #### Track Orientation
-
-<!-- TODO! Namen überlegen-->
 
 The data set `trackOrientation` contains the alignment of the track. This information serves the correct evaluation of the kilometer data of the line, see data set `trackOffset`.
 
@@ -968,13 +967,12 @@ Description of the channel, what was measured and in which direction. Since a me
 Possible values are:
 
 | Value | Description |
-| SENSOR_VERTICAL_LEFT | <!-- TODO:  Description  --> |
-| SENSOR_VERTICAL_RIGHT | <!-- TODO:  Description  --> |
-| MOVE_DIRECTION_VERTICAL_LEFT | <!-- TODO:  Description  --> |
-| MOVE_DIRECTION_VERTICAL_RIGHT | <!-- TODO:  Description  --> |
-| SENSOR_VERTICAL_TOTAL | <!-- TODO:  Description  --> |
-| MOVE_DIRECTION_VERTICAL_TOTAL | <!-- TODO:  Description  --> |
-| TOTAL | <!-- TODO:  Description  --> |
+|----|----|
+| ABSOLUTE | The channel has no dependency on direction of motion or vehicle orientation |
+| VEHICLE_LEFT | Signal reflects the left hand side of the vehicle irrespective of it's orientation or motion |
+| VEHICLE_RIGHT | Signal reflects the right hand side of the vehicle irrespective of it's orientation or motion |
+| DIRECTION_LEFT | Signal reflects the left side with respect to direction of motion |
+| DIRECTION_RIGHT | Signal reflects the right side with respect to direction of motion |
 
 **ChannelType**  
 Defines how a value was created. This can be measured, calculated or taken from a previously defined data source that was read from there and inserted into the file.

@@ -38,6 +38,8 @@
   DATASOURCE "1" o-- "1..n" channel
   channel "1" o-- "0" data
 
+  channel "1" o-- "0" testObject
+
 @enduml
 
 @startuml rcmdx_root_group
