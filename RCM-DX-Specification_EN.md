@@ -43,6 +43,7 @@ The RCM-DX specification is open source and freely accessible and usable by all 
 | 1.4.0 | 0.27 | 08.01.2019 | Pascal Brem (SCS) | New availability group. |
 | 1.4.1 | 0.28 | 05.06.2019 | Pascal Brem (SCS) | New switchtracks in the DfA |
 | 2.0.0 | 0.29 | 21.04.2020 | Michael Ammann (SBB), Jakob Grilj (SBB) | Adaptation of the structure to new requirements. New major release with version number 2.0, due to major changes in the structure and goal for publication of the specification (open source). |
+| 2.0.0 | 0.30 | 27.10.2020 | Aron Serafini (SCS) | Adjust consistency, measurementMode and processing chapters. |
 
 ## Introduction  
 
@@ -135,7 +136,7 @@ A group can be a subgroup of a group, here the name of this group is mentioned. 
 **Optional**  
 If a group is marked as optional (`optional = yes`), it can be omitted if it is not needed. If a group is marked as non-optional (`Optional = no`), then this group must exist if the parent group also exists, otherwise it does not.
 
-### (HDF5) Attribut
+### (HDF5) Attribute
 
 In the RCM-DX, attributes, groups and datasets can be assigned. The names of the attributes are written in the UpperCamelCase-Notation^1^. Attributes are always of type `HDF5 attribute` unless otherwise specified.
 
@@ -1018,11 +1019,12 @@ The data set and the possible data that can be stored are described in more deta
 ### Measurement mode group
 
 The following group contains important information about the measurement mode of the system.
+
 | Name | Parent object | Optional |
 |--|--|--|
 | `MEASUREMENTMODE` | *MEASURINGSYSTEM_NAME* | yes |
 
-The group `MEASUREMENTMODE` contains one datasets:
+The group `MEASUREMENTMODE` contains one dataset:
 
 | Name | Data type | Parent object | Optional | Storage type |
 |---|---|------|---|---|
@@ -1108,7 +1110,7 @@ The message about the consistency of the data is triggered by a system that chec
 |--|--|--|
 | `CONSISTENCYDATA` | `LOGGING` | yes |
 
-The group `CONSISTENCYDATA` contains one datasets:
+The group `CONSISTENCYDATA` contains one dataset:
 
 | Name | Data type | Parent object | Optional | Storage type |
 |---|---|------|---|---|
@@ -1752,18 +1754,19 @@ The file group contains file specific information.
 |--|--|--|
 | File | `RCMDX` | no |
 
-![Measurement configuration group overview](images/generated/rcmdx_file_group.png){width=300px}
+![File group overview](images/generated/rcmdx_file_group.png){width=300px}
 
 #### Attributes
 
 The file group contains the following attribute:
+
 | Name | Data type | Optional | Description |
 |---|---|---|------|
 | StructureVersion | String | no | Unique version identifier of the file structure. All underlying systems, datasources and channels can be identified based on this version |
 
 ### Data Processing Group
 
-The data source group `DATAPROCESSING` contains information about the data in this file, and they processing.
+The data source group `DATAPROCESSING` contains information about the data in this file, and the processing.
 
 | Name | Parent object | Optional |
 |--|--|--|
@@ -1779,7 +1782,7 @@ The data source group `PROCESSINGLOG` contains information on data processing. T
 
 #### Processing log Group datasets
 
-The group `PROCESSINGLOG` contains one datasets:
+The group `PROCESSINGLOG` contains one dataset:
 
 | Name | Data type | Parent object | Optional | Storage type |
 |---|---|-----|---|----|
@@ -1826,7 +1829,7 @@ This group is used by SBB to record information about the data release of all pa
 |--|--|--|
 | `CLEARANCEINFORMATION` | `DATAPROCESSING` | yes |
 
-The group `CLEARANCEINFORMATION` contains one datasets:
+The group `CLEARANCEINFORMATION` contains one dataset:
 
 | Name | Data type | Parent object | Optional | Storage type |
 |---|---|------|---|---|
@@ -1983,15 +1986,6 @@ Optional message of the user.
     <xs:complexType>
       <xs:attribute name="TimestampMaxViolation" type="xs:long" use="required" />
       <xs:attribute name="ViolatedLimit" type="xs:string" use="required" />
-      <xs:attribute name="ID" type="tns:UUID" use="required" />
-    </xs:complexType>
-  </xs:element>
-
-  <xs:element name="Consistency">
-    <xs:complexType>
-      <xs:attribute name="Type" type="xs:string" use="required" />
-      <xs:attribute name="ProcessName" type="xs:string" use="required" />
-      <xs:attribute name="Result" type="xs:string" use="required" />
       <xs:attribute name="ID" type="tns:UUID" use="required" />
     </xs:complexType>
   </xs:element>
