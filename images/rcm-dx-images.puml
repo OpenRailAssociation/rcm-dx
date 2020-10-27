@@ -296,7 +296,6 @@
     a:Element (string) = "MEASURINGSYSTEM"
     a:Family (string)
     a:Revision (string)
-    a:MeasuringMode (Enum) 
   }
 
   object "//DATASOURCE_NAME//" as DATASOURCE {
@@ -306,6 +305,9 @@
 
   object LOGGING
   MEASURINGSYSTEM "1" o-- "0..1" LOGGING
+
+  object MEASUREMENTMODE
+  MEASURINGSYSTEM "1" o-- "0..1" MEASUREMENTMODE
 
   object "CONFIGURATION" as ms_config
   MEASURINGSYSTEM "1" o-- "1" ms_config

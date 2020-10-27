@@ -885,20 +885,8 @@ The following attributes are contained in the group of the measuring system:
 | Name | Data type | Parent object | Optional | Description |
 |---|---|-----|---|-----|
 | Family | string | *MEASURINGSYSTEM_NAME* | no | General name of the measuring system |
-| Revision | string | *MEASURINGSYSTEM_NAME* | no | Version of the hardare and software on the measuring system, issued by the owner of the platform |
-| InstanceVersion | string | *MEASURINGSYSTEM_NAME* | no | Version of the data format created by the measuring instrument. This version can be different within different gauges of the same family |
+| Revision | string | *MEASURINGSYSTEM_NAME* | no | Version of the hardware and software on the measuring system, issued by the owner of the platform |
 | Element | string | *MEASURINGSYSTEM_NAME* | no | Indicates the type of the group, this is fixed `MEASURINGSYSTEM` |
-| MeasuringMode | Enum | *MEASURINGSYSTEM_NAME* | no | Indicates the measuring mode, defined in chapter [\ref{measurement-mode} Measuring mode](#measurement-mode) |
-
-##### Measurement mode
-
-There are three different measurement modes, which are explained individually below.
-
-| Name | Description |
-|----|------|
-| OPERATIVE | Productive data that will be further used. |
-| TEST | Test data recorded during a diagnostic run with the aim of checking and testing the measuring equipment. |
-| SIMULATION | Simulated values that the measuring systems produce themselves and are no longer used. |
 
 ### Datasource Group
 
@@ -1026,6 +1014,33 @@ The data set needs more information, this is given as attributes:
 The physical unit of the measurement data, such as "millimeter". If no physical unit can be assigned to the data, this attribute remains empty.
 
 The data set and the possible data that can be stored are described in more detail in the chapter [\ref{hdf5-datasets} Dataset](#hdf5-datasets).
+
+### Measurement mode group
+
+The following group contains important information about the measurement mode of the system.
+| Name | Parent object | Optional |
+|--|--|--|
+| `MEASUREMENTMODE` | *MEASURINGSYSTEM_NAME* | yes |
+
+The group `MEASUREMENTMODE` contains one datasets:
+
+| Name | Data type | Parent object | Optional | Storage type |
+|---|---|------|---|---|
+| measurementMode | Enum | `MEASUREMENTMODE` | no | `Array` |
+| timestampFrom | 64 bit integer | `MEASUREMENTMODE` | no | `Array` |
+| timestampTo | 64 bit integer | `MEASUREMENTMODE` | no | `Array` |
+| message | string | `MEASUREMENTMODE` | yes | `Array` |
+All these datasets represent different columns in a table. Their sizes will therefore always be identical.
+
+#### Measurement mode (enum)
+
+There are three different measurement modes, which are explained individually below.
+
+| Name | Description |
+|----|------|
+| PRODUCTIVE | Productive data that will be further used. |
+| TEST | Test data recorded during a diagnostic run with the aim of checking and testing the measuring equipment. |
+| SIMULATION | Simulated values that the measuring systems produce themselves and are no longer used. |
 
 ### Logging Group
 

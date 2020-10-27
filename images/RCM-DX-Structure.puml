@@ -152,7 +152,6 @@
     a:Element (string) = "MEASURINGSYSTEM"
     a:Family (string)
     a:Revision (string)
-    a:MeasuringMode (Enum) 
   }
 
   session_name "1" o-- "1..n" MEASURINGSYSTEM
@@ -215,6 +214,14 @@
     data type: Timestamp
   }
   MESSAGES "1" o-- "1" msg_timestamp
+  
+  object MEASUREMENTMODE {
+    d:measurementMode (Enum)
+    d:timestampFrom (Timestamp)
+    d:timestampTo (Timestamp)
+    d:message (string)
+  }
+  MEASURINGSYSTEM "1" o-- "0..1" MEASUREMENTMODE
 
   object TOPOLOGY {
     a:Version (string)
