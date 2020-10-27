@@ -192,6 +192,15 @@
     d:level (Enum)
   }
   LOGGING "1" o-- "0..1" OUTAGES
+  
+  object CONSISTENCYDATA {
+    d:channelId (string)
+    d:timestampFrom (Timestamp)
+    d:timestampTo (Timestamp)
+    d:consistencyType (Enum)
+    d:consistencyInfo (string)
+  }
+  LOGGING "1" o-- "0..1" CONSISTENCYDATA
 
   object "timestamp" as out_timestamp #LightGray {
     data type: Timestamp

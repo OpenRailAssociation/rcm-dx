@@ -1100,6 +1100,43 @@ Defines the severity of the failure or interruption of a measurement system. Fol
 | PARTIAL_FAILURE | The measuring system or the sensor has partially failed and has only recorded measured values for a certain time during the session. |
 | MALFUNCTION | The measuring system or the sensor had a malfunction and the measured values cannot be used because they may not be correct. |
 
+#### Consistency group
+
+The message about the consistency of the data is triggered by a system that checks all data according to certain criteria. For example, this could be a check for black images in a video. If all frames in the video are black, something is wrong and the video is unusable. 
+
+| Name | Parent object | Optional |
+|--|--|--|
+| `CONSISTENCYDATA` | `LOGGING` | yes |
+
+The group `CONSISTENCYDATA` contains one datasets:
+
+| Name | Data type | Parent object | Optional | Storage type |
+|---|---|------|---|---|
+| channelId | string | `CONSISTENCYDATA` | no | `Array` |
+| timestampFrom | 64 bit integer | `CONSISTENCYDATA` | no | `Array` |
+| timestampTo | 64 bit integer | `CONSISTENCYDATA` | no | `Array` |
+| consistencyType | Enum | `CONSISTENCYDATA` | no | `Array` |
+| consistencyInfo | string | `CONSISTENCYDATA` | yes | `Array` |
+All these datasets represent different columns in a table. Their sizes will therefore always be identical.
+
+**channelId**  
+Channel reference in which the finding was detected.
+
+**timestampFrom**  
+Start timestamp of the consistency.
+
+**timestampTo**  
+End timestamp of the consistency. Note that consistencies can never overlap and will always be continuous (without holes) within sections.
+
+**consistencyType**  
+The consistency type can have the following values:
+- CONSISTENT
+- INCONSISTENT
+- NO_DATA
+
+**consistencyInfo**  
+Contains additional information about this consistency (E.g. which rule decided the consistency type).
+
 #### Message Group
 
 This group contains messages, generated from a measurement system or a person, structured in data set.
@@ -1497,7 +1534,7 @@ Contains a list of entries that refers to a channel to which the event applies.
 | channelReference | string | `EVENT` | yes | `Array` |
 
 **data**
-This data set contains the actual information about an event, this in the XML notation which is described in more detail in each chapter of the event types (Defect event type, Detected object event type, Limit event type and Consistency event type).  
+This data set contains the actual information about an event, this in the XML notation which is described in more detail in each chapter of the event types (Defect event type, Detected object event type, Limit event type).  
 A type can be stored for each event. These are explained in more detail below.
 
 | Name | Data type | Parent object | Optional | Storage type |
@@ -1602,30 +1639,6 @@ The XML schema can be found in chapter [\ref{events-generic} EventsGeneric](#eve
 | TimestampMaxViolation | Time at which limit value was exceeded | LimitViolation |
 | ViolatedLimit | Name of the defined limit | LimitViolation |
 | ID | Unique ID of the event | LimitViolation |
-
-#### Consistency event type
-
-The message about the consistency of the data is triggered by a system that checks all data according to certain criteria. For example, this could be a check for black images in a video. If all frames in the video are black, something is wrong and the video is unusable. Messages are only created if a finding is present.
-
-The XML Schema can be found in the chapter [\ref{events-generic} EventsGeneric](#events-generic).  
-
-##### **XML element**
-
-| Name | Description | Parent object |
-|---|-----|--|
-| Consistency | Root Element | none |
-
-##### **XML attributes**
-
-| Name | Description | Parent object |
-|---|-----|--|
-| Type | Type or type of consistency check in response to the question "What has been checked? | Consistency |
-| ProcessName | Name of the process that checked consistency | Consistency |
-| Result | Result of the consistency check. | Consistency |
-| ID | Unique ID of the event (UUID) | Consistency |
-
-**Result**  
-The actual result of the consistency check. Each system that performs a consistency check has different results, which in turn must be described in more detail in its specification.
 
 ### Record Group
 
