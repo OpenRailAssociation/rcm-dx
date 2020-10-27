@@ -46,30 +46,21 @@
     a:Major (16 bit integer)
     a:Minor (16 bit integer)
   }
-  
+ 
   object PLATFORM {
     a:Name (Enum)
     a:VehicleNumber (string)
   }
-
   RCMDX "1" o-- "1" PLATFORM
 
+  object FILE {
+    a:StructureVersion (string)
+  }
+  RCMDX "1" o-- "1" FILE
+
   object DATAPROCESSING {
-    a:Clearance (boolean)
   }
-  RCMDX "1" o-- "0..1" DATAPROCESSING
-
- object PROCESSINGLOG {
-    d:key (string)
-    d:value (string)
-  }
-  DATAPROCESSING "1" o-- "0..1" PROCESSINGLOG
-
-  object CLEARANCEINFORMATION {
-    d:key (string)
-    d:value (string)
-  }
-  DATAPROCESSING "1" o-- "0..1" CLEARANCEINFORMATION
+  FILE "1" o-- "0..1" DATAPROCESSING
 
   object "CONFIGURATION" as platform_config
   PLATFORM "1" o-- "1" platform_config
@@ -118,6 +109,37 @@
 
   PLATFORM "1" o-- "1" session_name
 
+@enduml
+
+@startuml rcmdx_file_group
+
+  object FILE {
+    a:StructureVersion (string)
+  }
+
+  object DATAPROCESSING {
+  }
+  FILE "1" o-- "0..1" DATAPROCESSING
+
+  object PROCESSINGLOG {
+    d:processingType (string)
+    d:timestamp (Timestamp)
+    d:service (string)
+    d:serviceUser (string)
+    d:host (string)
+    d:executable (string)
+    d:user (string)
+    d:message (string)
+  }
+  DATAPROCESSING "1" o-- "0..1" PROCESSINGLOG
+
+  object CLEARANCEINFORMATION {
+    d:clearance (Enum)
+    d:timestamp (Timestamp)
+    d:user (string)
+    d:message (string)
+  }
+  DATAPROCESSING "1" o-- "0..1" CLEARANCEINFORMATION
 @enduml
 
 @startuml rcmdx_session_group
@@ -274,7 +296,6 @@
     a:Element (string) = "MEASURINGSYSTEM"
     a:Family (string)
     a:Revision (string)
-    a:InstanceVersion (string)
     a:MeasuringMode (Enum) 
   }
 

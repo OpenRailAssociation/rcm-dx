@@ -14,20 +14,32 @@
   }
   RCMDX "1" o-- "1" PLATFORM
 
-  object DATAPROCESSING {
-    a:Clearance (boolean)
+  object FILE {
+    a:StructureVersion (string)
   }
-  RCMDX "1" o-- "0..1" DATAPROCESSING
+  RCMDX "1" o-- "1" FILE
+
+  object DATAPROCESSING {
+  }
+  FILE "1" o-- "0..1" DATAPROCESSING
 
   object PROCESSINGLOG {
-    d:key (string)
-    d:value (string)
+    d:processingType (string)
+    d:timestamp (Timestamp)
+    d:service (string)
+    d:serviceUser (string)
+    d:host (string)
+    d:executable (string)
+    d:user (string)
+    d:message (string)
   }
   DATAPROCESSING "1" o-- "0..1" PROCESSINGLOG
 
   object CLEARANCEINFORMATION {
-    d:key (string)
-    d:value (string)
+    d:clearance (Enum)
+    d:timestamp (Timestamp)
+    d:user (string)
+    d:message (string)
   }
   DATAPROCESSING "1" o-- "0..1" CLEARANCEINFORMATION
 
@@ -140,7 +152,6 @@
     a:Element (string) = "MEASURINGSYSTEM"
     a:Family (string)
     a:Revision (string)
-    a:InstanceVersion (string)
     a:MeasuringMode (Enum) 
   }
 

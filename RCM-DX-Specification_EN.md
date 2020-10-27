@@ -1716,24 +1716,30 @@ The structure of this group is the __same__ as for the configuration group below
 
 ![Measurement configuration group overview](images/generated/rcmdx_measuringsystem_config_group.png){width=230px}
 
-### Data Processing Group
+### File Group
 
-The data source group `DATAPROCESSING` contains information abou the data in this file, and they processing.
+The file group contains file specific information.
 
 | Name | Parent object | Optional |
 |--|--|--|
-| `DATAPROCESSING` | `RCMDX` | yes |
+| File | `RCMDX` | no |
 
-#### Data Processing Group datasets
+![Measurement configuration group overview](images/generated/rcmdx_file_group.png){width=300px}
 
-The group `DATAPROCESSING` contains one datasets:
+#### Attributes
 
-| Name | Data type | Parent object | Optional | Storage type |
-|---|---|-----|---|----|
-| clearance | boolean | `DATAPROCESSING` | no | `Array` |
+The file group contains the following attribute:
+| Name | Data type | Optional | Description |
+|---|---|---|------|
+| StructureVersion | String | no | Unique version identifier of the file structure. All underlying systems, datasources and channels can be identified based on this version |
 
-**Clearance**  
-Release flag of the file. If the last processing step releases the data for the end user, the value 1 (`true`) is written to this attribute.
+### Data Processing Group
+
+The data source group `DATAPROCESSING` contains information about the data in this file, and they processing.
+
+| Name | Parent object | Optional |
+|--|--|--|
+| `DATAPROCESSING` | `FILE` | yes |
 
 ### Processing log Group
 
@@ -1749,18 +1755,40 @@ The group `PROCESSINGLOG` contains one datasets:
 
 | Name | Data type | Parent object | Optional | Storage type |
 |---|---|-----|---|----|
-| key | string | `PROCESSINGLOG` | no | `Array` |
-| value | string | `PROCESSINGLOG` | no | `Array` |
+| type | string | `PROCESSINGLOG` | no | `Array` |
 | timestamp | 64 bit integer | `PROCESSINGLOG` | no | `Array` |
+| service | string | `PROCESSINGLOG` | no | `Array` |
+| serviceUser | string | `PROCESSINGLOG` | no | `Array` |
+| host | string | `PROCESSINGLOG` | no | `Array` |
+| executable | string | `PROCESSINGLOG` | no | `Array` |
+| user | string | `PROCESSINGLOG` | yes | `Array` |
+| message | string | `PROCESSINGLOG` | yes | `Array` |
+All these datasets represent different columns in a table. Their sizes will therefore always be identical.
 
-**key**  
-This record contains a unique key as a reference to a data processing step. The number of values in this data set corresponds to the number in data set `value`. The key value in index no. $0$ of `key` belongs to the value in the data set `value` at index no. $0$ and so on.
-
-**value**
-This data set contains the value about what was done in that step or what the result was.
+**type**  
+This record contains the type of the data processing step. The following are possible types: CREATION, CONVERSION, MERGE, CONSISTENCY_CHECK, UNIT_CONVERSION, COMMENT, ...
 
 **timestamp**  
-Contains the time of the acquisition of the entry in the `key` and `value` data set.
+Contains the time of the acquisition of the entry.
+
+**service**  
+Name of the service that applied this processing step.
+
+**serviceUser**  
+(Technical) User that runs the service.
+
+**host**  
+Host that the service is run on.
+
+**executable**  
+Executable that the service is run from.
+
+**user**  
+Optional user-ID of the initiator of this processing step.
+
+**message**  
+Optional message of the user.
+
 
 ### Clearance Information Group
 
@@ -1774,18 +1802,26 @@ The group `CLEARANCEINFORMATION` contains one datasets:
 
 | Name | Data type | Parent object | Optional | Storage type |
 |---|---|------|---|---|
-| key | string | `CLEARANCEINFORMATION` | no | `Array` |
-| value | string | `CLEARANCEINFORMATION` | no | `Array` |
+| clearance | Enum | `CLEARANCEINFORMATION` | no | `Array` |
 | timestamp | 64 bit integer | `CLEARANCEINFORMATION` | no | `Array` |
+| user | string | `CLEARANCEINFORMATION` | no | `Array` |
+| message | string | `CLEARANCEINFORMATION` | yes | `Array` |
+All these datasets represent different columns in a table. Their sizes will therefore always be identical.
 
-**key**  
-This record contains a unique key as a reference to a clearance step. The number of values in this data set corresponds to the number in data set `value`. The key value in index no. $0$ of `key` belongs to the value in the data set `value` at index no. $0$ and so on.
-
-**value**
-This data set contains the value about what was done in that step or what the result was.
+**clearance**  
+This record contains the enum value of the clearance. The following values are possible:
+- RELEASED
+- RELEASED_TEST
+- UNRELEASED
 
 **timestamp**  
-Contains the time of the acquisition of the entry in the `key` and `value` data set.
+Contains the time of the acquisition of the entry.
+
+**user**  
+User-ID of the initiator of this clearance.
+
+**message**  
+Optional message of the user.
 
 ## XML Schema Definitions
 
