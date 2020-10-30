@@ -499,6 +499,118 @@ The following attributes are assigned to the group `RCMDX`:
 | Major | 16 bit integer | `RCMDX` | no | Major Version of the RCM-DX specification that corresponds to the structure of the created file |
 | Minor | 16 bit integer | `RCMDX` | no | Minor Version of the RCM-DX specification that corresponds to the structure of the created file |
 
+### File Group
+
+The file group contains file specific information.
+
+| Name | Parent object | Optional |
+|--|--|--|
+| `FILE` | `RCMDX` | no |
+
+![File group overview](images/generated/rcmdx_file_group.png){width=300px}
+
+#### Attributes
+
+The file group contains the following attribute:
+
+| Name | Data type | Optional | Description |
+|---|---|---|------|
+| StructureVersion | string | no | Version identifier of the platform structure. All underlying systems, datasources and channels can be identified based on this version |
+
+### Data Processing Group
+
+The data source group `DATAPROCESSING` contains information about the data in this file, and the processing.
+
+| Name | Parent object | Optional |
+|--|--|--|
+| `DATAPROCESSING` | `FILE` | yes |
+
+### Processing log Group
+
+The data source group `PROCESSINGLOG` contains information on data processing. This information is written by systems that make changes to the data. These changes, for example, can be a conversion from millimeters to meters.
+
+| Name | Parent object | Optional |
+|--|--|--|
+| `PROCESSINGLOG` | `DATAPROCESSING` | yes |
+
+#### Processing log Group datasets
+
+The group `PROCESSINGLOG` contains one dataset:
+
+| Name | Data type | Parent object | Optional | Storage type |
+|---|---|-----|---|----|
+| type | string | `PROCESSINGLOG` | no | `Array` |
+| timestamp | 64 bit integer | `PROCESSINGLOG` | no | `Array` |
+| service | string | `PROCESSINGLOG` | no | `Array` |
+| serviceUser | string | `PROCESSINGLOG` | no | `Array` |
+| host | string | `PROCESSINGLOG` | no | `Array` |
+| executable | string | `PROCESSINGLOG` | no | `Array` |
+| user | string | `PROCESSINGLOG` | yes | `Array` |
+| message | string | `PROCESSINGLOG` | yes | `Array` |
+All these datasets represent different columns in a table. Their sizes will therefore always be identical.
+
+**type**  
+This record contains the type of the data processing step. The following are possible types: `CREATION`, `CONVERSION`, `MERGE`, `CONSISTENCY_CHECK`, `UNIT_CONVERSION`, `COMMENT`, ...
+
+**timestamp**  
+Contains the time of the acquisition of the entry.
+
+**service**  
+Name of the service that applied this processing step.
+
+**serviceUser**  
+(Technical) User that runs the service.
+
+**host**  
+Host that the service is run on.
+
+**executable**  
+Executable that the service is run from.
+
+**user**  
+Optional user-ID of the initiator of this processing step.
+
+**message**  
+Optional message of the user.
+
+
+### Clearance Information Group
+
+This group is used by SBB to record information about the data release of all parties who have processed this data. The information is stored in the form of key-value pairs in a data set.
+
+| Name | Parent object | Optional |
+|--|--|--|
+| `CLEARANCEINFORMATION` | `DATAPROCESSING` | yes |
+
+The group `CLEARANCEINFORMATION` contains one dataset:
+
+| Name | Data type | Parent object | Optional | Storage type |
+|---|---|------|---|---|
+| clearance | Enum | `CLEARANCEINFORMATION` | no | `Array` |
+| timestamp | 64 bit integer | `CLEARANCEINFORMATION` | no | `Array` |
+| user | string | `CLEARANCEINFORMATION` | no | `Array` |
+| message | string | `CLEARANCEINFORMATION` | yes | `Array` |
+All these datasets represent different columns in a table. Their sizes will therefore always be identical.
+
+**clearance**  
+This record contains the enum value of the clearance. The following values are possible:
+
+| Name | Description |
+|----|------|
+| RELEASED | This file has been released and is ready for analysis |
+| RELEASED_TEST | This file has been released for the test environment and is ready for analysis |
+| UNRELEASED | This file has not yet been released |
+
+**timestamp**  
+Contains the time of the acquisition of the entry.
+
+**user**  
+User-ID of the initiator of this clearance.
+
+**message**  
+Optional message of the user.
+
+
 ### Platform Group
 
 A platform group contains information about a measuring vehicle that collects the data.  
@@ -1131,10 +1243,13 @@ Start timestamp of the consistency.
 End timestamp of the consistency. Note that consistencies can never overlap and will always be continuous (without holes) within sections.
 
 **consistencyType**  
-The consistency type can have the following values:
-- CONSISTENT
-- INCONSISTENT
-- NO_DATA
+The consistency type can have the following values:  
+
+| Name | Description |
+|----|------|
+| CONSISTENT | The referenced data was checked and is consistent |
+| INCONSISTENT | The referenced data was checked and is inconsistent |
+| NO_DATA | Consistency has been checked, but no data was found |
 
 **consistencyInfo**  
 Contains additional information about this consistency (E.g. which rule decided the consistency type).
@@ -1745,114 +1860,6 @@ The XML schema can be found in chapter [\ref{events-generic} EventsGeneric](#eve
 The structure of this group is the __same__ as for the configuration group below the group `PLATFORM`: [\ref{platform-configuration-group} Platform configuration group](#platform-configuration-group), but __the parent group__ is `*MEASURINGSYSTEM_NAME*`: [\ref{measuring-system-group} Measuring system group](#measuring-system-group).
 
 ![Measurement configuration group overview](images/generated/rcmdx_measuringsystem_config_group.png){width=230px}
-
-### File Group
-
-The file group contains file specific information.
-
-| Name | Parent object | Optional |
-|--|--|--|
-| File | `RCMDX` | no |
-
-![File group overview](images/generated/rcmdx_file_group.png){width=300px}
-
-#### Attributes
-
-The file group contains the following attribute:
-
-| Name | Data type | Optional | Description |
-|---|---|---|------|
-| StructureVersion | String | no | Unique version identifier of the file structure. All underlying systems, datasources and channels can be identified based on this version |
-
-### Data Processing Group
-
-The data source group `DATAPROCESSING` contains information about the data in this file, and the processing.
-
-| Name | Parent object | Optional |
-|--|--|--|
-| `DATAPROCESSING` | `FILE` | yes |
-
-### Processing log Group
-
-The data source group `PROCESSINGLOG` contains information on data processing. This information is written by systems that make changes to the data. These changes, for example, can be a conversion from millimeters to meters.
-
-| Name | Parent object | Optional |
-|--|--|--|
-| `PROCESSINGLOG` | `DATAPROCESSING` | yes |
-
-#### Processing log Group datasets
-
-The group `PROCESSINGLOG` contains one dataset:
-
-| Name | Data type | Parent object | Optional | Storage type |
-|---|---|-----|---|----|
-| type | string | `PROCESSINGLOG` | no | `Array` |
-| timestamp | 64 bit integer | `PROCESSINGLOG` | no | `Array` |
-| service | string | `PROCESSINGLOG` | no | `Array` |
-| serviceUser | string | `PROCESSINGLOG` | no | `Array` |
-| host | string | `PROCESSINGLOG` | no | `Array` |
-| executable | string | `PROCESSINGLOG` | no | `Array` |
-| user | string | `PROCESSINGLOG` | yes | `Array` |
-| message | string | `PROCESSINGLOG` | yes | `Array` |
-All these datasets represent different columns in a table. Their sizes will therefore always be identical.
-
-**type**  
-This record contains the type of the data processing step. The following are possible types: CREATION, CONVERSION, MERGE, CONSISTENCY_CHECK, UNIT_CONVERSION, COMMENT, ...
-
-**timestamp**  
-Contains the time of the acquisition of the entry.
-
-**service**  
-Name of the service that applied this processing step.
-
-**serviceUser**  
-(Technical) User that runs the service.
-
-**host**  
-Host that the service is run on.
-
-**executable**  
-Executable that the service is run from.
-
-**user**  
-Optional user-ID of the initiator of this processing step.
-
-**message**  
-Optional message of the user.
-
-
-### Clearance Information Group
-
-This group is used by SBB to record information about the data release of all parties who have processed this data. The information is stored in the form of key-value pairs in a data set.
-
-| Name | Parent object | Optional |
-|--|--|--|
-| `CLEARANCEINFORMATION` | `DATAPROCESSING` | yes |
-
-The group `CLEARANCEINFORMATION` contains one dataset:
-
-| Name | Data type | Parent object | Optional | Storage type |
-|---|---|------|---|---|
-| clearance | Enum | `CLEARANCEINFORMATION` | no | `Array` |
-| timestamp | 64 bit integer | `CLEARANCEINFORMATION` | no | `Array` |
-| user | string | `CLEARANCEINFORMATION` | no | `Array` |
-| message | string | `CLEARANCEINFORMATION` | yes | `Array` |
-All these datasets represent different columns in a table. Their sizes will therefore always be identical.
-
-**clearance**  
-This record contains the enum value of the clearance. The following values are possible:
-- RELEASED
-- RELEASED_TEST
-- UNRELEASED
-
-**timestamp**  
-Contains the time of the acquisition of the entry.
-
-**user**  
-User-ID of the initiator of this clearance.
-
-**message**  
-Optional message of the user.
 
 ## XML Schema Definitions
 
