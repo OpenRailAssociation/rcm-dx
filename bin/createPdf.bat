@@ -48,7 +48,7 @@ mkdir %GENERATED_IMAGE_DIR%
 
 :: create images
 java -jar ../bin/plantuml.jar ../images/rcm-dx-images.puml -o %GENERATED_IMAGE_DIR%
-java -jar ../bin/plantuml.jar ../images/rcm-dx-structure.puml -o %GENERATED_IMAGE_DIR%
+java -DPLANTUML_LIMIT_SIZE=8192 -jar ../bin/plantuml.jar ../images/rcm-dx-structure.puml -o %GENERATED_IMAGE_DIR%
 
 cd ..
 
