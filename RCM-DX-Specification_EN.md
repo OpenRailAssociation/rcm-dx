@@ -43,6 +43,7 @@ The RCM-DX specification is open source and freely accessible and usable by all 
 | 1.4.0 | 0.27 | 08.01.2019 | Pascal Brem (SCS) | New availability group. |
 | 1.4.1 | 0.28 | 05.06.2019 | Pascal Brem (SCS) | New switchtracks in the DfA |
 | 2.0.0 | 0.29 | 21.04.2020 | Michael Ammann (SBB), Jakob Grilj (SBB) | Adaptation of the structure to new requirements. New major release with version number 2.0, due to major changes in the structure and goal for publication of the specification (open source). |
+| 2.0.0 | 0.30 | 27.10.2020 | Aron Serafini (SCS) | Adjust consistency, measurementMode and processing chapters. |
 
 ## Introduction  
 
@@ -135,7 +136,7 @@ A group can be a subgroup of a group, here the name of this group is mentioned. 
 **Optional**  
 If a group is marked as optional (`optional = yes`), it can be omitted if it is not needed. If a group is marked as non-optional (`Optional = no`), then this group must exist if the parent group also exists, otherwise it does not.
 
-### (HDF5) Attribut
+### (HDF5) Attribute
 
 In the RCM-DX, attributes, groups and datasets can be assigned. The names of the attributes are written in the UpperCamelCase-Notation^1^. Attributes are always of type `HDF5 attribute` unless otherwise specified.
 
@@ -497,6 +498,118 @@ The following attributes are assigned to the group `RCMDX`:
 |---|---|---|---|-----|
 | Major | 16 bit integer | `RCMDX` | no | Major Version of the RCM-DX specification that corresponds to the structure of the created file |
 | Minor | 16 bit integer | `RCMDX` | no | Minor Version of the RCM-DX specification that corresponds to the structure of the created file |
+
+### File Group
+
+The file group contains file specific information.
+
+| Name | Parent object | Optional |
+|--|--|--|
+| `FILE` | `RCMDX` | no |
+
+![File group overview](images/generated/rcmdx_file_group.png){width=300px}
+
+#### Attributes
+
+The file group contains the following attribute:
+
+| Name | Data type | Optional | Description |
+|---|---|---|------|
+| StructureVersion | string | no | Version identifier of the platform structure. All underlying systems, datasources and channels can be identified based on this version |
+
+### Data Processing Group
+
+The data source group `DATAPROCESSING` contains information about the data in this file, and the processing.
+
+| Name | Parent object | Optional |
+|--|--|--|
+| `DATAPROCESSING` | `FILE` | yes |
+
+### Processing log Group
+
+The data source group `PROCESSINGLOG` contains information on data processing. This information is written by systems that make changes to the data. These changes, for example, can be a conversion from millimeters to meters.
+
+| Name | Parent object | Optional |
+|--|--|--|
+| `PROCESSINGLOG` | `DATAPROCESSING` | yes |
+
+#### Processing log Group datasets
+
+The group `PROCESSINGLOG` contains one dataset:
+
+| Name | Data type | Parent object | Optional | Storage type |
+|---|---|-----|---|----|
+| type | string | `PROCESSINGLOG` | no | `Array` |
+| timestamp | 64 bit integer | `PROCESSINGLOG` | no | `Array` |
+| service | string | `PROCESSINGLOG` | no | `Array` |
+| serviceUser | string | `PROCESSINGLOG` | no | `Array` |
+| host | string | `PROCESSINGLOG` | no | `Array` |
+| executable | string | `PROCESSINGLOG` | no | `Array` |
+| user | string | `PROCESSINGLOG` | yes | `Array` |
+| message | string | `PROCESSINGLOG` | yes | `Array` |
+All these datasets represent different columns in a table. Their sizes will therefore always be identical.
+
+**type**  
+This record contains the type of the data processing step. The following are possible types: `CREATION`, `CONVERSION`, `MERGE`, `CONSISTENCY_CHECK`, `UNIT_CONVERSION`, `COMMENT`, ...
+
+**timestamp**  
+Contains the time of the acquisition of the entry.
+
+**service**  
+Name of the service that applied this processing step.
+
+**serviceUser**  
+(Technical) User that runs the service.
+
+**host**  
+Host that the service is run on.
+
+**executable**  
+Executable that the service is run from.
+
+**user**  
+Optional user-ID of the initiator of this processing step.
+
+**message**  
+Optional message of the user.
+
+
+### Clearance Information Group
+
+This group is used by SBB to record information about the data release of all parties who have processed this data. The information is stored in the form of key-value pairs in a data set.
+
+| Name | Parent object | Optional |
+|--|--|--|
+| `CLEARANCEINFORMATION` | `DATAPROCESSING` | yes |
+
+The group `CLEARANCEINFORMATION` contains one dataset:
+
+| Name | Data type | Parent object | Optional | Storage type |
+|---|---|------|---|---|
+| clearance | Enum | `CLEARANCEINFORMATION` | no | `Array` |
+| timestamp | 64 bit integer | `CLEARANCEINFORMATION` | no | `Array` |
+| user | string | `CLEARANCEINFORMATION` | no | `Array` |
+| message | string | `CLEARANCEINFORMATION` | yes | `Array` |
+All these datasets represent different columns in a table. Their sizes will therefore always be identical.
+
+**clearance**  
+This record contains the enum value of the clearance. The following values are possible:
+
+| Name | Description |
+|----|------|
+| RELEASED | This file has been released and is ready for analysis |
+| RELEASED_TEST | This file has been released for the test environment and is ready for analysis |
+| UNRELEASED | This file has not yet been released |
+
+**timestamp**  
+Contains the time of the acquisition of the entry.
+
+**user**  
+User-ID of the initiator of this clearance.
+
+**message**  
+Optional message of the user.
+
 
 ### Platform Group
 
@@ -885,20 +998,8 @@ The following attributes are contained in the group of the measuring system:
 | Name | Data type | Parent object | Optional | Description |
 |---|---|-----|---|-----|
 | Family | string | *MEASURINGSYSTEM_NAME* | no | General name of the measuring system |
-| Revision | string | *MEASURINGSYSTEM_NAME* | no | Version of the hardare and software on the measuring system, issued by the owner of the platform |
-| InstanceVersion | string | *MEASURINGSYSTEM_NAME* | no | Version of the data format created by the measuring instrument. This version can be different within different gauges of the same family |
+| Revision | string | *MEASURINGSYSTEM_NAME* | no | Version of the hardware and software on the measuring system, issued by the owner of the platform |
 | Element | string | *MEASURINGSYSTEM_NAME* | no | Indicates the type of the group, this is fixed `MEASURINGSYSTEM` |
-| MeasuringMode | Enum | *MEASURINGSYSTEM_NAME* | no | Indicates the measuring mode, defined in chapter [\ref{measurement-mode} Measuring mode](#measurement-mode) |
-
-##### Measurement mode
-
-There are three different measurement modes, which are explained individually below.
-
-| Name | Description |
-|----|------|
-| OPERATIVE | Productive data that will be further used. |
-| TEST | Test data recorded during a diagnostic run with the aim of checking and testing the measuring equipment. |
-| SIMULATION | Simulated values that the measuring systems produce themselves and are no longer used. |
 
 ### Datasource Group
 
@@ -1027,6 +1128,34 @@ The physical unit of the measurement data, such as "millimeter". If no physical 
 
 The data set and the possible data that can be stored are described in more detail in the chapter [\ref{hdf5-datasets} Dataset](#hdf5-datasets).
 
+### Measurement mode group
+
+The following group contains important information about the measurement mode of the system.
+
+| Name | Parent object | Optional |
+|--|--|--|
+| `MEASUREMENTMODE` | *MEASURINGSYSTEM_NAME* | yes |
+
+The group `MEASUREMENTMODE` contains one dataset:
+
+| Name | Data type | Parent object | Optional | Storage type |
+|---|---|------|---|---|
+| measurementMode | Enum | `MEASUREMENTMODE` | no | `Array` |
+| timestampFrom | 64 bit integer | `MEASUREMENTMODE` | no | `Array` |
+| timestampTo | 64 bit integer | `MEASUREMENTMODE` | no | `Array` |
+| message | string | `MEASUREMENTMODE` | yes | `Array` |
+All these datasets represent different columns in a table. Their sizes will therefore always be identical.
+
+#### Measurement mode (enum)
+
+There are three different measurement modes, which are explained individually below.
+
+| Name | Description |
+|----|------|
+| PRODUCTIVE | Productive data that will be further used. |
+| TEST | Test data recorded during a diagnostic run with the aim of checking and testing the measuring equipment. |
+| SIMULATION | Simulated values that the measuring systems produce themselves and are no longer used. |
+
 ### Logging Group
 
 The logging group contains information about the status of the measuring systems. The data is divided into two subgroups, `OUTAGES` and `MESSAGES`. These are described in separate chapters.
@@ -1084,6 +1213,46 @@ Defines the severity of the failure or interruption of a measurement system. Fol
 | TOTAL_FAILURE | The measuring system or sensor has completely failed and has not recorded any measured values during the session. |
 | PARTIAL_FAILURE | The measuring system or the sensor has partially failed and has only recorded measured values for a certain time during the session. |
 | MALFUNCTION | The measuring system or the sensor had a malfunction and the measured values cannot be used because they may not be correct. |
+
+#### Consistency group
+
+The message about the consistency of the data is triggered by a system that checks all data according to certain criteria. For example, this could be a check for black images in a video. If all frames in the video are black, something is wrong and the video is unusable. 
+
+| Name | Parent object | Optional |
+|--|--|--|
+| `CONSISTENCYDATA` | `LOGGING` | yes |
+
+The group `CONSISTENCYDATA` contains one dataset:
+
+| Name | Data type | Parent object | Optional | Storage type |
+|---|---|------|---|---|
+| channelId | string | `CONSISTENCYDATA` | no | `Array` |
+| timestampFrom | 64 bit integer | `CONSISTENCYDATA` | no | `Array` |
+| timestampTo | 64 bit integer | `CONSISTENCYDATA` | no | `Array` |
+| consistencyType | Enum | `CONSISTENCYDATA` | no | `Array` |
+| consistencyInfo | string | `CONSISTENCYDATA` | yes | `Array` |
+All these datasets represent different columns in a table. Their sizes will therefore always be identical.
+
+**channelId**  
+Channel reference in which the finding was detected.
+
+**timestampFrom**  
+Start timestamp of the consistency.
+
+**timestampTo**  
+End timestamp of the consistency. Note that consistencies can never overlap and will always be continuous (without holes) within sections.
+
+**consistencyType**  
+The consistency type can have the following values:  
+
+| Name | Description |
+|----|------|
+| CONSISTENT | The referenced data was checked and is consistent |
+| INCONSISTENT | The referenced data was checked and is inconsistent |
+| NO_DATA | Consistency has been checked, but no data was found |
+
+**consistencyInfo**  
+Contains additional information about this consistency (E.g. which rule decided the consistency type).
 
 #### Message Group
 
@@ -1482,7 +1651,7 @@ Contains a list of entries that refers to a channel to which the event applies.
 | channelReference | string | `EVENT` | yes | `Array` |
 
 **data**
-This data set contains the actual information about an event, this in the XML notation which is described in more detail in each chapter of the event types (Defect event type, Detected object event type, Limit event type and Consistency event type).  
+This data set contains the actual information about an event, this in the XML notation which is described in more detail in each chapter of the event types (Defect event type, Detected object event type, Limit event type).  
 A type can be stored for each event. These are explained in more detail below.
 
 | Name | Data type | Parent object | Optional | Storage type |
@@ -1588,30 +1757,6 @@ The XML schema can be found in chapter [\ref{events-generic} EventsGeneric](#eve
 | ViolatedLimit | Name of the defined limit | LimitViolation |
 | ID | Unique ID of the event | LimitViolation |
 
-#### Consistency event type
-
-The message about the consistency of the data is triggered by a system that checks all data according to certain criteria. For example, this could be a check for black images in a video. If all frames in the video are black, something is wrong and the video is unusable. Messages are only created if a finding is present.
-
-The XML Schema can be found in the chapter [\ref{events-generic} EventsGeneric](#events-generic).  
-
-##### **XML element**
-
-| Name | Description | Parent object |
-|---|-----|--|
-| Consistency | Root Element | none |
-
-##### **XML attributes**
-
-| Name | Description | Parent object |
-|---|-----|--|
-| Type | Type or type of consistency check in response to the question "What has been checked? | Consistency |
-| ProcessName | Name of the process that checked consistency | Consistency |
-| Result | Result of the consistency check. | Consistency |
-| ID | Unique ID of the event (UUID) | Consistency |
-
-**Result**  
-The actual result of the consistency check. Each system that performs a consistency check has different results, which in turn must be described in more detail in its specification.
-
 ### Record Group
 
 Unlike events, logs are only created by a user and not by a system.
@@ -1715,77 +1860,6 @@ The XML schema can be found in chapter [\ref{events-generic} EventsGeneric](#eve
 The structure of this group is the __same__ as for the configuration group below the group `PLATFORM`: [\ref{platform-configuration-group} Platform configuration group](#platform-configuration-group), but __the parent group__ is `*MEASURINGSYSTEM_NAME*`: [\ref{measuring-system-group} Measuring system group](#measuring-system-group).
 
 ![Measurement configuration group overview](images/generated/rcmdx_measuringsystem_config_group.png){width=230px}
-
-### Data Processing Group
-
-The data source group `DATAPROCESSING` contains information abou the data in this file, and they processing.
-
-| Name | Parent object | Optional |
-|--|--|--|
-| `DATAPROCESSING` | `RCMDX` | yes |
-
-#### Data Processing Group datasets
-
-The group `DATAPROCESSING` contains one datasets:
-
-| Name | Data type | Parent object | Optional | Storage type |
-|---|---|-----|---|----|
-| clearance | boolean | `DATAPROCESSING` | no | `Array` |
-
-**Clearance**  
-Release flag of the file. If the last processing step releases the data for the end user, the value 1 (`true`) is written to this attribute.
-
-### Processing log Group
-
-The data source group `PROCESSINGLOG` contains information on data processing. This information is written by systems that make changes to the data. These changes, for example, can be a conversion from millimeters to meters.
-
-| Name | Parent object | Optional |
-|--|--|--|
-| `PROCESSINGLOG` | `DATAPROCESSING` | yes |
-
-#### Processing log Group datasets
-
-The group `PROCESSINGLOG` contains one datasets:
-
-| Name | Data type | Parent object | Optional | Storage type |
-|---|---|-----|---|----|
-| key | string | `PROCESSINGLOG` | no | `Array` |
-| value | string | `PROCESSINGLOG` | no | `Array` |
-| timestamp | 64 bit integer | `PROCESSINGLOG` | no | `Array` |
-
-**key**  
-This record contains a unique key as a reference to a data processing step. The number of values in this data set corresponds to the number in data set `value`. The key value in index no. $0$ of `key` belongs to the value in the data set `value` at index no. $0$ and so on.
-
-**value**
-This data set contains the value about what was done in that step or what the result was.
-
-**timestamp**  
-Contains the time of the acquisition of the entry in the `key` and `value` data set.
-
-### Clearance Information Group
-
-This group is used by SBB to record information about the data release of all parties who have processed this data. The information is stored in the form of key-value pairs in a data set.
-
-| Name | Parent object | Optional |
-|--|--|--|
-| `CLEARANCEINFORMATION` | `DATAPROCESSING` | yes |
-
-The group `CLEARANCEINFORMATION` contains one datasets:
-
-| Name | Data type | Parent object | Optional | Storage type |
-|---|---|------|---|---|
-| key | string | `CLEARANCEINFORMATION` | no | `Array` |
-| value | string | `CLEARANCEINFORMATION` | no | `Array` |
-| timestamp | 64 bit integer | `CLEARANCEINFORMATION` | no | `Array` |
-
-**key**  
-This record contains a unique key as a reference to a clearance step. The number of values in this data set corresponds to the number in data set `value`. The key value in index no. $0$ of `key` belongs to the value in the data set `value` at index no. $0$ and so on.
-
-**value**
-This data set contains the value about what was done in that step or what the result was.
-
-**timestamp**  
-Contains the time of the acquisition of the entry in the `key` and `value` data set.
 
 ## XML Schema Definitions
 
@@ -1919,15 +1993,6 @@ Contains the time of the acquisition of the entry in the `key` and `value` data 
     <xs:complexType>
       <xs:attribute name="TimestampMaxViolation" type="xs:long" use="required" />
       <xs:attribute name="ViolatedLimit" type="xs:string" use="required" />
-      <xs:attribute name="ID" type="tns:UUID" use="required" />
-    </xs:complexType>
-  </xs:element>
-
-  <xs:element name="Consistency">
-    <xs:complexType>
-      <xs:attribute name="Type" type="xs:string" use="required" />
-      <xs:attribute name="ProcessName" type="xs:string" use="required" />
-      <xs:attribute name="Result" type="xs:string" use="required" />
       <xs:attribute name="ID" type="tns:UUID" use="required" />
     </xs:complexType>
   </xs:element>
