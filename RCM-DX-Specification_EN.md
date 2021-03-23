@@ -634,7 +634,7 @@ For a certain period of time, only one session can exist in a file, this must be
 
 | Name | Data type | Parent object | Optional | Description |
 |---|---|---|---|-----|
-| Element | string | *SESSION_NAME* | no | Names the type of the group, this is fix "SESSION" |
+| Element | string | *SESSION_NAME* | no | Names the type of the group, this is fix "Session" |
 | StartTime | Timestamp | *SESSION_NAME* | no | Timestamp in nanoseconds as start time of the session |
 | EndTime | Timestamp | *SESSION_NAME* | yes | Timestamp in nanoseconds as end time of the session. If the session has not yet been closed, this attribute is missing |
 | PositionSource | string | *SESSION_NAME* | no | Contains the name of the source (group) of the positioning. |
