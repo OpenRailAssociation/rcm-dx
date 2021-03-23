@@ -103,7 +103,7 @@ Not all data types possible with HDF5 are described. The read and write library 
 | signed integer | Positive and negative values are allowed. Possible bit depths are: 8, 16, 32 or 64 | `1256442`; `-62334` |
 | unsigned integer | Only positive values are allowed. Possible bit depths are: 8, 16, 32 or 64 | `1256442`; `-62334` |
 | float | Positive and negative values are allowed. Possible bit depths are: 32 or 64 | `12.53`; `-3212.546` |
-| sring | Multiple characters of undefined length | "RCM-DX is great!" |
+| string | Multiple characters of undefined length | "RCM-DX is great!" |
 
 #### Extended data types
 
