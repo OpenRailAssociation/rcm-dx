@@ -596,8 +596,9 @@ Below is a list of the defined unique names of the platforms and their names.
 | Platform Name | Abbreviation | Vehicle Number |
 |---|---|-----|
 | DFZ00 | DFZ | - |
-| DFZ.001 | gDFZ | - |
+| DFZ01 | gDFZ | - |
 | DFZ02 | SPZ | - |
+| DFZ04 | OBM-N | - |
 
 ### Session Group  
 
