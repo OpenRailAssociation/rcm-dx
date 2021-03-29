@@ -638,7 +638,6 @@ For a certain period of time, only one session can exist in a file, this must be
 | Element | string | *SESSION_NAME* | no | Names the type of the group, this is fix "Session" |
 | StartTime | Timestamp | *SESSION_NAME* | no | Timestamp in nanoseconds as start time of the session |
 | EndTime | Timestamp | *SESSION_NAME* | yes | Timestamp in nanoseconds as end time of the session. If the session has not yet been closed, this attribute is missing |
-| PositionSource | string | *SESSION_NAME* | no | Contains the name of the source (group) of the positioning. |
 
 
 ### Session configuration Group
@@ -1071,77 +1070,6 @@ Start covered distance of the track in the section.
 
 **trackEndCoveredDistance**  
 End covered distance of the track in the section.
-
-### Position group
-
-This group contains general information on the position.  
-
-| Name | Parent object | Optional |
-|--|--|--|
-| `POSITION` | `SESSION` | no |
-
-#### Data fields
-
-| Name | Data type | Parent object | Optional | Storage type |
-|------|-----|----|---|---|
-| coveredDistance | 64 bit float | `POSITION` | no | `Array` |
-| coachOrientation | Enum | `POSITION` | no | `Array` |
-| trackOrientation | Enum | `POSITION` | no | `Array` |
-| trackId | 32 bit integer | `POSITION` | no | `Array` |
-| lineId | 32 bit integer | `POSITION` | no | `Array` |
-| trackOffset | 64 bit float | `POSITION` | no | `Array` |
-| lineKilometer | 64 bit float | `POSITION` | no | `Array` |
-| positionAccuracy | 8 bit integer | `POSITION` | no | `Array` |
-| positionQuality | 8 bit integer | `POSITION` | no | `Array` |
-| timestamp | Timestamp | `POSITION` | no | `Array` |
-
-**coveredDistance**  
-Total length of a session.
-
-**trackId**  
-Defined track ID on which the vehicle is located at the time of recording.
-
-**lineId**  
-Defined line ID on which the vehicle is located at the time of recording.
-
-**trackOffset**  
-Distance between starting point of track and current position.
-
-**lineKilometer**  
-Kilometrage of the current position.
-
-**positionQuality**  
-Marker for the quality of the position determination ranging from 0 meaning "very good" to 15 for "very poor".
-
-**positionAccuracy**  
-The position accuracy in meters.
-
-**timestamp**  
-The timestamp for each position. Serves as primary key.
-
-#### Coach Orientation
-
-The data set `coachOrientation` contains the coach direction of the vehicle. This information influences the position of the measuring systems.
-
-This data set can contain the following values:  
-
-| Value | Description |
-|--|-----|
-| FORWARD | Vehicle moving forward |
-| REVERSE | Vehicle moving reversing |
-
-#### Track Orientation
-
-The data set `trackOrientation` contains the alignment of the track. This information serves the correct evaluation of the kilometer data of the line, see data set `trackOffset`.
-
-This data set can contain the following values:  
-
-The following values are allowed:
-
-| Value | Meaning |
-|---|----|
-| ASCENDING | The rail was crossed in **ascending** |
-| DESCENDING | The rail was crossed in **degreasing** |
 
 ### Measuring System Group
 

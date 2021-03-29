@@ -69,7 +69,6 @@
     a:Element (string) = "Session"
     a:StartTime (Timestamp)
     a:EndTime (Timestamp)
-    a:PositionSource (string)
   } 
   PLATFORM "1" o-- "1" session_name
 
@@ -86,7 +85,6 @@
     a:Element (string) = "Session"
     a:StartTime (Timestamp)
     a:EndTime (Timestamp)
-    a:PositionSource (string)
   }
 
   PLATFORM "1" o-- "1" session_name
@@ -130,7 +128,6 @@
     a:Element (string) = "Session"
     a:StartTime (Timestamp)
     a:EndTime (Timestamp)
-    a:PositionSource (string)
   } 
   note left: Naming pattern: YYYYMMDD_hhmmss.SSS
 
@@ -148,11 +145,6 @@
     ...
   }
   session_name "1" o-- "1..n" MEASURINGSYSTEM
-
-  object POSITION {
-    ...
-  }
-  session_name "1" o-- "1" POSITION
 
   object SECTIONS {
     ...

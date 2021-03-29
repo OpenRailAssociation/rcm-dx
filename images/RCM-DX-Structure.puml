@@ -65,7 +65,6 @@
     a:Element (string) = "Session"
     a:StartTime (Timestamp)
     a:EndTime (Timestamp)
-    a:PositionSource (string)
   } 
   note left: Naming pattern: YYYYMMDD_hhmmss.SSS
 
@@ -87,22 +86,6 @@
   }
 
   session_name "1" o-- "1" SECTIONS
-  
-  object POSITION {
-    d:coveredDistance (64 bit float)
-    d:coachOrientation (Enum)
-    d:vehicleSpeed (64 bit float) <= Anpassen, TODO!
-    d:trackOrientation (Enum)
-    d:trackId (32 bit integer)
-    d:lineId (32 bit integer)
-    d:trackOffset (64 bit integer)
-    d:lineKilometer (64 bit float)
-    d:positionAccuracy (8 bit integer)
-    d:positionQuality (8 bit integer)
-    d:timestamp (Timestamp)
-  }
-  note left: TODO: refactor
-  session_name "1" o-- "1" POSITION
 
   object "//MEASURINGSYSTEM_NAME//" as MEASURINGSYSTEM {
     a:Element (string) = "System"
