@@ -27,7 +27,7 @@
     d:processing.type (string)
     d:processing.timestamp (Timestamp)
     d:processing.service (string)
-    d:processing.serviceUser (string)
+    d:processing.serviceuser (string)
     d:processing.host (string)
     d:processing.executable (string)
     d:processing.user (string)
@@ -138,8 +138,8 @@
     d:consistency.channelId (string)
     d:consistency.timestampFrom (Timestamp)
     d:consistency.timestampTo (Timestamp)
-    d:consistency.consistencyType (Enum)
-    d:consistency.consistencyInfo (string)
+    d:consistency.type (Enum)
+    d:consistency.info (string)
   }
   LOGGING "1" o-- "0..1" CONSISTENCY
 

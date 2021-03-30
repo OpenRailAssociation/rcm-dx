@@ -65,13 +65,16 @@ The extension of the specification is permitted. However, it must be taken into 
 
 #### Versioning
 
-The RCM-DX data format is subject to changes, these are indicated by the version number in the document, see chapter [\ref{root-group} Root Group](#root-group). The version number consists of two numbers, separated by dots and is composed as follows: **[Major].[Minor]**. Example: **1.0**  
+The RCM-DX data format is subject to changes, these are indicated by the version number in the document, see chapter [\ref{root-group} Root Group](#root-group). The version number consists of two numbers, separated by dots and is composed as follows: **[Major].[Minor].[Feature]**. Example: **1.0.0**  
 
 **Major**  
 Defines the main version and indicates when major changes have been made. These are, for example, that changing the basic structure or renaming groups, datasets or attributes (major, minor attribute as an example), which are mandatory.
 
 **Minor**  
 Indicates minor changes, such as changing the name of an attribute that is not mandatory or defining new groups, attributes, or datasets. These changes do not affect anything that cannot be read with an existing RCM-DX read-write library.
+
+**Feature**  
+Indicates feature changes.
 
 #### Diagrams
 
@@ -169,7 +172,7 @@ Description and or examples of the attribute.
 A channel as a group always has one data set. A channel defines a type of sensor data that is stored in its data set. Several channels form a data source. Further information on the structure is described further down in this specification.
 
 A data set is always of the HDF5 type `HDF5 Dataset`.  
-Below is a list of ossible ways in which data can be stored in the RCM-DX:
+Below is a list of possible ways in which data can be stored in the RCM-DX:
 
 | Type of storage | Description |
 |---|------|
@@ -310,12 +313,12 @@ The following attributes are assigned to this type of data set `value.VN`:
 
 #### Sample Index
 
-If datasets are created for coordinates, a data set on the same level and with the name `sampleindex` must be available. The index number of an entry in `coord.CN`, is entered as the start of the next group. If the data set `sampleindex` has a value of $21$ at index zero, the first $20$ entries from the data set `coord.CN` belong together, the next data group start at with index number $21}. The number of entries in `sampleindex` corresponds to those in the data set `timestamp`.
+If datasets are created for coordinates, a data set on the same level and with the name `sampleindex` must be available. The index number of an entry in `coord.CN`, is entered as the start of the next group. If the data set `sampleindex` has a value of $21$ at index zero, the first $20$ entries from the data set `coord.CN` belong together, the next data group start at with index number $21$. The number of entries in `sampleindex` corresponds to the one in the data set `timestamp`.
 
 The group sizes can vary among themselves, this can be seen from the index positions in `sampleIndex`.
 
 *Example*  
-The rail cross profile serves as an example here. At one point, several points of a rail profile are measured and stored. A channel with the name `coord.C0` for the X-axis and `coord.C1` is created for the Y-axis.
+The rail cross profile serves as an example here. At one point on the railroad track, several data points of a rail profile are measured and stored. A channel with the name `coord.C0` for the X-axis and `coord.C1` is created for the Y-axis.
 
 The data set `sampleindex` now contains the number of entries that belong together.  
 
@@ -353,7 +356,7 @@ ResolutionType' can contain the following values: 'none', 'mmPerPixel' or 'dimen
 No information available.  
 
 **`mmPerPixel`**  
-Defines the pixel size in mm. The values in 'ResolutionInfoX' and 'ResolutionInfoY' give information about the real size of a pixel in millimeters.  
+Defines the pixel size in mm. The values in `ResolutionInfoX` and `ResolutionInfoY` give information about the real size of a pixel in millimeters.  
 
 **`dimension`**  
 Defines the resolution of the image. The values in `ResolutionInfoX` and `ResolutionInfoY` give information about the image size in pixels.  
@@ -415,7 +418,7 @@ If data is recorded that is valid for a certain period of time, the data set wit
 
 The differentiation between discrete (data for discrete `timestamp`) and continuous (data for `timestamp` with `duration`) data is done on data source level. The existence or absence of a `duration` array defines if the data source is **"Discrete"** (no `duration` array) or **"Continuous"** (with `duration` array).
 
-Example: Assuming there is a data source with a temperature value every second and a calculated average temperature for every minute. Such an average temperature would be stored in a continuous data source, within a array, with duration of 60 sec.
+Example: Assuming there is a data source with a temperature value every second and a calculated average temperature for every minute. Such an average temperature would be stored in a continuous data source, within an array, with a duration of 60 sec.
 
 | Name | Data type | Parent object | Optional | Storage type |
 |--|---|-----|--|--|

@@ -102,10 +102,10 @@
   FILE "1" o-- "0..1" DATAPROCESSING
 
   object PROCESSINGLOG {
-    d:processingType (string)
+    d:type (string)
     d:timestamp (Timestamp)
     d:service (string)
-    d:serviceUser (string)
+    d:serviceuser (string)
     d:host (string)
     d:executable (string)
     d:user (string)
@@ -270,8 +270,8 @@
     d:consistency.channelId (string)
     d:consistency.timestampFrom (Timestamp)
     d:consistency.timestampTo (Timestamp)
-    d:consistency.consistencyType (Enum)
-    d:consistency.consistencyInfo (string)
+    d:consistency.type (Enum)
+    d:consistency.info (string)
   }
   LOGGING "1" o-- "0..1" CONSISTENCY
 
