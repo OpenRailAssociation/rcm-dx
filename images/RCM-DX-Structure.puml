@@ -106,9 +106,10 @@
   object "//CHANNEL_NAME//" as CHANNEL {
     a:Element (string) = "Channel"
     a:TriggerMode (Enum)
-    a:TriggerValue (64 bit float)
+    a:CommonTriggerDistance (64 bit float)
+    a:CommonTriggerFrequency (64 bit float)
     a:ChannelBasis (Enum)
-    a:ChannelType (Enum)
+    a:MeasurementType (Enum)
     a:Neighbor (string)
     a:MeasurementUncertaintyType (Enum)
     a:LowerMeasurementUncertainty (32 bit float)
@@ -125,19 +126,19 @@
   
   object AVAILABILITY {
     d:availability.availability (Enum)
-    d:availability.systemReference (string)
-    d:availability.datasourceReference (string)
-    d:availability.channelReference (string)
-    d:availability.timestampFrom (Timestamp)
-    d:availability.timestampTo (Timestamp)
+    d:availability.systemreference (string)
+    d:availability.datasourcereference (string)
+    d:availability.channelreference (string)
+    d:availability.timestampfrom (Timestamp)
+    d:availability.timestampto (Timestamp)
     d:availability.message (string)
   }
   LOGGING "1" o-- "0..1" AVAILABILITY
   
   object CONSISTENCY {
-    d:consistency.channelId (string)
-    d:consistency.timestampFrom (Timestamp)
-    d:consistency.timestampTo (Timestamp)
+    d:consistency.channelid (string)
+    d:consistency.timestampfrom (Timestamp)
+    d:consistency.timestampto (Timestamp)
     d:consistency.type (Enum)
     d:consistency.info (string)
   }
@@ -166,14 +167,14 @@
   MEASURINGSYSTEM "1" o-- "0..1" MEASUREMENTMODE
 
   object TOPOLOGY {
-    a:Version (string)
+    a:DfAVersion (string)
   }
 
   session_config "1" o-- "1" TOPOLOGY 
 
   object TRACK {
     d:data.id (32bit signed integer)
-    d:data.direction (8bit signed integer)
+    d:data.direction (Enum)
     d:data.gtgid (string)
     d:data.length (32bit float)
     d:data.name (string)

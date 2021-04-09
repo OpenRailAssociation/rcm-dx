@@ -668,7 +668,7 @@ The group `TOPOLOGY` contains the following attributes:
 
 | Name | Data type | Parent object | Optional | Storage type |
 |---|--|---|--|--|
-| Version | string | `TOPOLOGY` | no | `Array` |
+| DfAVersion | string | `TOPOLOGY` | no | `Array` |
 
 **Version**  
 Version number of topology, included to check validity.
@@ -687,31 +687,32 @@ The following datasets are included in this group, some of which are described i
 
 | Name | Data type | Parent object | Optional | Storage type |
 |--|---|--|--|---|
-| direction | 8 bit signed integer | TRACK | no | `Array` |
+| direction | Enum | TRACK | no | `Array` |
 | id | 32 bit integer | TRACK | no | `Array` |
-| gtgId | string | TRACK | no | `Array` |
+| gtgid | string | TRACK | no | `Array` |
 | length | string | TRACK | no | `Array` |
 | name | string | TRACK | no | `Array` |
-| pointFrom | 32 bit integer | TRACK | no | `Array` |
-| pointTo | 32 bit integer | TRACK | no | `Array` |
-| switchType | 8 bit signed integer | TRACK | no | `Array` |
-| trackType | 8 bit signed integer | TRACK | no | `Array` |
+| nrline | string | TRACK | no | `Array` |
+| pointfrom | 32 bit integer | TRACK | no | `Array` |
+| pointto | 32 bit integer | TRACK | no | `Array` |
+| switchtype | 8 bit signed integer | TRACK | no | `Array` |
+| tracktype | 8 bit signed integer | TRACK | no | `Array` |
 
 **direction**  
 The direction of a switch is specified in this data set.  
-If the track is of the type "switch", a value greater than zero must be selected here. Which number means what is shown in the following table:  
+If the track is of the type "switch", a value other than '-' must be selected here. Which number means what is shown in the following table:  
 
 | Value | Description |
 |--|---|
-| 0 | No crossover |
-| 1 | Straight line switch track |
-| 2 | Left-handed switch |
-| 3 | switch running to the right |
+| - | No crossover |
+| straight | Straight line switch track |
+| left | Left-handed switch |
+| right | switch running to the right |
 
 **id**  
 ID of the track.
 
-**gtgId**  
+**gtgid**  
 Unique GTG ID of a GTG string, this ID is stored as UUID.
 
 **length**  
@@ -720,26 +721,26 @@ The length of the track section.
 **name**  
 Name of the track section.
 
-**pointFrom**  
+**pointfrom**  
 ID of the starting point of the track section.
 
-**pointTo**  
+**pointto**  
 ID of the end point of the track section.
 
-**switchType**  
+**switchtype**  
 If the track is of the type "Switch", a value greater than zero must be selected here. Which number means what is shown in the following table:
 
 | Value | Description |
 |--|---|
 | 0 | Anything but a turnout |
-| 1 | simple switch |
+| 1 | Simple switch |
 | 2 | Double switch |
 | 3 | Simple crossovers |
 | 4 | Double track connection |
 | 5 | Double crossover |
 
 **trackType**  
-The number in the *trackType* data set defines the type of track that belongs to it. Which number means what is shown in the following table:
+The number in the *tracktype* data set defines the type of track that belongs to it. Which number means what is shown in the following table:
 
 | Value | Description |
 |--|---|
@@ -761,10 +762,10 @@ The following datasets are included in this group:
 |----|---|----|---|----|
 | id | 32 bit signed integer | `LINE` | no | `Array` |
 | name | string | `LINE` | no | `Array` |
-| firstStation | string | `LINE` | no | `Array` |
-| lastStation | string | `LINE` | no | `Array` |
-| fromKilometer | string | `LINE` | no | `Array` |
-| toKilometer | string | `LINE` | no | `Array` |
+| firststation | string | `LINE` | no | `Array` |
+| laststation | string | `LINE` | no | `Array` |
+| fromkilometer | string | `LINE` | no | `Array` |
+| tokilometer | string | `LINE` | no | `Array` |
 
 **id**  
 Defines the ID of the line, this is unique.
@@ -772,16 +773,16 @@ Defines the ID of the line, this is unique.
 **name**  
 The name of the line.
 
-**firstStation**  
+**firststation**  
 The name of the first station of this line.
 
-**LastStation**  
+**laststation**  
 The name of the last station of this line.
 
 **km**  
 Start kilometre of the line, expressed in kilometres.
 
-**toKilometer**  
+**tokilometer**  
 Final kilometer of the line, in kilometers.
 
 ### Switch Track Group
@@ -798,32 +799,31 @@ The following datasets are included in this group:
 |----|---|----|---|----|
 | gleisstrangId | 32 bit signed integer | `SWITCHTRACK` | no | `Array` |
 | gleisstrangBez | string | `SWITCHTRACK` | no | `Array` |
-| soft | 32 bit signed integer | `SWITCHTRACK` | no | `Array` |
-| deflecting direction | string | `SWITCHTRACK` | no | `Array` |
-| distraction | string | `SWITCHTRACK` | no | `Array` |
-| operating point | string | `SWITCHTRACK` | no | `Array` |
+| weicheId | 32 bit signed integer | `SWITCHTRACK` | no | `Array` |
+| ablenkRichtung | string | `SWITCHTRACK` | no | `Array` |
+| ablenkung | string | `SWITCHTRACK` | no | `Array` |
+| betriebspunkt | string | `SWITCHTRACK` | no | `Array` |
 | herzStueck | string | `SWITCHTRACK` | no | `Array` |
 | minRadius | 32 bit signed integer | `SWITCHTRACK` | no | `Array` |
 | nr | 32 bit signed integer | `SWITCHTRACK` | no | `Array` |
 | zusNr | string | `SWITCHTRACK` | no | `Array` |
-| rail profile | string | `SWITCHTRACK` | no | `Array` |
+| schienenProfil | string | `SWITCHTRACK` | no | `Array` |
 | status | string | `SWITCHTRACK` | no | `Array` |
-| rail profile | string | `SWITCHTRACK` | no | `Array` |
-| thresholdArt | string | `SWITCHTRACK` | no | `Array` |
-| typesPlanNr | 32 bit signed integer | `SWITCHTRACK` | no | `Array` |
-| typeNraddition | string | `SWITCHTRACK` | no | `Array` |
-| softArt | string | `SWITCHTRACK` | no | `Array` |
-| softType | string | `SWITCHTRACK` | no | `Array` |
-| softForm | string | `SWITCHTRACK` | no | `Array` |
-| soft tongue | string | `SWITCHTRACK` | no | `Array` |
+| schwellenArt | string | `SWITCHTRACK` | no | `Array` |
+| typenPlanNr | 32 bit signed integer | `SWITCHTRACK` | no | `Array` |
+| typNrZusatz | string | `SWITCHTRACK` | no | `Array` |
+| weichenArt | string | `SWITCHTRACK` | no | `Array` |
+| weichenTyp | string | `SWITCHTRACK` | no | `Array` |
+| weichenForm | string | `SWITCHTRACK` | no | `Array` |
+| weichenZunge | string | `SWITCHTRACK` | no | `Array` |
 
 **gleisstrangId**  
 A reference to the GTG-ID.
 
-**trackBez**  
+**gleisstrangBez**  
 Contains a description of the track section.
 
-**softId**  
+**weicheId**  
 Contains the ID's of the switches as a reference.
 
 <!-- For subsequent datasets the descriptions are still missing. These would have to be supplemented once! 21.04.2019 Ammann Michael (SBB)
@@ -858,25 +858,25 @@ The following datasets are included in this group:
 
 | Name | Data type | Parent object | Optional | Storage type |
 |----|---|----|---|----|
-| trackId | 32 bit signed integer | `TRACKOBJECT` | no | `Array` |
+| trackid | 32 bit signed integer | `TRACKOBJECT` | no | `Array` |
 | type | 32 bit signed integer | `TRACKOBJECT` | no | `Array` |
-| positionStart | 32 bit signed integer | `TRACKOBJECT` | no | `Array` |
-| positionEnd | 32 bit signed integer | `TRACKOBJECT` | no | `Array` |
-| extraInfo | string | `TRACKOBJECT` | no | `Array` |
+| positionstart | 32 bit signed integer | `TRACKOBJECT` | no | `Array` |
+| positionend | 32 bit signed integer | `TRACKOBJECT` | no | `Array` |
+| extrainfo | string | `TRACKOBJECT` | no | `Array` |
 
-**trackId**  
+**trackid**  
 Contains the ID of the track to which the track is connected.
 
 **type**  
 Type of the object.
 
-**positionStart**  
+**positionstart**  
 Start position of the object in meters.
 
-**positionEnd**  
+**positionend**  
 End position of the object in meters.
 
-**ExtraInfo**  
+**Extrainfo**  
 Additional information about the object, for example, the ID of a balise.
 
 ### Track Point Group
@@ -891,36 +891,36 @@ The following datasets are included in this group:
 
 | Name | Data type | Parent object | Optional | Storage type |
 |----|---|----|---|----|
-| trackId | 32 bit signed integer | `TRACKPOINT` | no | `Array` |
-| lineId | 32 bit signed integer | `TRACKPOINT` | no | `Array` |
+| trackid | 32 bit signed integer | `TRACKPOINT` | no | `Array` |
+| lineid | 32 bit signed integer | `TRACKPOINT` | no | `Array` |
 | x | 32 bit float | `TRACKPOINT` | no | `Array` |
 | y | 32 bit float | `TRACKPOINT` | no | `Array` |
 | z | 32 bit float | `TRACKPOINT` | no | `Array` |
 | radius | 32 bit float | `TRACKPOINT` | no | `Array` |
-| kilometers | 32 bit float | `TRACKPOINT` | no | `Array` |
+| kilometer | 32 bit float | `TRACKPOINT` | no | `Array` |
 | position | 32 bit float | `TRACKPOINT` | no | `Array` |
 | cant | 32 bit float | `TRACKPOINT` | no | `Array` |
-| inclination | 32 bit float | `TRACKPOINT` | no | `Array` |
+| steigung | 32 bit float | `TRACKPOINT` | no | `Array` |
 
-**trackId**  
+**trackid**  
 Reference to the ID of the track section.
 
-**lineId**  
+**lineid**  
 Reference to the ID of the line.
 
 **x**  
-X-Koordiante of the point.
+X-Coordinate of the point.
 
 **y**  
-Y-Koordiante of the point.
+Y-Coordinate of the point.
 
 **z**  
-Z-Koordiante of the point.
+Z-Coordinate of the point.
 
 **radius**  
 The radius of a point, given in meters.
 
-**kilometers**  
+**kilometer**  
 Contains the line kilometre of the point in the route network, expressed in kilometres.
 
 **position**  
@@ -929,7 +929,7 @@ Position of the point, in meters.
 **cant**  
 The inclination at this point, expressed in millimetres.
 
-**inclination**  
+**steigung**  
 Gradient at this point, expressed in parts per thousand.
 
 ### Property Group
@@ -944,14 +944,14 @@ The following datasets are included in this group:
 
 | Name | Data type | Parent object | Optional | Description |
 |----|---|----|---|----|
-| propertyId | 32 bit signed integer | `PROPERTY` | no | `Array` |
+| id | 32 bit signed integer | `PROPERTY` | no | `Array` |
 | name | string | `PROPERTY` | no | `Array` |
 | description.ge | string | `PROPERTY` | no | `Array` |
 | description.fr | string | `PROPERTY` | no | `Array` |
 | description.it | string | `PROPERTY` | no | `Array` |
 | description.en | string | `PROPERTY` | yes | `Array` |
 
-**propertyId**  
+**id**  
 Unique ID of the characteristic.
 
 **name**  
@@ -969,14 +969,14 @@ Description of the characteristic in Italian language.
 **description.en**  
 Description of the feature in English language.
 
-#### Setting Group
+### Setting Group
 
 Within this group there are further groups whose names identify the type of setting.  
 In the following *SETTING_NAME* is used as placeholder of the actual name of a setting.
 
 | Name | Parent object | Optional |
 |--|--|--|
-| *SETTING_NAME* | `CONFIGURATION` | no |
+| *SETTING_NAME* | `CONFIGURATION` | yes |
 
 This group contains two datasets:
 
@@ -997,32 +997,32 @@ The following attributes are contained in this group:
 |---|---|---|---|-----|
 | DataType | string | `setting` | no | Defines the datatype of the configuration within the data set `setting`. Data type specified as MIME^3^ type, for example `Content-Type: <text/strings>` |
 
-### Section Group
+### Sections Group
 
-The group `SECTION`, contains information about a session.
+The group `SECTIONS`, contains information about a session.
 
 | Name | Parent object | Optional |
 |--|--|--|
-| `SECTION` | *SESSION_NAME* | no |
+| `SECTIONS` | *SESSION_NAME* | no |
 
 #### Data fields
 
-The following data fields are contained in the group "SECTION":
+The following data fields are contained in the group "SECTIONS":
 
 | Name | Data type | Parent object | Optional | Storage type |
 |---|----|---|--|--|
-| direction | Enum | `SECTION` | no | `Array` |
-| startTimestamp | Timestamp | `SECTION` | no | `Array` |
-| endTimestamp | Timestamp | `SECTION` | no | `Array` |
-| firstTrackOffset | 64 bit float | `SECTION` | no | `Array` |
-| lastTrackOffset | 64 bit float | `SECTION` | no | `Array` |
-| trackInfoOffset | 64 bit float | `SECTION` | no | `Array` |
-| trackId | 32 bit signed integer | `SECTION` | no | `Array` |
-| trackStartTimestamp | Timestamp | `SECTION` | no | `Array` |
-| trackEndTimestamp | Timestamp | `SECTION` | no | `Array` |
-| trackKilometrage | Enum | `SECTION` | no | `Array` |
-| trackStartCoveredDistance | 64 bit float | `SECTION` | no | `Array` |
-| trackEndCoveredDistance | 64 bit float | `SECTION` | no | `Array` |
+| direction | Enum | `SECTIONS` | no | `Array` |
+| startTimestamp | Timestamp | `SECTIONS` | no | `Array` |
+| endTimestamp | Timestamp | `SECTIONS` | no | `Array` |
+| firstTrackOffset | 64 bit float | `SECTIONS` | no | `Array` |
+| lastTrackOffset | 64 bit float | `SECTIONS` | no | `Array` |
+| trackInfoOffset | 64 bit float | `SECTIONS` | no | `Array` |
+| trackId | 32 bit signed integer | `SECTIONS` | no | `Array` |
+| trackStartTimestamp | Timestamp | `SECTIONS` | no | `Array` |
+| trackEndTimestamp | Timestamp | `SECTIONS` | no | `Array` |
+| trackKilometrage | Enum | `SECTIONS` | no | `Array` |
+| trackStartCoveredDistance | 64 bit float | `SECTIONS` | no | `Array` |
+| trackEndCoveredDistance | 64 bit float | `SECTIONS` | no | `Array` |
 
 **direction**  
 Indicates the orientation of travel of the measuring vehicle in the given section. This array contains only as many entries as there are sections.
@@ -1082,7 +1082,7 @@ A group is created for each system that collects data. The name of the group is 
 
 | Name | Parent object | Optional |
 |--|--|--|
-| *MEASURINGSYSTEM_NAME* | `PLATFORM` | no |
+| *MEASURINGSYSTEM_NAME* | `SESSION` | no |
 
 ![Measuring system overview](images/generated/rcmdx_measuringsystem_group.png){width=400px}
 
@@ -1140,22 +1140,30 @@ The following attributes are contained in this group:
 | Name | Data type | Parent object | Optional | Description |
 |------|---|----|---|----|
 | TriggerMode | Enum | *CHANNEL_NAME* | no | See chapter [\ref{triggermode} Trigger Mode](#triggermode) |
-| TriggerValue | 64 bit float | *CHANNEL_NAME* | no | See below |
+| CommonTriggerDistance | 64 bit float | *CHANNEL_NAME* | no | See below |
+| CommonTriggerFrequency | 64 bit float | *CHANNEL_NAME* | no | See below |
 | ChannelBasis | Enum | *CHANNEL_NAME* | no | See below |
-| ChannelType | Enum | *CHANNEL_NAME* | no | See below |
+| MeasurementType | Enum | *CHANNEL_NAME* | no | See below |
 | Neighbor | string | *CHANNEL_NAME* | no | See below |
-| MeasurementUncertaintyType | Enum | *CHANNEL_NAME* | no | See below |
-| LowerMeasurementUncertainty | 32 bit float | *CHANNEL_NAME* | no | See below |
-| UpperMeasurementUncertainty | 32 bit float | *CHANNEL_NAME* | no | See below |
+| MeasurementUncertaintyType | Enum | *CHANNEL_NAME* | yes | See below |
+| LowerMeasurementUncertainty | 32 bit float | *CHANNEL_NAME* | yes | See below |
+| UpperMeasurementUncertainty | 32 bit float | *CHANNEL_NAME* | yes | See below |
 | PositionOffset | 32 bit signed float | *CHANNEL_NAME* | no | See below |
 | Element | string | *CHANNEL_NAME* | no | Contains the type of the group, this is fix `Channel` |
 
-**TriggerValue**  
-The trigger value defines when a value is measured based on the trigger mode.  
+**CommonTriggerDistance**  
+Data is collected every `value` meters.
 
-> In a data source group there is always only one common trigger mode! A mixture within the group is not permitted!
+> In a channel group there is always only one common trigger value! The other trigger value is set to "0.0"
 
-> The attribute has the value "0.0" if `TriggerMode` contains the value `EVENTS`.
+> Both trigger values have the value "0.0" if `TriggerMode` contains the value `EVENTS`.
+
+**CommonTriggerFrequency**  
+Data is collected with a frequency of `value` Hertz.
+
+> In a channel group there is always only one common trigger value! The other trigger value is set to "0.0"
+
+> Both trigger values have the value "0.0" if `TriggerMode` contains the value `EVENTS`.
 
 **ChannelBasis**  
 Description of the channel, what was measured and in which direction. Since a measuring vehicle can move on a rail in two directions and the sensor could therefore be on the other side, it should be possible to indicate this. Here is the place for it.
@@ -1176,15 +1184,15 @@ Possible values are:
 | SENSOR_VERTICAL_TOTAL | TODO |
 | MOVE_DIRECTION_VERTICAL_TOTAL | TODO |
 
-**ChannelType**  
+**MeasurementType**  
 Defines how a value was created. This can be measured, calculated or taken from a previously defined data source that was read from there and inserted into the file.
 
 The following values are possible:
 
 | Value | Description |
 |---|---------|
-| MEASURED | Measured values |
-| REFERENCE | A setpoint of a third source |
+| MEASURED_VALUE | Measured values |
+| REFERENCE_VALUE | A setpoint of a third source |
 
 An example for reference values are defined target values which flow in from another source (file, database etc.) and are to be used for comparisons.
 
@@ -1256,13 +1264,13 @@ The group `MEASUREMENTMODE` contains one dataset:
 
 | Name | Data type | Parent object | Optional | Storage type |
 |---|---|------|---|---|
-| measurementMode | Enum | `MEASUREMENTMODE` | no | `Array` |
-| timestampFrom | 64 bit integer | `MEASUREMENTMODE` | no | `Array` |
-| timestampTo | 64 bit integer | `MEASUREMENTMODE` | no | `Array` |
+| mode | Enum | `MEASUREMENTMODE` | no | `Array` |
+| timestampfrom | 64 bit integer | `MEASUREMENTMODE` | no | `Array` |
+| timestampto | 64 bit integer | `MEASUREMENTMODE` | no | `Array` |
 | info | string | `MEASUREMENTMODE` | yes | `Array` |
 All these datasets represent different columns in a table. Their sizes will therefore always be identical.
 
-#### Measurement mode (enum)
+#### Mode (enum)
 
 There are three different measurement modes, which are explained individually below.
 
@@ -1295,33 +1303,33 @@ The following datasets are included in this group:
 | Name | Data type | Parent object | Optional | Storage type |
 |----|---|----|---|----|
 | availability | Enum | `AVAILABILITY` | no | `Array` |
-| systemReference | string | `AVAILABILITY` | no | `Array` |
-| datasourceReference | string | `AVAILABILITY` | yes | `Array` |
-| channelReference | string | `AVAILABILITY` | yes | `Array` |
-| timestampFrom | Timestamp | `AVAILABILITY` | no | `Array` |
-| timestampTo | Timestamp | `AVAILABILITY` | no | `Array` |
+| systemreference | string | `AVAILABILITY` | no | `Array` |
+| datasourcereference | string | `AVAILABILITY` | yes | `Array` |
+| channelreference | string | `AVAILABILITY` | yes | `Array` |
+| timestampfrom | Timestamp | `AVAILABILITY` | no | `Array` |
+| timestampto | Timestamp | `AVAILABILITY` | no | `Array` |
 | message | string | `AVAILABILITY` | no | `Array` |
 
 
 **availability**  
 See chapter [\ref{availability} Availability](#availability)
 
-**systemReference**  
+**systemreference**  
 A reference to the measurement system.
 
-**datasourceReference**  
+**datasourcereference**  
 A reference to a data source.
 
-**channelReference**  
+**channelreference**  
 A reference to a channel.
 
 **message**  
 This data set contains one message per entry about a failure of a measuring instrument.
 
-**timestampFrom**  
+**timestampfrom**  
 Start timestamp of the availability entry.
 
-**timestampTo**  
+**timestampto**  
 End timestamp of the availability entry.
 
 ##### Availability
@@ -1340,29 +1348,29 @@ The message about the consistency of the data is triggered by a system that chec
 
 | Name | Parent object | Optional |
 |--|--|--|
-| `CONSISTENCYDATA` | `LOGGING` | yes |
+| `CONSISTENCY` | `LOGGING` | yes |
 
-The group `CONSISTENCYDATA` contains one dataset:
+The group `CONSISTENCY` contains one dataset:
 
 | Name | Data type | Parent object | Optional | Storage type |
 |---|---|------|---|---|
-| channelId | string | `CONSISTENCYDATA` | no | `Array` |
-| timestampFrom | 64 bit integer | `CONSISTENCYDATA` | no | `Array` |
-| timestampTo | 64 bit integer | `CONSISTENCYDATA` | no | `Array` |
-| consistencyType | Enum | `CONSISTENCYDATA` | no | `Array` |
-| consistencyInfo | string | `CONSISTENCYDATA` | yes | `Array` |
+| channelid | string | `CONSISTENCY` | no | `Array` |
+| timestampfrom | 64 bit integer | `CONSISTENCY` | no | `Array` |
+| timestampto | 64 bit integer | `CONSISTENCY` | no | `Array` |
+| consistencytype | Enum | `CONSISTENCY` | no | `Array` |
+| consistencyinfo | string | `CONSISTENCY` | yes | `Array` |
 All these datasets represent different columns in a table. Their sizes will therefore always be identical.
 
-**channelId**  
+**channelid**  
 Channel reference in which the finding was detected.
 
-**timestampFrom**  
+**timestampfrom**  
 Start timestamp of the consistency.
 
-**timestampTo**  
+**timestampto**  
 End timestamp of the consistency. Note that consistencies can never overlap and will always be continuous (without holes) within sections.
 
-**consistencyType**  
+**consistencytype**  
 The consistency type can have the following values:  
 
 | Name | Description |
@@ -1371,7 +1379,7 @@ The consistency type can have the following values:
 | INCONSISTENT | The referenced data was checked and is inconsistent |
 | NO_DATA | Consistency has been checked, but no data was found |
 
-**consistencyInfo**  
+**consistencyinfo**  
 Contains additional information about this consistency (E.g. which rule decided the consistency type).
 
 #### Message Group
@@ -1388,21 +1396,21 @@ The following datasets are included in this group:
 |----|---|----|---|----|
 | message | string | `MESSAGES` | no | `Array` |
 | level | Enum | `MESSAGES` | no | `Array` |
-| systemReference | string | `MESSAGES` | no | `Array` |
-| datasourceReference | string | `MESSAGES` | no | `Array` |
-| channelReference | string | `MESSAGES` | no | `Array` |
+| systemreference | string | `MESSAGES` | no | `Array` |
+| datasourcereference | string | `MESSAGES` | no | `Array` |
+| channelreference | string | `MESSAGES` | no | `Array` |
 | timestamp | Timestamp | `MESSAGES` | no | `Array` |
 
 **message**  
 This data set contains one message per entry about a failure of a measuring instrument.
 
-**systemReference**  
+**systemreference**  
 A reference to the measurement system.
 
-**datasourceReference**  
+**datasourcereference**  
 A reference to a data source.
 
-**channelReference**  
+**channelreference**  
 A reference to a channel.
 
 **level**  
@@ -1431,8 +1439,8 @@ Within the group there are the following data fields:
 
 | Name | Data type | Parent object | Optional | Storage type |
 |----|---|----|---|----|
-| systemRef | string | `EVENTS` | no | `Array` |
-| channelRef | string | `EVENTS` | yes | `Array` |
+| systemref | string | `EVENTS` | no | `Array` |
+| channelref | string | `EVENTS` | yes | `Array` |
 | eventtype | string | `EVENTS` | no | `Array` |
 | data | string | `EVENTS` | no | `Array` |
 | duration | 64 bit signed integer | `EVENTS` | no | `Array` |
@@ -1441,19 +1449,19 @@ Within the group there are the following data fields:
 Each of these datasets contains a list with information about an entry, at a certain time.
 Each data set is described in more detail in the following subchapters.
 
-**systemRef**
+**systemref**
 Contains a list of entries containing the name of the system that triggered the EVENT.
 
 | Name | Data type | Parent Object | Optional | Storage Type |
 |----|---|----|---|----|
-| systemRef | string | `EVENTS` | no | `Array` |
+| systemref | string | `EVENTS` | no | `Array` |
 
-**channelRef**
+**channelref**
 Contains a list of entries that refers to a channel to which the EVENT applies.
 
 | Name | Data type | Parent Object | Optional | Storage Type |
 |----|---|----|---|----|
-| channelRef | string | `EVENTS` | yes | `Array` |
+| channelref | string | `EVENTS` | yes | `Array` |
 
 **data**
 This data set contains the actual information about an EVENT, this in the XML notation which is described in more detail in each chapter of the EVENT types (Defect EVENT type, Detected object EVENT type, Limit EVENT type).  
@@ -1493,7 +1501,7 @@ Not all of these elements must be present, details can be taken from the XML Sch
 
 | Name | Description | Parent object |
 |---|-----|--|
-| Defect| XML Root Element | none |
+| Defect | XML Root Element | none |
 | PossibleDefectNames | Name of a possible error | Defect |
 | PossibleClassifications | Classification of a possible defect | Defect |
 | PossibleValidationResults | Possible confirmations of the defect | Defect |

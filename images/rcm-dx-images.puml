@@ -173,7 +173,7 @@
 
 @startuml rcmdx_topology_group
   object TOPOLOGY {
-    a:Version (string)
+    a:DfAVersion (string)
   }
 
   object TRACK {
