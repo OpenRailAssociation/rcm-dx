@@ -4,17 +4,20 @@
 @startuml rcm_dx_Structure
 
   object RCMDX {
+    a:Element (string) = "Root"
     a:Major (16 bit integer)
     a:Minor (16 bit integer)
     a:Feature (16 bit integer)
   }
  
   object "//PLATFORM_NAME//" as PLATFORM {
+    a:Element (string) = "Platform"
     a:VehicleNumber (string)
   }
   RCMDX "1" o-- "1" PLATFORM
 
   object FILE {
+    a:Element (string) = "File"
     a:StructureVersion (string)
   }
   RCMDX "1" o-- "1" FILE
@@ -24,6 +27,7 @@
   FILE "1" o-- "0..1" DATAPROCESSING
 
   object PROCESSINGLOG {
+    a:Element (string) = "ProcessingLog"
     d:processing.type (string)
     d:processing.timestamp (Timestamp)
     d:processing.service (string)
@@ -36,6 +40,7 @@
   DATAPROCESSING "1" o-- "0..1" PROCESSINGLOG
 
   object CLEARANCE {
+    a:Element (string) = "Clearance"
     d:clearance.clearance (Enum)
     d:clearance.timestamp (Timestamp)
     d:clearance.user (string)
@@ -47,6 +52,7 @@
   session_name "1" o-- "1" session_config
 
   object "//SETTING_NAME//" as session_setting_name {
+    a:Element (string) = "Settings"
     a:DataType (string)
   }
   session_config "1" o-- "1..n" session_setting_name
@@ -71,6 +77,7 @@
   PLATFORM "1" o-- "1" session_name
 
   object SECTIONS {
+    a:Element (string) = "Sections"
     d:section.direction (Enum)
     d:section.startTimestamp (Timestamp)
     d:section.endTimestamp (Timestamp)
@@ -125,6 +132,7 @@
   MEASURINGSYSTEM "1" o-- "0..1" LOGGING
   
   object AVAILABILITY {
+    a:Element (string) = "Availability"
     d:availability.availability (Enum)
     d:availability.systemreference (string)
     d:availability.datasourcereference (string)
@@ -136,6 +144,7 @@
   LOGGING "1" o-- "0..1" AVAILABILITY
   
   object CONSISTENCY {
+    a:Element (string) = "Consistency"
     d:consistency.channelid (string)
     d:consistency.timestampfrom (Timestamp)
     d:consistency.timestampto (Timestamp)
@@ -145,6 +154,7 @@
   LOGGING "1" o-- "0..1" CONSISTENCY
 
   object MESSAGE {
+    a:Element (string) = Message
     d:message.systemReference (string)
     d:message.dataSourceReference (string)
     d:message.channelReference (string)
@@ -159,6 +169,7 @@
   MESSAGE "1" o-- "1" msg_timestamp
   
   object MEASUREMENTMODE {
+    a:Element (string) = "MeasurementMode"
     d:measurementmode.mode (Enum)
     d:measurementmode.timestampfrom (Timestamp)
     d:measurementmode.timestampto (Timestamp)
@@ -167,12 +178,17 @@
   MEASURINGSYSTEM "1" o-- "0..1" MEASUREMENTMODE
 
   object TOPOLOGY {
+    a:Element (string) = "Topology"
     a:DfAVersion (string)
+    a:diamond-environment (string)
+    a:diamond-module-name (string)
+    a:diamond-module-version (string)
   }
 
   session_config "1" o-- "1" TOPOLOGY 
 
   object TRACK {
+    a:Element (string) = "TopologyTrack"
     d:data.id (32bit signed integer)
     d:data.direction (Enum)
     d:data.gtgid (string)
@@ -187,6 +203,7 @@
   TOPOLOGY "1" o-- "1" TRACK
 
   object LINE {
+    a:Element (string) = "TopologyLine"
     d:data.id (32bit signed integer)
     d:data.name (string)
     d:data.firststation (string)
@@ -197,6 +214,7 @@
   TOPOLOGY "1" o-- "1" LINE
 
   object SWITCHTRACK {
+    a:Element (string) = "TopologySwitchTrack"
     d:data.gleisstrangId (32bit signed integer)
     d:data.gleisstrangBez (string)
     d:data.weicheId (32bit signed integer)
@@ -220,6 +238,7 @@
   TOPOLOGY "1" o-- "1" SWITCHTRACK
   
   object TRACKOBJECT {
+    a:Element (string) = "TopologyTrackObject"
     d:data.trackid (32bit signed integer)
     d:data.type (32bit signed integer)
     d:data.positionstart (32bit float)
@@ -229,6 +248,7 @@
   TOPOLOGY "1" o-- "1" TRACKOBJECT
 
   object TRACKPOINT {
+    a:Element (string) = "TopologyTrackPoint"
     d:data.trackId (32bit signed integer)
     d:data.lineId (32bit signed integer)
     d:data.x (32bit float)
@@ -243,6 +263,7 @@
   TOPOLOGY "1" o-- "1" TRACKPOINT
 
   object PROPERTY {
+    a:Element (string) = "TopologyProperty"
     d:data.id (32bit signed integer)
     d:data.name (string)
     d:data.description.ge (string)
@@ -253,6 +274,7 @@
   TOPOLOGY "1" o-- "1" PROPERTY
 
   object EVENTS {
+    a:Element (string) = "Events"
     d:events.systemReference (string)
     d:events.channelReference (string)
     d:events.type (string)
@@ -279,6 +301,7 @@
   MEASURINGSYSTEM "1" o-- "1" ms_config
 
   object "//SETTING_NAME//" as setting_name {
+    a:Element (string) = "Settings"
     a:DataType (string)
   }
   ms_config "1" o-- "1..n" setting_name
@@ -307,6 +330,7 @@
   object vid.NNNNNNNNN #LightGray
 
   object IMG {
+    a:Element (string) = "Channel"
     a:ImageContentType (string)
     a:ResolutionType (string)
     a:ResolutionInfoX (32 bit signed integer)
@@ -317,6 +341,7 @@
   object sampleindex #LightGray
   
   object coord.CN #LightGray {
+    a:Element (string) = "Channel"
     a:Unit (string)
   }
 
@@ -343,20 +368,4 @@
   IMG "1" o-- "1..n" img.NNNNNNNNN
   VID "1" o-- "1..n" vid.NNNNNNNNN
   
-  object data.PRE.MIN.X #LightGray {
-    a:Unit (string)
-  }
-
-  object data.PRE.MAX.X #LightGray {
-    a:Unit (string)
-  }
-
-  object data.PRE.AVG.X #LightGray {
-    a:Unit (string)
-  }
-
-  CHANNEL "1" o-- "0..n" data.PRE.MIN.X
-  CHANNEL "1" o-- "0..n" data.PRE.MAX.X
-  CHANNEL "1" o-- "0..n" data.PRE.AVG.X
-
 @enduml

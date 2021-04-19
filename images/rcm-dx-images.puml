@@ -43,17 +43,20 @@
 @startuml rcmdx_root_group
 
   object RCMDX {
+    a:Element (string) = "Root"
     a:Major (16 bit integer)
     a:Minor (16 bit integer)
     a:Feature (16 bit integer)
   }
  
   object "//PLATFORM_NAME//" as PLATFORM {
+    a:Element (string) = "Platform"
     a:VehicleNumber (string)
   }
   RCMDX "1" o-- "1" PLATFORM
 
   object FILE {
+    a:Element (string) = "File"
     a:StructureVersion (string)
   }
   RCMDX "1" o-- "1" FILE
@@ -77,6 +80,7 @@
 @startuml rcmdx_platform_group
 
   object PLATFORM {
+    a:Element (string) = "Platform"
     a:Name (Enum)
     a:VehicleNumber (string)
   }
@@ -94,6 +98,7 @@
 @startuml rcmdx_file_group
 
   object FILE {
+    a:Element (string) = "File"
     a:StructureVersion (string)
   }
 
@@ -102,6 +107,7 @@
   FILE "1" o-- "0..1" DATAPROCESSING
 
   object PROCESSINGLOG {
+    a:Element (string) = "ProcessingLog"
     d:type (string)
     d:timestamp (Timestamp)
     d:service (string)
@@ -114,6 +120,7 @@
   DATAPROCESSING "1" o-- "0..1" PROCESSINGLOG
 
   object CLEARANCE {
+    a:Element (string) = "Clearance"
     d:clearance (Enum)
     d:timestamp (Timestamp)
     d:user (string)
@@ -155,6 +162,7 @@
 @startuml rcmdx_section_group
 
   object SECTIONS {
+    a:Element (string) = "Sections"
     d:section.direction (boolean)
     d:section.startTimestamp (Timestamp)
     d:section.endTimestamp (Timestamp)
@@ -173,7 +181,11 @@
 
 @startuml rcmdx_topology_group
   object TOPOLOGY {
+    a:Element (string) = "Topology"
     a:DfAVersion (string)
+    a:diamond-environment (string)
+    a:diamond-module-name (string)
+    a:diamond-module-version (string)
   }
 
   object TRACK {
@@ -236,6 +248,7 @@
   MEASURINGSYSTEM "1" o-- "1" ms_config
 
   object "//SETTING_NAME//" as setting_name {
+    a:Element (string) = "Settings"
     a:DataType (string)
   }
   ms_config "1" o-- "1..n" setting_name
@@ -256,6 +269,7 @@
   object LOGGING
 
   object AVAILABILITY {
+    a:Element (string) = "Availability"
     d:availability (Enum)
     d:systemReference (string)
     d:datasourceReference (string)
@@ -267,6 +281,7 @@
   LOGGING "1" o-- "0..1" AVAILABILITY
 
   object CONSISTENCY {
+    a:Element (string) = "Consistency"
     d:consistency.channelId (string)
     d:consistency.timestampFrom (Timestamp)
     d:consistency.timestampTo (Timestamp)
@@ -276,6 +291,7 @@
   LOGGING "1" o-- "0..1" CONSISTENCY
 
   object MESSAGE {
+    a:Element (string)
     d:message.systemReference (string)
     d:message.dataSourceReference (string)
     d:message.channelReference (string)
@@ -345,21 +361,6 @@
     a:Unit (string)
   }
   CHANNEL "1" o-- "0..n" coord.CN
-
-  object data.PRE.MIN.X #LightGray {
-    a:Unit (string)
-  }
-  CHANNEL "1" o-- "0..n" data.PRE.MIN.X
-
-  object data.PRE.MAX.X #LightGray {
-    a:Unit (string)
-  }
-  CHANNEL "1" o-- "0..n" data.PRE.MAX.X
-
-  object data.PRE.AVG.X #LightGray {
-    a:Unit (string)
-  }
-  CHANNEL "1" o-- "0..n" data.PRE.AVG.X
 
 @enduml
 
