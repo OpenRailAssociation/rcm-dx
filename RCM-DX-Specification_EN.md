@@ -253,7 +253,7 @@ The following attributes are assigned to this group:
 
 | Name | Data type | Parent object | Optional | Description |
 |---|---|---|---|-----|
-| Priority | 8 bit integer | *LIMIT_NAME* | no | Priority of defined limit, lower values are priories. |
+| Priority | 8 bit integer | *LIMIT_NAME* | no | Priority of defined limit, lower values are higher priorities. |
 | LimitBound | Enum | *LIMIT_NAME* | no | Defines the type of limit, possible values are `MAX` or `MIN`. |
 
 It contains the following datasets:
@@ -450,7 +450,7 @@ The root group contains all other subgroups. This group defines the RCM-DX and b
 
 | Name | Parent object | Optional |
 |--|--|--|
-| `RCMDX` | this is the root node | no |
+| `RCMDX` | none (this is the root node) | no |
 
 ![Root group overview](images/generated/rcmdx_root_group.png){width=400px}
 
@@ -466,7 +466,7 @@ The following attributes are assigned to the group `RCMDX`:
 
 ### File Group
 
-The file group contains file specific information.
+The file group contains file specific information, i.e. information specific for the given data set in its current processing state.
 
 | Name | Parent object | Optional |
 |--|--|--|
@@ -480,6 +480,7 @@ The file group contains the following attribute:
 
 | Name | Data type | Optional | Description |
 |---|---|---|------|
+| Element | string | no | Equals to "File". Identifies this node.|
 | StructureVersion | string | no | Version identifier of the platform structure. All underlying systems, datasources and channels can be identified based on this version |
 
 ### Data Processing Group
@@ -504,6 +505,7 @@ The group `PROCESSINGLOG` contains one dataset:
 
 | Name | Data type | Parent object | Optional | Storage type |
 |---|---|-----|---|----|
+| Element | string | no | Equals to "ProcessingLog". Identifies this node.|
 | type | string | `PROCESSINGLOG` | no | `Array` |
 | timestamp | 64 bit integer | `PROCESSINGLOG` | no | `Array` |
 | service | string | `PROCESSINGLOG` | no | `Array` |
@@ -550,6 +552,7 @@ The group `CLEARANCE` contains one dataset:
 
 | Name | Data type | Parent object | Optional | Storage type |
 |---|---|------|---|---|
+| Element | string | no | Equals to "Clearance". Identifies this node.|
 | clearance | Enum | `CLEARANCE` | no | `Array` |
 | timestamp | 64 bit integer | `CLEARANCE` | no | `Array` |
 | user | string | `CLEARANCE` | no | `Array` |
@@ -561,8 +564,8 @@ This record contains the enum value of the clearance. The following values are p
 
 | Name | Description |
 |----|------|
-| RELEASED | This file has been released and is ready for analysis |
-| PENDING | This file needs to be reviewed manually |
+| RELEASED | This file has been released |
+| PENDING | The clerance has not been set yet |
 | UNRELEASED | This file has not yet been released |
 
 **timestamp**  
@@ -590,6 +593,7 @@ The platform group contains the following attributes:
  
 | Name | Data type | Optional | Description |
 |---|---|---|------|
+| Element | string | no | Equals to "Platform". Identifies this node.|
 | VehicleNumber | string | no | Unique number of the vehicle |
 
 #### Platforms at the SBB
@@ -668,12 +672,26 @@ The group `TOPOLOGY` contains the following attributes:
 
 | Name | Data type | Parent object | Optional | Storage type |
 |---|--|---|--|--|
+| Element | string | `TOPOLOGY` |no | Equals to "Topology". Identifies this node.|
 | DfAVersion | string | `TOPOLOGY` | no | `Array` |
+| diamond-environment | string | `TOPOLOGY` | no | `Array` |
+| diamond-module-name | string | `TOPOLOGY` | no | `Array` |
+| diamond-module-version | string | `TOPOLOGY` | no | `Array` |
 
-**Version**  
+
+**DfAVersion**  
 Version number of topology, included to check validity.
 
 The DfA (Database of fixed assets) is a SBB construct and reflects the SBB route network. The data comes from a database and is distributed as a file to the SBB measuring vehicles. They can read the information contained therein and also add it to the RCM-DX. This DfA is used for positioning and it is therefore possible to assign the measured data to an object from the route network.
+
+**diamond-environment** 
+> TODO
+
+**diamond-module-name** 
+> TODO
+
+**diamond-module-version** 
+> TODO
 
 ### Track Group
 
@@ -687,6 +705,7 @@ The following datasets are included in this group, some of which are described i
 
 | Name | Data type | Parent object | Optional | Storage type |
 |--|---|--|--|---|
+| Element | string | `TRACK` |no | Equals to "TopologyTrack". Identifies this node.|
 | direction | Enum | TRACK | no | `Array` |
 | id | 32 bit integer | TRACK | no | `Array` |
 | gtgid | string | TRACK | no | `Array` |
@@ -760,6 +779,7 @@ The following datasets are included in this group:
 
 | Name | Data type | Parent object | Optional | Storage type |
 |----|---|----|---|----|
+| Element | string | `Line` |no | Equals to "TopologyLine". Identifies this node.|
 | id | 32 bit signed integer | `LINE` | no | `Array` |
 | name | string | `LINE` | no | `Array` |
 | firststation | string | `LINE` | no | `Array` |
@@ -797,6 +817,7 @@ The following datasets are included in this group:
 
 | Name | Data type | Parent object | Optional | Storage type |
 |----|---|----|---|----|
+| Element | string | `SWITCHTRACK` |no | Equals to "TopologySwitchTrack". Identifies this node.|
 | gleisstrangId | 32 bit signed integer | `SWITCHTRACK` | no | `Array` |
 | gleisstrangBez | string | `SWITCHTRACK` | no | `Array` |
 | weicheId | 32 bit signed integer | `SWITCHTRACK` | no | `Array` |
@@ -858,6 +879,7 @@ The following datasets are included in this group:
 
 | Name | Data type | Parent object | Optional | Storage type |
 |----|---|----|---|----|
+| Element | string | `TRACKOBJECT` |no | Equals to "TopologyTrackObject". Identifies this node.|
 | trackid | 32 bit signed integer | `TRACKOBJECT` | no | `Array` |
 | type | 32 bit signed integer | `TRACKOBJECT` | no | `Array` |
 | positionstart | 32 bit signed integer | `TRACKOBJECT` | no | `Array` |
@@ -891,6 +913,7 @@ The following datasets are included in this group:
 
 | Name | Data type | Parent object | Optional | Storage type |
 |----|---|----|---|----|
+| Element | string | `TRACKPOINT` |no | Equals to "TopologyTrackPoint". Identifies this node.|
 | trackid | 32 bit signed integer | `TRACKPOINT` | no | `Array` |
 | lineid | 32 bit signed integer | `TRACKPOINT` | no | `Array` |
 | x | 32 bit float | `TRACKPOINT` | no | `Array` |
@@ -944,6 +967,7 @@ The following datasets are included in this group:
 
 | Name | Data type | Parent object | Optional | Description |
 |----|---|----|---|----|
+| Element | string | `PROPERTY` |no | Equals to "TopologyProperty". Identifies this node.|
 | id | 32 bit signed integer | `PROPERTY` | no | `Array` |
 | name | string | `PROPERTY` | no | `Array` |
 | description.ge | string | `PROPERTY` | no | `Array` |
@@ -982,6 +1006,7 @@ This group contains two datasets:
 
 | Name | Data type | Parent object | Optional | Storage type |
 |----|---|----|---|----|
+| Element | string | *SETTING_NAME* |no | Equals to "Settings". Identifies this node.|
 | setting | string | *SETTING_NAME* | no | `Array` |
 | timestamp | 64 bit integer | *SETTING_NAME* | no | `Array` |
 
@@ -1011,6 +1036,7 @@ The following data fields are contained in the group "SECTIONS":
 
 | Name | Data type | Parent object | Optional | Storage type |
 |---|----|---|--|--|
+| Element | string | `SECTIONS` |no | Equals to "Sections". Identifies this node.|
 | direction | Enum | `SECTIONS` | no | `Array` |
 | startTimestamp | Timestamp | `SECTIONS` | no | `Array` |
 | endTimestamp | Timestamp | `SECTIONS` | no | `Array` |
@@ -1139,6 +1165,7 @@ The following attributes are contained in this group:
 
 | Name | Data type | Parent object | Optional | Description |
 |------|---|----|---|----|
+| Element | string | *CHANNEL_NAME* |no | Equals to "Channel". Identifies this node.|
 | TriggerMode | Enum | *CHANNEL_NAME* | no | See chapter [\ref{triggermode} Trigger Mode](#triggermode) |
 | CommonTriggerDistance | 64 bit float | *CHANNEL_NAME* | no | See below |
 | CommonTriggerFrequency | 64 bit float | *CHANNEL_NAME* | no | See below |
@@ -1201,8 +1228,8 @@ Refers to the name of an adjacent channel. This can be the right rail, for examp
 Thus the attribute `neighbor` of the channel "TEMP_RAIL_**L**" would contain the name "TEMP_RAIL_**R**" and vice versa.
 
 **MeasurementUncertaintyType**  
-Defines the type in which the measurement uncertainty is set.
-The following values are possible:
+Defines the type in which the measurement uncertainty is set, namely absolute (in which case it has the same unit as the channel itself), or relative (in which case it has no unit).
+The following values are thus allowed:
 
 | Value | Description |
 |---|---------|
@@ -1228,7 +1255,7 @@ Possible values are:
 | Value | Description | Unit |
 |---|----------|---|
 | TIME | Time-based measurement data recording | Nanoseconds |
-| DISTANCE | Distance-based measurement data acquisition | Milimeter |
+| DISTANCE | Distance-based measurement data acquisition | Millimeter |
 | EVENT | EVENT based recording | none |
 
 #### Data object
@@ -1264,6 +1291,7 @@ The group `MEASUREMENTMODE` contains one dataset:
 
 | Name | Data type | Parent object | Optional | Storage type |
 |---|---|------|---|---|
+| Element | string | `MEASUREMENTMODE` |no | Equals to "MeasurementMode". Identifies this node.|
 | mode | Enum | `MEASUREMENTMODE` | no | `Array` |
 | timestampfrom | 64 bit integer | `MEASUREMENTMODE` | no | `Array` |
 | timestampto | 64 bit integer | `MEASUREMENTMODE` | no | `Array` |
@@ -1302,6 +1330,7 @@ The following datasets are included in this group:
 
 | Name | Data type | Parent object | Optional | Storage type |
 |----|---|----|---|----|
+| Element | string | `AVAILABILITY` |no | Equals to "Availability". Identifies this node.|
 | availability | Enum | `AVAILABILITY` | no | `Array` |
 | systemreference | string | `AVAILABILITY` | no | `Array` |
 | datasourcereference | string | `AVAILABILITY` | yes | `Array` |
@@ -1354,6 +1383,7 @@ The group `CONSISTENCY` contains one dataset:
 
 | Name | Data type | Parent object | Optional | Storage type |
 |---|---|------|---|---|
+| Element | string | `CONSISTENCY` |no | Equals to "Consistency". Identifies this node.|
 | channelid | string | `CONSISTENCY` | no | `Array` |
 | timestampfrom | 64 bit integer | `CONSISTENCY` | no | `Array` |
 | timestampto | 64 bit integer | `CONSISTENCY` | no | `Array` |
@@ -1394,6 +1424,7 @@ The following datasets are included in this group:
 
 | Name | Data type | Parent object | Optional | Storage type |
 |----|---|----|---|----|
+| Element | string | `MESSAGES` |no | Equals to "Messages". Identifies this node.|
 | message | string | `MESSAGES` | no | `Array` |
 | level | Enum | `MESSAGES` | no | `Array` |
 | systemreference | string | `MESSAGES` | no | `Array` |
@@ -1439,6 +1470,7 @@ Within the group there are the following data fields:
 
 | Name | Data type | Parent object | Optional | Storage type |
 |----|---|----|---|----|
+| Element | string | `EVENTS`` |no | Equals to "Events". Identifies this node.|
 | systemref | string | `EVENTS` | no | `Array` |
 | channelref | string | `EVENTS` | yes | `Array` |
 | eventtype | string | `EVENTS` | no | `Array` |
