@@ -674,9 +674,7 @@ The group `TOPOLOGY` contains the following attributes:
 |---|--|---|--|--|
 | Element | string | `TOPOLOGY` |no | Equals to "Topology". Identifies this node.|
 | DfAVersion | string | `TOPOLOGY` | no | `Array` |
-| diamond-environment | string | `TOPOLOGY` | no | `Array` |
-| diamond-module-name | string | `TOPOLOGY` | no | `Array` |
-| diamond-module-version | string | `TOPOLOGY` | no | `Array` |
+| diamond-* | string | `TOPOLOGY` | no | `Array` |
 
 
 **DfAVersion**  
@@ -684,14 +682,10 @@ Version number of topology, included to check validity.
 
 The DfA (Database of fixed assets) is a SBB construct and reflects the SBB route network. The data comes from a database and is distributed as a file to the SBB measuring vehicles. They can read the information contained therein and also add it to the RCM-DX. This DfA is used for positioning and it is therefore possible to assign the measured data to an object from the route network.
 
-**diamond-environment** 
-> TODO
+**Diamond-Metadata Attributes**
 
-**diamond-module-name** 
-> TODO
+List of attributes defined by SBB Diamond. All attributes start with “diamond-“ and have a String value.
 
-**diamond-module-version** 
-> TODO
 
 ### Track Group
 
@@ -1200,16 +1194,16 @@ Possible values are:
 | Value | Description |
 |----|----|
 | TOTAL | The channel has no dependency on direction of motion or vehicle orientation |
-| SENSOR_LEFT | Signal reflects the left hand side of the vehicle irrespective of it's orientation or motion |
-| SENSOR_RIGHT | Signal reflects the right hand side of the vehicle irrespective of it's orientation or motion |
-| RAIL_LEFT | Signal reflects the left side with respect to direction of motion |
-| RAIL_RIGHT | Signal reflects the right side with respect to direction of motion |
-| SENSOR_VERTICAL_LEFT | TODO |
-| SENSOR_VERTICAL_RIGHT | TODO |
-| MOVE_DIRECTION_VERTICAL_LEFT | TODO |
-| MOVE_DIRECTION_VERTICAL_RIGHT | TODO |
-| SENSOR_VERTICAL_TOTAL | TODO |
-| MOVE_DIRECTION_VERTICAL_TOTAL | TODO |
+| SENSOR_LEFT | Deprecated – same as ``SENSOR_VERTICAL_LEFT`` |
+| SENSOR_RIGHT | Deprecated – same as ``SENSOR_VERTICAL_RIGHT`` |
+| RAIL_LEFT | Deprecated – same as ``MOVE_DIRECTION_VERTICAL_LEFT`` |
+| RAIL_RIGHT | Deprecated – same as ``MOVE_DIRECTION_VERTICAL_RIGHT`` |
+| SENSOR_VERTICAL_LEFT | Signal reflects the left hand side of the vehicle irrespective of it's orientation or motion |
+| SENSOR_VERTICAL_RIGHT | The channel reflects the right-hand side of the vehicle irrespective of its orientation or motion |
+| MOVE_DIRECTION_VERTICAL_LEFT | The channel reflects the left-hand side with respect to direction of motion, irrespective of its orientation |
+| MOVE_DIRECTION_VERTICAL_RIGHT | The channel reflects the right-hand side with respect to direction of motion, irrespective of its orientation |
+| SENSOR_VERTICAL_TOTAL | The channel reflects the center of the vehicle irrespective of its orientation or motion |
+| MOVE_DIRECTION_VERTICAL_TOTAL | The channel reflects the center with respect to direction of motion, irrespective of its orientation |
 
 **MeasurementType**  
 Defines how a value was created. This can be measured, calculated or taken from a previously defined data source that was read from there and inserted into the file.
@@ -1456,6 +1450,89 @@ Defines the importance of a message. Following values are possible:
 | INFO | The message is only informative. |
 | WARNING | The message indicates a warning. |
 | ERROR | The message indicates an error. |
+
+### Position group
+
+This group contains general information on the position. It is like a measuring system (see [\ref{measuring-system-group} Measuring System group](#measuring-system-group)) with following differences:
+
+>	The channel with the position data has multiple (nine) datasets. This is because a position record always consists of these nine values and therefore this dataset is hardcoded, instead of configurable as for all other measurement system.
+
+>	The channel and datasets have no attributes (e.g., physical unit) because this information is part of the file format and not configurable.
+
+| Name | Parent object | Optional |
+|--|--|--|
+| `POSITION` | `SESSION` | no |
+
+#### Position datasource
+See chapter [\ref{datasource-group} Datasource group](#datasource-group)
+
+| Name | Parent object | Optional |
+|--|--|--|
+| `POSITION.SOURCE` | `POSITION` | no |
+
+#### Position channel
+
+| Name | Parent object | Optional |
+|--|--|--|
+| `POSITION.SOURCE.DATA` | `POSITION.SOURCE` | no |
+
+##### Position channel datasets
+| Name | Data type | Parent object | Optional | Storage type |
+|------|-----|----|---|---|
+| covereddistance | 64 bit float | `POSITION.SOURCE.DATA` | no | `Array` |
+| direction | Enum | `POSITION.SOURCE.DATA` | no | `Array` |
+| kilometrage | Enum | `POSITION.SOURCE.DATA` | no | `Array` |
+| track_id | 32 bit integer | `POSITION.SOURCE.DATA` | no | `Array` |
+| line_id | 32 bit integer | `POSITION.SOURCE.DATA` | no | `Array` |
+| trackoffset | 64 bit float | `POSITION.SOURCE.DATA` | no | `Array` |
+| linekilometer | 64 bit float | `POSITION.SOURCE.DATA` | no | `Array` |
+| positionaccuracy | 8 bit integer | `POSITION.SOURCE.DATA` | no | `Array` |
+| positionquality | 8 bit integer | `POSITION.SOURCE.DATA` | no | `Array` |
+
+**covereddistance**  
+The distance (in [m]) the vehicle is driven at the time of recording within the current session.
+
+**track_id**  
+The ID of the track on which the vehicle is located at the time of recording.
+
+**line_id**  
+The ID of the line on which the vehicle is located at the time of recording.
+
+**trackoffset**  
+The offset (in [m]) on the track where the vehicle is located at the time of recording.
+
+**linekilometer**  
+The line kilometer (in [km]) on the line where the vehicle is located at the time of recording.
+
+**positionquality**  
+Marker for the quality of the position determination ranging from 0 meaning “very good” to 15 for “very poor”.
+
+**positionaccuracy**  
+The position accuracy (in [m]) of the current position.
+
+##### Coach Direction
+
+The data set `direction` contains the coach direction of the vehicle. This information influences the position of the measuring systems.
+
+This data set can contain the following values:  
+
+| Value | Description |
+|--|-----|
+| FORWARD | Vehicle moving forward |
+| BACKWARD | Vehicle moving backward |
+
+##### Kilometrage
+
+The data set `kilometrage` contains the alignment of the track. This information serves the correct evaluation of the kilometer data of the line, see data set `trackoffset`.
+
+This data set can contain the following values:  
+
+The following values are allowed:
+
+| Value | Meaning |
+|---|----|
+| INCREASING | Increasing track kilometrage on the track |
+| DECREASING | Decreasing track kilometrage on the track |
 
 ### EVENTS Group  
 
