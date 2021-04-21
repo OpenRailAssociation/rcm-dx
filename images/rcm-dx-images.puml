@@ -63,7 +63,7 @@
 
   object DATAPROCESSING {
   }
-  FILE "1" o-- "0..1" DATAPROCESSING
+  FILE "1" o-- "1" DATAPROCESSING
 
   object "CONFIGURATION" as session_config
   session_name "1" o-- "1" session_config
@@ -104,7 +104,7 @@
 
   object DATAPROCESSING {
   }
-  FILE "1" o-- "0..1" DATAPROCESSING
+  FILE "1" o-- "1" DATAPROCESSING
 
   object PROCESSINGLOG {
     a:Element (string) = "ProcessingLog"
@@ -117,7 +117,7 @@
     d:user (string)
     d:message (string)
   }
-  DATAPROCESSING "1" o-- "0..1" PROCESSINGLOG
+  DATAPROCESSING "1" o-- "1" PROCESSINGLOG
 
   object CLEARANCE {
     a:Element (string) = "Clearance"
@@ -126,7 +126,7 @@
     d:user (string)
     d:message (string)
   }
-  DATAPROCESSING "1" o-- "0..1" CLEARANCE
+  DATAPROCESSING "1" o-- "1" CLEARANCE
 @enduml
 
 @startuml rcmdx_session_group
@@ -146,12 +146,17 @@
   object EVENTS {
     ...
   }
-  session_name "1" o-- "0..1" EVENTS
+  session_name "1" o-- "1" EVENTS
 
   object "//MEASURINGSYSTEM_NAME//" as MEASURINGSYSTEM {
     ...
   }
   session_name "1" o-- "1..n" MEASURINGSYSTEM
+
+  object POSITION {
+    ...
+  }
+  session_name "1" o-- "1" POSITION
 
   object SECTIONS {
     ...
@@ -183,9 +188,7 @@
   object TOPOLOGY {
     a:Element (string) = "Topology"
     a:DfAVersion (string)
-    a:diamond-environment (string)
-    a:diamond-module-name (string)
-    a:diamond-module-version (string)
+    a:diamond-*
   }
 
   object TRACK {
@@ -230,10 +233,10 @@
   MEASURINGSYSTEM "1" o-- "1..n" DATASOURCE
 
   object LOGGING
-  MEASURINGSYSTEM "1" o-- "0..1" LOGGING
+  MEASURINGSYSTEM "1" o-- "1" LOGGING
 
   object MEASUREMENTMODE
-  MEASURINGSYSTEM "1" o-- "0..1" MEASUREMENTMODE
+  MEASURINGSYSTEM "1" o-- "1" MEASUREMENTMODE
 
   object "CONFIGURATION" as ms_config
   MEASURINGSYSTEM "1" o-- "1" ms_config
@@ -278,7 +281,7 @@
     d:timestampTo (Timestamp)
     d:message (string)
   }
-  LOGGING "1" o-- "0..1" AVAILABILITY
+  LOGGING "1" o-- "1" AVAILABILITY
 
   object CONSISTENCY {
     a:Element (string) = "Consistency"
@@ -288,7 +291,7 @@
     d:consistency.type (Enum)
     d:consistency.info (string)
   }
-  LOGGING "1" o-- "0..1" CONSISTENCY
+  LOGGING "1" o-- "1" CONSISTENCY
 
   object MESSAGE {
     a:Element (string)
