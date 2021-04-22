@@ -459,6 +459,44 @@ $if(logo)$
 $endif$
 $endif$
 
+%%
+%% page sized images
+%%
+
+\usepackage{pdflscape}
+
+% Places the image in the center of the page, including the caption.
+\newenvironment{bigImage}[2]
+{ 
+  \newpage
+  \begin{landscape}
+  
+  \vspace*{\fill}
+  \begingroup
+  \centering
+  
+  \begin{figure}
+  \centering
+  \includegraphics{#2}
+  \caption{#1} 
+  \end{figure}
+  
+  \endgroup
+  \vspace*{\fill}
+
+  \end{landscape}
+  \newpage
+}
+{  }
+
+% functions for simpler use
+\newcommand{\bigImgStart}[2]{\begin{bigImage}{#1}{#2}}
+\newcommand{\bigImgEnd}{\end{bigImage}}
+
+%%
+%% end page sized images
+%%
+
 
 
 %%
@@ -765,11 +803,7 @@ $if(draft)$
 \usepackage{draftwatermark}
 \SetWatermarkText{DRAFT}
 \SetWatermarkScale{2}
-\SetWatermarkColor[rgb]{0.7,0.7,0.7}
 $endif$
-
-
-
 
 
 \begin{document}
