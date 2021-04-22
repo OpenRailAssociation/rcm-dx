@@ -267,7 +267,7 @@ It contains the following datasets:
 ### Coordinates
 
 Measurement data that can be assigned to a coordinate system are given a defined name according to the following pattern: `coord.CN`.  
-This type of data storage allows several entries to be recorded per measurement timestamp. Thus there are more entries in these datasets than in the data set `timestamp`. How many entries per timestamp belong to each other (as a group) is stored in another data set with the name `sampleindex`. The data set `sampleindex` is describes in chapter [\ref{sample-index} Sample index](#sample-index).
+This type of data storage allows several entries to be recorded per measurement timestamp. Thus there are more entries in these datasets than in the data set `timestamp`. How many entries per timestamp belong to each other (as a group) is stored in another data set with the name `sampleindex`. The data set `sampleindex` is described in chapter [\ref{sample-index} Sample index](#sample-index).
 
 | Element | Description |
 |--|------|
@@ -1357,7 +1357,7 @@ End timestamp of the availability entry.
 
 ##### Availability
 
-Defines the severity of the failure or interruption of a measurement system. Following values are possible:
+Defines the severity of the failure or interruption of a measurement system. The following values are possible:
 
 | level | description |
 |----|----|
