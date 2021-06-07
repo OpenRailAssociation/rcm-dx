@@ -438,7 +438,8 @@ Further information about the structure of the HDF5 file format can be found und
 
 In the RCM-DX, the individual groups and datasets as well as their names are defined. Below is an overview of the structure specified in this document:
 
-![RCM-DX structure overview](images/generated/rcm_dx_structure.png)
+\bigImgStart{RCM-DX structure overview}{images/generated/rcm_dx_structure.png}
+\bigImgEnd
 
 Separate and more detailed specifications have been written for individual structure groups. Several measuring instruments can be installed on one measuring platform. Each of these measuring devices generates new channels of data, which flow into the RCM-DX. Since these channels can be different for each measuring device, the specifications were separated. Another reason for this is the fact that other railway operators use different measuring and inspection equipment.
 
