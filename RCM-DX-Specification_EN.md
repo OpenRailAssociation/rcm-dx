@@ -663,7 +663,7 @@ This chapter has been optimised for SBB and may differ between railway companies
 
 | Name | HDF5 Type | Parent object | Optional |
 |--|--|---|--|
-| `TOPOLOGY` | HDF5 Group | *SESSION_NAME* | no |
+| `TOPOLOGY` | HDF5 Group | `CONFIGURATION` | no |
 
 ![Topology group overview](images/generated/rcmdx_topology_group.png)
 
