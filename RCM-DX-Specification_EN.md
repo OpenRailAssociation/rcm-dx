@@ -45,6 +45,7 @@ The RCM-DX specification is open source and freely accessible and usable by all 
 | 2.0.0 | 0.29 | 21.04.2020 | Michael Ammann (SBB), Jakob Grilj (SBB) | Adaptation of the structure to new requirements. New major release with version number 2.0, due to major changes in the structure and goal for publication of the specification (open source). |
 | 2.0.0 | 0.30 | 27.10.2020 | Aron Serafini (SCS) | Adjust consistency, measurementMode and processing chapters. |
 | 2.0.0 | 0.31 | 11.03.2021 | Aron Serafini (SCS) | Adjust specification to implementation |
+| 2.0.0 | 0.32 | 31.08.2021 | Aron Serafini (SCS) | Fix mistake: Topology is a child of CONFIGURATION, not Session. |
 
 ## Introduction  
 
