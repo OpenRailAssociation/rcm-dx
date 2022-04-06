@@ -46,6 +46,7 @@ The RCM-DX specification is open source and freely accessible and usable by all 
 | 2.0.0 | 0.30 | 27.10.2020 | Aron Serafini (SCS) | Adjust consistency, measurementMode and processing chapters. |
 | 2.0.0 | 0.31 | 11.03.2021 | Aron Serafini (SCS) | Adjust specification to implementation |
 | 2.0.0 | 0.32 | 31.08.2021 | Aron Serafini (SCS) | Fix mistake: Topology is a child of CONFIGURATION, not Session. |
+| 2.0.1 | 1.0 | 06.04.2022 | Aron Serafini (SCS) | Add attribute MeasurementDirectionDependent to Channel. Use a release version for this document. |
 
 ## Introduction  
 
@@ -1161,11 +1162,11 @@ The following attributes are contained in this group:
 
 | Name | Data type | Parent object | Optional | Description |
 |------|---|----|---|----|
-| Element | string | *CHANNEL_NAME* |no | Equals to "Channel". Identifies this node.|
 | TriggerMode | Enum | *CHANNEL_NAME* | no | See chapter [\ref{triggermode} Trigger Mode](#triggermode) |
 | CommonTriggerDistance | 64 bit float | *CHANNEL_NAME* | no | See below |
 | CommonTriggerFrequency | 64 bit float | *CHANNEL_NAME* | no | See below |
 | ChannelBasis | Enum | *CHANNEL_NAME* | no | See below |
+| MeasurementDirectionDependent | boolean | *CHANNEL_NAME* | no | See below |
 | MeasurementType | Enum | *CHANNEL_NAME* | no | See below |
 | Neighbor | string | *CHANNEL_NAME* | no | See below |
 | MeasurementUncertaintyType | Enum | *CHANNEL_NAME* | yes | See below |
@@ -1206,6 +1207,10 @@ Possible values are:
 | MOVE_DIRECTION_VERTICAL_RIGHT | The channel reflects the right-hand side with respect to direction of motion, irrespective of its orientation |
 | SENSOR_VERTICAL_TOTAL | The channel reflects the center of the vehicle irrespective of its orientation or motion |
 | MOVE_DIRECTION_VERTICAL_TOTAL | The channel reflects the center with respect to direction of motion, irrespective of its orientation |
+
+**MeasurementDirectionDependent**  
+Flag that implies, if set to true, that measurement data of this channel is dependent on direction and should be inverted if viewed with a section of different direction.    
+> If the flag is set to false, not set or only data of a single direction is viewed, then no inversion is needed when viewing data of this channel.
 
 **MeasurementType**  
 Defines how a value was created. This can be measured, calculated or taken from a previously defined data source that was read from there and inserted into the file.
