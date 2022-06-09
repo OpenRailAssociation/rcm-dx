@@ -29,9 +29,21 @@ The RCM-DX specification was written in the markup language "Markup language" an
 
 ## Create a PDF from this specification
 
-### Needed Software
+### Using Docker
 
-#### for Windows
+You can easily compile a modified version of the specification using Docker. The following options can be passed as environment variables:
+
+- `SPEC_VERSION` (string): The version number which can be seen in the file name and in the specification.
+- `IS_DRAFT` (`true`/`false`): If true, a "DRAFT" watermark is added to every page of the PDF.
+
+```sh
+docker build . -t rcm-dx-specification
+docker run --rm --env SPEC_VERSION=<version> --env IS_DRAFT=<true/false> --volume "$(pwd):/data" rcm-dx-specification
+```
+
+After this, you'll find the generated specification in the folder `generated-specs`.
+
+### Locally (using Windows)
 
 The creation of a PDF requires the installation of [Pandoc](https://pandoc.org/installing.html) and [MiKTeX](https://miktex.org/). These two programs are free! Since the installation is already well described on their web pages, we will refrain from doing so here. It can happen that "MiKTeX" has to download and install additional packages and asks for permission, these are necessary for the PDF creation!
 
@@ -47,11 +59,7 @@ If "draft" is given as the second argument, the word "DRAFT" appears on the back
 `createPdf.bat 0.3 draft` Creates a specification in version 0.3 as a draft.  
 `createPdf.bat 1.0` Creates a specification in version 1.0 as a final release version.  
 
-#### for Linux and MacOs
-
-Please let us now if you install all the needed software which are described under "for Windows" and successfully created the PDF.
-
-## Create the pictograms
+#### Create the pictograms
 
 The pictograms are converted from text into images using the open source software [PlantUML](https://plantuml.com/de/). The images are written in a defined language in files with the extension "*.puml" and then converted into images.
 

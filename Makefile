@@ -6,14 +6,16 @@ help:
 
 .PHONY: images
 images:  ## generate images using plantuml
-	java -jar plantuml.jar images.puml -o images/generated
+	java -jar ./bin/plantuml.jar ./images/rcm-dx-images.puml -o images/generated
 	mkdir -p generated-specs/html/images
 	cp -r images/* generated-specs/html/images
 
 .PHONY: pdf
 pdf: images ## generate PDF specification
 	mkdir -p generated-specs/pdf
-	pandoc --verbose --from markdown --data-dir=. --template sbb --listings --toc --number-sections RCM-DX-Specification.md -o generated-specs/pdf/RCM-DX-Specification.pdf
+	envsubst < metadata.md > _metadata.md
+	pandoc --from markdown --data-dir=. --template rcm-dx --listings --toc --number-sections --metadata-file=_metadata.md RCM-DX-Specification_EN.md -o generated-specs/pdf/RCM-DX-Specification_EN.pdf
+	rm _metadata.md
 
 .PHONY: html
 html: images  ## generate HTML specification
