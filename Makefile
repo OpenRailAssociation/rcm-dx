@@ -6,7 +6,7 @@ help:
 
 .PHONY: images
 images:  ## generate images using plantuml
-	java -DPLANTUML_LIMIT_SIZE=8192 -jar ./bin/plantuml.jar ./images/rcm-dx-images.puml -o images/generated
+	java -DPLANTUML_LIMIT_SIZE=8192 -jar ./bin/plantuml.jar ./images/rcm-dx-images.puml -o generated
 	mkdir -p generated-specs/html/images
 	cp -r images/* generated-specs/html/images
 
