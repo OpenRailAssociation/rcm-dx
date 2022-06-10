@@ -1,0 +1,416 @@
+' Visit http://plantuml.com/ for more information!
+
+' Overview if RCM-DX structure
+@startuml rcm_dx_Structure
+
+  object RCMDX {
+    a:Element (string) = "Root"
+    a:Major (16 bit integer)
+    a:Minor (16 bit integer)
+    a:Feature (16 bit integer)
+  }
+ 
+  object "//PLATFORM_NAME//" as PLATFORM {
+    a:Element (string) = "Platform"
+    a:VehicleNumber (string)
+  }
+  RCMDX "1" o-- "1" PLATFORM
+
+  object FILE {
+    a:Element (string) = "File"
+    a:StructureVersion (string)
+  }
+  RCMDX "1" o-- "1" FILE
+
+  object DATAPROCESSING {
+  }
+  FILE "1" o-- "1" DATAPROCESSING
+
+  object PROCESSINGLOG {
+    a:Element (string) = "ProcessingLog"
+    d:processing.type (string)
+    d:processing.timestamp (Timestamp)
+    d:processing.service (string)
+    d:processing.serviceuser (string)
+    d:processing.host (string)
+    d:processing.executable (string)
+    d:processing.user (string)
+    d:processing.message (string)
+  }
+  DATAPROCESSING "1" o-- "1" PROCESSINGLOG
+
+  object CLEARANCE {
+    a:Element (string) = "Clearance"
+    d:clearance.clearance (Enum)
+    d:clearance.timestamp (Timestamp)
+    d:clearance.user (string)
+    d:clearance.message (string)
+  }
+  DATAPROCESSING "1" o-- "1" CLEARANCE
+
+  object "CONFIGURATION" as session_config
+  session_name "1" o-- "1" session_config
+
+  object "//SETTING_NAME//" as session_setting_name {
+    a:Element (string) = "Settings"
+    a:DataType (string)
+  }
+  session_config "1" o-- "1..n" session_setting_name
+
+  object "timestamp" as session_setting_timestamp #LightGray {
+    data type: Timestamp
+  }
+  session_setting_name "1" o-- "1" session_setting_timestamp
+
+  object "setting" as session_setting #LightGray {
+    data type: string
+  }
+  session_setting_name "1" o-- "1" session_setting
+
+  object "//SESSION_NAME//" as session_name {
+    a:Element (string) = "Session"
+    a:StartTime (Timestamp)
+    a:EndTime (Timestamp)
+  } 
+  note left: Naming pattern: YYYYMMDD_hhmmss.SSS
+
+  PLATFORM "1" o-- "1" session_name
+
+  object SECTIONS {
+    a:Element (string) = "Sections"
+    d:section.direction (Enum)
+    d:section.startTimestamp (Timestamp)
+    d:section.endTimestamp (Timestamp)
+    d:section.firstTrackOffset (64 bit float)
+    d:section.lastTrackOffset (64 bit float)
+    d:section.trackStartTimestamp (Timestamp)
+    d:section.trackEndTimestamp (Timestamp)
+    d:section.trackStartCoveredDistance (64 bit float)
+    d:section.trackEndCoveredDistance (64 bit float)
+    d:section.trackId (32 bit signed integer)
+    d:section.trackInfoOffset (64 bit float)
+    d:section.trackKilometrage (Enum)
+  }
+
+  session_name "1" o-- "1" SECTIONS
+
+  object "//MEASURINGSYSTEM_NAME//" as MEASURINGSYSTEM {
+    a:Element (string) = "System"
+  }
+
+  session_name "1" o-- "1..n" MEASURINGSYSTEM
+
+  object "//DATASOURCE_NAME//" as DATASOURCE {
+    a:Element (string) = "Datasource"
+  }
+  MEASURINGSYSTEM "1" o-- "1..n" DATASOURCE
+
+  object "timestamp" as ds_timestamp #LightGray {
+    data type: Timestamp
+  }
+  DATASOURCE "1" o-- "1" ds_timestamp
+
+  object "//CHANNEL_NAME//" as CHANNEL {
+    a:Element (string) = "Channel"
+    a:TriggerMode (Enum)
+    a:CommonTriggerDistance (64 bit float)
+    a:CommonTriggerFrequency (64 bit float)
+    a:ChannelBasis (Enum)
+    a:MeasurementDirectionDependent (boolean)
+    a:MeasurementType (Enum)
+    a:Neighbor (string)
+    a:MeasurementUncertaintyType (Enum)
+    a:LowerMeasurementUncertainty (32 bit float)
+    a:UpperMeasurementUncertainty (32 bit float)
+    a:PositionOffset (32 bit float)
+  }
+  DATASOURCE "1" o-- "1..n" CHANNEL
+
+  object "data" as channel_data #LightGray
+  CHANNEL "1" o-- "0..1" channel_data
+
+  object LOGGING
+  MEASURINGSYSTEM "1" o-- "1" LOGGING
+  
+  object AVAILABILITY {
+    a:Element (string) = "Availability"
+    d:availability.availability (Enum)
+    d:availability.systemreference (string)
+    d:availability.datasourcereference (string)
+    d:availability.channelreference (string)
+    d:availability.timestampfrom (Timestamp)
+    d:availability.timestampto (Timestamp)
+    d:availability.message (string)
+  }
+  LOGGING "1" o-- "1" AVAILABILITY
+  
+  object CONSISTENCY {
+    a:Element (string) = "Consistency"
+    d:consistency.channelid (string)
+    d:consistency.timestampfrom (Timestamp)
+    d:consistency.timestampto (Timestamp)
+    d:consistency.type (Enum)
+    d:consistency.info (string)
+  }
+  LOGGING "1" o-- "1" CONSISTENCY
+
+  object MESSAGE {
+    a:Element (string) = Message
+    d:message.systemReference (string)
+    d:message.dataSourceReference (string)
+    d:message.channelReference (string)
+    d:message.level (Enum)
+    d:message.message (string)
+  }
+  LOGGING "1" o-- "0..1" MESSAGE
+
+  object "timestamp" as msg_timestamp #LightGray {
+    data type: Timestamp
+  }
+  MESSAGE "1" o-- "1" msg_timestamp
+  
+  object MEASUREMENTMODE {
+    a:Element (string) = "MeasurementMode"
+    d:measurementmode.mode (Enum)
+    d:measurementmode.timestampfrom (Timestamp)
+    d:measurementmode.timestampto (Timestamp)
+    d:measurementmode.info (string)
+  }
+  MEASURINGSYSTEM "1" o-- "1" MEASUREMENTMODE
+
+  
+  object POSITION {
+    a:Element (string) = "System"
+  }
+  session_name "1" o-- "1" POSITION
+
+  object "LOGGING" as POSITION_LOGGING {
+    ...
+  }
+  POSITION "1" o-- "1" POSITION_LOGGING
+
+  object "MEASUREMENTMODE" as POSITION_MEASUREMENTMODE {
+    ...
+  }
+  POSITION "1" o-- "1" POSITION_MEASUREMENTMODE
+
+  object "CONFIGURATION" as POSITION_CONFIGURATION {
+    ...
+  }
+  POSITION "1" o-- "1" POSITION_CONFIGURATION
+
+  object POSITION.SOURCE {
+    a:Element (string) = "Datasource"
+  }
+  POSITION "1" o-- "1" POSITION.SOURCE
+
+  object "timestamp" as pds_timestamp #LightGray {
+    data type: Timestamp
+  }
+  POSITION.SOURCE "1" o-- "1" pds_timestamp
+
+  object POSITION.SOURCE.DATA {
+    a:Element (string) = "Channel"
+    d:coveredDistance (64 bit float)
+    d:coachOrientation (Enum)
+    d:vehicleSpeed (64 bit float) <= Anpassen, TODO!
+    d:trackOrientation (Enum)
+    d:trackId (32 bit integer)
+    d:lineId (32 bit integer)
+    d:trackOffset (64 bit integer)
+    d:lineKilometer (64 bit float)
+    d:positionAccuracy (8 bit integer)
+    d:positionQuality (8 bit integer)
+  }
+  POSITION.SOURCE "1" o-- "1" POSITION.SOURCE.DATA
+
+  object TOPOLOGY {
+    a:Element (string) = "Topology"
+    a:DfAVersion (string)
+    a:diamond-* (string)
+  }
+
+  session_config "1" o-- "1" TOPOLOGY 
+
+  object TRACK {
+    a:Element (string) = "TopologyTrack"
+    d:data.id (32bit signed integer)
+    d:data.direction (Enum)
+    d:data.gtgid (string)
+    d:data.length (32bit float)
+    d:data.name (string)
+    d:data.nrline (string)
+    d:data.pointfrom (32bit signed integer)
+    d:data.pointto (32bit signed integer)
+    d:data.switchtype (8bit signed integer)
+    d:data.tracktype (8bit signed integer)
+  }
+  TOPOLOGY "1" o-- "1" TRACK
+
+  object LINE {
+    a:Element (string) = "TopologyLine"
+    d:data.id (32bit signed integer)
+    d:data.name (string)
+    d:data.firststation (string)
+    d:data.laststation (string)
+    d:data.fromkilometer (32bit float)
+    d:data.tokilometer (32bit float)
+  }
+  TOPOLOGY "1" o-- "1" LINE
+
+  object SWITCHTRACK {
+    a:Element (string) = "TopologySwitchTrack"
+    d:data.gleisstrangId (32bit signed integer)
+    d:data.gleisstrangBez (string)
+    d:data.weicheId (32bit signed integer)
+    d:data.ablenkRichtung (string)
+    d:data.ablenkung (string)
+    d:data.betriebspunkt (string)
+    d:data.herzStueck (string)
+    d:data.minRadius  (32bit float)
+    d:data.nr (32bit signed integer)
+    d:data.zusNr (string)
+    d:data.status (string)
+    d:data.schienenProfil (string)
+    d:data.schwellenArt (string)
+    d:data.typenPlanNr (32bit signed integer)
+    d:data.typNrZusatz (string)
+    d:data.weichenArt (string)
+    d:data.weichenTyp (string)
+    d:data.weichenForm (string)
+    d:data.weichenZunge (string)
+  }
+  TOPOLOGY "1" o-- "1" SWITCHTRACK
+  
+  object TRACKOBJECT {
+    a:Element (string) = "TopologyTrackObject"
+    d:data.trackid (32bit signed integer)
+    d:data.type (32bit signed integer)
+    d:data.positionstart (32bit float)
+    d:data.positionend (32bit float)
+    d:data.extrainfo (string)
+  }
+  TOPOLOGY "1" o-- "1" TRACKOBJECT
+
+  object TRACKPOINT {
+    a:Element (string) = "TopologyTrackPoint"
+    d:data.trackId (32bit signed integer)
+    d:data.lineId (32bit signed integer)
+    d:data.x (32bit float)
+    d:data.y (32bit float)
+    d:data.z (32bit float)
+    d:data.radius (32bit float)
+    d:data.kilometer (32bit float)
+    d:data.position (32bit float)
+    d:data.cant (32bit float)
+    d:data.steigung (32bit float)
+  }
+  TOPOLOGY "1" o-- "1" TRACKPOINT
+
+  object PROPERTY {
+    a:Element (string) = "TopologyProperty"
+    d:data.id (32bit signed integer)
+    d:data.name (string)
+    d:data.description.ge (string)
+    d:data.description.fr (string)
+    d:data.description.it (string)
+    d:data.description.en (string)
+  }
+  TOPOLOGY "1" o-- "1" PROPERTY
+
+  object EVENTS {
+    a:Element (string) = "Events"
+    d:events.systemReference (string)
+    d:events.channelReference (string)
+    d:events.type (string)
+  }
+  session_name "1" o-- "1" EVENTS
+
+  object "timestamp" as event_timestamp #LightGray {
+    data type: Timestamp
+  }
+
+  object "duration" as event_duration #LightGray {
+    data type: 64 bit integer
+  }
+
+  EVENTS "1" o-- "1" event_timestamp
+  EVENTS "1" o-- "1" event_duration
+
+  object "data" as event_data #LightGray {
+    data type: string (XML)
+  }
+  EVENTS "1" o-- "1" event_data
+
+  object "CONFIGURATION" as ms_config
+  MEASURINGSYSTEM "1" o-- "1" ms_config
+
+  object "//SETTING_NAME//" as setting_name {
+    a:Element (string) = "Settings"
+    a:DataType (string)
+  }
+  ms_config "1" o-- "1..n" setting_name
+
+  object "timestamp" as setting_timestamp #LightGray {
+    data type: Timestamp
+  }
+  setting_name "1" o-- "1" setting_timestamp
+
+  object "setting" as setting #LightGray {
+    data type: string
+  }
+  setting_name "1" o-- "1" setting
+
+  object LIMIT
+
+  object "//LIMIT_NAME//" as limit_name {
+    a:Element (string) = "LimitChannel"
+    a:Priority (8 bit integer)
+    a:LimitBound (string)
+  }
+  object limitvalue #LightGray
+
+  object VID {
+  }
+  object vid.NNNNNNNNN #LightGray
+
+  object IMG {
+    a:Element (string) = "Channel"
+    a:ImageContentType (string)
+    a:ResolutionType (string)
+    a:ResolutionInfoX (32 bit signed integer)
+    a:ResolutionInfoY (32 bit signed integer)
+  }
+  object img.NNNNNNNNN #LightGray
+
+  object sampleindex #LightGray
+  
+  object coord.CN #LightGray {
+    a:Element (string) = "Channel"
+    a:Unit (string)
+  }
+
+  CHANNEL "1" o-- "0..1" LIMIT
+  LIMIT "1" o-- "1..n" limit_name
+
+  object "timestamp" as limit_timestamp #LightGray {
+    data type: Timestamp
+  }
+  object "duration" as limit_duration #LightGray {
+    data type: 64 bit integer
+  }
+
+  limit_name "1" o-- "1" limit_timestamp
+  limit_name "1" o-- "1" limit_duration
+  limit_name "1" o-- "1" limitvalue
+
+  CHANNEL "1" o-- "0..1" sampleindex
+  CHANNEL "1" o-- "0..n" coord.CN
+
+  CHANNEL "1" o-- "0..1" VID
+  CHANNEL "1" o-- "0..1" IMG
+
+  IMG "1" o-- "1..n" img.NNNNNNNNN
+  VID "1" o-- "1..n" vid.NNNNNNNNN
+  
+@enduml

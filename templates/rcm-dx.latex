@@ -34,7 +34,7 @@
 %%
 
 %%
-% This is the SBB pandoc LaTeX template.
+% This is the RCM-DX pandoc LaTeX template.
 %
 % For usage information and examples visit the official GitHub page:
 % https://github.com/Wandmalfarbe/pandoc-latex-template
@@ -244,10 +244,10 @@ $if(verbatim-in-note)$
 \usepackage{fancyvrb}
 $endif$
 \usepackage{xcolor}
-\definecolor{default-linkcolor}{HTML}{EB0000}
-\definecolor{default-filecolor}{HTML}{A20013}
+\definecolor{default-linkcolor}{HTML}{E73339}
+\definecolor{default-filecolor}{HTML}{E73339}
 \definecolor{default-citecolor}{HTML}{5A5A5A}
-\definecolor{default-urlcolor}{HTML}{2D327D}
+\definecolor{default-urlcolor}{HTML}{333F72}
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
 \hypersetup{
@@ -455,9 +455,47 @@ $if(titlegraphic)$
 \titlegraphic{\includegraphics{$titlegraphic$}}
 $endif$
 $if(logo)$
-\logo{\includegraphics{$logo$}}
+%\logo{\includegraphics{$logo$}}
 $endif$
 $endif$
+
+%%
+%% page sized images
+%%
+
+\usepackage{pdflscape}
+
+% Places the image in the center of the page, including the caption.
+\newenvironment{bigImage}[2]
+{ 
+  \newpage
+  \begin{landscape}
+  
+  \vspace*{\fill}
+  \begingroup
+  \centering
+  
+  \begin{figure}
+  \centering
+  \includegraphics{#2}
+  \caption{#1} 
+  \end{figure}
+  
+  \endgroup
+  \vspace*{\fill}
+
+  \end{landscape}
+  \newpage
+}
+{  }
+
+% functions for simpler use
+\newcommand{\bigImgStart}[2]{\begin{bigImage}{#1}{#2}}
+\newcommand{\bigImgEnd}{\end{bigImage}}
+
+%%
+%% end page sized images
+%%
 
 
 
@@ -526,7 +564,7 @@ $endif$
 %
 % blockquote
 %
-\definecolor{blockquote-border}{HTML}{F27E00}
+\definecolor{blockquote-border}{HTML}{E73339}
 \definecolor{blockquote-text}{HTML}{767676}
 \usepackage{mdframed}
 \newmdenv[rightline=false,bottomline=false,topline=false,linewidth=3pt,linecolor=blockquote-border,skipabove=\parskip]{customblockquote}
@@ -644,8 +682,8 @@ $if(listings)$
 \definecolor{listing-rule}{HTML}{B3B2B3}
 \definecolor{listing-numbers}{HTML}{B3B2B3}
 \definecolor{listing-text-color}{HTML}{000000}
-\definecolor{listing-keyword}{HTML}{435489}
-\definecolor{listing-identifier}{HTML}{435489}
+\definecolor{listing-keyword}{HTML}{333F72}
+\definecolor{listing-identifier}{HTML}{333F72}
 \definecolor{listing-string}{HTML}{00999A}
 \definecolor{listing-comment}{HTML}{8E8E8E}
 \definecolor{listing-javadoc-comment}{HTML}{006CA9}
@@ -723,15 +761,18 @@ $if(disable-header-and-footer)$
 $else$
 \usepackage{fancyhdr}
 \usepackage{lastpage}
+\newcommand{\changefont}{%
+    \fontsize{9}{11}\selectfont
+}
 
 \fancypagestyle{sbb-header-footer}{
   \fancyhead{} % clear all header fields
   \fancyhead[L]{$title$}
-  \fancyhead[R]{$if(logo)$\noindent\includegraphics[width=$if(logo-width)$$logo-width$$else$100$endif$pt, right]{$logo$}$else$$date$$endif$}
+  %\fancyhead[R]{$if(logo)$\noindent\includegraphics[width=$if(logo-width)$$logo-width$$else$100$endif$pt, right]{$logo$}$else$$date$$endif$}
   \fancyfoot{} % clear all footer fields
-  \fancyfoot[L]{\nouppercase{\leftmark}}
+  \fancyfoot[L]{\changefont \nouppercase{\leftmark}}
   \fancyfoot[C]{\thepage /\pageref{LastPage}}
-  \fancyfoot[R]{\nouppercase{\rightmark}}
+  \fancyfoot[R]{\changefont \nouppercase{\rightmark}}
   \renewcommand{\headrulewidth}{0.4pt}
   \renewcommand{\footrulewidth}{0.4pt}
 }
@@ -743,7 +784,27 @@ $endif$
 %% end added
 %%
 
-%\hypersetup{draft}
+
+
+
+
+
+%% if you have problems with spacing an arangement:
+%% \hypersetup{draft} % ignore links inside document 
+
+
+
+
+
+%%
+%% watermark options
+%%
+$if(draft)$
+\usepackage{draftwatermark}
+\SetWatermarkText{DRAFT}
+\SetWatermarkScale{2}
+$endif$
+
 
 \begin{document}
 
@@ -764,7 +825,7 @@ $endif$
 \noindent
 \\[-1em]
 \color[HTML]{$if(titlepage-text-color)$$titlepage-text-color$$else$5F5F5F$endif$}
-\makebox[0pt][l]{\colorRule[$if(titlepage-rule-color)$$titlepage-rule-color$$else$435488$endif$]{1.3\textwidth}{$if(titlepage-rule-height)$$titlepage-rule-height$$else$4$endif$pt}}
+\makebox[0pt][l]{\colorRule[$if(titlepage-rule-color)$$titlepage-rule-color$$else$333F72$endif$]{1.3\textwidth}{$if(titlepage-rule-height)$$titlepage-rule-height$$else$4$endif$pt}}
 \par
 \noindent
 
@@ -783,7 +844,7 @@ $endif$
 
 $if(logo)$
 \noindent
-\includegraphics[width=$if(logo-width)$$logo-width$$else$100$endif$pt, left]{$logo$}
+\includegraphics[width=250pt, left]{$logo$}
 $endif$
 
 \textsf{$date$}}

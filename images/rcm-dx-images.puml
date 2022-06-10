@@ -1,0 +1,395 @@
+' Visit http://plantuml.com/ for more information!
+
+' RCM-DX diagramm example and explanation at the start of specification
+@startuml rcmdx_diagram_example
+
+  object "//DATASOURCE_NAME//" as DATASOURCE {
+    a:Element (string) = "DATASOURCE"
+  }
+  note left
+    - Group's in
+      color Yellow
+    
+    - Attibutes with "a:"
+      at the beginning
+
+    - Datasets with "d:"
+      at the beginning
+  end note
+
+  object timestamp #LightGray
+
+  object "//CHANNEL_NAME//" as channel {
+    a:Element = "Channel"
+    a:ChannelBasis
+    a:----
+  }
+
+  object data #LightGray{
+    a:Unit (string)
+  }
+  note left
+    Data sets can also
+    be individually in 
+    the color gray.
+  end note
+
+  DATASOURCE "1" o-- "1" timestamp
+  DATASOURCE "1" o-- "1..n" channel
+  channel "1" o-- "0" data
+
+@enduml
+
+@startuml rcmdx_root_group
+
+  object RCMDX {
+    a:Element (string) = "Root"
+    a:Major (16 bit integer)
+    a:Minor (16 bit integer)
+    a:Feature (16 bit integer)
+  }
+ 
+  object "//PLATFORM_NAME//" as PLATFORM {
+    a:Element (string) = "Platform"
+    a:VehicleNumber (string)
+  }
+  RCMDX "1" o-- "1" PLATFORM
+
+  object FILE {
+    a:Element (string) = "File"
+    a:StructureVersion (string)
+  }
+  RCMDX "1" o-- "1" FILE
+
+  object DATAPROCESSING {
+  }
+  FILE "1" o-- "1" DATAPROCESSING
+
+  object "CONFIGURATION" as session_config
+  session_name "1" o-- "1" session_config
+
+  object "//SESSION_NAME//" as session_name {
+    a:Element (string) = "Session"
+    a:StartTime (Timestamp)
+    a:EndTime (Timestamp)
+  } 
+  PLATFORM "1" o-- "1" session_name
+
+@enduml
+
+@startuml rcmdx_platform_group
+
+  object PLATFORM {
+    a:Element (string) = "Platform"
+    a:Name (Enum)
+    a:VehicleNumber (string)
+  }
+
+  object "//SESSION_NAME//" as session_name {
+    a:Element (string) = "Session"
+    a:StartTime (Timestamp)
+    a:EndTime (Timestamp)
+  }
+
+  PLATFORM "1" o-- "1" session_name
+
+@enduml
+
+@startuml rcmdx_file_group
+
+  object FILE {
+    a:Element (string) = "File"
+    a:StructureVersion (string)
+  }
+
+  object DATAPROCESSING {
+  }
+  FILE "1" o-- "1" DATAPROCESSING
+
+  object PROCESSINGLOG {
+    a:Element (string) = "ProcessingLog"
+    d:type (string)
+    d:timestamp (Timestamp)
+    d:service (string)
+    d:serviceuser (string)
+    d:host (string)
+    d:executable (string)
+    d:user (string)
+    d:message (string)
+  }
+  DATAPROCESSING "1" o-- "1" PROCESSINGLOG
+
+  object CLEARANCE {
+    a:Element (string) = "Clearance"
+    d:clearance (Enum)
+    d:timestamp (Timestamp)
+    d:user (string)
+    d:message (string)
+  }
+  DATAPROCESSING "1" o-- "1" CLEARANCE
+@enduml
+
+@startuml rcmdx_session_group
+
+  object "//SESSION_NAME//" as session_name {
+    a:Element (string) = "Session"
+    a:StartTime (Timestamp)
+    a:EndTime (Timestamp)
+  } 
+  note left: Naming pattern: YYYYMMDD_hhmmss.SSS
+
+  object "CONFIGURATION" as session_config {
+    ...
+  }
+  session_name "1" o-- "1" session_config
+
+  object EVENTS {
+    ...
+  }
+  session_name "1" o-- "1" EVENTS
+
+  object "//MEASURINGSYSTEM_NAME//" as MEASURINGSYSTEM {
+    ...
+  }
+  session_name "1" o-- "1..n" MEASURINGSYSTEM
+
+  object POSITION {
+    ...
+  }
+  session_name "1" o-- "1" POSITION
+
+  object SECTIONS {
+    ...
+  }
+  session_name "1" o-- "1" SECTIONS
+@enduml
+
+@startuml rcmdx_section_group
+
+  object SECTIONS {
+    a:Element (string) = "Sections"
+    d:section.direction (boolean)
+    d:section.startTimestamp (Timestamp)
+    d:section.endTimestamp (Timestamp)
+    d:section.firstTrackOffset (64 bit float)
+    d:section.lastTrackOffset (64 bit float)
+    d:section.trackStartTimestamp (Timestamp)
+    d:section.trackEndTimestamp (Timestamp)
+    d:section.trackStartCoveredDistance (64 bit float)
+    d:section.trackEndCoveredDistance (64 bit float)
+    d:section.trackId (32 bit signed integer)
+    d:section.trackInfoOffset (64 bit float)
+    d:section.trackKilometrage (boolean)
+  }
+
+@enduml
+
+@startuml rcmdx_topology_group
+  object TOPOLOGY {
+    a:Element (string) = "Topology"
+    a:DfAVersion (string)
+    a:diamond-*
+  }
+
+  object TRACK {
+    ...
+  }
+  TOPOLOGY "1" o-- "1" TRACK
+
+  object SWITCHTRACK {
+    ...
+  }
+  TOPOLOGY "1" o-- "1" SWITCHTRACK
+
+  object TRACKOBJECT {
+    ...
+  }
+  TOPOLOGY "1" o-- "1" TRACKOBJECT
+
+  object TRACKPOINT {
+    ...
+  }
+  TOPOLOGY "1" o-- "1" TRACKPOINT
+
+  object PROPERTY {
+    ...
+  }
+  TOPOLOGY "1" o-- "1" PROPERTY
+
+  object LINE {
+    ...
+  }
+  TOPOLOGY "1" o-- "1" LINE
+@enduml
+
+@startuml rcmdx_measuringsystem_group
+  object "//MEASURINGSYSTEM_NAME//" as MEASURINGSYSTEM {
+    a:Element (string) = "System"
+  }
+
+  object "//DATASOURCE_NAME//" as DATASOURCE {
+    a:Element (string) = "Datasource"
+  }
+  MEASURINGSYSTEM "1" o-- "1..n" DATASOURCE
+
+  object LOGGING
+  MEASURINGSYSTEM "1" o-- "1" LOGGING
+
+  object MEASUREMENTMODE
+  MEASURINGSYSTEM "1" o-- "1" MEASUREMENTMODE
+
+  object "CONFIGURATION" as ms_config
+  MEASURINGSYSTEM "1" o-- "1" ms_config
+@enduml
+
+@startuml rcmdx_measuringsystem_config_group
+  object "//MEASURINGSYSTEM_NAME//" as MEASURINGSYSTEM {
+    a:Element (string) = "System"
+  }
+  
+  object "CONFIGURATION" as ms_config
+  MEASURINGSYSTEM "1" o-- "1" ms_config
+
+  object "//SETTING_NAME//" as setting_name {
+    a:Element (string) = "Settings"
+    a:DataType (string)
+  }
+  ms_config "1" o-- "1..n" setting_name
+
+  object "timestamp" as setting_timestamp #LightGray {
+    data type: Timestamp
+  }
+  setting_name "1" o-- "1" setting_timestamp
+
+  object "setting" as setting #LightGray {
+    data type: string
+  }
+  setting_name "1" o-- "1" setting
+@enduml
+
+
+@startuml rcmdx_logging_group
+  object LOGGING
+
+  object AVAILABILITY {
+    a:Element (string) = "Availability"
+    d:availability (Enum)
+    d:systemReference (string)
+    d:datasourceReference (string)
+    d:channelReference (string)
+    d:timestampFrom (Timestamp)
+    d:timestampTo (Timestamp)
+    d:message (string)
+  }
+  LOGGING "1" o-- "1" AVAILABILITY
+
+  object CONSISTENCY {
+    a:Element (string) = "Consistency"
+    d:consistency.channelId (string)
+    d:consistency.timestampFrom (Timestamp)
+    d:consistency.timestampTo (Timestamp)
+    d:consistency.type (Enum)
+    d:consistency.info (string)
+  }
+  LOGGING "1" o-- "1" CONSISTENCY
+
+  object MESSAGE {
+    a:Element (string)
+    d:message.systemReference (string)
+    d:message.dataSourceReference (string)
+    d:message.channelReference (string)
+    d:message.level (Enum)
+    d:message.message (string)
+  }
+  LOGGING "1" o-- "0..1" MESSAGE
+
+  object "timestamp" as msg_timestamp #LightGray {
+    data type: Timestamp
+  }
+  MESSAGE "1" o-- "1" msg_timestamp
+@enduml
+
+@startuml rcmdx_datasource_group
+  object "//DATASOURCE_NAME//" as DATASOURCE {
+    a:Element (string) = "Datasource"
+  }
+
+  object "timestamp" as ds_timestamp #LightGray {
+    data type: Timestamp
+  }
+  DATASOURCE "1" o-- "1" ds_timestamp
+
+  object "//CHANNEL_NAME//" as CHANNEL {
+    a:Element (string) = "Channel"
+    ...
+  }
+  DATASOURCE "1" o-- "1..n" CHANNEL
+
+@enduml
+
+@startuml rcmdx_channel_group
+  object "//CHANNEL_NAME//" as CHANNEL {
+    a:Element (string) = "Channel"
+    a:TriggerMode (Enum)
+    a:TriggerValue (64 bit float)
+    a:ChannelBasis (Enum)
+    a:MeasurementDirectionDependent (boolean)
+    a:MeasurementType (Enum)
+    a:Neighbor (string)
+    a:MeasurementUncertaintyType (Enum)
+    a:LowerMeasurementUncertainty (32 bit float)
+    a:UpperMeasurementUncertainty (32 bit float)
+    a:PositionOffset (32 bit float)
+  }
+
+  object "data" as channel_data #LightGray
+  CHANNEL "1" o-- "0..1" channel_data
+
+  object LIMIT
+  CHANNEL "1" o-- "0..1" LIMIT
+
+  object VID {
+    ...
+  }
+  CHANNEL "1" o-- "0..1" VID
+  
+  object IMG {
+    ...
+  }
+  CHANNEL "1" o-- "0..1" IMG
+  
+  object sampleindex #LightGray
+  CHANNEL "1" o-- "0..1" sampleindex
+  
+  object coord.CN #LightGray {
+    a:Unit (string)
+  }
+  CHANNEL "1" o-- "0..n" coord.CN
+
+@enduml
+
+@startuml rcmdx_limit_group
+  object LIMIT
+
+  object "//LIMIT_NAME//" as limit_name {
+    a:Element (string) = "LimitChannel"
+    a:Priority (8 bit integer)
+    a:LimitBound (string)
+  }
+  
+  object limitvalue #LightGray
+  limit_name "1" o-- "1" limitvalue
+
+  LIMIT "1" o-- "1..n" limit_name
+
+  object "timestamp" as limit_timestamp #LightGray {
+    data type: Timestamp
+  }
+  limit_name "1" o-- "1" limit_timestamp
+
+  object "duration" as limit_duration #LightGray {
+    data type: 64 bit integer
+  }
+  limit_name "1" o-- "1" limit_duration
+
+@enduml

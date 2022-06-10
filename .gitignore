@@ -4,8 +4,8 @@
 /dist
 /tmp
 /out-tsc
-/images/generated
 /generated-specs
+
 # Only exists if Bazel was run
 /bazel-out
 # dependencies
@@ -42,6 +42,7 @@ npm-debug.log
 yarn-error.log
 testem.log
 /typings
+*.zip
 
 # System Files
 .DS_Store
