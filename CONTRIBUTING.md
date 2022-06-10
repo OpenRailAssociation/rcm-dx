@@ -4,7 +4,7 @@ First of all, thank you very much for your help!
 
 ## Where to get help
 
-Help is provided through our Wiki. If you have a question, please create an issue with the Label “question” in our issue board. Maybe your question is already there and an answer is ready, otherwise someone will surely answer your question!
+Help is provided through the issue tracker. If you have a question, please create an issue with the Label "question" in our issue board.
 
 ## What do I need to know
 
@@ -15,19 +15,12 @@ Major changes to this specification will result in major changes in the software
 
 ### Any bugs found
 
-In the specification, these can be spelling mistakes, grammar errors, errors in the pictograms, errors in the links (or broken links) and so on. Mistakes happen, and we would be grateful if you could let us know. Just create an entry in our error list, and we will take care of it as soon as possible!  
+In the specification, these can be spelling mistakes, grammar errors, errors in the pictograms, errors in the links (or broken links) and so on. Mistakes happen, and we would be grateful if you could let us know by creating an issue or even sending a pull request that fixes the problem!  
 
 ### Suggest improvements or new features
 
-Improvements are desired and contribute to the success of this project. To tell us about an improvement or a new feature, create a new entry with the label "enhancement" on the issue page.  
-Alternatively, you can make the enhancement yourself and send us a pull-request.  
-
-### Suggest own customizations (Pull requests)
-
-#### Checklist pull request
-
-**Working on your first Pull Request?** You can learn how from this *free* series [How to Contribute to an Open Source Project on GitHub](https://egghead.io/series/how-to-contribute-to-an-open-source-project-on-github)
+Improvements are desired and contribute to the success of this project. To suggest an improvement or a new feature, create a new issue with the label "enhancement", or a pull request.
 
 ### Participate and decide
 
-If you want to participate yourself or as a company in the further development of the specification, plese create a new "Participate" report in the "issue" tab and replace the places in the template with your specifications and set the title to "Participate!"!
+It is our goal to build an inclusive Open Source community around this project. If you want to participate in the ongoing development of the specification, please get in touch via the issue tracker or email (<TODO>).
