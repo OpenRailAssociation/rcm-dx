@@ -16,9 +16,3 @@ pdf: images ## generate PDF specification
 	envsubst < metadata.md > _metadata.md
 	pandoc --from markdown --data-dir=. --template rcm-dx --listings --toc --number-sections --metadata-file=_metadata.md RCM-DX-Specification_EN.md -o generated-specs/pdf/RCM-DX-Specification_EN.pdf
 	rm _metadata.md
-
-.PHONY: html
-html: images  ## generate HTML specification
-	mkdir -p generated-specs/html/css
-	lessc -s templates/sbbTheme.less generated-specs/html/css/sbbTheme.css
-	pandoc -s -c css/sbbTheme.css -A footer.html --toc RCM-DX-Specification.md -o generated-specs/html/RCM-DX-Specification.html
