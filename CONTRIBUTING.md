@@ -23,4 +23,4 @@ Improvements are desired and contribute to the success of this project. To sugge
 
 ### Participate and decide
 
-It is our goal to build an inclusive Open Source community around this project. If you want to participate in the ongoing development of the specification, please get in touch via the issue tracker or email (<TODO>).
+It is our goal to build an inclusive Open Source community around this project. If you want to participate in the ongoing development of the specification, please get in touch via the issue tracker or email (rcm@sbb.ch).
