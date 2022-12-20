@@ -13,7 +13,7 @@ The specification is available in two formats:
 
 Railroad companies continuously gather data of their rail, overhead line, and telecommunications networks by means of mobile and stationary measuring systems. Data flows from these systems through processing units (which enrich, evaluate and validate the data), to systems that display the data to subject matter experts and also to systems that automatically analyse it.
 
-This specification defines the rail condition monitoring data exchange format (RCM-DX format) which is a data format optimised for data in the railroad context, i.e. for data points localised within a railroad network. The RCM-DX format is a file format based on the [HDF5 specification](https://portal.hdfgroup.org/display/HDF5/) and defines a structure of HDF5 groups, datasets, and attributes. The document at hand also describes the content of the elements defined. Although the format is open and can in principle be implemented right away by any railroad company, this specification contains a few non-generic elements and naming conventions that are specific to SBB (Swiss Federal Railways). The reason for this is that any file that adheres to this specification can be used with the RCM Viewer, an application available soon to the public via a website.
+This specification defines the rail condition monitoring data exchange format (RCM-DX format) which is a data format optimised for data in the railroad context, i.e. for data points localised within a railroad network. The RCM-DX format is a file format based on the [HDF5 specification](https://portal.hdfgroup.org/display/HDF5/) and defines a structure of HDF5 groups, datasets, and attributes. The document at hand also describes the content of the elements defined. Although the format is open and can in principle be implemented right away by any railroad company, this specification contains a few non-generic elements and naming conventions that are specific to SBB (Swiss Federal Railways). The reason for this is that any file that adheres to this specification can be used with the RCM Viewer (see below).
 
 The RCM-DX format is developed and maintained by the SBB company. An extension of the specification is permitted, yet, it must be taken into account that the resulting data file may no longer be read or processed by other systems supporting the RCM-DX format.
 
@@ -50,7 +50,7 @@ The creation of a PDF requires the installation of [Pandoc](https://pandoc.org/i
 
 For generating the images, we use [PlantUML](https://plantuml.com/de/) which comes as a JAR-File. PlantUML uses the free software [Graphviz](https://www.graphviz.org/) which must be installed on the host system. Please follow the instructions on the Graphviz website to instal it correctly.
 
-After the successful installation, the file `createPdf.bat 'version' 'draft'` can be executed. The finished PDF should then be in the subdirectory "generated-specs/*".
+After the successful installation, the file `createPdf.bat 'version' 'draft'` can be executed. The finished PDF should then be in the subdirectory "generated-specs/\*".
 
 By `version` is meant the version number, which can be seen in the file name and in the specification.
 
@@ -58,18 +58,24 @@ If "draft" is given as the second argument, the word "DRAFT" appears on the back
 
 **For example**  
 `createPdf.bat 0.3 draft` Creates a specification in version 0.3 as a draft.  
-`createPdf.bat 1.0` Creates a specification in version 1.0 as a final release version.  
+`createPdf.bat 1.0` Creates a specification in version 1.0 as a final release version.
 
 #### Create the pictograms
 
-The pictograms are converted from text into images using the open source software [PlantUML](https://plantuml.com/de/). The images are written in a defined language in files with the extension "*.puml" and then converted into images.
+The pictograms are converted from text into images using the open source software [PlantUML](https://plantuml.com/de/). The images are written in a defined language in files with the extension "\*.puml" and then converted into images.
 
 PlantUML already exists as a JAR file in the "bin" directory.
 
 Images can be created from the file "images.puml" as follows:
 
-``` batch
+```batch
 java -jar ./bin/plantuml.jar images.puml -o images/generated
 ```
 
 The images are then stored in the "images/generated" directory.
+
+## RCM Viewer
+
+![RCM Viewer Screenshot](docs/viewer.png)
+
+The RCM Viewer is a powerful and versatile application for viewing RCM files. While the release of the source code as Open Source Software is still in the works, you can find the latest binary distribution (.msi) on the [releases page](https://github.com/SchweizerischeBundesbahnen/rcm-dx/releases) of this repository. The viewer allows the flexible combination of various views for data presentation, which can be imported and exported as "workspaces". For a quick way to try the viewer, you can import an example workspace from the [workspaces folder](https://github.com/SchweizerischeBundesbahnen/rcm-dx/tree/main/workspaces). A few example RCM-DX data files will be added to the repository shortly.
