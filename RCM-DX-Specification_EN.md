@@ -52,7 +52,7 @@ The RCM-DX specification is open source and freely accessible and usable by all 
 
 ### Motivation  
 
-Railroad companies continuously gather data of their rail, overhead line, and telecommunications networks by means of mobile and stationary measuring systems. Data flows from these systems through processing units -- which enrich, evaluate and validate the data --, to systems that display the data to subject matter experts and also to systems that automatically analyse it.
+Railroad companies continuously gather data of their rail, overhead line, telecommunications, civil engineering structure and signaling systems by means of mobile and stationary measuring systems. Data flows from these systems through processing units -- which enrich, evaluate and validate the data --, to systems that display the data to subject matter experts and also to systems that automatically analyse it.
 
 This specification defines the rail condition monitoring data exchange format (RCM-DX format) which is a data format optimised for data in the railroad context, i.e. for data points localised within a railroad network. The RCM-DX format is a file format based on the HDF5 specification and defines a structure of HDF5 groups, datasets, and attributes. The document at hands also describes the content of the elements defined. Although the format is open and can in principle be implemented right away by any railroad company, this specification contains a few non-generic elements and naming conventions that are specific to SBB. The reason for this is that any file that adheres to this specification can be used with the _RCM Viewer_, an application available soon to the public.
 
@@ -440,8 +440,7 @@ Further information about the structure of the HDF5 file format can be found und
 
 In the RCM-DX, the individual groups and datasets as well as their names are defined. Below is an overview of the structure specified in this document:
 
-\bigImgStart{RCM-DX structure overview}{images/generated/rcm_dx_structure.png}
-\bigImgEnd
+![RCM-DX structure overview](images/generated/RCM_DX_Structure.png)
 
 Separate and more detailed specifications have been written for individual structure groups. Several measuring instruments can be installed on one measuring platform. Each of these measuring devices generates new channels of data, which flow into the RCM-DX. Since these channels can be different for each measuring device, the specifications were separated. Another reason for this is the fact that other railway operators use different measuring and inspection equipment.
 
@@ -568,7 +567,7 @@ This record contains the enum value of the clearance. The following values are p
 | Name | Description |
 |----|------|
 | RELEASED | This file has been released |
-| PENDING | The clerance has not been set yet |
+| PENDING | The clearance has not been set yet |
 | UNRELEASED | This file has not yet been released |
 
 **timestamp**  
@@ -584,7 +583,9 @@ Optional message of the user.
 ### Platform Group
 
 A platform group contains information about a measuring vehicle that collects the data.  
-The naming of the group is defined according to which platform produced the data. An overview of all names and the corresponding platform is specified in the chapter [\ref{platforms-at-the-sbb} Platforms at the SBB](#platforms-at-the-sbb).
+The naming of the group is defined according to which platform produced the data. An overview of all names and the corresponding platform is specified in the chapter [Platforms at the SBB](#platforms-at-the-sbb).
+
+![Platform group overview](images/generated/rcmdx_platform_group.png)
 
 | Name | Parent object | Optional |
 |--|--|--|
