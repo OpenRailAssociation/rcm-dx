@@ -19,7 +19,7 @@ In the specification, these can be spelling mistakes, grammar errors, errors in 
 
 ### Suggest improvements or new features
 
-Improvements are desired and contribute to the success of this project. To suggest an improvement or a new feature, create a new issue with the label "enhancement", or a pull request.
+Improvements are desired and contribute to the success of this project. To suggest an improvement or a new feature, create a new issue or a pull request.
 
 ### Participate and decide
 
