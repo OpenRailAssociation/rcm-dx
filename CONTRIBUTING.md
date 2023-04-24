@@ -4,7 +4,7 @@ First of all, thank you very much for your help!
 
 ## Where to get help
 
-Help is provided through the issue tracker. If you have a question, please create an issue with the Label "question" in our issue board.
+Help is provided through the issue tracker. If you have a question, please create an issue in our issue board.
 
 ## What do I need to know
 
