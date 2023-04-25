@@ -578,7 +578,7 @@ This record contains the enum value of the clearance. The following values are p
 |----|------|
 | RELEASED | This file has been released |
 | PENDING | The clearance has not been set yet |
-| UNRELEASED | This file has not yet been released |
+| UNRELEASED | This file won't be released |
 
 **timestamp**  
 Contains the time of the acquisition of the entry.
