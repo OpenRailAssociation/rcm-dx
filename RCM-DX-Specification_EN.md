@@ -595,7 +595,7 @@ Optional message of the user.
 Platform is of type 'Group' in HDF5.
 
 A platform group contains information about a measuring vehicle, mobile or handheld device that collects the data.  
-The naming of the group is defined according to which platform produced the data. An overview of all names and the corresponding platform is specified in the chapter [Platforms at the SBB](#platforms-at-the-sbb).
+The naming of the group is defined according to which platform produced the data. An example list of platforms and associated data is provided in the [Platforms example list](#platforms-example-list) chapter.
 
 ![Platform group overview](images/generated/rcmdx_platform_group.png)
 
@@ -612,16 +612,18 @@ The platform group contains the following attributes:
 | Element | string | no | Equals to "Platform". Identifies this node.|
 | VehicleNumber | string | no | Unique number of the vehicle |
 
-#### Platforms at the SBB
+#### Platforms example list
 
-Below is a list of the defined unique names of the platforms and their names.
+Below is a list of the defined unique names of the platforms, their abbreviation and the associated vehicle number.
 
 | Platform Name | Abbreviation | Vehicle Number |
 |---|---|-----|
 | DFZ00 | DFZ | - |
 | DFZ01 | gDFZ | - |
-| DFZ02 | SPZ | - |
-| DFZ04 | OBM-N | - |
+| EM130 | EM130 | 99 88 9162001-0 |
+| EM201 | EM201 | 99 88 9163201-5 |
+
+The Vehicle number is the European Vehicle Number (EVN).
 
 ### Session 
 
