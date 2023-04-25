@@ -594,7 +594,7 @@ Optional message of the user.
 
 Platform is of type 'Group' in HDF5.
 
-A platform group contains information about a measuring vehicle that collects the data.  
+A platform group contains information about a measuring vehicle, mobile or handheld device that collects the data.  
 The naming of the group is defined according to which platform produced the data. An overview of all names and the corresponding platform is specified in the chapter [Platforms at the SBB](#platforms-at-the-sbb).
 
 ![Platform group overview](images/generated/rcmdx_platform_group.png)
