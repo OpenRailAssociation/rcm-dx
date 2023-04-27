@@ -1193,7 +1193,7 @@ A more detailed description can be found in the chapter [\ref{timestamp} Timesta
 
 Channel is of type 'Group' in HDF5.
 
-A channel group contains metadata for the actual measurement data and thus for the various channels. The naming can be freely selected, but must be unique within the data source group.
+A channel group contains metadata for the actual measurement data available in the channel. The naming can be freely selected, but must be unique within the data source group.
 
 | Name | Parent object | Optional |
 |--|--|--|
