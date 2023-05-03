@@ -72,6 +72,9 @@
     a:Element (string) = "Session"
     a:StartTime (Timestamp)
     a:EndTime (Timestamp)
+    a:SessionAlias (string)
+    a:SegmentationRuleset (string)
+    a:PositionAlgoVersion (string)
   } 
   PLATFORM "1" o-- "1" session_name
 
@@ -89,6 +92,9 @@
     a:Element (string) = "Session"
     a:StartTime (Timestamp)
     a:EndTime (Timestamp)
+    a:SessionAlias (string)
+    a:SegmentationRuleset (string)
+    a:PositionAlgoVersion (string)
   }
 
   PLATFORM "1" o-- "1" session_name
@@ -135,6 +141,9 @@
     a:Element (string) = "Session"
     a:StartTime (Timestamp)
     a:EndTime (Timestamp)
+    a:SessionAlias (string)
+    a:SegmentationRuleset (string)
+    a:PositionAlgoVersion (string)
   } 
   note left: Naming pattern: YYYYMMDD_hhmmss.SSS
 
@@ -333,7 +342,7 @@
     a:TriggerMode (Enum)
     a:TriggerValue (64 bit float)
     a:ChannelBasis (Enum)
-    a:MeasurementDirectionDependent (boolean)
+    a:MoveDirAutoInvert (boolean)
     a:MeasurementType (Enum)
     a:Neighbor (string)
     a:MeasurementUncertaintyType (Enum)
