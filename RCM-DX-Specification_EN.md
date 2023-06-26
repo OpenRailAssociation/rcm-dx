@@ -55,7 +55,7 @@ The RCM-DX specification is open source and freely accessible and usable by all 
 
 Railroad companies continuously gather data of their rail, overhead line, telecommunications, civil engineering structure and signaling systems by means of mobile and stationary measuring systems. Data flows from these systems through processing units -- which enrich, evaluate and validate the data --, to systems that display the data to subject matter experts and also to systems that automatically analyse it.
 
-This specification defines the rail condition monitoring data exchange format (RCM-DX format) which is a data format optimised for data in the railroad context, i.e. for data points localised within a railroad network. The RCM-DX format is a file format based on the HDF5 specification and defines a structure of HDF5 groups, datasets, and attributes. The document at hands also describes the content of the elements defined. Although the format is open and can in principle be implemented right away by any railroad company, this specification contains a few non-generic elements and naming conventions that are specific to SBB. The reason for this is that any file that adheres to this specification can be used with the _RCM Viewer_, an application available soon to the public.
+This specification defines the rail condition monitoring data exchange format (RCM-DX format) which is a data format optimised for data in the railroad context, i.e. for data points localised within a railroad network. The RCM-DX format is a file format based on the HDF5 specification and defines a structure of HDF5 groups, datasets, and attributes. The document at hands also describes the content of the elements defined. Although the format is open and can in principle be implemented right away by any railroad company, this specification contains a few non-generic elements and naming conventions that are specific to SBB and Infrabel. The reason for this is that any file that adheres to this specification can be used with the _RCM Viewer_, an application available soon to the public.
 
 The RCM-DX format is a file format detailing the HDF5 format version 2.0. HDF5 was chosen for several reasons, including that it is an open format. HDF5 is a hierarchical data storage where the data in arranged in a tree structure. The HDF5 format is described on the webpage of the [HDF5-group](http://www.hdfgroup.org/HDF5/), in particular on the site [HDF5 file format specification](https://portal.hdfgroup.org/display/HDF5/Introduction+to+HDF5). The HDF5 group offers tools and libraries for various programming languages and operating systems that allow to read and write HDF5 files.
 
@@ -68,7 +68,7 @@ The extension of the specification is permitted. However, it must be taken into 
 
 #### Versioning
 
-The RCM-DX data format is subject to changes, these are indicated by the version number in the document, see chapter [\ref{root-group} Root Group](#root-group). The version number consists of two numbers, separated by dots and is composed as follows: **[Major].[Minor].[Feature]**. Example: **1.0.0**  
+The RCM-DX data format is subject to changes, these are indicated by the version number in the document, see chapter [Root](#root). The version number consists of two numbers, separated by dots and is composed as follows: **[Major].[Minor].[Feature]**. Example: **1.0.0**  
 
 **Major**  
 Defines the main version and indicates when major changes have been made. These are, for example, that changing the basic structure or renaming groups, datasets or attributes (major, minor attribute as an example), which are mandatory.
@@ -220,7 +220,7 @@ Within a channel group, one of the following structures can be contained: Array,
 
 Channels which record individual measured values contain a data set with the name `data`, this data set is never optional. Single values are stored in this data set as a 1D array, the length of this array (or list) is not limited.
 
-The possible data types are defined in chapter [\ref{primitive-and-extended-data-types} Primitiv and extended data types](#primitive-and-extended-data-types)
+The possible data types are defined in chapter [Primitiv and extended data types](#primitive-and-extended-data-types)
 
 Multidimensional measured values are given their own channel group per dimension and thus their own data set called `data`.
 
@@ -270,7 +270,7 @@ It contains the following datasets:
 ### Coordinates
 
 Measurement data that can be assigned to a coordinate system are given a defined name according to the following pattern: `coord.CN`.  
-This type of data storage allows several entries to be recorded per measurement timestamp. Thus there are more entries in these datasets than in the data set `timestamp`. How many entries per timestamp belong to each other (as a group) is stored in another data set with the name `sampleindex`. The data set `sampleindex` is described in chapter [\ref{sample-index} Sample index](#sample-index).
+This type of data storage allows several entries to be recorded per measurement timestamp. Thus there are more entries in these datasets than in the data set `timestamp`. How many entries per timestamp belong to each other (as a group) is stored in another data set with the name `sampleindex`. The data set `sampleindex` is described in chapter [Sample index](#sample-index).
 
 | Element | Description |
 |--|------|
@@ -344,7 +344,7 @@ The group `IMG` gets the following attributes for the more detailed description 
 | Name | Data type | Parent object | Optional | Description |
 |---|---|---|---|-----|
 | ImageContentType | string | `IMG` | yes | Image content type, for example `JPEG` |
-| ResolutionType | Enum | `IMG` | no | Description in chapter [\ref{image-resolution-types} Image resolution types](#image-resolution-types) |
+| ResolutionType | Enum | `IMG` | no | Description in chapter [Image resolution types](#image-resolution-types) |
 | ResolutionInfoX | 32 bit float | `IMG` | no | Resolution in X direction |
 | ResolutionInfoY | 32 bit float | `IMG` | no | Resolution in Y-direction |
 
@@ -413,7 +413,7 @@ The time stamps are always stored in ascending order.
 |----|---|----|---|----|
 | timestamp | Timestamp | *DATASOURCE_NAME* | no | `Array` |
 
-These time stamps are recorded either by a defined distance travelled or by a frequency, this is described in more detail in the chapter [\ref{triggermode} Trigger mode](#triggermode).
+These time stamps are recorded either by a defined distance travelled or by a frequency, this is described in more detail in the chapter [Trigger mode](#triggermode).
 
 ### Durations
 
@@ -1168,7 +1168,7 @@ A data source group can contain several channels and thus several data sources. 
 | *DATASOURCE_NAME* | *MEASURINGSYSTEM_NAME* | no |
 
 A timestamp is available for each individual measuring point within a data source group. There are two types of data acquisition for a data source group. One is always after a defined distance (e.g. every 250 millimeters) and the other is the recording of measurement data at a certain frequency (e.g. 4000 Hz).
-The way the measurement data was recorded is shown in two attributes for each channel group. For a description see [\ref{triggermode} Trigger mode](#triggermode).
+The way the measurement data was recorded is shown in two attributes for each channel group. For a description see [Trigger mode](#triggermode).
 
 ![Datasource group overview](images/generated/rcmdx_datasource_group.png){width=320px}
 
@@ -1188,7 +1188,7 @@ In our example the name of the data source group is assigned, which should conta
 
 Each data source group contains a data set called `timestamp`. It contains all timestamps at which a measurement was recorded. The size of this list of timestamps is the same as the size of the datasets per channel.
 
-A more detailed description can be found in the chapter [\ref{timestamp} Timestamp Array](#timestamp)!
+A more detailed description can be found in the chapter [Timestamp Array](#timestamp)!
 
 ### Channel
 
@@ -1206,7 +1206,7 @@ The following attributes are contained in this group:
 
 | Name | Data type | Parent object | Optional | Description |
 |------|---|----|---|----|
-| TriggerMode | Enum | *CHANNEL_NAME* | no | See chapter [\ref{triggermode} Trigger Mode](#triggermode) |
+| TriggerMode | Enum | *CHANNEL_NAME* | no | See chapter [Trigger Mode](#triggermode) |
 | CommonTriggerDistance | 64 bit float | *CHANNEL_NAME* | no | See below |
 | CommonTriggerFrequency | 64 bit float | *CHANNEL_NAME* | no | See below |
 | ChannelBasis | Enum | *CHANNEL_NAME* | no | See below |
@@ -1322,7 +1322,7 @@ The data set needs more information, this is given as attributes:
 **Unit:**  
 The physical unit of the measurement data, such as "millimeter". If no physical unit can be assigned to the data, this attribute remains empty.
 
-The data set and the possible data that can be stored are described in more detail in the chapter [\ref{hdf5-datasets} Dataset](#hdf5-datasets).
+The data set and the possible data that can be stored are described in more detail in the chapter [Dataset](#hdf5-datasets).
 
 ### Measurement mode
 
@@ -1392,7 +1392,7 @@ The following datasets are included in this group:
 
 
 **availability**  
-See chapter [\ref{availability} Availability](#availability)
+See chapter [Availability](#availability)
 
 **systemreference**  
 A reference to the measurement system.
@@ -1500,7 +1500,7 @@ A reference to a data source.
 A reference to a channel.
 
 **level**  
-See chapter [\ref{message-level} Message level](#message-level)
+See chapter [Message level](#message-level)
 
 ##### Message level
 
@@ -1516,7 +1516,7 @@ Defines the importance of a message. Following values are possible:
 
 Position is of type 'Group' in HDF5.
 
-This group contains general information on the position. It is like a measuring system (see [\ref{measuring-system-group} Measuring System group](#measuring-system-group)) with following differences:
+This group contains general information on the position. It is like a measuring system (see [Measuring System](#measuring-system)) with following differences:
 
 >	The channel with the position data has multiple (nine) datasets. This is because a position record always consists of these nine values and therefore this dataset is hardcoded, instead of configurable as for all other measurement system.
 
@@ -1527,7 +1527,7 @@ This group contains general information on the position. It is like a measuring 
 | `POSITION` | `SESSION` | no |
 
 #### Position datasource
-See chapter [\ref{datasource-group} Datasource group](#datasource-group)
+See chapter [Datasource](#datasource)
 
 | Name | Parent object | Optional |
 |--|--|--|
@@ -1667,7 +1667,7 @@ A defect can be, for example, an image of a rail showing a damage of the surface
 Defects are always channel bound and recorded or evaluated by a system.
 In the following, the elements and attributes that occur in a *Defect* as XML are described in more detail.
 
-The XML Schema can be found in the chapter [\ref{events-defect} EventsDefect](#events-defect).
+The XML Schema can be found in the chapter [EventsDefect](#events-defect).
 
 ##### **XML elements**
 
@@ -1701,7 +1701,7 @@ Below are the attributes of the root element "Defect":
 
 These events indicate an object found during a diagrose ride. These can be, for example, detected balises or tunnels. What exactly counts as a found object is not defined in this specification, only the information for a recorded EVENT.
 
-The XML Schema can be found in the chapter [\ref{events-generic} EventsGeneric](#events-generic).
+The XML Schema can be found in the chapter [EventsGeneric](#events-generic).
 
 ##### **XML elements**
 
@@ -1728,7 +1728,7 @@ Not all of these elements must be present, details can be taken from the XML sch
 #### Limit violation EVENT type
 
 Limit value exceedances of measured values of a channel can also be recorded as events.  
-The XML schema can be found in chapter [\ref{events-generic} EventsGeneric](#events-generic).  
+The XML schema can be found in chapter [Events Generic](#events-generic).  
 
 ##### **XML elements**
 
@@ -1747,7 +1747,7 @@ The XML schema can be found in chapter [\ref{events-generic} EventsGeneric](#eve
 #### Comment
 
 Comments recorded during a diagnostic drive by the user. The content is not specified, only the XML structure.
-The XML schema can be found in chapter [\ref{events-comment} EventsComment](#events-comment).  
+The XML schema can be found in chapter [Events Comment](#events-comment).  
 
 ##### XML elements
 
@@ -1765,7 +1765,7 @@ The XML schema can be found in chapter [\ref{events-comment} EventsComment](#eve
 #### Corrupt
 
 Messages of the type "damaged" or "unusable" do not receive a content specification, only the XML structure is predefined and described here.
-The XML schema can be found in chapter [\ref{events-generic} EventsGeneric](#events-generic).  
+The XML schema can be found in chapter [Events Generic](#events-generic).  
 
 ##### XML elements
 
@@ -1784,7 +1784,7 @@ The XML schema can be found in chapter [\ref{events-generic} EventsGeneric](#eve
 
 Measurement system configuration is of type 'Group' in HDF5.
 
-The structure of this group is the __same__ as for the configuration group below the group *SESSION_NAME*: [\ref{session-configuration-group} Session configuration group](#platform-configuration-group), but __the parent group__ is `*MEASURINGSYSTEM_NAME*`: [\ref{measuring-system-group} Measuring system group](#measuring-system-group). The measuring system configuration group also does not contain the Topology.
+The structure of this group is the __same__ as for the configuration group below the group *SESSION_NAME*: [Session configuration](#platform-configuration), but __the parent group__ is `*MEASURINGSYSTEM_NAME*`: [Measuring system](#measuring-system). The measuring system configuration group also does not contain the Topology.
 
 ![Measurement configuration group overview](images/generated/rcmdx_measuringsystem_config_group.png){width=230px}
 
