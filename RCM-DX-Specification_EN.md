@@ -1234,7 +1234,7 @@ Data is collected with a frequency of `value` Hertz.
 > Both trigger values have the value "0.0" if `TriggerMode` contains the value `EVENTS`.
 
 **ChannelBasis**  
-Description of the channel, what was measured and in which direction. Since a measuring vehicle can move on a rail in two directions and the sensor could therefore be on the other side, it should be possible to indicate this. Here is the place for it.
+Defines the applicable side of the data signal in relation to the vehicle or moving direction. A sensor can be installed on one side of the platform. Depending on the direction and the orientation of the vehicle, this can be 'left' or 'right' in relation to the movement but is always fixed in relation to the vehicle frame axes. 
 
 Possible values are:
 
