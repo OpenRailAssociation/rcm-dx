@@ -48,6 +48,7 @@ The RCM-DX specification is open source and freely accessible and usable by all 
 | 2.0.0 | 0.32 | 31.08.2021 | Aron Serafini (SCS) | Fix mistake: Topology is a child of CONFIGURATION, not Session. |
 | 2.0.1 | 1.0 | 06.04.2022 | Aron Serafini (SCS) | Add attribute MeasurementDirectionDependent to Channel. Use a release version for this document. |
 | 2.0.1 | 1.01 | 05.06.2023 | Mathias Vanden Auweele (Infrabel) | Removed 'group' in all titles and replaced with a reference to HDF5 group. Fix definition of UNRELEASED under the CLEARANCE group. Clarify the definition of "Platform". Changed the limitative platform list into an example platform list. |
+| 2.0.1 | 1.02 | 26.06.2023 | Mathias Vanden Auweele (Infrabel) | Fixed formatting issues with document links. Improved definition of ChannelBasis. Fixed documentation bug with MeasurementDirectionDependent attribute specification |
 
 ## Introduction  
 
