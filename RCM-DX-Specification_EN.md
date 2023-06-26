@@ -1282,12 +1282,13 @@ The following values are thus allowed:
 | ABSOLUTE | Absolute values |
 | RELATIVE | Relative values |
 
+This attribute is optional. If it is not set, no information is known about the measurement uncertainty. 
+
 **LowerMeasurementUncertainty**  
-This attribute contains the measurement accuracy of the channel according to the specifications of the measurement system. This is the lower bound for the measurement uncertainty range.
+This attribute contains the measurement accuracy of the channel according to the specifications of the measurement system. This is the lower bound for the measurement uncertainty range. This attribute is optional. If it is not set, no information is known about the measurement uncertainty.
 
 **UpperMeasurementUncertainty**  
-This attribute contains the measurement accuracy of the channel according to the specifications of the measurement system. This is the upper bound for the measurement uncertainty range.
-
+This attribute contains the measurement accuracy of the channel according to the specifications of the measurement system. This is the upper bound for the measurement uncertainty range. This attribute is optional. If it is not set, no information is known about the measurement uncertainty.
 
 **PositionOffset**  
 Describes the distance between a defined zero point (position) on the measuring vehicle and a the measuring sensor. This specification is used to convert the exact time at which the measurement was taken to a defined zero point. The value can be positive or negative and has the unit millimeter.  
