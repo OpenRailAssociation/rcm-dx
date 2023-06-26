@@ -1210,7 +1210,7 @@ The following attributes are contained in this group:
 | CommonTriggerDistance | 64 bit float | *CHANNEL_NAME* | no | See below |
 | CommonTriggerFrequency | 64 bit float | *CHANNEL_NAME* | no | See below |
 | ChannelBasis | Enum | *CHANNEL_NAME* | no | See below |
-| MeasurementDirectionDependent | boolean | *CHANNEL_NAME* | no | See below |
+| MeasurementDirectionDependent | boolean | *CHANNEL_NAME* | yes | See below |
 | MeasurementType | Enum | *CHANNEL_NAME* | no | See below |
 | Neighbor | string | *CHANNEL_NAME* | no | See below |
 | MeasurementUncertaintyType | Enum | *CHANNEL_NAME* | yes | See below |
