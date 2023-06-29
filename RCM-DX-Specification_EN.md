@@ -49,6 +49,8 @@ The RCM-DX specification is open source and freely accessible and usable by all 
 | 2.0.1 | 1.0 | 06.04.2022 | Aron Serafini (SCS) | Add attribute MeasurementDirectionDependent to Channel. Use a release version for this document. |
 | 2.0.1 | 1.01 | 05.06.2023 | Mathias Vanden Auweele (Infrabel) | Removed 'group' in all titles and replaced with a reference to HDF5 group. Fix definition of UNRELEASED under the CLEARANCE group. Clarify the definition of "Platform". Changed the limitative platform list into an example platform list. |
 | 2.0.1 | 1.02 | 26.06.2023 | Mathias Vanden Auweele (Infrabel) | Fixed formatting issues with document links. Improved definition of ChannelBasis. Fixed documentation bug with MeasurementDirectionDependent attribute specification |
+| 2.0.2 | 1.01 | 02.05.2023 | Aron Serafini (SCS) | Rename MeasurementDirectionDependent to MoveDirAutoInvert (it was implemented under this name in the RCM-DX file). Add new optional session attributes: SessionAlias, SegmentationRuleset, PositionAlgoVersion. |
+
 
 ## Introduction  
 
@@ -667,6 +669,9 @@ For a certain period of time, only one session can exist in a file, this must be
 | Element | string | *SESSION_NAME* | no | Names the type of the group, this is fix "Session" |
 | StartTime | Timestamp | *SESSION_NAME* | no | Timestamp in nanoseconds as start time of the session |
 | EndTime | Timestamp | *SESSION_NAME* | yes | Timestamp in nanoseconds as end time of the session. If the session has not yet been closed, this attribute is missing |
+| SessionAlias | string | *SESSION_NAME* | yes | Alias for this session, useful if the measurements of this session have an external identifier by which they can be recognised |
+| PositionAlgoVersion | string | *SESSION_NAME* | yes | Version of the positioning algorithm that was used for this session |
+| SegmentationRuleset | string | *SESSION_NAME* | yes | Identifier of the ruleset used to create a segmentation of tracks of this session |
 
 
 ### Session configuration
@@ -1211,7 +1216,7 @@ The following attributes are contained in this group:
 | CommonTriggerDistance | 64 bit float | *CHANNEL_NAME* | no | See below |
 | CommonTriggerFrequency | 64 bit float | *CHANNEL_NAME* | no | See below |
 | ChannelBasis | Enum | *CHANNEL_NAME* | no | See below |
-| MeasurementDirectionDependent | boolean | *CHANNEL_NAME* | yes | See below |
+| MoveDirAutoInvert | boolean | *CHANNEL_NAME* | no | See below |
 | MeasurementType | Enum | *CHANNEL_NAME* | no | See below |
 | Neighbor | string | *CHANNEL_NAME* | no | See below |
 | MeasurementUncertaintyType | Enum | *CHANNEL_NAME* | yes | See below |
@@ -1253,7 +1258,7 @@ Possible values are:
 | SENSOR_VERTICAL_TOTAL | The channel reflects the center of the vehicle irrespective of its orientation or motion |
 | MOVE_DIRECTION_VERTICAL_TOTAL | The channel reflects the center with respect to direction of motion, irrespective of its orientation |
 
-**MeasurementDirectionDependent**  
+**MoveDirAutoInvert**  
 Flag that implies, if set to true, that measurement data of this channel is dependent on direction and should be inverted if viewed with a section of different direction.    
 > If the flag is set to false, not set or only data of a single direction is viewed, then no inversion is needed when viewing data of this channel.
 
