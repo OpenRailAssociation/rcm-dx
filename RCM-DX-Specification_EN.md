@@ -47,7 +47,10 @@ The RCM-DX specification is open source and freely accessible and usable by all 
 | 2.0.0 | 0.31 | 11.03.2021 | Aron Serafini (SCS) | Adjust specification to implementation |
 | 2.0.0 | 0.32 | 31.08.2021 | Aron Serafini (SCS) | Fix mistake: Topology is a child of CONFIGURATION, not Session. |
 | 2.0.1 | 1.0 | 06.04.2022 | Aron Serafini (SCS) | Add attribute MeasurementDirectionDependent to Channel. Use a release version for this document. |
+| 2.0.1 | 1.01 | 05.06.2023 | Mathias Vanden Auweele (Infrabel) | Removed 'group' in all titles and replaced with a reference to HDF5 group. Fix definition of UNRELEASED under the CLEARANCE group. Clarify the definition of "Platform". Changed the limitative platform list into an example platform list. |
+| 2.0.1 | 1.02 | 26.06.2023 | Mathias Vanden Auweele (Infrabel) | Fixed formatting issues with document links. Improved definition of ChannelBasis. Fixed documentation bug with MeasurementDirectionDependent attribute specification |
 | 2.0.2 | 1.01 | 02.05.2023 | Aron Serafini (SCS) | Rename MeasurementDirectionDependent to MoveDirAutoInvert (it was implemented under this name in the RCM-DX file). Add new optional session attributes: SessionAlias, SegmentationRuleset, PositionAlgoVersion. |
+
 
 ## Introduction  
 
@@ -55,7 +58,7 @@ The RCM-DX specification is open source and freely accessible and usable by all 
 
 Railroad companies continuously gather data of their rail, overhead line, telecommunications, civil engineering structure and signaling systems by means of mobile and stationary measuring systems. Data flows from these systems through processing units -- which enrich, evaluate and validate the data --, to systems that display the data to subject matter experts and also to systems that automatically analyse it.
 
-This specification defines the rail condition monitoring data exchange format (RCM-DX format) which is a data format optimised for data in the railroad context, i.e. for data points localised within a railroad network. The RCM-DX format is a file format based on the HDF5 specification and defines a structure of HDF5 groups, datasets, and attributes. The document at hands also describes the content of the elements defined. Although the format is open and can in principle be implemented right away by any railroad company, this specification contains a few non-generic elements and naming conventions that are specific to SBB. The reason for this is that any file that adheres to this specification can be used with the _RCM Viewer_, an application available soon to the public.
+This specification defines the rail condition monitoring data exchange format (RCM-DX format) which is a data format optimised for data in the railroad context, i.e. for data points localised within a railroad network. The RCM-DX format is a file format based on the HDF5 specification and defines a structure of HDF5 groups, datasets, and attributes. The document at hands also describes the content of the elements defined. Although the format is open and can in principle be implemented right away by any railroad company, this specification contains a few non-generic elements and naming conventions that are specific to SBB and Infrabel. The reason for this is that any file that adheres to this specification can be used with the _RCM Viewer_, an application available soon to the public.
 
 The RCM-DX format is a file format detailing the HDF5 format version 2.0. HDF5 was chosen for several reasons, including that it is an open format. HDF5 is a hierarchical data storage where the data in arranged in a tree structure. The HDF5 format is described on the webpage of the [HDF5-group](http://www.hdfgroup.org/HDF5/), in particular on the site [HDF5 file format specification](https://portal.hdfgroup.org/display/HDF5/Introduction+to+HDF5). The HDF5 group offers tools and libraries for various programming languages and operating systems that allow to read and write HDF5 files.
 
@@ -68,7 +71,7 @@ The extension of the specification is permitted. However, it must be taken into 
 
 #### Versioning
 
-The RCM-DX data format is subject to changes, these are indicated by the version number in the document, see chapter [\ref{root-group} Root Group](#root-group). The version number consists of two numbers, separated by dots and is composed as follows: **[Major].[Minor].[Feature]**. Example: **1.0.0**  
+The RCM-DX data format is subject to changes, these are indicated by the version number in the document, see chapter [Root](#root). The version number consists of two numbers, separated by dots and is composed as follows: **[Major].[Minor].[Feature]**. Example: **1.0.0**  
 
 **Major**  
 Defines the main version and indicates when major changes have been made. These are, for example, that changing the basic structure or renaming groups, datasets or attributes (major, minor attribute as an example), which are mandatory.
@@ -130,12 +133,12 @@ Groups are described in this specification as follows:
 
 | Name | Parent object | Optional |
 |--|--|--|
-| `SESSION` | `RCMDX` | no |
+| `GROUP` | `RCMDX` | no |
 
 **Name**  
 The name of the group.
 
-> Group names whose ending is "_NAME" are wildcard names and are replaced as described in the corresponding paragraph. Example: *SESSION_NAME*
+> Group names whose ending is "_NAME" are wildcard names and are replaced as described in the corresponding paragraph. Example: *GROUP_NAME*
 
 **Parent object**  
 A group can be a subgroup of a group, here the name of this group is mentioned. If the name is written in quotation marks, it can be freely chosen by the creator of the file. Without quotation marks, the name of the group is meant.
@@ -220,7 +223,7 @@ Within a channel group, one of the following structures can be contained: Array,
 
 Channels which record individual measured values contain a data set with the name `data`, this data set is never optional. Single values are stored in this data set as a 1D array, the length of this array (or list) is not limited.
 
-The possible data types are defined in chapter [\ref{primitive-and-extended-data-types} Primitiv and extended data types](#primitive-and-extended-data-types)
+The possible data types are defined in chapter [Primitiv and extended data types](#primitive-and-extended-data-types)
 
 Multidimensional measured values are given their own channel group per dimension and thus their own data set called `data`.
 
@@ -270,7 +273,7 @@ It contains the following datasets:
 ### Coordinates
 
 Measurement data that can be assigned to a coordinate system are given a defined name according to the following pattern: `coord.CN`.  
-This type of data storage allows several entries to be recorded per measurement timestamp. Thus there are more entries in these datasets than in the data set `timestamp`. How many entries per timestamp belong to each other (as a group) is stored in another data set with the name `sampleindex`. The data set `sampleindex` is described in chapter [\ref{sample-index} Sample index](#sample-index).
+This type of data storage allows several entries to be recorded per measurement timestamp. Thus there are more entries in these datasets than in the data set `timestamp`. How many entries per timestamp belong to each other (as a group) is stored in another data set with the name `sampleindex`. The data set `sampleindex` is described in chapter [Sample index](#sample-index).
 
 | Element | Description |
 |--|------|
@@ -344,7 +347,7 @@ The group `IMG` gets the following attributes for the more detailed description 
 | Name | Data type | Parent object | Optional | Description |
 |---|---|---|---|-----|
 | ImageContentType | string | `IMG` | yes | Image content type, for example `JPEG` |
-| ResolutionType | Enum | `IMG` | no | Description in chapter [\ref{image-resolution-types} Image resolution types](#image-resolution-types) |
+| ResolutionType | Enum | `IMG` | no | Description in chapter [Image resolution types](#image-resolution-types) |
 | ResolutionInfoX | 32 bit float | `IMG` | no | Resolution in X direction |
 | ResolutionInfoY | 32 bit float | `IMG` | no | Resolution in Y-direction |
 
@@ -413,7 +416,7 @@ The time stamps are always stored in ascending order.
 |----|---|----|---|----|
 | timestamp | Timestamp | *DATASOURCE_NAME* | no | `Array` |
 
-These time stamps are recorded either by a defined distance travelled or by a frequency, this is described in more detail in the chapter [\ref{triggermode} Trigger mode](#triggermode).
+These time stamps are recorded either by a defined distance travelled or by a frequency, this is described in more detail in the chapter [Trigger mode](#triggermode).
 
 ### Durations
 
@@ -447,7 +450,9 @@ Separate and more detailed specifications have been written for individual struc
 
 The individual groups are specified in more detail below in the subcategories.
 
-### Root Group
+### Root
+
+Root is of type 'Group' in HDF5.
 
 The root group contains all other subgroups. This group defines the RCM-DX and bears its name and thus refers to this specification.
 
@@ -467,7 +472,9 @@ The following attributes are assigned to the group `RCMDX`:
 | Minor | 16 bit integer | `RCMDX` | no | Minor Version of the RCM-DX specification that corresponds to the structure of the created file |
 | Feature | 16 bit integer | `RCMDX` | no | Feature Version of the RCM-DX specification that corresponds to the structure of the created file |
 
-### File Group
+### File
+
+File is of type 'Group' in HDF5.
 
 The file group contains file specific information, i.e. information specific for the given data set in its current processing state.
 
@@ -486,7 +493,9 @@ The file group contains the following attribute:
 | Element | string | no | Equals to "File". Identifies this node.|
 | StructureVersion | string | no | Version identifier of the platform structure. All underlying systems, datasources and channels can be identified based on this version |
 
-### Data Processing Group
+### Data Processing
+
+Data Processing is of type 'Group' in HDF5.
 
 The data source group `DATAPROCESSING` contains information about the data in this file, and the processing.
 
@@ -494,7 +503,9 @@ The data source group `DATAPROCESSING` contains information about the data in th
 |--|--|--|
 | `DATAPROCESSING` | `FILE` | yes |
 
-### Processing log Group
+### Processing log
+
+Processing log is of type 'Group' in HDF5.
 
 The data source group `PROCESSINGLOG` contains information on data processing. This information is written by systems that make changes to the data. These changes, for example, can be a conversion from millimeters to meters.
 
@@ -502,7 +513,7 @@ The data source group `PROCESSINGLOG` contains information on data processing. T
 |--|--|--|
 | `PROCESSINGLOG` | `DATAPROCESSING` | yes |
 
-#### Processing log Group datasets
+#### Processing log datasets
 
 The group `PROCESSINGLOG` contains one dataset:
 
@@ -543,7 +554,9 @@ Optional user-ID of the initiator of this processing step.
 **message**  
 Optional message of the user.
 
-### Clearance Group
+### Clearance
+
+Clearance is of type 'Group' in HDF5.
 
 This group is used by SBB to record information about the data release of all parties who have processed this data. The information is stored in the form of key-value pairs in a data set.
 
@@ -569,7 +582,7 @@ This record contains the enum value of the clearance. The following values are p
 |----|------|
 | RELEASED | This file has been released |
 | PENDING | The clearance has not been set yet |
-| UNRELEASED | This file has not yet been released |
+| UNRELEASED | This file won't be released |
 
 **timestamp**  
 Contains the time of the acquisition of the entry.
@@ -581,10 +594,12 @@ User-ID of the initiator of this clearance.
 Optional message of the user.
 
 
-### Platform Group
+### Platform
 
-A platform group contains information about a measuring vehicle that collects the data.  
-The naming of the group is defined according to which platform produced the data. An overview of all names and the corresponding platform is specified in the chapter [Platforms at the SBB](#platforms-at-the-sbb).
+Platform is of type 'Group' in HDF5.
+
+A platform group contains information about a measuring vehicle, mobile or handheld device that collects the data.  
+The naming of the group is defined according to which platform produced the data. An example list of platforms and associated data is provided in the [Platforms example list](#platforms-example-list) chapter.
 
 ![Platform group overview](images/generated/rcmdx_platform_group.png)
 
@@ -601,18 +616,22 @@ The platform group contains the following attributes:
 | Element | string | no | Equals to "Platform". Identifies this node.|
 | VehicleNumber | string | no | Unique number of the vehicle |
 
-#### Platforms at the SBB
+#### Platforms example list
 
-Below is a list of the defined unique names of the platforms and their names.
+Below is a list of the defined unique names of the platforms, their abbreviation and the associated vehicle number.
 
 | Platform Name | Abbreviation | Vehicle Number |
 |---|---|-----|
 | DFZ00 | DFZ | - |
 | DFZ01 | gDFZ | - |
-| DFZ02 | SPZ | - |
-| DFZ04 | OBM-N | - |
+| EM130 | EM130 | 99 88 9162001-0 |
+| EM201 | EM201 | 99 88 9163201-5 |
 
-### Session Group  
+The Vehicle number is the European Vehicle Number (EVN).
+
+### Session 
+
+Session is of type 'Group' in HDF5.  
 
 The session group contains data that was collected during the same period. A session group contains data from different sources. A RCM-DX file contains exactly one session group.
 
@@ -655,7 +674,9 @@ For a certain period of time, only one session can exist in a file, this must be
 | SegmentationRuleset | string | *SESSION_NAME* | yes | Identifier of the ruleset used to create a segmentation of tracks of this session |
 
 
-### Session configuration Group
+### Session configuration
+
+Session configuration is of type 'Group' in HDF5.
 
 Configurations can be stored in the datasets of this group. The datasets are designed so that global and network specific configurations can be stored. The configuration can change and have not to be the same in each session.
 
@@ -663,7 +684,9 @@ Configurations can be stored in the datasets of this group. The datasets are des
 |--|--|--|
 | `CONFIGURATION` | *SESSION_NAME* | no |
 
-### Topology Group
+### Topology
+
+Topology is of type 'Group' in HDF5.
 
 A topology group contains all information on the route network of the respective railway company.  
 This chapter has been optimised for SBB and may differ between railway companies. SBB's data processing chain provides for this structure, which is why it is described here.
@@ -695,7 +718,9 @@ The DfA (Database of fixed assets) is a SBB construct and reflects the SBB route
 List of attributes defined by SBB Diamond. All attributes start with “diamond-“ and have a String value.
 
 
-### Track Group
+### Track
+
+Track is of type 'Group' in HDF5.
 
 This group contains information on the tracks of the railway network. The information is stored in separate datasets.
 
@@ -769,7 +794,9 @@ The number in the *tracktype* data set defines the type of track that belongs to
 | 1 | Track |
 | 2 | Switch |
 
-### Line Group
+### Line
+
+Line is of type 'Group' in HDF5.
 
 This group contains information about a line in the route network. The information is stored in separate datasets.
 
@@ -807,7 +834,9 @@ Start kilometre of the line, expressed in kilometres.
 **tokilometer**  
 Final kilometer of the line, in kilometers.
 
-### Switch Track Group
+### Switch Track
+
+Switch track is of type 'Group' in HDF5.
 
 This group contains information about switches in the route network. The information is stored in separate datasets.
 
@@ -869,7 +898,9 @@ Contains the ID's of the switches as a reference.
 **soft tongue**   
  -->
 
-### Track Object Group
+### Track Object
+
+Track object is of type 'Group' in HDF5.
 
 This group contains information about objects in the route network, for example a balise. The information is stored in separate datasets.
 
@@ -903,7 +934,9 @@ End position of the object in meters.
 **Extrainfo**  
 Additional information about the object, for example, the ID of a balise.
 
-### Track Point Group
+### Track Point
+
+Track point is of type 'Group' in HDF5.
 
 This group contains information about defined points on the route network. The information is stored in separate datasets.
 
@@ -957,7 +990,9 @@ The inclination at this point, expressed in millimetres.
 **steigung**  
 Gradient at this point, expressed in parts per thousand.
 
-### Property Group
+### Property
+
+Property is of type 'Group' in HDF5.
 
 This group contains information about properties of the topology itself. The information is stored in separate datasets.
 
@@ -995,7 +1030,9 @@ Description of the characteristic in Italian language.
 **description.en**  
 Description of the feature in English language.
 
-### Setting Group
+### Setting
+
+Setting is of type 'Group' in HDF5.
 
 Within this group there are further groups whose names identify the type of setting.  
 In the following *SETTING_NAME* is used as placeholder of the actual name of a setting.
@@ -1024,7 +1061,9 @@ The following attributes are contained in this group:
 |---|---|---|---|-----|
 | DataType | string | `setting` | no | Defines the datatype of the configuration within the data set `setting`. Data type specified as MIME^3^ type, for example `Content-Type: <text/strings>` |
 
-### Sections Group
+### Sections
+
+Section is of type 'Group' in HDF5.
 
 The group `SECTIONS`, contains information about a session.
 
@@ -1102,7 +1141,9 @@ Start covered distance of the track in the section.
 **trackEndCoveredDistance**  
 End covered distance of the track in the section.
 
-### Measuring System Group
+### Measuring System
+
+Measurement system is of type 'Group' in HDF5.
 
 Each measuring system has its own data sources, which have their own names, as well as their own channels, which in turn have their own names. Common features are described in this specification, everything else is defined in a separate specification. Since this part differs greatly among railway companies and with measuring equipment, a rigid specification has been dispensed with, but a certain framework is still given.
 
@@ -1122,7 +1163,9 @@ The following attributes are contained in the group of the measuring system:
 |---|---|-----|---|-----|
 | Element | string | *MEASURINGSYSTEM_NAME* | no | Indicates the type of the group, this is fixed `System` |
 
-### Datasource Group
+### Datasource
+
+Datasource is of type 'Group' in HDF5.
 
 A data source group can contain several channels and thus several data sources. This group combines these channels. The naming can be freely selected, but must be unique.
 
@@ -1131,7 +1174,7 @@ A data source group can contain several channels and thus several data sources. 
 | *DATASOURCE_NAME* | *MEASURINGSYSTEM_NAME* | no |
 
 A timestamp is available for each individual measuring point within a data source group. There are two types of data acquisition for a data source group. One is always after a defined distance (e.g. every 250 millimeters) and the other is the recording of measurement data at a certain frequency (e.g. 4000 Hz).
-The way the measurement data was recorded is shown in two attributes for each channel group. For a description see [\ref{triggermode} Trigger mode](#triggermode).
+The way the measurement data was recorded is shown in two attributes for each channel group. For a description see [Trigger mode](#triggermode).
 
 ![Datasource group overview](images/generated/rcmdx_datasource_group.png){width=320px}
 
@@ -1151,11 +1194,13 @@ In our example the name of the data source group is assigned, which should conta
 
 Each data source group contains a data set called `timestamp`. It contains all timestamps at which a measurement was recorded. The size of this list of timestamps is the same as the size of the datasets per channel.
 
-A more detailed description can be found in the chapter [\ref{timestamp} Timestamp Array](#timestamp)!
+A more detailed description can be found in the chapter [Timestamp Array](#timestamp)!
 
-### Channel Group
+### Channel
 
-A channel group contains metadata for the actual measurement data and thus for the various channels. The naming can be freely selected, but must be unique within the data source group.
+Channel is of type 'Group' in HDF5.
+
+A channel group contains metadata for the actual measurement data available in the channel. The naming can be freely selected, but must be unique within the data source group.
 
 | Name | Parent object | Optional |
 |--|--|--|
@@ -1167,7 +1212,7 @@ The following attributes are contained in this group:
 
 | Name | Data type | Parent object | Optional | Description |
 |------|---|----|---|----|
-| TriggerMode | Enum | *CHANNEL_NAME* | no | See chapter [\ref{triggermode} Trigger Mode](#triggermode) |
+| TriggerMode | Enum | *CHANNEL_NAME* | no | See chapter [Trigger Mode](#triggermode) |
 | CommonTriggerDistance | 64 bit float | *CHANNEL_NAME* | no | See below |
 | CommonTriggerFrequency | 64 bit float | *CHANNEL_NAME* | no | See below |
 | ChannelBasis | Enum | *CHANNEL_NAME* | no | See below |
@@ -1195,7 +1240,7 @@ Data is collected with a frequency of `value` Hertz.
 > Both trigger values have the value "0.0" if `TriggerMode` contains the value `EVENTS`.
 
 **ChannelBasis**  
-Description of the channel, what was measured and in which direction. Since a measuring vehicle can move on a rail in two directions and the sensor could therefore be on the other side, it should be possible to indicate this. Here is the place for it.
+Defines the applicable side of the data signal in relation to the vehicle or moving direction. A sensor can be installed on one side of the platform. Depending on the direction and the orientation of the vehicle, this can be 'left' or 'right' in relation to the movement but is always fixed in relation to the vehicle frame axes. 
 
 Possible values are:
 
@@ -1242,12 +1287,13 @@ The following values are thus allowed:
 | ABSOLUTE | Absolute values |
 | RELATIVE | Relative values |
 
+This attribute is optional. If it is not set, no information is known about the measurement uncertainty. 
+
 **LowerMeasurementUncertainty**  
-This attribute contains the measurement accuracy of the channel according to the specifications of the measurement system. This is the lower bound for the measurement uncertainty range.
+This attribute contains the measurement accuracy of the channel according to the specifications of the measurement system. This is the lower bound for the measurement uncertainty range. This attribute is optional. If it is not set, no information is known about the measurement uncertainty.
 
 **UpperMeasurementUncertainty**  
-This attribute contains the measurement accuracy of the channel according to the specifications of the measurement system. This is the upper bound for the measurement uncertainty range.
-
+This attribute contains the measurement accuracy of the channel according to the specifications of the measurement system. This is the upper bound for the measurement uncertainty range. This attribute is optional. If it is not set, no information is known about the measurement uncertainty.
 
 **PositionOffset**  
 Describes the distance between a defined zero point (position) on the measuring vehicle and a the measuring sensor. This specification is used to convert the exact time at which the measurement was taken to a defined zero point. The value can be positive or negative and has the unit millimeter.  
@@ -1283,9 +1329,11 @@ The data set needs more information, this is given as attributes:
 **Unit:**  
 The physical unit of the measurement data, such as "millimeter". If no physical unit can be assigned to the data, this attribute remains empty.
 
-The data set and the possible data that can be stored are described in more detail in the chapter [\ref{hdf5-datasets} Dataset](#hdf5-datasets).
+The data set and the possible data that can be stored are described in more detail in the chapter [Dataset](#hdf5-datasets).
 
-### Measurement mode group
+### Measurement mode
+
+Measurement mode is of type 'Group' in HDF5.
 
 The following group contains important information about the measurement mode of the system.
 
@@ -1314,7 +1362,9 @@ There are three different measurement modes, which are explained individually be
 | TEST | Test data recorded during a diagnostic run with the aim of checking and testing the measuring equipment. |
 | SIMULATION | Simulated values that the measuring systems produce themselves and are no longer used. |
 
-### Logging Group
+### Logging
+
+Logging is of type 'Group' in HDF5.
 
 The logging group contains information about the status of the measuring systems. The data is divided into two subgroups, `AVAILABILITY` and `MESSAGES`. These are described in separate chapters.
 
@@ -1324,7 +1374,9 @@ The logging group contains information about the status of the measuring systems
 
 ![Logging group overview](images/generated/rcmdx_logging_group.png){width=320px}
 
-#### Availability Group
+#### Availability
+
+Availability is of type 'Group' in HDF5.
 
 In this group, failures and interruptions of measurement systems are recorded in a defined structure, each as its own data set.
 
@@ -1347,7 +1399,7 @@ The following datasets are included in this group:
 
 
 **availability**  
-See chapter [\ref{availability} Availability](#availability)
+See chapter [Availability](#availability)
 
 **systemreference**  
 A reference to the measurement system.
@@ -1377,7 +1429,9 @@ Defines the severity of the failure or interruption of a measurement system. The
 | FAILURE | The measuring system or sensor has failed and has not recorded any measured values during the session. |
 | WARNING | The measuring system or the sensor may have had a failure and the measured values may not be correct. |
 
-#### Consistency group
+#### Consistency
+
+Consistency is of type 'Group' in HDF5.
 
 The message about the consistency of the data is triggered by a system that checks all data according to certain criteria. For example, this could be a check for black images in a video. If all frames in the video are black, something is wrong and the video is unusable. 
 
@@ -1418,7 +1472,9 @@ The consistency type can have the following values:
 **consistencyinfo**  
 Contains additional information about this consistency (E.g. which rule decided the consistency type).
 
-#### Message Group
+#### Message
+
+Message is of type 'Group' in HDF5.
 
 This group contains messages, generated from a measurement system or a person, structured in data set.
 
@@ -1451,7 +1507,7 @@ A reference to a data source.
 A reference to a channel.
 
 **level**  
-See chapter [\ref{message-level} Message level](#message-level)
+See chapter [Message level](#message-level)
 
 ##### Message level
 
@@ -1463,9 +1519,11 @@ Defines the importance of a message. Following values are possible:
 | WARNING | The message indicates a warning. |
 | ERROR | The message indicates an error. |
 
-### Position group
+### Position
 
-This group contains general information on the position. It is like a measuring system (see [\ref{measuring-system-group} Measuring System group](#measuring-system-group)) with following differences:
+Position is of type 'Group' in HDF5.
+
+This group contains general information on the position. It is like a measuring system (see [Measuring System](#measuring-system)) with following differences:
 
 >	The channel with the position data has multiple (nine) datasets. This is because a position record always consists of these nine values and therefore this dataset is hardcoded, instead of configurable as for all other measurement system.
 
@@ -1476,7 +1534,7 @@ This group contains general information on the position. It is like a measuring 
 | `POSITION` | `SESSION` | no |
 
 #### Position datasource
-See chapter [\ref{datasource-group} Datasource group](#datasource-group)
+See chapter [Datasource](#datasource)
 
 | Name | Parent object | Optional |
 |--|--|--|
@@ -1546,7 +1604,9 @@ The following values are allowed:
 | INCREASING | Increasing track kilometrage on the track |
 | DECREASING | Decreasing track kilometrage on the track |
 
-### EVENTS Group  
+### EVENTS
+
+Events is of type 'Group' in HDF5.
 
 The EVENTS group is used to store events that occurred during the recording of data. Events are bound to a channel, system or session and have a link to it.
 Systems can, for example, trigger an EVENT when a limit value is exceeded. Events are always time-bound which means an EVENT contains the exact time of occurrence and the duration of the EVENT. The duration can also be zero, so the EVENT occurred exactly at the specified time.  
@@ -1614,7 +1674,7 @@ A defect can be, for example, an image of a rail showing a damage of the surface
 Defects are always channel bound and recorded or evaluated by a system.
 In the following, the elements and attributes that occur in a *Defect* as XML are described in more detail.
 
-The XML Schema can be found in the chapter [\ref{events-defect} EventsDefect](#events-defect).
+The XML Schema can be found in the chapter [EventsDefect](#events-defect).
 
 ##### **XML elements**
 
@@ -1648,7 +1708,7 @@ Below are the attributes of the root element "Defect":
 
 These events indicate an object found during a diagrose ride. These can be, for example, detected balises or tunnels. What exactly counts as a found object is not defined in this specification, only the information for a recorded EVENT.
 
-The XML Schema can be found in the chapter [\ref{events-generic} EventsGeneric](#events-generic).
+The XML Schema can be found in the chapter [EventsGeneric](#events-generic).
 
 ##### **XML elements**
 
@@ -1675,7 +1735,7 @@ Not all of these elements must be present, details can be taken from the XML sch
 #### Limit violation EVENT type
 
 Limit value exceedances of measured values of a channel can also be recorded as events.  
-The XML schema can be found in chapter [\ref{events-generic} EventsGeneric](#events-generic).  
+The XML schema can be found in chapter [Events Generic](#events-generic).  
 
 ##### **XML elements**
 
@@ -1694,7 +1754,7 @@ The XML schema can be found in chapter [\ref{events-generic} EventsGeneric](#eve
 #### Comment
 
 Comments recorded during a diagnostic drive by the user. The content is not specified, only the XML structure.
-The XML schema can be found in chapter [\ref{events-comment} EventsComment](#events-comment).  
+The XML schema can be found in chapter [Events Comment](#events-comment).  
 
 ##### XML elements
 
@@ -1712,7 +1772,7 @@ The XML schema can be found in chapter [\ref{events-comment} EventsComment](#eve
 #### Corrupt
 
 Messages of the type "damaged" or "unusable" do not receive a content specification, only the XML structure is predefined and described here.
-The XML schema can be found in chapter [\ref{events-generic} EventsGeneric](#events-generic).  
+The XML schema can be found in chapter [Events Generic](#events-generic).  
 
 ##### XML elements
 
@@ -1727,9 +1787,11 @@ The XML schema can be found in chapter [\ref{events-generic} EventsGeneric](#eve
 | Username | Name of the user who recorded the message | Corrupt |
 | ID | Unique ID of this message | Corrupt |
 
-### Measurement system configuration Group
+### Measurement system configuration
 
-The structure of this group is the __same__ as for the configuration group below the group *SESSION_NAME*: [\ref{session-configuration-group} Session configuration group](#platform-configuration-group), but __the parent group__ is `*MEASURINGSYSTEM_NAME*`: [\ref{measuring-system-group} Measuring system group](#measuring-system-group). The measuring system configuration group also does not contain the Topology.
+Measurement system configuration is of type 'Group' in HDF5.
+
+The structure of this group is the __same__ as for the configuration group below the group *SESSION_NAME*: [Session configuration](#platform-configuration), but __the parent group__ is `*MEASURINGSYSTEM_NAME*`: [Measuring system](#measuring-system). The measuring system configuration group also does not contain the Topology.
 
 ![Measurement configuration group overview](images/generated/rcmdx_measuringsystem_config_group.png){width=230px}
 
