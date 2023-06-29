@@ -49,7 +49,7 @@ The RCM-DX specification is open source and freely accessible and usable by all 
 | 2.0.1 | 1.0 | 06.04.2022 | Aron Serafini (SCS) | Add attribute MeasurementDirectionDependent to Channel. Use a release version for this document. |
 | 2.0.1 | 1.01 | 05.06.2023 | Mathias Vanden Auweele (Infrabel) | Removed 'group' in all titles and replaced with a reference to HDF5 group. Fix definition of UNRELEASED under the CLEARANCE group. Clarify the definition of "Platform". Changed the limitative platform list into an example platform list. |
 | 2.0.1 | 1.02 | 26.06.2023 | Mathias Vanden Auweele (Infrabel) | Fixed formatting issues with document links. Improved definition of ChannelBasis. Fixed documentation bug with MeasurementDirectionDependent attribute specification |
-| 2.0.2 | 1.01 | 02.05.2023 | Aron Serafini (SCS) | Rename MeasurementDirectionDependent to MoveDirAutoInvert (it was implemented under this name in the RCM-DX file). Add new optional session attributes: SessionAlias, SegmentationRuleset, PositionAlgoVersion. |
+| 2.0.2 | 1.03 | 29.06.2023 | Aron Serafini (SCS) | Rename MeasurementDirectionDependent to MoveDirAutoInvert (it was implemented under this name in the RCM-DX file). Add new optional session attributes: SessionAlias, SegmentationRuleset, PositionAlgoVersion. |
 
 
 ## Introduction  
