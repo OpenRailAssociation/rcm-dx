@@ -5,10 +5,10 @@ help:
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort -k 1,1 | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
 .PHONY: images
-images:  ## generate images using plantuml
-	java -DPLANTUML_LIMIT_SIZE=8192 -jar ./bin/plantuml.jar ./images/rcm-dx-images.puml -o generated
+images: ## generate images using plantuml
+	java -DPLANTUML_LIMIT_SIZE=8192 -jar /usr/share/java/plantuml.jar ./images/rcm-dx-images.puml -o generated
 	mkdir -p generated-specs/html/images
-	cp -r images/* generated-specs/html/images
+	cp -r images/* generated-specs/html/images/
 
 .PHONY: pdf
 pdf: images ## generate PDF specification
