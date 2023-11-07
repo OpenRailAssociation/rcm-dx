@@ -214,16 +214,15 @@
 
   object POSITION.SOURCE.DATA {
     a:Element (string) = "Channel"
-    d:coveredDistance (64 bit float)
-    d:coachOrientation (Enum)
-    d:vehicleSpeed (64 bit float) <= Anpassen, TODO!
-    d:trackOrientation (Enum)
-    d:trackId (32 bit integer)
-    d:lineId (32 bit integer)
-    d:trackOffset (64 bit integer)
-    d:lineKilometer (64 bit float)
-    d:positionAccuracy (8 bit integer)
-    d:positionQuality (8 bit integer)
+    d:covereddistance (64 bit float)
+    d:direction (Enum)
+    d:kilometrage (Enum)
+    d:track_id (32 bit integer)
+    d:line_id (32 bit integer)
+    d:trackoffset (64 bit float)
+    d:linekilometer (64 bit float)
+    d:positionaccuracy (8 bit integer)
+    d:positionquality (8 bit integer)
   }
   POSITION.SOURCE "1" o-- "1" POSITION.SOURCE.DATA
 
