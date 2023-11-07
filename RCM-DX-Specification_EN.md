@@ -1555,7 +1555,7 @@ See chapter [Datasource](#datasource)
 | track_id | 32 bit integer | `POSITION.SOURCE.DATA` | no | `Array` |
 | line_id | 32 bit integer | `POSITION.SOURCE.DATA` | no | `Array` |
 | trackoffset | 64 bit float | `POSITION.SOURCE.DATA` | no | `Array` |
-| linekilometer | 64 bit float | `POSITION.SOURCE.DATA` | no | `Array` |
+| lineoffset | 64 bit float | `POSITION.SOURCE.DATA` | no | `Array` |
 | positionaccuracy | 8 bit integer | `POSITION.SOURCE.DATA` | no | `Array` |
 | positionquality | 8 bit integer | `POSITION.SOURCE.DATA` | no | `Array` |
 
@@ -1571,7 +1571,7 @@ The ID of the line on which the vehicle is located at the time of recording.
 **trackoffset**  
 The offset (in [m]) on the track where the vehicle is located at the time of recording.
 
-**linekilometer**  
+**lineoffset**  
 The line kilometer (in [km]) on the line where the vehicle is located at the time of recording.
 
 **positionquality**  
