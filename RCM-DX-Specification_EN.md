@@ -533,6 +533,7 @@ The group `PROCESSINGLOG` contains one dataset:
 | executable | string | `PROCESSINGLOG` | no | `Array` |
 | user | string | `PROCESSINGLOG` | yes | `Array` |
 | message | string | `PROCESSINGLOG` | yes | `Array` |
+
 All these datasets represent different columns in a table. Their sizes will therefore always be identical.
 
 **type**  
@@ -578,6 +579,7 @@ The group `CLEARANCE` contains one dataset:
 | timestamp | 64 bit integer | `CLEARANCE` | no | `Array` |
 | user | string | `CLEARANCE` | no | `Array` |
 | message | string | `CLEARANCE` | yes | `Array` |
+
 All these datasets represent different columns in a table. Their sizes will therefore always be identical.
 
 **clearance**  
@@ -1372,6 +1374,7 @@ The group `MEASUREMENTMODE` contains four datasets:
 | timestampfrom | 64 bit integer | `MEASUREMENTMODE` | no | `Array` |
 | timestampto | 64 bit integer | `MEASUREMENTMODE` | no | `Array` |
 | info | string | `MEASUREMENTMODE` | yes | `Array` |
+
 All these datasets represent different columns in a table. Their sizes will therefore always be identical.
 
 #### Mode (enum)
