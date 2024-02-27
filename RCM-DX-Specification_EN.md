@@ -1259,6 +1259,8 @@ Data is collected with a frequency of `value` Hertz.
 **ChannelBasis**  
 Defines the applicable side of the data signal in relation to the vehicle or moving direction. A sensor can be installed on one side of the platform. Depending on the direction and the orientation of the vehicle, this can be 'left' or 'right' in relation to the movement but is always fixed in relation to the vehicle frame axes. 
 
+![Explanation of Sensor location an detection](images/Picture_ChannelBasis.png)
+
 Possible values are:
 
 | Value | Description |
@@ -1268,14 +1270,12 @@ Possible values are:
 | SENSOR_RIGHT | Deprecated – same as ``SENSOR_VERTICAL_RIGHT`` |
 | RAIL_LEFT | Deprecated – same as ``MOVE_DIRECTION_VERTICAL_LEFT`` |
 | RAIL_RIGHT | Deprecated – same as ``MOVE_DIRECTION_VERTICAL_RIGHT`` |
-| SENSOR_VERTICAL_LEFT | Signal reflects the left hand side of the vehicle irrespective of it's orientation or motion |
-| SENSOR_VERTICAL_RIGHT | The channel reflects the right-hand side of the vehicle irrespective of its orientation or motion |
-| MOVE_DIRECTION_VERTICAL_LEFT | The channel reflects the left-hand side with respect to direction of motion, irrespective of its orientation |
-| MOVE_DIRECTION_VERTICAL_RIGHT | The channel reflects the right-hand side with respect to direction of motion, irrespective of its orientation |
-| SENSOR_VERTICAL_TOTAL | The channel reflects the center of the vehicle irrespective of its orientation or motion |
-| MOVE_DIRECTION_VERTICAL_TOTAL | The channel reflects the center with respect to direction of motion, irrespective of its orientation |
-
-Vertical indicates the "top-down view" of the sensor.
+| SENSOR_VERTICAL_LEFT | The sensor is located on the left-hand side of the measurement platform and detects signals in a vertical plane, providing a top-down or bottom-up view|
+| SENSOR_VERTICAL_RIGHT | The sensor is located on the right-hand side of the measurement platform and detects signals in a vertical plane, providing a top-down or bottom-up view |
+| MOVE_DIRECTION_VERTICAL_LEFT | The sensor detects signals on the left-hand side with respect to the direction of motion, irrespective of its orientation |
+| MOVE_DIRECTION_VERTICAL_RIGHT | The sensor detects signals on the right-hand side with respect to the direction of motion, irrespective of its orientation |
+| SENSOR_VERTICAL_TOTAL | The sensor is located at the center of the measurement platform and detects signals in a vertical plane, providing a top-down or bottom-up view |
+| MOVE_DIRECTION_VERTICAL_TOTAL | The sensor detects signals in the center with respect to the direction of motion, irrespective of its orientation |
 
 **MoveDirAutoInvert**  
 Flag that implies, if set to true, that measurement data of this channel is dependent on direction and should be inverted if viewed with a section of different direction.    
