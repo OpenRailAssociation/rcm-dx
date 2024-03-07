@@ -40,6 +40,22 @@
 
 @enduml
 
+@startuml rcmdx_session_configuration_group
+ 
+  object "CONFIGURATION" as session_configuration {
+  }
+ 
+  object "TOPOLOGY" as topology_config {
+    ...
+  }
+  session_configuration "1" o-- "1" topology_config
+ 
+  object "SETTING_NAME" as setting_name {
+    ...
+  }
+  session_configuration "1" o-- "1..n" setting_name
+@enduml
+
 @startuml rcmdx_root_group
 
   object RCMDX {
