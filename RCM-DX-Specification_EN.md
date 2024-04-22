@@ -1820,7 +1820,7 @@ The XML schema can be found in chapter [Events Generic](#events-generic).
 
 Measurement system configuration is of type 'Group' in HDF5.
 
-The structure of this group is the __same__ as for the configuration group below the group *SESSION_NAME*: [Session configuration](#platform-configuration), but __the parent group__ is `*MEASURINGSYSTEM_NAME*`: [Measuring system](#measuring-system). The measuring system configuration group also does not contain the Topology.
+The structure of this group is the __same__ as for the configuration group below the group *SESSION_NAME*: [Session configuration](#session-configuration), but __the parent group__ is `*MEASURINGSYSTEM_NAME*`: [Measuring system](#measuring-system). The measuring system configuration group also does not contain the Topology.
 
 ![Measurement configuration group overview](images/generated/rcmdx_measuringsystem_config_group.png){width=230px}
 
