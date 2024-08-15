@@ -62,14 +62,13 @@ If "draft" is given as the second argument, the word "DRAFT" appears on the back
 
 #### Create the pictograms
 
-The pictograms are converted from text into images using the open source software [PlantUML](https://plantuml.com/de/). The images are written in a defined language in files with the extension "\*.puml" and then converted into images.
+The pictograms are converted from text to images using [PlantUML](https://plantuml.com/).
+The images are written in a defined language in textfiles with the extension `.puml` and then converted into images.
 
-PlantUML already exists as a JAR file in the "bin" directory.
+Images can be created from the file "rcm-dx-images.puml" as follows:
 
-Images can be created from the file "images.puml" as follows:
-
-```batch
-java -jar ./bin/plantuml.jar images.puml -o images/generated
+```shell
+plantuml images/rcm-dx-images.puml -o generated
 ```
 
 The images are then stored in the "images/generated" directory.

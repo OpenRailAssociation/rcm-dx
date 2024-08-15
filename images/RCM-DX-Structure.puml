@@ -1,7 +1,7 @@
 ' Visit http://plantuml.com/ for more information!
 
 ' Overview if RCM-DX structure
-@startuml rcm_dx_Structure
+@startuml RCM_DX_Structure
 
   object RCMDX {
     a:Element (string) = "Root"
