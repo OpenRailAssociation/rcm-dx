@@ -1,6 +1,6 @@
 # Rail condition monitoring data exchange format (RCM-DX format)
 
-[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg)](code_of_conduct.md) ![RCM-DX](https://img.shields.io/badge/RCM--DX-V2.0-green) ![RCM-DX](https://img.shields.io/badge/document-V0.29-blue) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
+[![Contributor Covenant](https://img.shields.io/badge/code_of_conduct-contributor_covenant-14cc21)](CODE_OF_CONDUCT.md) ![RCM-DX](https://img.shields.io/badge/RCM--DX-V2.0-green) ![RCM-DX](https://img.shields.io/badge/document-V0.29-blue) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 
 ## RCM-DX specification
 
@@ -19,9 +19,12 @@ The RCM-DX format is developed and maintained by the SBB company. An extension o
 
 The RCM-DX format is a file format detailing the HDF5 format version 2.0. HDF5 was chosen for several reasons, including that it is an open format. HDF5 is a hierarchical data storage format where the data is arranged in a tree structure. The HDF5 format is described on the webpage of the HDF5-group, in particular on the site [HDF5 file format specification](https://portal.hdfgroup.org/display/HDF5/). The HDF5 group offers tools and libraries for various programming languages and operating systems that allow to read and write HDF5 files.
 
+The specification was developed within SBB and published as an open source standard in 2022, which allowed for easier collaboration with other railway companies, as well as suppliers of measurement systems.
+With the formation of the OpenRail Association it was decided to donate the standard to the association, to put the project under independent stewardship.
+
 ## Who is the specification for
 
-This specification is for railway companies looking for a uniform format to store their recorded measurement data in a uniform way and to process them with suitable, already existing open source software or own developments or to exchange them with others.  
+This specification is for railway companies looking for a uniform format to store their recorded measurement data and to process them with suitable, already existing open source software or own developments or to exchange them with others. Suppliers of measurement systems can use this specification to deliver their data in an open format.
 SBB is working on providing further open-source solutions, for example to read, write and display files in RCM-DX format.
 
 ## Readability
@@ -76,3 +79,7 @@ The images are then stored in the "images/generated" directory.
 ## RCM-DX Viewer
 
 The RCM-DX Viewer is a powerful and versatile application for viewing RCM files. While the release of the source code as Open Source Software is still in the works, you can find the latest binary distribution (.msi) on the releases page of the rcm-dx-viewer repository: <https://github.com/SchweizerischeBundesbahnen/rcm-dx-viewer/releases>
+
+## License
+
+This project is licensed under [Eclipse Public License 2.0](LICENSE).
