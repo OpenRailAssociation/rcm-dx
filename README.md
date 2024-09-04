@@ -79,3 +79,7 @@ The images are then stored in the "images/generated" directory.
 ## RCM-DX Viewer
 
 The RCM-DX Viewer is a powerful and versatile application for viewing RCM files. While the release of the source code as Open Source Software is still in the works, you can find the latest binary distribution (.msi) on the releases page of the rcm-dx-viewer repository: <https://github.com/SchweizerischeBundesbahnen/rcm-dx-viewer/releases>
+
+## License
+
+This project is licensed under [Eclipse Public License 2.0](LICENSE).
