@@ -1,6 +1,6 @@
 # Rail condition monitoring data exchange format (RCM-DX format)
 
-[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg)](code_of_conduct.md) ![RCM-DX](https://img.shields.io/badge/RCM--DX-V2.0-green) ![RCM-DX](https://img.shields.io/badge/document-V0.29-blue) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
+[![Contributor Covenant](https://img.shields.io/badge/code_of_conduct-contributor_covenant-14cc21)](CODE_OF_CONDUCT.md) ![RCM-DX](https://img.shields.io/badge/RCM--DX-V2.0-green) ![RCM-DX](https://img.shields.io/badge/document-V0.29-blue) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 
 ## RCM-DX specification
 

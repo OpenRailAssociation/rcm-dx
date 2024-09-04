@@ -2,6 +2,10 @@
 
 First of all, thank you very much for your help!
 
+This Project welcomes contributions, suggestions, and feedback.
+All contributions, suggestions, and feedback you submitted are accepted under the [Project's license](./LICENSE).
+You represent that if you do not own copyright in the code that you have the authority to submit it under the [Project's license](./LICENSE). All feedback, suggestions, or contributions are not confidential.
+
 ## Where to get help
 
 Help is provided through the issue tracker. If you have a question, please create an issue in our issue board.
