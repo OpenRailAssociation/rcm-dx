@@ -51,6 +51,7 @@ The RCM-DX specification is open source and freely accessible and usable by all 
 | 2.0.1 | 1.02 | 26.06.2023 | Mathias Vanden Auweele (Infrabel) | Fixed formatting issues with document links. Improved definition of ChannelBasis. Fixed documentation bug with MeasurementDirectionDependent attribute specification |
 | 2.0.2 | 1.03 | 29.06.2023 | Aron Serafini (SCS) | Rename MeasurementDirectionDependent to MoveDirAutoInvert (it was implemented under this name in the RCM-DX file). Add new optional session attributes: SessionAlias, SegmentationRuleset, PositionAlgoVersion. |
 | 2.0.2 | 1.04 | 23.11.2023 | Stephanie Schalbetter (SBB) | Changes in the document according to the review with Infrabel, SBB and SCS. |
+| 2.0.3 | 1.05 | 03.10.2024 | Stephanie Schalbetter (SBB) | Rename of UNRELEASED to REJECTED in the CLEARANCE group. |
 
 
 ## Introduction  
@@ -589,7 +590,7 @@ This record contains the enum value of the clearance. The following values are p
 |----|------|
 | RELEASED | This file has been released |
 | PENDING | The clearance has not been set yet |
-| UNRELEASED | This file won't be released |
+| REJECTED | This file won't be released |
 
 **timestamp**  
 Contains the time of the acquisition of the entry.
