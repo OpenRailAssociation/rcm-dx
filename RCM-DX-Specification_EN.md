@@ -62,7 +62,7 @@ Railroad companies continuously gather data of their rail, overhead line, teleco
 
 This specification defines the rail condition monitoring data exchange format (RCM-DX format) which is a data format optimised for data in the railroad context, i.e. for data points localised within a railroad network. The RCM-DX format is a file format based on the HDF5 specification and defines a structure of HDF5 groups, datasets, and attributes. The document at hands also describes the content of the elements defined. Although the format is open and can in principle be implemented right away by any railroad company, this specification contains a few non-generic elements and naming conventions that are specific to SBB and Infrabel. The reason for this is that any file that adheres to this specification can be used with the _RCM Viewer_, an application available soon to the public.
 
-The RCM-DX format is a file format detailing the HDF5 format version 2.0. HDF5 was chosen for several reasons, including that it is an open format. HDF5 is a hierarchical data storage where the data in arranged in a tree structure. The HDF5 format is described on the webpage of the [HDF5-group](http://www.hdfgroup.org/HDF5/), in particular on the site [HDF5 file format specification](https://portal.hdfgroup.org/display/HDF5/Introduction+to+HDF5). The HDF5 group offers tools and libraries for various programming languages and operating systems that allow to read and write HDF5 files.
+The RCM-DX format is a file format detailing the HDF5 format version 2.0. HDF5 was chosen for several reasons, including that it is an open format. HDF5 is a hierarchical data storage where the data is arranged in a tree structure. The HDF5 format is described on the webpage of the [HDF5-group](http://www.hdfgroup.org/HDF5/), in particular on the site [HDF5 file format specification](https://portal.hdfgroup.org/display/HDF5/Introduction+to+HDF5). The HDF5 group offers tools and libraries for various programming languages and operating systems that allow to read and write HDF5 files.
 
 ### Hints
 
@@ -156,7 +156,7 @@ Attributes are described in this specification as follows:
 
 | Name | Data type | Parent object | Optional | Description |
 |---|---|---|---|-----|
-| StartTime | 64 bit integer | *SESSION_NAME* | no | Start time in miliseconds, for example: `1553237099000000000` |
+| StartTime | 64 bit integer | *SESSION_NAME* | no | Start time in milliseconds, for example: `1553237099000000000` |
 
 **Name**  
 The name of the attribute.
@@ -324,7 +324,7 @@ The following attributes are assigned to this type of data set `value.VN`:
 
 #### Sample Index
 
-If datasets are created for coordinates, a data set on the same level and with the name `sampleindex` must be available. The index number of an entry in `coord.CN`, is entered as the start of the next group. If the data set `sampleindex` has a value of $21$ at index zero, the first $20$ entries from the data set `coord.CN` belong together, the next data group start at with index number $21$. The number of entries in `sampleindex` corresponds to the one in the data set `timestamp`.
+If datasets are created for coordinates, a data set on the same level and with the name `sampleindex` must be available. The index number of an entry in `coord.CN`, is entered as the start of the next group. If the data set `sampleindex` has a value of $21$ at index zero, the first $20$ entries from the data set `coord.CN` belong together, the next data group starts at with index number $21$. The number of entries in `sampleindex` corresponds to the one in the data set `timestamp`.
 
 The group sizes can vary among themselves, this can be seen from the index positions in `sampleIndex`.
 
