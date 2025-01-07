@@ -156,7 +156,7 @@ Attributes are described in this specification as follows:
 
 | Name | Data type | Parent object | Optional | Description |
 |---|---|---|---|-----|
-| StartTime | 64 bit integer | *SESSION_NAME* | no | Start time in miliseconds, for example: `1553237099000000000` |
+| StartTime | 64 bit integer | *SESSION_NAME* | no | Start time in milliseconds, for example: `1553237099000000000` |
 
 **Name**  
 The name of the attribute.
@@ -324,7 +324,7 @@ The following attributes are assigned to this type of data set `value.VN`:
 
 #### Sample Index
 
-If datasets are created for coordinates, a data set on the same level and with the name `sampleindex` must be available. The index number of an entry in `coord.CN`, is entered as the start of the next group. If the data set `sampleindex` has a value of $21$ at index zero, the first $20$ entries from the data set `coord.CN` belong together, the next data group start at with index number $21$. The number of entries in `sampleindex` corresponds to the one in the data set `timestamp`.
+If datasets are created for coordinates, a data set on the same level and with the name `sampleindex` must be available. The index number of an entry in `coord.CN`, is entered as the start of the next group. If the data set `sampleindex` has a value of $21$ at index zero, the first $20$ entries from the data set `coord.CN` belong together, the next data group starts at index number $21$. The number of entries in `sampleindex` corresponds to the one in the data set `timestamp`.
 
 The group sizes can vary among themselves, this can be seen from the index positions in `sampleIndex`.
 
