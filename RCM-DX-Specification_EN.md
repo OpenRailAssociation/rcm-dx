@@ -1491,8 +1491,10 @@ The consistency type can have the following values:
 
 | Name | Description |
 |----|------|
-| CONSISTENT | The referenced data was checked and is consistent |
-| INCONSISTENT | The referenced data was checked and is inconsistent |
+| CONSISTENT | The referenced data was checked and is consistent (OK: green) |
+| INCONSISTENT | The referenced data was checked and is inconsistent (not OK: red) |
+| WARNING | The referenced data was checked and set to warning (undefined: orange) |
+| EXCLUDED | The referenced data has been verified, but is defined as to be exluded from the consistency |
 | NO_DATA | Consistency has been checked, but no data was found |
 
 **consistencyinfo**  
