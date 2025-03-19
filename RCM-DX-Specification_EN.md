@@ -52,6 +52,7 @@ The RCM-DX specification is open source and freely accessible and usable by all 
 | 2.0.2 | 1.03 | 29.06.2023 | Aron Serafini (SCS) | Rename MeasurementDirectionDependent to MoveDirAutoInvert (it was implemented under this name in the RCM-DX file). Add new optional session attributes: SessionAlias, SegmentationRuleset, PositionAlgoVersion. |
 | 2.0.2 | 1.04 | 23.11.2023 | Stephanie Schalbetter (SBB) | Changes in the document according to the review with Infrabel, SBB and SCS. |
 | 2.0.3 | 1.05 | 03.10.2024 | Stephanie Schalbetter (SBB) | Rename of UNRELEASED to REJECTED in the CLEARANCE group. |
+| 2.0.4 | 1.06 | 13.02.2025 | Stephanie Schalbetter (SBB) | New enums in consistencytype. |
 
 
 ## Introduction  
