@@ -53,6 +53,7 @@ The RCM-DX specification is open source and freely accessible and usable by all 
 | 2.0.2 | 1.04 | 23.11.2023 | Stephanie Schalbetter (SBB) | Changes in the document according to the review with Infrabel, SBB and SCS. |
 | 2.0.3 | 1.05 | 03.10.2024 | Stephanie Schalbetter (SBB) | Rename of UNRELEASED to REJECTED in the CLEARANCE group. |
 | 2.0.4 | 1.06 | 13.02.2025 | Stephanie Schalbetter (SBB) | New enums in consistencytype. |
+| 2.0.4 | 1.07 | 20.03.2025 | Stephanie Schalbetter (SBB) | Clarification of the description of position channel datasets. |
 
 
 ## Introduction  
@@ -1594,10 +1595,10 @@ See chapter [Datasource](#datasource)
 The distance (in [m]) the vehicle is driven at the time of recording within the current session.
 
 **track_id**  
-The ID of the track on which the vehicle is located at the time of recording.
+The ID of the track on which the vehicle is located at the time of recording. The value -1 indicates that no position could be determined.
 
 **line_id**  
-The ID of the line on which the vehicle is located at the time of recording.
+The ID of the line on which the vehicle is located at the time of recording. The value -1 indicates that no position could be determined.
 
 **trackoffset**  
 The offset (in [m]) on the track where the vehicle is located at the time of recording.
