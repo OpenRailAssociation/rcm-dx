@@ -1,0 +1,6 @@
+%%
+%% add draft watermark
+%%
+\usepackage{draftwatermark}
+\SetWatermarkText{DRAFT}
+\SetWatermarkScale{2}
