@@ -12,7 +12,7 @@ The RCM-DX specification is open source and freely accessible and usable by all 
 
 ## Change history
 
-| RCM-DX version | Document version | Date | Autor | Change |
+| RCM-DX version | Document version | Date | Author | Change |
 |-|-|-|--|-----|
 | 1.0.0 | 0.1 | 06.03.2015 | Martin Frey (SCS) | Initial version |
 | 1.0.0 | 0.2 | 20.03.2015 | Martin Frey (SCS) | Extensions |
@@ -1651,7 +1651,7 @@ Within the group there are the following data fields:
 
 | Name | Data type | Parent object | Optional | Storage type |
 |----|---|----|---|----|
-| Element | string | `EVENTS`` |no | Equals to "Events". Identifies this node.|
+| Element | string | `EVENTS` | no | Equals to "Events". Identifies this node. |
 | systemref | string | `EVENTS` | no | `Array` |
 | channelref | string | `EVENTS` | yes | `Array` |
 | eventtype | string | `EVENTS` | no | `Array` |
