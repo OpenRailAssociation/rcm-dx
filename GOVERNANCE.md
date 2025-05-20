@@ -1,6 +1,6 @@
 # Governance Policy
 
-This document provides the governance policy for the Project. Maintainers agree to this policy and to abide by all Project policies, including the [code of conduct](./CODE-OF-CONDUCT.md) by adding their name to the [`MAINTAINERS.md` file](./MAINTAINERS.md).
+This document provides the governance policy for the Project. Maintainers agree to this policy and to abide by all Project policies, including the [code of conduct](./CODE_OF_CONDUCT.md) by adding their name to the [`MAINTAINERS.md` file](./MAINTAINERS.md).
 
 ## 1. Roles.
 
@@ -11,8 +11,6 @@ This project may include the following roles. Additional roles may be adopted an
 **1.2. Contributors**. Contributors are those that have made contributions to the Project.
 
 ## 2. Decisions.
-
-*Projects may adopt their own decision making process. It has to be documented in this section of the governance document. The template defines the default decision making process as recommendation.*
 
 **2.1. Consensus-Based Decision Making**. Projects make decisions through consensus of the Maintainers. While explicit agreement of all Maintainers is preferred, it is not required for consensus. Rather, the Maintainers will determine consensus based on their good faith consideration of a number of factors, including the dominant view of the Contributors and nature of support and objections. The Maintainers will document evidence of consensus in accordance with these requirements.
 
