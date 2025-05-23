@@ -7,7 +7,7 @@
 The specification is available in two formats:
 
 - Markdown: [RCM-DX-Specification_EN.md](RCM-DX-Specification_EN.md)
-- PDF: [last_release/rcm-dx-specification_EN_V1.0.pdf](last_release/rcm-dx-specification_EN_V1.0.pdf)
+- PDF: [RCM-DX-Specification_EN.pdf](https://github.com/OpenRailAssociation/rcm-dx/releases/latest/download/RCM-DX-Specification_EN.pdf)
 
 ## Motivation
 
