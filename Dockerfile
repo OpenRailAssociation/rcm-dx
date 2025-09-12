@@ -8,4 +8,4 @@ RUN apk add --no-cache \
 
 WORKDIR /data
 
-ENTRYPOINT /bin/sh
+ENTRYPOINT ["/bin/sh"]
