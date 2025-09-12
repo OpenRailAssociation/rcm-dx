@@ -1,0 +1,37 @@
+name: Build RCM-DX PDF
+
+on:
+  push:
+
+jobs:
+  make-pdf:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker image
+        uses: docker/build-push-action@v6
+        with:
+          load: true
+          tags: rcm-dx-specification:latest
+
+      - name: Build PDF
+        uses: addnab/docker-run-action@v3
+        with:
+          image: rcm-dx-specification:latest
+          options: --volume ${{ github.workspace }}:/data --env SPEC_VERSION=v2.0.5-draft --env IS_DRAFT=true
+          run: make pdf
+
+      - name: Upload PDF
+        uses: actions/upload-artifact@v4
+        with:
+          name: RCM-DX-Specification_EN_draft
+          path: generated-specs/pdf/RCM-DX-Specification_EN.pdf
+          if-no-files-found: error
