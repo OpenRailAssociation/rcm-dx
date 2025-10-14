@@ -3,6 +3,9 @@ name: Build RCM-DX PDF
 on:
   pull_request:
   push:
+    tags:
+      - 'v*.*.*'
+
 
 jobs:
   make-pdf:
@@ -37,6 +40,14 @@ jobs:
           options: --volume ${{ github.workspace }}:/data --env SPEC_VERSION=${{ steps.latest-release.outputs.release }}-draft --env IS_DRAFT=true
           run: make pdf
         if: ${{ github.event_name == 'pull_request' }}
+
+      - name: Build PDF (Release)
+        uses: addnab/docker-run-action@v3
+        with:
+          image: rcm-dx-specification:latest
+          options: --volume ${{ github.workspace }}:/data --env SPEC_VERSION=${{ github.ref_name }}
+          run: make pdf
+        if: ${{ github.event_name == 'push' && github.ref_type == 'tag' }}
 
       - name: Upload PDF
         uses: actions/upload-artifact@v4
