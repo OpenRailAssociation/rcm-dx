@@ -54,6 +54,6 @@ jobs:
       - name: Upload PDF
         uses: actions/upload-artifact@v4
         with:
-          name: RCM-DX-Specification_EN_draft
+          name: RCM-DX-Specification_EN
           path: generated-specs/pdf/RCM-DX-Specification_EN.pdf
           if-no-files-found: error
