@@ -1,30 +1,65 @@
-# Contributing to the RCM-DX Specification
+# 🛠️ Contributing Guide
 
-First of all, thank you very much for your help!
+Thank you for considering contributing to this project! Since this repository is in **low-maintenance mode**, we appreciate thoughtful and well-prepared contributions. Please follow the steps below to submit a pull request (PR).
 
-This Project welcomes contributions, suggestions, and feedback.
-All contributions, suggestions, and feedback you submitted are accepted under the [Project's license](./LICENSE).
-You represent that if you do not own copyright in the code that you have the authority to submit it under the [Project's license](./LICENSE). All feedback, suggestions, or contributions are not confidential.
+## 📋 Before You Start
 
-## Where to get help
+- This project is stable and changes are infrequent.
+- Please open an issue first if your PR introduces new features or significant changes.
+- Bug fixes and documentation improvements are always welcome.
 
-Help is provided through the issue tracker. If you have a question, please create an issue in our issue board.
+## ✅ How to Submit a Pull Request
 
-## What do I need to know
+1. **Fork the repository**  
+   Click the "Fork" button at the top right of the GitHub page to create your own copy.
 
-Requests for changes are evaluated by a committee. If the request is useful for the majority, it is included in an upcoming release. Don't be angry with us if it doesn't make it into the next release or even if it doesn't make it into a release at all.  
-Major changes to this specification will result in major changes in the software that follows this specification, so such changes are well thought out and take some time.
+2. **Clone your fork locally**
+   ```bash
+   git clone https://github.com/your-username/project-name.git
+   cd project-name
+   ```
 
-## How can I contribute
+3. **Create a new branch**
+   ```bash
+   git checkout -b your-feature-name
+   ```
 
-### Any bugs found
+4. **Make your changes**
+   - Keep changes focused and minimal.
+   - Follow existing code style and conventions.
+   - Add comments where necessary.
 
-In the specification, these can be spelling mistakes, grammar errors, errors in the pictograms, errors in the links (or broken links) and so on. Mistakes happen, and we would be grateful if you could let us know by creating an issue or even sending a pull request that fixes the problem!  
+5. **Test your changes**
+   - Run any existing tests (if applicable).
+   - Ensure your changes don’t break existing functionality.
 
-### Suggest improvements or new features
+6. **Commit your changes**
+   ```bash
+   git add .
+   git commit -m "Brief description of your changes"
+   ```
 
-Improvements are desired and contribute to the success of this project. To suggest an improvement or a new feature, create a new issue or a pull request.
+7. **Push to your fork**
+   ```bash
+   git push origin your-feature-name
+   ```
 
-### Participate and decide
+8. **Open a Pull Request**
+   - Go to the original repository.
+   - Click “Compare & pull request”.
+   - Provide a clear description of what your PR does.
+   - Reference any related issues (e.g., `Closes #42`).
 
-It is our goal to build an inclusive Open Source community around this project. If you want to participate in the ongoing development of the specification, please get in touch via the issue tracker or email (rcm@sbb.ch).
+## 🧼 PR Review Checklist
+
+Before submitting your PR, please ensure:
+- [ ] Code is clean and commented
+- [ ] No unnecessary files are included
+- [ ] Documentation is updated (if needed)
+- [ ] Tests pass (if applicable)
+
+## 🕒 Review Process
+
+Due to the low activity of this project:
+- Reviews may take a few days or longer.
+- We’ll do our best to respond and merge valuable contributions.
