@@ -29,6 +29,9 @@ jobs:
           load: true
           tags: rcm-dx-specification:latest
 
+      # We use this job to get the version number from the latest release. This
+      # is currently only used to automate the definition of the draft version
+      # in the PR/Preview build jobs.
       - name: Get latest release
         id: latest-release
         uses: pozetroninc/github-action-get-latest-release@v0.8.0
@@ -36,6 +39,8 @@ jobs:
           repository: openRailAssociation/rcm-dx
         if: ${{ github.event_name == 'pull_request' || github.event_name == 'push' && github.ref_name == 'main'}}
 
+      # This job is being executed for pull requests to provide a PDF preview
+      # and on main after the changes have been merged.
       - name: Build PDF (PR/Preview)
         uses: addnab/docker-run-action@v3
         with:
@@ -44,6 +49,8 @@ jobs:
           run: make pdf
         if: ${{ github.event_name == 'pull_request' || github.event_name == 'push' && github.ref_name == 'main'}}
 
+      # This job is being executed after a release has been tagged. The built
+      # PDF will later on manually be added as an asset to the release.
       - name: Build PDF (Release)
         uses: addnab/docker-run-action@v3
         with:
