@@ -3,6 +3,8 @@ name: Build RCM-DX PDF
 on:
   pull_request:
   push:
+    branches:
+      - main
     tags:
       - 'v*.*.*'
 
@@ -31,15 +33,15 @@ jobs:
         uses: pozetroninc/github-action-get-latest-release@v0.8.0
         with:
           repository: openRailAssociation/rcm-dx
-        if: ${{ github.event_name == 'pull_request' }}
+        if: ${{ github.event_name == 'pull_request' || github.event_name == 'push' && github.ref_name == 'main'}}
 
-      - name: Build PDF (PR)
+      - name: Build PDF (PR/Preview)
         uses: addnab/docker-run-action@v3
         with:
           image: rcm-dx-specification:latest
           options: --volume ${{ github.workspace }}:/data --env SPEC_VERSION=${{ steps.latest-release.outputs.release }}-draft --env IS_DRAFT=true
           run: make pdf
-        if: ${{ github.event_name == 'pull_request' }}
+        if: ${{ github.event_name == 'pull_request' || github.event_name == 'push' && github.ref_name == 'main'}}
 
       - name: Build PDF (Release)
         uses: addnab/docker-run-action@v3
