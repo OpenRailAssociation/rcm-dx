@@ -54,7 +54,7 @@ The RCM-DX specification is open source and freely accessible and usable by all 
 | 2.0.3 | 1.05 | 03.10.2024 | Stephanie Schalbetter (SBB) | Rename of UNRELEASED to REJECTED in the CLEARANCE group. |
 | 2.0.4 | 1.06 | 13.02.2025 | Stephanie Schalbetter (SBB) | New enums in consistencytype. |
 | 2.0.4 | 1.07 | 20.03.2025 | Stephanie Schalbetter (SBB) | Clarification of the description of position channel datasets. |
-| 2.0.4 | 1.08 | 20.03.2025 | Stephanie Schalbetter (SBB) | Correction of attribute MoveDirAutoinvert to optional. |
+| 2.0.4 | 1.08 | 31.10.2025 | Stephanie Schalbetter (SBB) | Correction of attribute MoveDirAutoinvert to optional. |
 
 
 ## Introduction  
