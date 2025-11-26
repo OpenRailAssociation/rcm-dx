@@ -1,0 +1,67 @@
+name: Build RCM-DX PDF
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+  push:
+    branches:
+      - main
+    tags:
+      - 'v*.*.*'
+
+
+jobs:
+  make-pdf:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker image
+        uses: docker/build-push-action@v6
+        with:
+          load: true
+          tags: rcm-dx-specification:latest
+
+      # We use this job to get the version number from the latest release. This
+      # is currently only used to automate the definition of the draft version
+      # in the PR/Preview build jobs.
+      - name: Get latest release
+        id: latest-release
+        uses: pozetroninc/github-action-get-latest-release@v0.8.0
+        with:
+          repository: openRailAssociation/rcm-dx
+        if: ${{ github.event_name == 'pull_request' || github.event_name == 'push' && github.ref_name == 'main'}}
+
+      # This job is being executed for pull requests to provide a PDF preview
+      # and on main after the changes have been merged.
+      - name: Build PDF (PR/Preview)
+        uses: addnab/docker-run-action@v3
+        with:
+          image: rcm-dx-specification:latest
+          options: --volume ${{ github.workspace }}:/data --env SPEC_VERSION=${{ steps.latest-release.outputs.release }}-draft --env IS_DRAFT=true
+          run: make pdf
+        if: ${{ github.event_name == 'pull_request' || github.event_name == 'push' && github.ref_name == 'main'}}
+
+      # This job is being executed after a release has been tagged. The built
+      # PDF will later on manually be added as an asset to the release.
+      - name: Build PDF (Release)
+        uses: addnab/docker-run-action@v3
+        with:
+          image: rcm-dx-specification:latest
+          options: --volume ${{ github.workspace }}:/data --env SPEC_VERSION=${{ github.ref_name }}
+          run: make pdf
+        if: ${{ github.event_name == 'push' && github.ref_type == 'tag' }}
+
+      - name: Upload PDF
+        uses: actions/upload-artifact@v4
+        with:
+          name: RCM-DX-Specification_EN
+          path: generated-specs/pdf/RCM-DX-Specification_EN.pdf
+          if-no-files-found: error

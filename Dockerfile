@@ -1,4 +1,4 @@
-FROM pandoc/extra:3.6.4.0
+FROM pandoc/extra:3.7
 
 RUN apk add --no-cache \
   envsubst \
@@ -8,4 +8,4 @@ RUN apk add --no-cache \
 
 WORKDIR /data
 
-ENTRYPOINT /bin/sh
+ENTRYPOINT ["/bin/sh"]
