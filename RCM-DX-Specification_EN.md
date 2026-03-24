@@ -1234,8 +1234,8 @@ The following attributes are contained in this group:
 | Name | Data type | Parent object | Optional | Description |
 |------|---|----|---|----|
 | TriggerMode | Enum | *CHANNEL_NAME* | no | See chapter [Trigger Mode](#triggermode) |
-| CommonTriggerDistance | 64 bit float | *CHANNEL_NAME* | no | See below |
-| CommonTriggerFrequency | 64 bit float | *CHANNEL_NAME* | no | See below |
+| CommonTriggerDistance | 32 bit float | *CHANNEL_NAME* | no | See below |
+| CommonTriggerFrequency | 32 bit float | *CHANNEL_NAME* | no | See below |
 | ChannelBasis | Enum | *CHANNEL_NAME* | no | See below |
 | MoveDirAutoInvert | boolean | *CHANNEL_NAME* | yes | See below |
 | MeasurementType | Enum | *CHANNEL_NAME* | no | See below |
