@@ -60,7 +60,7 @@ jobs:
         if: ${{ github.event_name == 'push' && github.ref_type == 'tag' }}
 
       - name: Upload PDF
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: RCM-DX-Specification_EN
           path: generated-specs/pdf/RCM-DX-Specification_EN.pdf
