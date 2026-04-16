@@ -15,8 +15,8 @@ pdf: images ## generate PDF specification
 	mkdir -p generated-specs/pdf
 	envsubst < metadata.md > _metadata.md
 ifeq ($(IS_DRAFT),true)
-	pandoc --from markdown --template eisvogel --listings --include-in-header templates/is_draft.latex --metadata-file=_metadata.md RCM-DX-Specification_EN.md -o generated-specs/pdf/RCM-DX-Specification_EN.pdf --pdf-engine tectonic
+	pandoc --from markdown --template eisvogel --syntax-highlighting=idiomatic --include-in-header templates/is_draft.latex --metadata-file=_metadata.md RCM-DX-Specification_EN.md -o generated-specs/pdf/RCM-DX-Specification_EN.pdf --pdf-engine tectonic
 else
-	pandoc --from markdown --template eisvogel --listings --metadata-file=_metadata.md RCM-DX-Specification_EN.md -o generated-specs/pdf/RCM-DX-Specification_EN.pdf --pdf-engine tectonic
+	pandoc --from markdown --template eisvogel --syntax-highlighting=idiomatic --metadata-file=_metadata.md RCM-DX-Specification_EN.md -o generated-specs/pdf/RCM-DX-Specification_EN.pdf --pdf-engine tectonic
 endif
 	rm _metadata.md

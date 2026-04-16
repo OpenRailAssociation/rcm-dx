@@ -1,4 +1,4 @@
-FROM pandoc/extra:3.7
+FROM pandoc/extra:3.9
 
 RUN apk add --no-cache \
   envsubst \
