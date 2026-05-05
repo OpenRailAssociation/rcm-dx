@@ -19,9 +19,8 @@ To tag a new release follow these steps:
 To add the PDF to the release afterwards follow these steps:
 
 1. Open the Actions tab: https://github.com/OpenRailAssociation/rcm-dx/actions
-2. Click on the most recent worflow run and scroll to the bottom of the page to "Artifacts"
-3. Download the "RCM-DX-Specification_EN" artifact
-4. Unpack the ZIP and extract the file `RCM-DX-Specification_EN.pdf`
-5. Open the release you created previously and press the edit button (🖉)
-6. Add the PDF as an asset to the release
-7. Press the "Update release" button
+2. Click on the most recent workflow run and scroll to the bottom of the page to "Artifacts"
+3. Download the `RCM-DX-Specification_EN.pdf` artifact
+4. Open the release you created previously and press the edit button (🖉)
+5. Add the PDF as an asset to the release
+6. Press the "Update release" button
