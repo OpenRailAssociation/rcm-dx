@@ -27,7 +27,7 @@ jobs:
           persist-credentials: false
 
       - name: Build Docker image
-        run: docker buildx build -t rcm-dx-specification:latest .
+        run: docker build -t rcm-dx-specification:latest .
 
       # We use this job to get the version number from the latest release. This
       # is currently only used to automate the definition of the draft version
