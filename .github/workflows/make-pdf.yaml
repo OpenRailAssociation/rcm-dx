@@ -26,14 +26,8 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v4
-
       - name: Build Docker image
-        uses: docker/build-push-action@v7
-        with:
-          load: true
-          tags: rcm-dx-specification:latest
+        run: docker buildx build -t rcm-dx-specification:latest .
 
       # We use this job to get the version number from the latest release. This
       # is currently only used to automate the definition of the draft version
