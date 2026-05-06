@@ -57,21 +57,13 @@ jobs:
       # This job is being executed for pull requests to provide a PDF preview
       # and on main after the changes have been merged.
       - name: Build PDF (PR/Preview)
-        uses: addnab/docker-run-action@v3
-        with:
-          image: rcm-dx-specification:latest
-          options: --volume ${{ github.workspace }}:/data --env SPEC_VERSION=${{ steps.latest-release.outputs.result }}-draft --env IS_DRAFT=true
-          run: make pdf
+        run: docker run --volume ${{ github.workspace }}:/data --env SPEC_VERSION=${{ steps.latest-release.outputs.result }}-draft --env IS_DRAFT=true rcm-dx-specification:latest
         if: ${{ github.event_name == 'pull_request' || github.event_name == 'push' && github.ref_name == 'main'}}
 
       # This job is being executed after a release has been tagged. The built
       # PDF will later on manually be added as an asset to the release.
       - name: Build PDF (Release)
-        uses: addnab/docker-run-action@v3
-        with:
-          image: rcm-dx-specification:latest
-          options: --volume ${{ github.workspace }}:/data --env SPEC_VERSION=${{ github.ref_name }}
-          run: make pdf
+        run: docker run --volume ${{ github.workspace }}:/data --env SPEC_VERSION=${{ github.ref_name }} rcm-dx-specification:latest
         if: ${{ github.event_name == 'push' && github.ref_type == 'tag' }}
 
       - name: Upload PDF
