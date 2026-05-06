@@ -12,9 +12,14 @@ on:
     tags:
       - "v*.*.*"
 
+permissions: {}
+
 jobs:
   make-pdf:
+    name: "Build RCM-DX PDF"
     runs-on: ubuntu-latest
+    permissions:
+      artifact-metadata: write # required to upload generated PDF as an artifact
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
