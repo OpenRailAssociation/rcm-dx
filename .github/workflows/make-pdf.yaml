@@ -18,6 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write # to comment the PDF artifact location in PRs
+      issues: write # to comment the PDF artifact location in PRs
       artifact-metadata: write # required to upload generated PDF as an artifact
     steps:
       - name: Checkout repository
