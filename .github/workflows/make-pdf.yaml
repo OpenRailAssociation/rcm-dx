@@ -10,8 +10,7 @@ on:
     branches:
       - main
     tags:
-      - 'v*.*.*'
-
+      - "v*.*.*"
 
 jobs:
   make-pdf:
@@ -53,7 +52,7 @@ jobs:
               console.log("No valid releases found");
               return null
             }
-        if: ${{ github.event_name == 'pull_request' || github.event_name == 'push' && github.ref_name == 'main'}}
+        if: ${{ github.event_name == 'pull_request' || github.event_name == 'push' && github.ref_name == 'main' }}
 
       # This job is being executed for pull requests to provide a PDF preview
       # and on main after the changes have been merged.
