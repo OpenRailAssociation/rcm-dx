@@ -34,9 +34,25 @@ jobs:
       # in the PR/Preview build jobs.
       - name: Get latest release
         id: latest-release
-        uses: pozetroninc/github-action-get-latest-release@v0.8.0
+        uses: actions/github-script@v9
         with:
-          repository: openRailAssociation/rcm-dx
+          result-encoding: string
+          script: |
+            var releases  = await github.rest.repos.listReleases({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+            });
+            releases = releases.data;
+            // Filter out draft and prerelease releases
+            releases = releases.filter(x => x.draft != true);
+            releases = releases.filter(x => x.prerelease != true);
+            if (releases.length) {
+              console.log(`Found ${releases[0].tag_name} as the latest release`)
+              return releases[0].tag_name;
+            } else {
+              console.log("No valid releases found");
+              return null
+            }
         if: ${{ github.event_name == 'pull_request' || github.event_name == 'push' && github.ref_name == 'main'}}
 
       # This job is being executed for pull requests to provide a PDF preview
@@ -45,7 +61,7 @@ jobs:
         uses: addnab/docker-run-action@v3
         with:
           image: rcm-dx-specification:latest
-          options: --volume ${{ github.workspace }}:/data --env SPEC_VERSION=${{ steps.latest-release.outputs.release }}-draft --env IS_DRAFT=true
+          options: --volume ${{ github.workspace }}:/data --env SPEC_VERSION=${{ steps.latest-release.outputs.result }}-draft --env IS_DRAFT=true
           run: make pdf
         if: ${{ github.event_name == 'pull_request' || github.event_name == 'push' && github.ref_name == 'main'}}
 
