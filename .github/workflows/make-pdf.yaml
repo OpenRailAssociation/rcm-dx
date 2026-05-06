@@ -19,6 +19,7 @@ jobs:
     name: "Build RCM-DX PDF"
     runs-on: ubuntu-latest
     permissions:
+      pull-requests: write # to comment the PDF artifact location in PRs
       artifact-metadata: write # required to upload generated PDF as an artifact
     steps:
       - name: Checkout repository
@@ -68,9 +69,18 @@ jobs:
         if: ${{ github.event_name == 'push' && github.ref_type == 'tag' }}
 
       - name: Upload PDF
+        id: pdf-upload
         uses: actions/upload-artifact@v7
         with:
           name: RCM-DX-Specification_EN
           path: generated-specs/pdf/RCM-DX-Specification_EN.pdf
           if-no-files-found: error
           archive: false
+
+      - name: Comment with PDF location
+        run: |
+          gh pr comment ${{ github.event.number }} --repo ${{ github.repository }} \
+            --body "The preview PDF is available at ${{ steps.pdf-upload.outputs.artifact-url }}"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        if: ${{ github.event_name == 'pull_request' }}
