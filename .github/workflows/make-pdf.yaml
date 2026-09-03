@@ -1,4 +1,4 @@
-name: Build RCM-DX PDF
+name: Build documentation
 
 on:
   pull_request:
@@ -12,10 +12,17 @@ on:
     tags:
       - 'v*.*.*'
 
+permissions: {}
 
 jobs:
   make-pdf:
+    name: "Build RCM-DX PDF"
     runs-on: ubuntu-latest
+    permissions:
+      contents: read # read repository contents
+      id-token: write # to verify the deployment originates from an appropriate source (required for action/deploy-pages)
+      pages: write # to allow a deployment to GitHub Pages
+      artifact-metadata: write # required to upload generated PDF as an artifact
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
