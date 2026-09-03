@@ -56,7 +56,7 @@ The RCM-DX specification is open source and freely accessible and usable by all 
 | 2.0.4 | 1.07 | 20.03.2025 | Stephanie Schalbetter (SBB) | Clarification of the description of position channel datasets. |
 | 2.0.4 | 1.08 | 31.10.2025 | Stephanie Schalbetter (SBB) | Correction of attribute MoveDirAutoinvert to optional. |
 | 2.0.4 | 1.09 | 24.03.2026 | Stephanie Schalbetter (SBB) | Correction Channel CommonTriggerDistance and CommonTriggerFrequency to 32 float. |
-
+| 2.0.5 | - | TBD | TBD | Starting with release 2.0.5 the Document version will be discontinued and not updated anymore. |
 
 ## Introduction  
 
