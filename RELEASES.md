@@ -1,6 +1,11 @@
 # Releases
 
-After reviews are completed and changes are approved by the committee, a new release will be issued. Due to the project being stable, releases will be infrequent.
+After reviews are completed and changes are approved by the committee, a new release will be issued.
+Due to the project being stable, releases will be infrequent but will follow a defined process:
+
+- Changes will be reviewed and accepted into the `main` branch
+- Every six months the accumulated changes will be reviewed
+- If deemed necessary by the [maintainers](MAINTAINERS.md) a new release will be published
 
 ## Release process
 
