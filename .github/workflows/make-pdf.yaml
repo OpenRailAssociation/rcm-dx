@@ -45,7 +45,7 @@ jobs:
         uses: addnab/docker-run-action@v3
         with:
           image: rcm-dx-specification:latest
-          options: --volume ${{ github.workspace }}:/data --env SPEC_VERSION=${{ steps.latest-release.outputs.release }}-draft --env IS_DRAFT=true
+          options: --volume ${{ github.workspace }}:/data --env SPEC_VERSION="${{ steps.latest-release.outputs.release }}-dev Commit ID ${{ github.sha }}"
           run: make pdf
         if: ${{ github.event_name == 'pull_request' || github.event_name == 'push' && github.ref_name == 'main'}}
 
