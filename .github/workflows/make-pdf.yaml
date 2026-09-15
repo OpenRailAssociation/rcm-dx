@@ -83,8 +83,7 @@ jobs:
       id-token: write # to verify the deployment originates from an appropriate source (required for action/deploy-pages)
       pages: write # to allow a deployment to GitHub Pages
       artifact-metadata: read # required to download generated PDF from an artifact
-    #if: ${{ github.event_name == 'push' && github.ref_name == 'main' }}
-    if: ${{ github.event_name == 'push' && github.ref_name == 'ci/build_pdf_to_pages' }}
+    if: ${{ github.event_name == 'push' && github.ref_name == 'main' }}
     steps:
       - name: Download PDF artifact
         uses: actions/download-artifact@v8
