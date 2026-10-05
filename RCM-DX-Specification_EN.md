@@ -1331,7 +1331,7 @@ Possible values are:
 | Value | Description | Unit |
 |---|----------|---|
 | TIME | Time-based measurement data recording | Nanoseconds |
-| DISTANCE | Distance-based measurement data acquisition | Millimeter |
+| DISTANCE | Distance-based measurement data acquisition | Meter |
 | EVENT | EVENT based recording | none |
 
 #### Data object
